@@ -1,0 +1,1343 @@
+    Intelligent Property Management Workflow with OCR-Enabled Automated Billing
+                                  C lassification and Tenant Notification
+
+                   Members:
+         Casas, William Jake D.
+    E stayani, Khristian Maenard D.
+     M agtapat, Jullian Matthew B.
+
+                 A ugust 2026
+
+1   Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |Group# 10
+                                                       C HAPTER I
+
+                                  T HE PROBLEM AND ITS BACKGROUND
+
+             This chapter p resents the background and related literatureo fthes tudye ntitled
+    "Intelligent P roperty M anagement W orkflow with OCR-Enabled Automated Billing
+    Classification a ndT enantNotification."Italsop resentsthes ignificanceofthes tudy,the
+    statement of the problem, and the scope and limitations of the system.
+
+    1.1 Introduction
+
+             Property m anagement involves maintainingtenantrecords,m anagingutilityb ills,
+    c omputing c harges, m onitoring p ayment s tatus, a nd providing billing information to
+    tenants. These a ctivities require the o rganized h andling of p roperty records, tenant
+    information, billing d ocuments, and other administrative records. Cammarata (2023)
+    discusses the importance o f records a nd information m anagement in real-estate
+    operations, while T eo e t al. (2024) examine property-management functions and
+    s ervices. W hen p roperty managers handle these activities through s eparate o rm anual
+    m ethods,organizinginformationandm aintainingc onsistentworkp rocessescanbecome
+    m ore difficult.
+
+             Tosupporttheseactivities,digitalapproachesp rovidea w aytoc entralizep roperty
+    information and o rganize regular m anagement tasks. Property T echnology (PropTech)
+    refers to the use o f digital technologies in real-estate and property-management
+
+2                     Intelligent Property Management Workflow with OCR-Enabled
+
+                      A utomated Billing Classification and Tenant Notification |Group#10
+   a ctivities. Siniak et a l. (2020) d iscuss the role of P ropTech in c hanging real-estate
+   o perations and s ervices, w hile O yetunji e t al. (2025) e xamine d igital s olutions for
+   s treamlining property-management operations. D ing and Sun(2024)reviewtechnology
+   innovationsinhousingmanagement,w hileAl-haimie tal.(2025)discusstheb enefitsand
+   c hallenges of d igital transformation in the real-estate industry. T aken together, these
+   studies s how how d igital technologies support property a nd housing-management
+   a ctivities a nd p rovide a b asis for u sing c entralized s ystems to o rganize property
+   information and management processes.
+
+            One important area in p roperty m anagement is b illing. Utility b illing requires
+   informationfromb illingd ocumentsb eforechargesc anb eprocessed,includingamounts,
+   dates, b illing p eriods, providers, a nd account o rreferenceidentifiers.O pticalCharacter
+   Recognition (OCR) provides a  way to e xtract text a nd relevant information from
+   s upported d ocuments such as receipts a nd invoices (Kumar e t a l., 2 020). Saout et al.
+   (2024) discuss invoice-data e xtraction a s a  process involving d ocument digitization,
+   OCR,informatione xtraction,a ndrecognitionofdocuments tructures.M ohan(2023)a lso
+   p resentsa stagedp ipelineforextractingk ey-valueinformationfromc ommercialinvoices.
+   T aken together, these s tudies s upport the use o f OCR a nd document-processing
+   m ethods to extract and organize information from billing documents for later processing.
+
+            A fter b illing information is e xtracted, it still n eeds to bev alidated,c lassified,a nd
+   processeda ccordingtodefinedbillingc onditions.A fterbillinginformationise xtracted,it
+   still n eeds to b e v alidated, c lassified, a nd processed a ccording to d efined b illing
+
+3  Intelligent Property Management Workflow with OCR-Enabled
+
+   Automated Billing Classification and Tenant Notification |G roup#10
+   c onditions. Rule-based p rocessing uses p redefined c onditions and logical rules to
+   s upport structured o perational decisions and information h andling. B aralis eta l.(2022)
+   d iscuss business-rule engines that represent and e xecute operational d ecisions in a
+   s tructuredw ay.Inrelationtop rocessa utomation,Geyer-Klingebergetal.(2024)present
+   a  rule-based m ethod that analyzes decision logic a nd c lassifies business p rocesses
+   a ccordingtotheirs uitabilityforroboticprocessa utomation.T heseideasa rerelevanttoa
+   billing workflow in which v alidation, classification, calculation, and e xception-handling
+   conditionsared efinedinadvance.Theseideasa rerelevanttoa billingw orkflowinwhich
+   validation, c lassification, c alculation, a nd exception-handling conditions a re defined in
+   advance.
+
+            Based o n these ideas, the p roposed s ystem connects p roperty m anagement,
+   OCR-based e xtraction o f supported u tility-bill d ocuments, v alidation, rule-based billing
+   classification,billingcomputation,e xceptionh andling,a ndWebPushNotificationswithin
+   one w eb-based workflow. In this s tudy, intelligent processing refers to rule-based
+   processing that u ses p redefined a nd traceable c onditions to validate b illing e ntries,
+   classify billing information, c ompute applicable c harges,identifyprocessinge xceptions,
+   and route records to the M anager for review w hen required. T he study focuses o n
+   organizing rental a nd u tility billing activities within a  centralized s ystem w hile applying
+   defined rules to billing and exception-handling processes.
+
+4  Intelligent Property Management Workflow with OCR-Enabled
+
+   Automated Billing Classification and Tenant Notification |Group# 10
+                                       1 .2 Review of Related Literature
+
+   Digital Property Management and PropTech
+
+            Digital p roperty management increasingly relies o n technology to o rganize
+   property details, m anagement a ctivities, billing d ata, and related s ervices. Several
+   s tudies h ave examined this shift from d ifferent perspectives: Teo et a l. (2024) discuss
+   technology a nd d igitalization in property-management functions a nd service d elivery,
+   while Ding a nd S un (2024) review technology innovations in h ousing m anagement. In
+   this c ontext, PropTech refers to the use of digital technologies in the real-estate a nd
+   p roperty-management s ector. S iniak et a l. (2020) examine the impact o f P ropTech o n
+   real-estate industry g rowth, Saputra et a l. (2023)reviewd igital-transformationtrendsin
+   the property-management industry, and A l-haimi e t al. (2025) s ynthesize the
+   technologies, benefits, a nd c hallenges a ssociated w ith digital transformation in real
+   e state. In addition, C ammarata (2023) discusses the importance of records a nd
+   information m anagement inmanagingrisksduringreal-estatec hanges.Takentogether,
+   these s tudies s upport the relevance of centralized digital tools for p roperty information
+   a nd administrative processes. B uilding o n this literature, the p resent s tudy proposes a
+   centralized web-based w orkflow that o rganizes property, u nit, tenant, u tility, billing,
+   payment,e xception,andreceiptinformationforselectedboardingh ousesandresidential
+   apartments.
+
+   OCR and Billing Document Extraction
+
+5  Intelligent Property Management Workflow with OCR-Enabled
+
+   Automated Billing Classification and Tenant Notification |Group#10
+             Within p roperty-management operations, billing is one area where digital
+    p rocessing c an support routine administrative work. Billing d ocuments contain
+    informationsucha sa mounts,d ates,b illingperiods,providers,a ndaccounto rreference
+    identifiers. K umar et a l. (2020) examine the extraction of information from bill receipts
+    using O ptical C haracter R ecognition (OCR), w hile S aout e t a l. (2024) p rovide a n
+    overview of invoice-data e xtraction involving document d igitization, O CR, information
+    e xtraction, and document-structure recognition. S imilarly, M ohan (2023) presents an
+    e nd-to-endpipelineforcustomk ey-valueextractionfromcommercialinvoices.H owever,
+    extraction is o nly the first s tage of b illing processing. In the proposed s ystem, OCR is
+    u sed to process s upported s tandard d igital P DFs a nd clear images, after w hich the
+    extractedinformationu ndergoesv alidationbeforeb illingprocessing.Recordsthatd onot
+    meet the required validation conditions are s ent to the Exception Q ueue for Manager
+    review. T hus, OCR is treated as a  m ethod for e xtracting information from b illing
+    d ocuments rather than as a guarantee that every extracted value is accurate.
+
+    R ule-Based Billing Processing
+
+             O nce b illing information h as b een e xtracted, it m ust be c hecked a nd processed
+    a ccording to defined c onditions. R ule-based processing uses explicit c onditions and
+    decision rules to classify, validate, and routeinformation.W ue ta l.(2022)demonstrate
+    the use o f rule-based information extraction to o rganize domain-specific information,
+    w hileB aralise tal.(2022)discussb usiness-rulee nginesforrepresentingande xecuting
+    o perationaldecisionsinas tructuredm anner.Extendingthisideatop rocessautomation,
+
+6   Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |Group#10
+   G eyer-Klingebergeta l.(2024)presentarule-basedm ethodthatanalyzesdecisionlogic
+   and classifies business processes a ccording to their s uitability for robotic p rocess
+   a utomation, w hile Kim et al. (2011) e xamine p roactive e xception handling in b usiness
+   processes. T hese studies s upport the use of predefined and traceable c onditions to
+   determine w hether a record p roceeds through n ormalprocessingo rrequiresadditional
+   review. Applying these p rinciples, the proposed system u ses d efined rules for b illing
+   v alidation, p rovider and a ccount/referencemapping,duplicated etection,a ndidentifying
+   individual o r s hared b illing arrangements. R ecords that do not meet the defined
+   conditionsaresenttotheExceptionQueueforManagerreview.T heserules,a swella s
+   the s eparation between TenantReportedP aida ndM anager-confirmedpayments tatus,
+   a re system requirements rather than findings e stablished b y the cited s tudies. Digital
+   receipts are created only after payment confirmation.
+
+   Shared Utility Billing and Cost Allocation
+
+            S hared utility b illing presents a  relatedissuebecauseasinglec hargemayn eed
+   to b e allocated a mong s everal occupants. Levinson a nd Niemann (2004) e xamine
+   a partment energy u se when landlords pay for u tilities, while M ayr a nd Souza (2025)
+   discuss coordination a nd incentive issues a ssociated with s haredheatingc osts.These
+   s tudiesprovidec ontextforunderstandingc ostresponsibilityandc onsumptionincentives
+   in s hared-utility a rrangements. Nevertheless, they do n ot e stablish o ne u niversal
+   a llocation formula for rental properties o r d etermine h ow the p roposed system s hould
+   calculate individual tenant charges. F or this reason, the p roposed system treats the
+
+7  Intelligent Property Management Workflow with OCR-Enabled
+
+   A utomated Billing Classification and Tenant Notification |G roup# 10
+   a llocationmethoda sa definedsystemrequirementratherthanasa formulae stablished
+   b ythereviewedliterature.F orsharedo ccupancy,theManagerc onfiguresthepredefined
+   a llocation rule. The billing requirements a lso include reconciliation controls s o that
+   a llocated charges equal the source billing amount. T he s pecific a llocation formula,
+   rounding procedure, and reconciliation m ethod are s ystem-design decisions d escribed
+   a nd tested in the succeeding chapters.
+
+   W eb Push Notifications and Secure Notification Delivery
+
+            A fter a  b illing record is finalized, tenants need to be informed that their billing
+   information is available. The World Wide Web Consortium (2024a) describestheP ush
+   A PI, including p ush s ervices and user s ubscriptions. TheW orldWideW ebConsortium
+   (2024b) also explains the role of service w orkers in handling w eb e vents in the
+   b ackground when they are included inthesystemimplementation.B ecauseWebPush
+   involves browser s ubscriptions and authorization, security m ust also be considered.
+   C arboneri et a l. (2023) examine W eb P ush implementations in the wild and identify
+   s ecurity c oncerns involving push s ubscriptions and a uthorization. In the proposed
+   system, W eb Push notifications serve a s billing a lerts that direct tenants to the
+   authenticatedwebp ortal,wherecompleteb illinginformationisa vailable.However,W eb
+   Push d oes not confirm payment, p rove that p ayment o ccurred, or s how w hether the
+   tenant read the notification. T enant payment reporting therefore remainsseparatefrom
+   Manager confirmation.
+
+8  Intelligent Property Management Workflow with OCR-Enabled
+
+   A utomated Billing Classification and Tenant Notification |G roup#10
+   Iterative Software Development
+
+            B ecause the p roposed s ystem c ontains s everal connected functions, its
+   d evelopment requires a n organized and adaptable process. Iterative software
+   d evelopment d ivides development into repeated cycleso fb uilding,reviewing,receiving
+   feedback,a ndimproving.L armana ndBasili(2003)e xplainthed evelopmentofiterative
+   a nd incremental a pproaches, in w hich software is d eveloped progressively through
+   repeated cycles. Inayat et al. (2015) e mphasize s takeholder involvement,
+   communication,andrequirementsrefinementiniterativerequirementse ngineering,while
+   Ramesh et a l. (2021) identify challenges involving changing requirements, s takeholder
+   participation, documentation, a ndc ommunicationinAgilesoftwaredevelopment.These
+   studies s upport the use o f Iterative Software D evelopment M ethodology in thepresent
+   study.Specifically,themethodologyo rganizestheproposedsystemintorepeatedc ycles
+   of requirements review, d evelopment, testing, feedback, and refinement. Although the
+   literature supports this approach, the a ctual q uality a nd performance o f the p roposed
+   system are determined through implementation, testing, user feedback, and evaluation.
+
+   Software Quality Evaluation and Security
+
+            To e valuate the proposed s ystem systematically, the s tudy requires defined
+   software-quality criteria. ISO/IEC 2 5010:2023 provides a p roduct-quality model for
+   systemsa nds oftwarequalityrequirementsandevaluation(InternationalO rganizationfor
+   Standardization, 2023). Guided by this m odel, the s tudy e valuates five q uality
+   characteristics: Functional S uitability, Performance Efficiency, Interaction C apability,
+
+9  Intelligent Property Management Workflow with OCR-Enabled
+
+   A utomated Billing Classification and Tenant Notification |G roup#10
+     R eliability,a ndSecurity.Thesec haracteristicsp rovidea basisfore xaminingw hetherthe
+     system p erforms its intended functions, performs e fficiently, s upports u ser interaction,
+     o perates consistently, and p rotects information. Security is p articularly important
+     b ecause the s ystem handles tenant a nd billinginformation.RepublicA ctN o.1 0173,or
+     theDataPrivacyActof2012,requiresorganizationsthatp rocessp ersonalinformationto
+     u se reasonable and a ppropriate m easures to p rotect it (Republic o f the P hilippines,
+     2012). The National Privacy C ommission (2016) further discusses s afeguards for the
+     c onfidentiality,integrity,anda vailabilityo fpersonald ata,w hileZafareta l.(2022)review
+     a uthorizationa ndaccess-controls trategiesthatrestrictsystemfunctionsandinformation
+     according to user p ermissions. In the proposed system, role-based a ccess separates
+     M anager a nd Tenant functions. T hese sources guide the s tudy's q uality a nd s ecurity
+     evaluation, but they d o not p rove that the s ystem already meets the selected q uality
+     c haracteristicso rprivacyrequirements.T heS ecurityevaluationislimitedtothedefined
+     s ystem functions, a ccess c ontrols, a nd s ecurity-related c riteria included in the s tudy's
+     evaluation p rocedures. It d oes not constitute a legal audit, certification, o r claim of
+     complete compliance with the Philippine Data Privacy Act.
+
+     1 .3 Significance of the Study
+
+              The s tudy d evelops a nd e valuates a web-basedproperty-managementw orkflow
+     thatintegratese lectronicutility-billintake,OCR-basedinformatione xtraction,rule-based
+     b illing c lassification, tenant a nd b illing record management, and Web Push
+
+1 0  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |G roup#10
+    N otifications.th T he study provides p racticala ndacademicv alueinthefollowinga reas.
+    T he p rimary b eneficiaries are property m anagers a ndtenants,whilefutureresearchers
+    a nd system developers m ay use the study a s a reference for applying digital
+    p roperty-management technologies in small-scale residential settings.
+
+             Intheglobalc ontext,thestudycontributesa nappliedexampleo fPropTechand
+    d igital p roperty management b y showing how e xisting technologies can b e combined
+    intoo neworkflowforresidentialpropertyo perations.Ita lsop rovidesa localexampleof
+    h ow d igital p roperty-management concepts can b e applied in a smaller
+    property-management s etting. T he s tudy does n ot c laim that the p roposed w orkflow
+    represents a ll property-management environments; rather, its significance lies in
+    demonstratinghows electedtechnologiesm aybeintegratedw ithinthed efinedscopeof
+    the study.
+
+             In the economic c ontext, the s ystem is designed to reduce repetitive m anual
+    activitiesinvolvedinreceivingutilityb ills,recordingb illinginformation,c alculatingtenant
+    charges, and communicating b illing updates. Centralizedrecordsa ndpredefinedbilling
+    rulescana lsoh elpp ropertym anagersfollowa moreconsistentbillingprocess.H owever,
+    actual reductions in o perating c osts, processing time, o r late p ayments depend on the
+    results of system testing and evaluation.
+
+             In the environmental c ontext, the system uses electronic u tility bills, digital
+    billing records, and e lectronic n otifications. T his can reduce the n eed for p aper-based
+
+11  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |G roup#10
+     recordsd uringtheb illingp rocess.T hestudydoesn otc laimaspecificreductioninpaper
+     u se because this is not directly measured.
+
+              Inthes ocietalc ontext,thesystemprovidespropertymanagersa ndtenantsw ith
+     o rganized billing information. Itemized billing records, d efined billing rules, a nd
+     a utomated n otifications c an help m ake tenant dues easier to u nderstand and
+     c ommunicate. T his can support c learer b illingtransactionsbetweenpropertym anagers
+     a nd tenants. H owever, the s tudy d oes not claim that the system will e liminate billing
+     misunderstandings or disputes because those outcomes are not directly measured.
+
+     1.4 Statement of the Problem
+
+              Thiss tudyd evelopsandevaluatesa nIntelligentPropertyM anagementW orkflow
+     with OCR-Enabled Automated Billing C lassification and TenantNotificationforselected
+     boarding houses and residential apartments in Pasig City.
+
+     Specifically, the study seeks to answer the following questions:
+
+         1 . W hat development s tages are u ndertaken in d eveloping the proposed s ystem
+              using the Iterative Software Development Methodology?
+
+         2 . H ow a re Optical Character Recognition (OCR), validation, Exception Queue
+              handling,a ndrule-basedbillingclassificationintegratedintotheproposedsystem
+              to process rental and utility billing information?
+
+1 2  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |G roup# 10
+     3 . How does the developed s ystem p erform w hen e valuated u sing the s elected
+         ISO/IEC 25010:2023 quality characteristics in terms of:
+              a. F unctional Suitability;
+              b . Performance Efficiency;
+              c. Interaction Capability;
+              d . Reliability; and
+              e. Security?
+
+     4. What implementation g uide and userm anualc anbepreparedforthed eveloped
+         system?
+
+     1.5 Scope and Limitations of the Study
+
+              The study develops a nd e valuates a web-basedproperty-managementw orkflow
+     e ntitledIntelligentPropertyM anagementWorkfloww ithOCR-EnabledA utomatedBilling
+     Classification a nd Tenant Notification. It a ims to p rovide a c entralized w orkflow for
+     o rganizing property, unit, tenant, utility, rent, billing, p ayment, e xception, receipt, and
+     n otification records. The system integrates e lectronic utility-bill intake, O CR-based
+     d ocument-informationextraction,validation,deterministicrule-basedb illingclassification,
+     E xception Q ueue handling, M anager payment confirmation, d igital receipt g eneration,
+     a nd Web Push N otifications. In this s tudy, the term intelligent refers to predefined,
+
+1 3  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |G roup# 10
+     e xplicit, deterministic, and traceable rules and does n ot refer to A rtificial Intelligence,
+     M achine L earning, D eep L earning, P redictive Analytics, Generative A I, o r any
+     m achine-learning model.
+
+              The study covers selected b oarding h ouses a nd residential apartments inPasig
+     C ity during A cademic Y ear 2 026­2027. T he b illing c ategories are limited to rent,
+     e lectricity, and water. Rent is g enerated m onthly a ccording to the tenant's
+     lease-anniversaryd ate,isfixedandnon-prorated,a ndincludesone-montha dvancerent
+     a s a s eparate first-billing line item. T he s ystem supportsIndividualB illingArrangement
+     a nd S hared-Occupancy Billing A rrangement. U nder s hared occupancy, rent a nd
+     a pplicable utility c harges are allocated among active tenantsaccordingtoapredefined
+     ruleselectedorc onfiguredbytheM anager.A llocateda mountsu setwodecimalp laces,
+     and the total of the allocated shares must equal the original source billing amount.
+
+              T he system receives electronic u tility bills through a  d esignated
+     property-management email account and uses OCR to extract available b illing
+     informationfromstandard,digitallyg eneratedP DFfilesands ufficientlyc learimagefiles.
+     The target fields include the amount due, d ue d ate, billing period, utility provider, a nd
+     account o r reference identifier. O CR is limited to document-information e xtraction and
+     does not determine billing classification, confirm payment, or replace v alidation.
+     Extracted billing information is c hecked for required fields, provider and
+     account/reference m apping, b illingp eriod,duplicates tatus,ando therd efinedv alidation
+     conditions.R ecordsthatareincomplete,u ncertain,d uplicated,unmappable,o ru nableto
+
+1 4  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |Group# 10
+    s atisfy the defined rules are s ent to the E xception Q ueue for M anager review a nd
+    c orrection. Corrected records may be revalidated and reprocessed.
+
+             The system processes v alid records according to the defined billing a nd
+    c omputation rules. It uses three p ayment statuses: Unpaid,T enantReportedP aid,a nd
+    P aid.TenantReportedP aidindicatesa tenant-reportedp aymenta nddoesn otrepresent
+    confirmed payment. Only the Manager can confirm payment a nd c hange the s tatus to
+    P aid. A digital receipt is g eneratedo nlyafterM anager-confirmedp ayment.T hes ystem
+    does n ot include a payment gateway, bank integration, automatic paymentverification,
+    independent external payment verification, o r direct utility-payment v erification. The
+    Manager p erforms a ny required payment v erification b efore confirming p ayment in the
+    system.
+
+             T he system p rovides a tenant-facing dashboard for viewing recorded rentala nd
+    utility d ues, billing d etails, payment s tatus, and c onfirmed-payment receipts. Tenant
+    alerts u se Web P ush N otifications a nd d irect tenants to the authenticated web portal.
+    ThesystemdoesnotuseS MSoremaila stenant-notificationchannels.WebP ushdoes
+    not c onfirm payment, prove that p ayment o ccurred, prove that a  tenant read the
+    notification,orreplacethebillingrecord.T hes ystemm ays endpermittedb illingupdates
+    and d ue-date-related a lerts, including a  c onfigured reminder threedaysb eforethed ue
+    d ate. Notification d elivery b ehavior is d escribed a nd e valuated a ccording to the
+    implemented notification mechanism.
+
+15  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |Group# 10
+             T hesystemincludesAdmin,Manager,andTenantroles.T heAdminroleislimited
+    to system m aintenanceThe M anager m anages p roperties, units, tenants, utility
+    mappings, b illing rules, billing records, e xceptions, c orrections, payment c onfirmation,
+    andreceipts.TheT enantv iewsb illinginformationa ndpaymentstatus,reportspayment,
+    a nd receives permitted Web P ush Notifications. R ole-based access restricts functions
+    a nd information according to the assigned role.
+
+             Thes ystemu sesa centralizeddatabaseforproperty,u nit,tenant,utility-mapping,
+    rent-configuration, billing, p ayment-status, exception, correction,receipt,a ndapplicable
+    notification records.
+
+             T he system is evaluated u sing five selected ISO/IEC 2 5010:2023 q uality
+    characteristics: F unctional S uitability, P erformance Efficiency, Interaction Capability,
+    R eliability, and Security. T he e valuation is limited to these selected c haracteristics a nd
+    d oes not represent a n a ssessment of every characteristic in the ISO/IEC 25010:2023
+    product-qualitym odel.T hestudye valuatesthes ystemaccordingtoitsdefinedfunctions
+    and a pproved testing p rocedures a nd does n otclaimtomeasurelong-termc hangesin
+    p roperty revenue, tenantbehavior,tenantpaymentcompliance,businessp rofitability,or
+    o verall operational p erformance unless these outcomes are s pecifically included inthe
+    evaluation.
+
+             Within its d efined boundaries, the s tudy d oes n ot include a m obile application;
+    installation or p hysical reading o fInterneto fThingssmartm eters,e lectricals ubmeters,
+    o r w aters ubmeters;Interneto rWi-Fibilling;p redictivep rofita nalytics;predictivebilling;
+
+16  Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |Group#10
+     A rtificial Intelligence; M achine Learning; Deep Learning; G enerative A I; blockchain
+     technology; automated u tility d isconnection; payment g ateways; bank integration;
+     independent e xternal payment v erification; m aintenance-ticket management; legal
+     c ontract generation; or a utomated eviction processing. The OCR component does n ot
+     c over h andwritten b ills, h eavily damaged d ocuments, severely d istorted documents, o r
+     low-resolutionphotographs.T hes tudya lsodoesn otc laimthatthesystemindependently
+     v erifies real-world p ayments, guarantees n otification delivery or reading, establishes a
+     u niversallyfairu tility-allocationformula,orp rovidescompletelegalcertificationunderthe
+     P hilippine Data Privacy Act.
+
+1 7  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup# 10
+                                                        C HAPTER II
+
+                                                    METHODOLOGY
+
+              T hischapterp resentsthemethodologya ndproceduresusedinthed evelopment
+     o f the proposed Intelligent P roperty M anagement W orkflow with OCR-Enabled
+     Automated B illing Classification a nd Tenant N otification. It d escribes the p roject
+     requirements, system d esign, conceptual operation, interface m ockups, and Iterative
+     Software Development M ethodology that g uide the development a nd e valuation o f the
+     s ystem.
+
+     2 .0 Project Overview
+
+     P roject Information
+
+              The project, e ntitled Intelligent P roperty Management Workflow with
+     O CR-Enabled Automated Billing C lassification and T enant Notification, is a w eb-based
+     property-management system d esigned for s elected b oarding h ouses a nd residential
+     apartments in Pasig City. It c overs the management of p roperties, u nits, tenants, rent,
+     e lectricity, w ater, u tility accounts o r reference identifiers, b illing records, payment
+     s tatuses, exceptions, digital receipts, and tenant notifications.
+
+              T he system p rovides a  centralized workflow for receiving electronic utility bills,
+     e xtracting billing information from s upported d ocuments through O ptical C haracter
+
+1 8  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |Group#10
+     R ecognition (OCR), validating e xtracted information, a pplying predefined rule-based
+     b illing conditions, c omputing applicable charges, managing exceptions, confirming
+     p ayments, generating d igital receipts, a nd triggering permitted Web PushN otifications.
+     T he designated property-management email a ccount is u sed for utility-bill intake a nd
+     a ttachment retrieval only. It is not used as a tenant-notification channel.
+
+              In this s tudy, the term intelligent refers to predefined, e xplicit, deterministic, a nd
+     traceable rule-based processing. It d oes n ot refer to A rtificial Intelligence, Machine
+     L earning, D eep L earning, P redictive Analytics, G enerative AI, o r any m achine-learning
+     m odel. The s ystem follows an "automate b y d efault, interveneb ye xception"a pproach.
+     Records that satisfy the defined p rocessing c onditions are processed through the
+     a pplicable rules, w hile records requiring judgment, correction, or further review are
+     routed to the Exception Queue for Manager intervention.
+
+              Thesystems upportsthreepaymentstatuses:U npaid,T enantReportedPaid,and
+     Paid. Tenant R eported P aid indicates that the tenant reports a payment but d oes not
+     represent confirmed payment. Only the M anager can c onfirmpaymentandchangethe
+     status to Paid. A  d igital receipt is generated only after Manager-confirmed payment.
+     Tenant notifications use W eb P ush Notifications for p ermitted b illing updates and
+     due-date-relatedalerts,includinga c onfiguredreminderthreed aysb eforethed ued ate.
+     WebPushN otificationsd irecttenantstothea uthenticatedwebportala nddonotc onfirm
+     payment, prove that payment occurred, or prove that a tenant read the notification.
+
+1 9  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |Group#10
+     Requirements Definition
+
+     The proposed s ystem is d esigned to meet the following business, user, and security
+     requirements.
+
+             A. Business Requirements
+
+     T he proposed system shall:
+
+         1. Receive electronic utility bills through a designated property-management email
+              a ccount and retrieve supported billing attachments.
+
+         2. Extract available billing information from supported standard, digitally generated
+              PDF files and sufficiently clear image files using OCR.
+
+         3. E xtract the following target fields when available:
+                    A mount due.
+                   Due date.
+                   B illing period.
+                   U tility provider.
+                    Account or reference identifier.
+
+         4. V alidate extracted billing information using predefined conditions, including:
+                   Required-field checking.
+                    Provider mapping.
+                   Account or reference mapping.
+                   Billing-period checking.
+
+2 0  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |Group#10
+                Duplicate-status checking.
+               O ther defined validation conditions.
+     5 . Map utility records to the appropriate property, unit, utility account or reference
+         identifier, and provider using Manager-configured mappings.
+     6. A pply predefined, explicit, deterministic, and traceable rules for:
+               B illing validation.
+               Provider and account/reference mapping.
+               Duplicate detection.
+               Billing classification.
+               Individual or shared billing identification.
+               B illing computation according to configured rules.
+     7. S upport Individual Billing Arrangement and Shared-Occupancy Billing
+         A rrangement.
+     8 . Generate monthly rent according to the tenant's configured billing or
+         lease-anniversary date.
+     9 . A pply fixed and non-prorated rent rules.
+     1 0.R ecord one-month advance rent as a separate line item in the first billing record.
+     1 1.Process billing categories limited to rent, electricity, and water.
+     1 2.A llocate applicable rent and utility charges among active tenants under the
+         Shared-Occupancy Billing Arrangement according to the predefined allocation
+         rule selected or configured by the Manager.
+
+2 1  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |Group# 10
+     1 3.Record shared-billing allocations using exactly two decimal places and ensure
+         that the total of the allocated shares equals the original source billing amount.
+
+     14.Process and finalize billing records according to the applicable predefined rules
+         w hen all required validation, mapping, duplicate-checking, and billing conditions
+         are satisfied.
+
+     15.R oute records that do not satisfy the defined processing conditions to the
+         Exception Queue for Manager review and correction.
+
+     16.A llow corrected exception records to be revalidated and reprocessed or
+         recomputed when applicable.
+
+     1 7.S tore property, unit, tenant, utility-mapping, rent-configuration, billing,
+         p ayment-status, exception, correction, receipt, and applicable notification
+         information in a centralized database.
+
+     1 8.M aintain the payment statuses Unpaid, Tenant Reported Paid, and Paid.
+     19.D istinguish tenant-reported payment from Manager-confirmed payment.
+     20.Allow only the Manager to confirm a tenant-reported payment and change the
+
+         status to Paid.
+     21.Generate a digital receipt only after Manager-confirmed payment.
+     22.Provide a tenant-facing dashboard for viewing recorded rental and utility dues,
+
+         billing details, payment status, and confirmed-payment receipts.
+     23.Trigger permitted Web Push Notifications for billing updates and due-date-related
+
+         a lerts, including a configured reminder three days before the due date.
+
+2 2  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |G roup# 10
+         2 4.Direct tenants through Web Push Notifications to the authenticated web portal
+              where complete billing information is available.
+
+         2 5.Apply a defined correction process for exception and finalized records. For
+              exception records, the process shall include Manager review and correction,
+              revalidation, and reprocessing or recomputation when applicable. For finalized
+              records, the process shall include Manager correction, revalidation, recomputation
+              w hen applicable, and record update.
+
+         26.M aintain the distinction between routine automated processing and records
+              requiring Manager intervention.
+
+     T he system shall n ot use S MS, G SM, o r tenant email notifications. The d esignated
+     p roperty-management e mail account s hall b e used o nly for u tility-bill intake a nd
+     attachment retrieval.
+
+             B . User Requirements
+
+     The proposed system includes three user roles: Admin, Manager, and Tenant.
+
+              Admin
+
+     The A dmin role is limited to system m aintenance. The Admin shall be able top erform
+     o nly the system-maintenance functions included in the implemented system.
+
+              Manager
+
+     T he Manager shall be able to:
+
+2 3  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |Group#10
+    1 . Log in to the system using valid credentials.
+    2 . Manage property information.
+    3 . M anage unit information.
+    4 . Manage tenant information.
+    5 . C onfigure utility providers and account or reference mappings.
+    6 . Configure rent information and billing arrangements.
+    7 . C onfigure applicable billing rules.
+    8 . View and manage billing records.
+    9. Review billing information extracted through OCR when necessary.
+    10.Review billing validation and classification results.
+    11.R eview records placed in the Exception Queue.
+    12.C orrect billing or payment information when Manager intervention is required.
+    13.R evalidate and reprocess or recompute corrected records when applicable.
+    14.Manage post-finalization corrections according to the defined correction process.
+    15.C onfirm tenant-reported payments.
+    16.V iew payment status for applicable rent, electricity, and water billing records.
+    17.View confirmed-payment receipts.
+    1 8.M anage relevant Web Push Notification functions within the defined system
+
+        scope.
+    1 9.P erform other Manager-only operations included in the implemented system.
+
+24  Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |G roup# 10
+    T heM anagerm aycorrectane xceptionbeforefinalizationorc orrectane xistingbillingo r
+    payment record after finalization. A c orrected record s hall u ndergo revalidation and
+    recomputation when applicable.
+
+             Tenant
+
+    The Tenant shall be able to:
+
+        1. L og in to the authenticated system.
+        2. View assigned property or unit information.
+        3. View applicable rent, electricity, and water billing records.
+        4. View billing details, including billing category, billing period, and amount due.
+        5 . View payment status.
+        6 . R eport an applicable payment through the system.
+        7. View digital receipts for Manager-confirmed payments.
+        8 . Receive permitted Web Push Notifications.
+        9. Access the authenticated web portal through permitted Web Push billing and
+
+             due-date-related alerts.
+
+    A  tenant-reported p ayment shall n ot automatically c hange the p ayment s tatus to P aid.
+    T he status shall remain Tenant Reported Paid until the Manager confirms the payment.
+
+    C . Security Requirements
+
+25  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |G roup# 10
+     T he proposed system is d esigned to p rotect p roperty, tenant, b illing, p ayment, utility,
+     e xception, c orrection, receipt, and a pplicable n otification information p rocessed by the
+     a pplication.
+     T he proposed system shall include the following security requirements.
+
+              User Authentication
+
+     U sers shall provide valid credentials before accessing protected system functions.
+
+              Role-Based Access Control
+
+     Systemfunctionsandinformations hallberestricteda ccordingtothea ssignedu serrole.
+     Admin, Manager, and Tenant permissions shall follow their defined responsibilities.
+
+              D ata Access Restriction
+
+     Property, tenant, billing, p ayment, u tility, e xception, correction, receipt, a nd applicable
+     notification information shall be accessible only to authorized users and functions.
+
+              Secure Utility-Bill Intake
+
+     Electronic utility-bill documents retrieved through the designated property-management
+     email w orkflow s hall b e a ccessible only through authorized system functions and to
+     users with appropriate permissions.
+
+              B illing and Payment Information Protection
+
+2 6  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup#10
+     B illing a nd p ayment information shall b e restricted from unauthorized m odification or
+     access through authentication, role-based access, and defined system permissions.
+
+              S ession Security
+
+     Authenticated u ser sessions shall b e m anaged according to the implemented
+     a ccess-control mechanism.
+
+              Input Validation
+
+     User-provided information a nd e xtracted billing information shall b e validated before
+     being stored or processed.
+
+              C ontrolled Exception Review
+
+     B illing records that fail required-field validation, identification, duplicate checking,
+     m apping,orotherd efinedp rocessingc onditionss hallberoutedtotheExceptionQueue
+     for Manager review.
+
+              C orrection Information
+
+     C orrection information shall be stored within the centralized database as applicable.
+     The security requirements are limited to the d efineds ystemfunctions,accessc ontrols,
+     a nd security-related c riteria included in the s tudy's e valuation p rocedures. Theydon ot
+     constitutealegalaudit,certification,orc laimo fc ompletecompliancew iththePhilippine
+     Data Privacy Act.
+
+2 7  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup# 10
+    2 .1 Concept of the Study
+
+    A rchitectural Framework
+
+             The a rchitectural framework p resents the structure and interaction o f the
+    p roposed Intelligent P roperty M anagement W orkflow w ith OCR-Enabled A utomated
+    B illingClassificationa ndTenantNotification.Its howsthemajorc omponents,a ctors,a nd
+    information relationships within the proposed system.
+
+             Theframeworko rganizesroutinep rocessingcomponentsa nde xception-handling
+    components w ithin the proposed s ystem. T he E xception Q ueue provides a controlled
+    point for Manager review and c orrection o f records that do not s atisfy the defined
+    processing conditions.
+
+    The framework consists of the following major components and actors:
+
+     Property and Unit Management
+     Tenant Management
+     U tility Provider and Account/Reference Mapping
+     R ent Configuration
+     Property-Management Email Intake
+      OCR Processing
+      V alidation and Rule-Based Billing Classification
+     Duplicate Checking
+      Billing Computation
+
+28                             Intelligent Property Management Workflow with OCR-Enabled
+
+                               Automated Billing Classification and Tenant Notification |G roup# 10
+         Exception Queue
+         Billing Records
+         Payment Status Management
+          Digital Receipt
+          W eb Push Notification
+         Centralized Database
+         A dmin
+         M anager
+         T enant
+          Utility Provider
+
+             Property a nd U nit Management manages p roperty a nd unit information. T enant
+    M anagement manages tenant information a nd its a ssociation with the applicable
+    p roperty o r unit. T he Utility Provider and A ccount/Reference Mapping c omponent
+    m anages utilityproviders,a ccounto rreferenceidentifiers,a ndtheirc onfiguredp roperty
+    o r unit relationships. The Manager configures the applicable mappings.
+
+             RentConfigurationmanagesthetenant'sc onfiguredrentinformationandbillingo r
+    lease-anniversary d ate. T he C entralized Database s tores the c orresponding
+    c onfiguration records. The s ystem a pplies the fixed m onthlyrentrule,d oesn otp rorate
+    rent, a nd records one-month advance rent a s a separate line item in the first billing
+    record.
+
+29  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |G roup# 10
+              P roperty-Management Email Intake receives s upported electronic utility-bill
+     a ttachments through the designated p roperty-management e mail a ccount. The email
+     account is u sed o nly for u tility-bill intake and a ttachment retrieval a ndisnotu sedasa
+     tenant-notification c hannel. O CR P rocessing extracts available billing information from
+     s upporteddocuments,includingthea mountd ue,dued ate,billingperiod,u tilityp rovider,
+     and account or reference identifier.
+
+              Validation a nd Rule-Based B illing C lassification checks e xtracted information
+     using predefinedrules.Itvalidatesrequiredfields,identifiesthea pplicablep ropertyand
+     u nit using the configured mapping, checks the b illing p eriod and d uplicate status, and
+     d etermines whether the a pplicable billinga rrangementisIndividualB illingA rrangement
+     o r Shared-Occupancy B illing A rrangement. The rules are p redefined, explicit,
+     d eterministic, a nd traceable. The s ystem does n ot u se A rtificial Intelligence, Machine
+     L earning, Deep Learning, P redictive A nalytics, Generative AI, o r a ny m achine-learning
+     model for this processing.
+
+              B illingC omputationc alculatesapplicablerentandutilitychargesaccordingtothe
+     configured rules.U ndertheShared-OccupancyBillingArrangement,a pplicablecharges
+     a re a llocated among active tenants u sing the predefined a llocation rule selected or
+     configured bytheManager.Allocatedamountsu see xactlytwod ecimalplaces,andthe
+     total of the allocated shares must equal the original source billing amount.
+
+              The E xception Queue manages records requiring M anager intervention. It
+     receives records that a re invalid, incomplete, uncertain, duplicated, u nmappable, or
+
+3 0  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |Group# 10
+     o therwiseunabletosatisfythedefinedprocessingconditions.T heM anagerreviewsa nd
+     c orrectstheserecords.C orrectedinformationissubjecttorevalidationa ndreprocessing
+     o r recomputation when applicable.
+
+              Billing R ecords manages a pplicable billing information a nd finalized b illing
+     records. Payment Status M anagement managesthestatusesUnpaid,T enantReported
+     Paid,andPaidfora pplicablerent,electricity,a ndw aterb illingrecords.T enantReported
+     P aid represents a tenant-reported payment and is not c onsidered confirmed u ntil the
+     M anagerreviewsa ndconfirmsthep ayment.TheDigitalR eceiptc omponentgeneratesa 
+     receipt only after Manager-confirmed payment.
+
+              TheC entralizedD atabasestoresapplicableproperty,u nit,tenant,utility-mapping,
+     rent-configuration,b illing,payment-status,e xception,correction,receipt,a ndn otification
+     information. Correction information is stored within c entralized recordsratherthana sa
+     separate architectural component.
+
+              T he Web P ush Notification c omponent provides p ermitted billing updates a nd
+     due-date-related a lerts, including the c onfigured reminder three days b efore the d ue
+     date. It directs tenants to the a uthenticated w eb p ortal and does not c onfirmp ayment,
+     prove that p ayment occurred, prove that a tenant read the notification, o r replace the
+     billing record.
+
+              The Admin performss ystem-levelmaintenance.T heM anagermanagesproperty
+     information, tenant records, u tility mappings, billing c onfigurations, billing records,
+
+3 1  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup# 10
+     e xceptions, corrections, payment c onfirmations, receipts, a nd relevant Web P ush
+     N otification functions. T he Tenant views b illing information andp aymentstatus,reports
+     a pplicable p ayments, views confirmed-payment receipts, a nd receives p ermitted W eb
+     P ush N otifications. The Utility P rovider serves a s the source o f electronic utility-bill
+     d ocuments received through the designated property-management email account.
+
+              T he components o perate a s an integrated web-based p roperty-management
+     s ystem.P ropertya ndtenantmanagement,utilitym apping,a ndrentconfigurationprovide
+     the required management information. Billing-processing components supportutility-bill
+     intake, OCR e xtraction, validation, rule-based classification, duplicate c hecking, b illing
+     c omputation, a nd exception h andling. B illing and payment components m anage b illing
+     records,p aymentstatuses,andconfirmed-paymentreceipts.TheW ebPushN otification
+     c omponent s upports p ermitted b illing a nd d ue-date-relateda lerts,w hiletheC entralized
+     Databases toresthea pplicablesystemrecords.T heAdmin,Manager,Tenant,a ndUtility
+     Provider interact with the system according to their defined roles and responsibilities.
+
+     2.2 Conceptual Operation
+
+              The proposed system operates through a  d efined w orkflow c overing rent,
+     electricity, a nd water. Rent billing follows the tenant's configured b illing or
+     lease-anniversary d ate, fixed monthly rent amount, non-prorated b illing rule, and
+     one-month advance-rent requirement for the first billing record.
+
+3 2  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup# 10
+              F or u tility billing, the systemreceivese lectronicu tility-billd ocumentsthroughthe
+     d esignated property-management email account. Supported a ttachments a re retrieved
+     a nd p rocessed using OCR. The extracted information is v alidated a nd p rocessed
+     through p redefined rules for mapping, d uplicate checking, billing c lassification, and
+     c omputation.
+
+              V alid records p roceed to b illing finalization. Recordsthatareinvalid,incomplete,
+     u ncertain,duplicated,u nmappable,orotherwiseunabletosatisfythed efinedprocessing
+     conditions a re p laced in the Exception Queue for Manager review and correction.
+     Corrected records may be revalidated, reprocessed, or recomputed when applicable.
+
+              T he s ystem manages the payment s tatuses U npaid, Tenant R eportedP aid,a nd
+     Paid. A  finalized billingrecordbeginswiththea pplicableu npaids tatus.WhenaT enant
+     reports payment, the s tatus c hanges to T enant R eported Paid. The s tatus remains
+     unconfirmed u ntil the M anager confirms the p ayment. After c onfirmation, the status
+     c hanges to Paid and a digital receipt is generated.
+
+              The s ystem m aytriggerpermittedW ebP ushNotificationsforbillingupdatesa nd
+     due-date-related a lerts, including the c onfigured reminder three d ays b efore the due
+     date.W ebPushN otificationsdirectT enantstotheauthenticatedw ebp ortal.T heydonot
+     c onfirm payment, prove that p ayment o ccurred, or prove that a  T enant read the
+     n otification.
+
+3 3  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup# 10
+     P rocess Flowchart
+
+              T he p rocess flowchart illustrates the sequence and d ecision p oints o f the
+     p roposed billing w orkflow. It includes the s eparate processing paths for rent a nd utility
+     b ills,O CRe xtraction,v alidation,m apping,duplicatec hecking,b illingc lassification,billing
+     c omputation,e xceptionhandling,b illingfinalization,paymentc onfirmation,d igitalreceipt
+     g eneration, and permitted Web Push Notifications.
+
+              F or rent b illing, the s ystem checks the tenant's c onfigured billing or
+     lease-anniversary date and d etermines w hether the billing is the first billing. If it is the
+     first b illing, the system records o ne-month advance rent a s a separate line item. The
+     s ystem then applies the configured fixed and non-prorated rent rules.
+
+              Foru tilitybilling,thep rocessbeginswhentheUtilityP rovidersendsa ne lectronic
+     utility b ill to the designated p roperty-management e mail a ccount. T he s ystemretrieves
+     the s upported a ttachment a nd u ses O CR to extract a vailable billing information. T he
+     extracted information is c hecked for required fields, p rovider a nd account/reference
+     mapping, billing period, duplicate status, and other defined validation conditions.
+
+              Iftherecordsatisfiesthedefinedconditions,itp roceedstobillingcomputationa nd
+     finalization. If the record is invalid, incomplete, u ncertain, d uplicated, u nmappable, or
+     otherwise unable to satisfy the defined p rocessing c onditions, it is p laced in the
+
+3 4  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |Group# 10
+    E xception Q ueue. TheManagerreviewsa ndcorrectstherecordb eforeitisrevalidated
+    and reprocessed or recomputed when applicable.
+
+             Afterab illingrecordisfinalized,itspaymentstatusisinitializedasUnpaid.W hen
+    the Tenant reports a p ayment, the s tatus changes to Tenant Reported P aid. O nly the
+    M anager can c onfirm the p ayment and change the s tatus to Paid. A d igital receipt is
+    generated only after the status becomes Paid.
+
+             Theflowchartmays howa permittedW ebP ushNotificationaftera pplicablebilling
+    updates or for the c onfigured reminderthreedaysb eforethedued ate.T henotification
+    directs the T enant to the authenticated w eb portal. T he flowchart m ust n ots howSMS,
+    tenant e mail notifications, notification retries, second-failure a lerts, or n otification read
+    confirmation unless those functions are verified as implemented.
+
+    Full-Blown Data Flow Diagram
+
+             The F ull-Blown D ata F low Diagram illustrates the movement ofbilling,payment,
+    exception,correction,receipt,andapplicablenotificationinformationa mongthee xternal
+    a ctors, system processes, and centralized database.
+
+35  Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |G roup# 10
+             T heprocessbeginsw hentheU tilityP roviders endsa ne lectronicutilityb illtothe
+    d esignated p roperty-management email a ccount. Property-Management E mail Intake
+    retrieves supported a ttachments ands endsthemtoOCRProcessing.O CRProcessing
+    e xtracts a vailable b illing information, includingtheamountdue,d ued ate,billingperiod,
+    utility provider, and account or reference identifier.
+
+             T he e xtracted information is s ent to V alidation and Rule-Based B illing
+    C lassification. This p rocess checks required fields, identifies the applicable propertyo r
+    u nit through c onfigured mappings, c hecks the billing period a nd d uplicate status, a nd
+    determines the a pplicable billing arrangement. Valid information p roceeds to Billing
+    Computation,w hileinvalid,incomplete,u ncertain,duplicated,unmappable,oro therwise
+    unprocessable information is sent to the Exception Queue.
+
+             The Manager receives exception information and may correct a ffected records.
+    Corrected exception records a re revalidated a nd reprocessed o r recomputed w hen
+    a pplicable. For p ost-finalization corrections, the M anager corrects the a ffected record,
+    a fter which the s ystem revalidates, recomputes when applicable, and u pdates the
+    record.
+
+36  Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |G roup# 10
+              B illing Computation p rocesses rent, e lectricity, and w ater according to the
+     configured rules. R ent follows the configured b illing o r lease-anniversary date, fixed
+     m onthly amount, n on-prorated rule, and first-billing advance-rent requirement.
+     Shared-occupancy charges are allocated a mong active tenants according to the
+     predefineda llocationruleselectedo rc onfiguredbytheM anager.Allocatedamountsu se
+     two decimal places, and their total must equal the original source billing amount.
+
+              Finalizedb illinginformationisstoredintheCentralizedDatabase.P aymentStatus
+     Management maintains U npaid, T enant R eported Paid, and P aid s tatuses. T heT enant
+     may report a p ayment, b ut only the M anager can c onfirm the p ayment. After
+     c onfirmation, the status b ecomes P aid and D igital Receipt g enerates the applicable
+     receipt.
+
+              T he Web P ush N otification function triggers permitted billing updates a nd
+     d ue-date-related alerts for the Tenant. T he notification d irects the T enant to the
+     a uthenticated w eb p ortal. The DFD must not include SMS, tenant e mail notification,
+     notification retry, n otification-failure a lerts, payment gateways, b ank integration, o r
+     e xternal p ayment-verification processes u nless s uch functions a re verified as
+     implemented.
+
+3 7  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |Group#10
+             The A dmin is limited to system-level m aintenance. T he M anager manages
+    configured s ystem information, billing records, e xceptions, c orrections, payment
+    c onfirmation, receipts, and relevant n otification functions. T he T enant views billing
+    information and payment status, reports p ayment, v iews confirmed-payment receipts,
+    and receives permitted Web Push Notifications.
+
+    # # 2.3 Mockup Design
+
+             The m ockups p resent the proposed interface and interaction flow of the
+    w eb-basedp roperty-managementworkflow.T heyillustratetheexpecteda rrangemento f
+    system functions a nd information for the A dmin, M anager, and T enant roles. T he
+    m ockups serve as visual references for the development of the system interface.
+
+    # ## Admin Interface
+
+             T heA dmininterfaceshalls howonlysystem-levelmaintenancefunctionsthatare
+    includedintheimplementedsystem.Itshalln otincludeordinaryp roperty-management,
+    billing, payment-confirmation, exception-review, o r T enant functions u nless the system
+    explicitly assigns those functions to the Admin role.
+
+38                         Intelligent Property Management Workflow with OCR-Enabled
+
+                           Automated Billing Classification and Tenant Notification |G roup# 10
+             * *VERIFY:** T he s pecific Admin maintenance functions m ust m atch the a ctual
+    implementation and mockups.
+
+    ### Manager Interface
+
+    The Manager mockups may include the following implemented functions:
+
+    - Manager login
+    - Manager dashboard
+    - Property, unit, and tenant management
+    - Billing and rent configuration
+    - Utility-provider and account/reference mapping
+    - Incoming utility bills and OCR review
+    - Billing validation and classification review
+    - Exception Queue
+
+39                         Intelligent Property Management Workflow with OCR-Enabled
+
+                           A utomated Billing Classification and Tenant Notification |G roup#10
+- Billing records and payment status
+- Payment confirmation
+- Confirmed-payment receipts
+- Correction handling
+- Relevant Web Push Notification functions
+
+         T he M anager m ockups must not include S MS s ettings, G SM controls,
+tenant-email notification s ettings, n otification-retry c ontrols, or unsupported
+n otification-failure dashboards.
+
+# ## Tenant Interface
+
+T he Tenant mockups may include:
+
+             - Tenant login              Intelligent Property Management Workflow with OCR-Enabled
+             - Tenant dashboard   A utomated Billing Classification and Tenant Notification |G roup# 10
+
+40
+             - Assigned property or unit information
+             - Billing details
+             - Billing category
+             - Billing period
+             - Amount due
+             - Payment status
+             - Report Payment
+             - Confirmed-payment digital receipt
+             - Tenant Web Push Notifications
+
+             T he Tenant interface must n ot imply that T enant R eported Paid is confirmed
+    payment. It m ust not d isplay SMS o r tenant-email notification p references,
+    notification-read proof, or payment-verification controls.
+
+             Use the following labels for the mockups:
+
+41  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |Group# 10
+    - Login Portal
+    - Admin Dashboard
+    - Manager Dashboard
+    - Property, Unit, and Tenant Management
+    - Billing Configuration
+    - Incoming Bills and OCR Review
+    - Exception Queue
+    - Billing Records and Payment Status
+    - Notifications and Receipts
+    - Tenant Dashboard
+    - Tenant Billing Details
+    - Tenant Report Payment
+    - Confirmed-Payment Digital Receipt
+    - Tenant Notifications
+
+42                                           Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |G roup#10
+              Replace"TenantN otificationsa ndPreferences"w ith"TenantNotifications"u nless
+     notification preferences are verified as part of the implementation.
+
+              # # 2.4 Methodology of the Study
+
+              T he study w ill use the Iterative Software Development M ethodology to d evelop
+     thep roposed* IntelligentPropertyManagementW orkflowwithOCR-EnabledA utomated
+     Billing C lassification and T enant Notification*. T he methodology will organize
+     d evelopment into s uccessive iterations in w hich related functional a reas will b e
+     developed, reviewed, refined, and integrated into the overall system.
+
+              This a pproach w ill allow the researchers to address the system requirementsin
+     m anageable groups w hile maintaining c onsistency a mong the s ystem's
+     p roperty-management, billing, p ayment, exception, receipt, database, a nd W eb Push
+     Notification functions. The methodology will s upport an "automate b yd efault,intervene
+     byexception"approachinw hichv alidrecordsp roceedthroughd efinedrulesa ndrecords
+     requiring review are directed to the Exception Queue.
+
+4 3  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |Group#10
+             The d evelopment w ill b egin with the e stablishment of the s ystem requirements,
+    u serroles,andcored atas tructure.Itwillc ontinuewithpropertya ndbillingconfiguration,
+    property-management e mail intake and OCR, rule-based c lassification and e xception
+    handling, billing c omputation a nd record management, p ayment a nd receipt functions,
+    Web P ush Notifications, and s ystem-wide integration and testing. Each iteration w ill
+    focus o n a  s pecific group o f related functions w hile considering its connection to
+    previouslydevelopedc omponents.T hem ethodologyw illsupportcontinuousreviewa nd
+    refinement before the final system evaluation.
+
+    # ## 2.4.1 Principles of the Methodology
+
+             The Iterative Software D evelopment M ethodology will b e applied through the
+    following principles.
+
+    # ### Incremental Development
+
+             T he system will b e d eveloped through smaller functional iterations rather than
+    through o ne complete implementation. Each iteration will focus o n a  related group of
+    requirements, allowing the researchers to build the system progressively.
+
+44                                            Intelligent Property Management Workflow with OCR-Enabled
+
+                                   A utomated Billing Classification and Tenant Notification |Group#10
+              # ### Continuous Testing and Review
+
+              T estingandrevieww illb econductedduringdevelopmenttoidentifyissuesinthe
+     functions included in e ach iteration. The results oftestingandreviewwillbeuseda sa 
+     b asis for n ecessary corrections and improvements. No completed testing result is
+     claimed in this chapter.
+
+              #### Refinement Between Iterations
+
+              Issues and requirements identified during an iteration will b e reviewed before
+     relatedfunctionsareintegratedintosucceedingiterations.T hiswilla llowtheresearchers
+     to refine the system while development progresses.
+
+              #### Cumulative Integration
+
+4 5  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup#10
+              F unctions developed in e arlier iterations will b e integrated with functions
+     d evelopedinlateriterations.T hiswillallowtheresearcherstog raduallyforma complete
+     system while checking the interaction among its functional areas.
+
+              #### Exception-Based Intervention
+
+              T he s ystem w ill a utomate valid records a ccording to p redefined rules w hile
+     d irecting invalid, incomplete, u ncertain, d uplicated, unmappable, or otherwise
+     u nprocessable records totheE xceptionQ ueueforM anagerreview.Thisp rincipled oes
+     not mean that every record will be processed without human intervention.
+
+              # ## 2.4.2 Development Iterations
+
+              T he development of the proposed system w ill b e o rganized into seven planned
+     iterations b asedonthefunctionalrequirementso fthes tudy.Theiterationsd escribethe
+     p lanned d evelopment s tructure a nd do n ot c laim that the iterations have a lready been
+     c ompleted.
+
+4 6  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |G roup# 10
+     # ## Table 2.1
+     ### Development Iterations of the Proposed System
+
+              | Iteration | Development Focus | Main Functions |
+
+              |---|---|---|
+
+              | Iteration 1 | R equirements a nd S ystemF oundation|Userroles,authentication,
+     p roperty, unit, tenant, and core centralized database structure |
+
+              | Iteration 2 | P roperty and Billing Configuration | Utility providers, account or
+     reference mapping, rent configuration, billing arrangements, and billing rules |
+
+              | Iteration 3  | P roperty-Management Email Intake and OCR | Designated
+     p roperty-management email intake, attachment retrieval, s upported document
+     p rocessing, and OCR extraction |
+
+              | Iteration 4 | R ule-Based C lassification a nd Exception H andling | V alidation,
+     propertyorunitidentification,duplicatec hecking,b illingc lassification,ExceptionQueue,
+     Manager review, correction, and revalidation |
+
+              | Iteration 5  | Billing Computation and R ecords | Rent, e lectricity, and water
+     c omputation; individual and shared-occupancy billing; billing records; and finalization |
+
+4 7  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |G roup# 10
+             | Iteration 6  | P ayment, R eceipt, and W eb Push N otification|P aymentstatuses,
+    Tenant payment reporting, Manager confirmation, digital receipts, permitted Web P ush
+    billing updates, and the configured due-date reminder three days before the due date |
+
+             | Iteration 7 | S ystem Integration a nd Testing | Integration of system functions,
+    role-based workflows, s ecurity c ontrols actually implemented, s ystem-wide testing,and
+    final evaluation |
+
+    ### 2.4.3 Planned Application of Each Iteration
+
+    #### Iteration 1 ­ Requirements and System Foundation
+
+             This iteration w ill e stablish the b asic s tructure o fthep roposeds ystembasedon
+    the identified requirements. It will cover the Admin, Manager, a nd Tenant roles; u ser
+    a uthentication; p roperty and u nit information; tenant records; and the initial c entralized
+    database s tructure. T he p urpose of this iteration w ill b e to e stablish the foundation
+    required by the succeeding system functions.
+
+    #### Iteration 2 ­ Property and Billing Configuration
+
+48  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |Group# 10
+              Thisiterationw illfocuso nthec onfigurationsrequiredforbillingoperations.Itwill
+     include u tility-provider information, a ccount or reference identifiers, p roperty and unit
+     mappings, rent configuration, billing arrangements, and applicable billing rules.
+
+              Rent configuration will follow the tenant's c onfigured billing o r lease-anniversary
+     date.R entw illb efixedandn on-prorated.One-monthadvancerentwillb ec onfigureda s
+     a separate line item for the first billing record.
+
+              T he Manager will s elect o r configure the predefined allocation rule for
+     Shared-Occupancy B illing A rrangement. The allocation formula, rounding p rocedure,
+     and reconciliation m ethod w ill be treated as s ystem-design decisions and evaluated
+     d uring testing.
+
+     #### Iteration 3 ­ Property-Management Email Intake and OCR
+
+              T his iteration will focus o n receivingelectronicutilitybillsthroughthedesignated
+     p roperty-management email account. S upported attachments w ill be retrieved and
+
+4 9  Intelligent Property Management Workflow with OCR-Enabled
+
+     Automated Billing Classification and Tenant Notification |G roup# 10
+     p rocessed individually. O CR w ill be u sed to e xtract available billing information from
+     s upported standard, digitally generated PDF files and sufficiently clear image files.
+
+              T he target fields will include the a mount due, due date, b illing p eriod, utility
+     p rovider, a nd account or reference identifier. OCR w ill function only as a
+     document-information-extraction mechanism. It w ill not c lassify billing records, m ake
+     b illing decisions, confirm payments, or replace validation.
+
+     #### Iteration 4 ­ Rule-Based Classification and Exception Handling
+
+              T his iteration w ill focus on applying predefined, e xplicit, d eterministic, and
+     traceable rules to the e xtracted and c onfigured b illing information. T he s ystem w ill
+     validate required fields, identify the applicable p roperty o r unit using c onfigured
+     m appings, check the billing period a nd d uplicate s tatus, and determine the applicable
+     billing arrangement.
+
+              R ecords that a re invalid, incomplete, uncertain, duplicated, u nmappable, o r
+     otherwise unable to s atisfy the d efined p rocessing conditions will be routed to the
+     Exception Q ueue for Manager review and c orrection. Corrected records w ill u ndergo
+
+5 0  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |Group#10
+    revalidation b efore c ontinuing through the b illing p rocess. Reprocessing o r
+    recomputation will occur when applicable.
+
+             # ### Iteration 5 ­ Billing Computation and Records
+
+             Thisiterationwillfocuso nthec omputationa ndm anagementofbillingrecordsfor
+    rent, e lectricity, and water. Individual and S hared-Occupancy B illing Arrangements w ill
+    b e supported using the configured billing rules.
+
+             F or S hared-Occupancy B illing Arrangement, applicable rent and utility c harges
+    will be a llocated among a ctive tenants u sing the predefined a llocation rule s elected or
+    configured b ytheManager.A llocatedamountswillusee xactlytwodecimalplaces,a nd
+    the total of the a llocated s hares will equal the o riginal source billing amount. V alid
+    records will proceed to billing finalization and storage.
+
+             # ### Iteration 6 ­ Payment, Receipt, and Web Push Notification
+
+51  Intelligent Property Management Workflow with OCR-Enabled
+
+    A utomated Billing Classification and Tenant Notification |Group#10
+             T his iteration w ill focus on p ayment-status m anagement, d igital receipts, a nd
+    permitted tenant-notification functions. P ayment s tatuses will include Unpaid, T enant
+    R eported Paid, and P aid. A tenant-reported payment w ill remain u nconfirmed until the
+    Manager c onfirms the payment. A d igital receipt w ill b e generated o nly after
+    Manager-confirmed payment.
+
+             Tenant n otifications w ill u se Web Push N otifications forpermittedbillingu pdates
+    a ndtheconfiguredreminderthreedaysb eforethed ued ate.W ebP ushNotificationsw ill
+    d irectT enantstothea uthenticatedwebp ortal.Theywillnotconfirmp ayment,provethat
+    payment occurred, or prove that a Tenant read the notification.
+
+             #### Iteration 7 ­ System Integration and Testing
+
+             T his iteration will focus o n integrating the p lanned system functions into a
+    complete workflow and conducting system-wide testing.T heresearcherswillc heckthe
+    interaction a mong u ser roles, p roperty a nd tenant m anagement, utility mapping, rent
+    c onfiguration, b illing p rocessing, payment-status m anagement, exception h andling,
+    c orrections, receipts, Web Push Notifications, and centralized database functions.
+
+52  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |Group# 10
+              T he system will be e valuated using the s elected ISO/IEC 2 5010:2023 q uality
+     c haracteristics:
+
+     - Functional Suitability
+     - Performance Efficiency
+     - Interaction Capability
+     - Reliability
+     - Security
+
+              T hefinale valuationwillb ereportedb asedo nthea pprovedtestingande valuation
+     procedures. No evaluation result is claimed in this chapter.
+
+     # ## 2.4.4 Application of the Methodology to the Study
+
+              The Iterative Software D evelopment M ethodology will p rovide a structured
+     a pproach for d eveloping the p roposed s ystem a ccording to itsfunctionalrequirements.
+     The s ystem w ill b e d eveloped progressively, beginning with the c ore d ata and u ser
+
+5 3                            Intelligent Property Management Workflow with OCR-Enabled
+
+                               Automated Billing Classification and Tenant Notification |Group#10
+     functions a nd continuing with b illing configuration, property-management email intake,
+     O CR,rule-basedp rocessing,e xceptionh andling,billingcomputation,p ayment,receipts,
+     Web Push Notifications, and system integration.
+
+              E ach iteration w ill b e reviewed b efore succeeding functions are integrated. T he
+     review process w illhelpidentifyinconsistenciesb etweenrequirements,datastructures,
+     workflows, and user functions.
+
+              The methodology w ill also support the c ontrolledhandlingofs ystemexceptions.
+     Insteado frequiringallb illingrecordstop roceedautomatically,recordsthatd onots atisfy
+     the defined p rocessing c onditions will be d irected totheExceptionQueueforManager
+     review a ndcorrection.T hiswillallowtheresearcherstorefinetheprocessingrulesa nd
+     related functions w hile m aintaining the intended "automate b y default, intervene by
+     e xception" approach.
+
+              For exception records, the correction process will include Manager review a nd
+     correction, revalidation, a nd reprocessing or recomputation w hen a pplicable. For
+     finalized records, the correction p rocess will include Manager correction, revalidation,
+     recomputation when applicable, and record update.
+
+5 4  Intelligent Property Management Workflow with OCR-Enabled
+
+     A utomated Billing Classification and Tenant Notification |Group#10
+             T hrough the p lanned iterations, the functional areas o f theproposeds ystemw ill
+    b e integrated into a complete w orkflow. T esting w ill b e c onducted d uring d evelopment
+    and s ystem integrationtoidentifydefectsandv erifyw hethertheimplementedfunctions
+    m eetthedefinedrequirements.Thecompleteds ystemwillthenundergofinalevaluation
+    u sing the selected ISO/IEC 25010:2023 quality c haracteristics. No completed iteration,
+    testing result, or evaluation result is claimed in this chapter.
+
+55  Intelligent Property Management Workflow with OCR-Enabled
+
+    Automated Billing Classification and Tenant Notification |Group#10
+

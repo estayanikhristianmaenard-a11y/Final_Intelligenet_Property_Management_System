@@ -1,0 +1,280 @@
+import { html } from "../../utils/dom.js";
+import { icon } from "../../components/icon.js";
+import { openPanel, closePanel } from "../../components/side-panel.js";
+import { openModal } from "../../components/modal.js";
+import { toast, toastSuccess } from "../../components/toast.js";
+import { skeletonRows } from "../../components/empty-state.js";
+import { overviewTab } from "./tabs/overview.tab.js";
+import { billingTab } from "./tabs/billing.tab.js";
+import { paymentsTab } from "./tabs/payments.tab.js";
+import { documentsTab } from "./tabs/documents.tab.js";
+import { api } from "../../api/client.js";
+import { endpoints } from "../../api/endpoints.js";
+import { can } from "../../auth/rbac.js";
+import session from "../../auth/session.js";
+import { initials, avatarTone, peso } from "../../utils/format.js";
+
+/**
+ * Tenant Details slide-out panel.
+ *
+ * Opens from any tenant row (Tenants table, Recent Activity, dashboard) and
+ * presents four tabs — Overview, Billing, Payments, Documents — plus the
+ * action buttons required by Phase 1: **Send Message** and **View Full
+ * Profile**.
+ *
+ * One delegated click listener is attached to the panel root per open and
+ * detached on close, so repeated opens never stack handlers.
+ */
+
+/* ------------------------------------------------- module-scoped state -- */
+let activeApi = null;
+let activeTenant = null;
+let detachRootListener = null;
+let onChangedCallback = null;
+
+/**
+ * @param {string} tenantId
+ * @param {{onChanged?:()=>void}} [options]
+ */
+export function openTenantPanel(tenantId, { onChanged } = {}) {
+  closeTenantPanel();
+
+  onChangedCallback = onChanged ?? null;
+  activeTenant = null;
+
+  const role = session.role;
+  const canConfirm = can(role, "payment:confirm");
+  const canMessage = can(role, "tenant:message");
+
+  activeApi = openPanel({
+    ariaLabel: "Tenant details",
+    header: loadingHeader(),
+    tabs: TABS.map((tab) => ({ id: tab.id, label: tab.label })),
+    renderBody: () => html`<div class="panel-section">${skeletonRows(5)}</div>`,
+    footer: loadingFooter(),
+    onMount: () => attachRootListener({ canConfirm, canMessage }),
+  });
+
+  loadTenant(tenantId)
+    .then((tenant) => {
+      if (!activeApi) return;
+      activeTenant = tenant;
+      activeApi.update({
+        header: tenantHeader(tenant),
+        tabs: TABS.map((tab) => ({
+          id: tab.id,
+          label: tab.label,
+          count: tab.count ? tab.count(tenant) : undefined,
+        })),
+        renderBody: (tabId) => renderTab(tabId, tenant, { canConfirm }),
+        footer: footer(canMessage),
+      });
+    })
+    .catch((error) => {
+      if (!activeApi) return;
+      activeApi.update({
+        header: loadingHeader(),
+        renderBody: () =>
+          html`<div class="panel-section">
+            <div class="notice-strip notice-strip--danger">
+              <span class="notice-strip__icon">${icon("alert-triangle", { size: 14 })}</span>
+              <span>${error.message}</span>
+            </div>
+          </div>`,
+      });
+    });
+
+  return activeApi;
+}
+
+export function closeTenantPanel() {
+  detachRootListener?.();
+  detachRootListener = null;
+  activeApi = null;
+  activeTenant = null;
+  closePanel();
+}
+
+/* ---------------------------------------------------------------- tabs -- */
+
+const TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "billing", label: "Billing", count: (t) => t.bills?.length ?? 0 },
+  { id: "payments", label: "Payments", count: (t) => t.payments?.length ?? 0 },
+  { id: "documents", label: "Documents", count: (t) => t.documents?.length ?? 0 },
+];
+
+function renderTab(tabId, tenant, { canConfirm }) {
+  switch (tabId) {
+    case "billing":
+      return billingTab(tenant);
+    case "payments":
+      return paymentsTab(tenant, { canConfirm });
+    case "documents":
+      return documentsTab(tenant);
+    case "overview":
+    default:
+      return overviewTab(tenant);
+  }
+}
+
+/* -------------------------------------------------------------- header -- */
+
+function loadingHeader() {
+  return html`<div class="panel-drawer__identity">
+    <span class="avatar avatar--lg" style="background:var(--gray-200)"></span>
+    <div>
+      <div class="skeleton" style="width:150px;height:15px;margin-bottom:6px"></div>
+      <div class="skeleton" style="width:110px;height:11px"></div>
+    </div>
+  </div>`;
+}
+
+function loadingFooter() {
+  return html`<span class="skeleton grow" style="height:38px;border-radius:8px"></span>
+    <span class="skeleton" style="width:150px;height:38px;border-radius:8px"></span>`;
+}
+
+function footer(canMessage) {
+  return html`
+    <button
+      class="btn ${canMessage ? "btn--primary" : "btn--secondary"} grow"
+      type="button"
+      data-action="send-message"
+      ${canMessage ? "" : 'disabled aria-disabled="true"'}
+    >
+      ${icon("send", { size: 15 })} Send Message
+    </button>
+    <button class="btn btn--secondary grow" type="button" data-action="view-profile">
+      ${icon("user", { size: 15 })} View Full Profile
+    </button>
+  `;
+}
+
+function tenantHeader(tenant) {
+  return html`<div class="panel-drawer__identity">
+      <span class="avatar avatar--lg ${avatarTone(tenant.fullName)}">${initials(tenant.fullName)}</span>
+      <div style="min-width:0">
+        <h2>${tenant.fullName}</h2>
+        <p>${tenant.propertyName} · ${tenant.email}</p>
+      </div>
+    </div>
+    <div class="panel-identity-row">
+      <span class="panel-identity-row__unit"
+        >${icon("home", { size: 14 })} Unit <b>${tenant.unitCode}</b></span
+      >
+      <span class="grow"></span>
+      <span class="panel-identity-row__unit"
+        >${icon("layers", { size: 14 })} <b>${tenant.floor}</b></span
+      >
+      <span class="grow"></span>
+      <span class="panel-identity-row__unit"
+        >${icon("receipt", { size: 14 })} <b>${peso(tenant.monthlyRent)}</b>/mo</span
+      >
+    </div>`;
+}
+
+/* ------------------------------------------------------------- actions -- */
+
+function attachRootListener({ canConfirm, canMessage }) {
+  detachRootListener?.();
+
+  const root = document.getElementById("panel-root");
+  if (!root) return;
+
+  const handler = async (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (!root.contains(target)) return;
+
+    const disabled = target.closest("[disabled], [aria-disabled='true']");
+    if (disabled && disabled === target.closest("button")) return;
+
+    /* --- Send Message ------------------------------------------------- */
+    if (target.closest('[data-action="send-message"]')) {
+      if (!canMessage) return;
+      openSendMessage(activeTenant?.fullName ?? "this tenant");
+      return;
+    }
+
+    /* --- View Full Profile -------------------------------------------- */
+    if (target.closest('[data-action="view-profile"]')) {
+      toast({
+        title: "Full profile",
+        message: activeTenant
+          ? `${activeTenant.fullName} · ${activeTenant.unitCode} — the dedicated profile route is planned for Phase 2.`
+          : "The dedicated profile route is planned for Phase 2.",
+        tone: "info",
+      });
+      return;
+    }
+
+    /* --- Manager confirms a tenant-reported payment -------------------- */
+    const confirmBtn = target.closest("[data-confirm-payment]");
+    if (confirmBtn && canConfirm && activeTenant) {
+      if (confirmBtn.getAttribute("aria-disabled") === "true") return;
+      confirmBtn.setAttribute("aria-disabled", "true");
+      try {
+        const payment = await api.post(
+          endpoints.confirmPayment(confirmBtn.getAttribute("data-confirm-payment")),
+        );
+        toastSuccess(
+          "Payment confirmed",
+          `${activeTenant.fullName} · status changed to Paid, receipt ${payment.receiptNumber} generated.`,
+        );
+        const fresh = await loadTenant(activeTenant.id);
+        activeTenant = fresh;
+        activeApi?.update({ renderBody: (tabId) => renderTab(tabId, fresh, { canConfirm }) });
+        onChangedCallback?.();
+      } catch (error) {
+        toast({ title: "Confirmation failed", message: error.message, tone: "danger" });
+        confirmBtn.removeAttribute("aria-disabled");
+      }
+    }
+  };
+
+  root.addEventListener("click", handler);
+  detachRootListener = () => root.removeEventListener("click", handler);
+}
+
+function openSendMessage(name) {
+  openModal({
+    title: "Send message",
+    subtitle: `Delivered to ${name} through the authenticated portal inbox`,
+    body: html`
+      <div class="field">
+        <label class="field__label" for="msg-subject">Subject</label>
+        <input class="input" id="msg-subject" type="text" value="Billing update" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="msg-body">Message</label>
+        <textarea class="textarea" id="msg-body" placeholder="Type your message…"></textarea>
+        <span class="field__hint"
+          >Portal inbox only — the system does not send tenant SMS or e-mail.</span
+        >
+      </div>
+    `,
+    footer: html`
+      <button class="btn btn--secondary" type="button" data-close>Cancel</button>
+      <button class="btn btn--primary" type="button" data-send>
+        ${icon("send", { size: 15 })} Send
+      </button>
+    `,
+    onMount: (close) => {
+      document.querySelector(".modal [data-send]")?.addEventListener("click", async () => {
+        const modal = document.querySelector(".modal");
+        const subject = modal?.querySelector("#msg-subject")?.value ?? "";
+        const body = modal?.querySelector("#msg-body")?.value ?? "";
+        await api.post(endpoints.messages(), { to: name, subject, body });
+        close();
+        toastSuccess("Message sent", `Delivered to ${name}'s portal inbox.`);
+      });
+    },
+  });
+}
+
+/* --------------------------------------------------------------- data --- */
+
+const loadTenant = (id) => api.get(endpoints.tenant(id));
+
+export default openTenantPanel;

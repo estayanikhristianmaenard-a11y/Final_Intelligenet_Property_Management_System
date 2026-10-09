@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="PropertyPro Manager Portal — centralized property, unit, tenant, billing and exception management for boarding houses and residential apartments." />
+  <title>PropertyPro Manager Portal</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M9 24V11l7-4 7 4v13h-5v-6h-4v6z' fill='white'/%3E%3C/svg%3E" />
+
+  <!-- Design system: tokens → base → layout → components → pages -->
+  <link rel="stylesheet" href="./src/styles/tokens.css" />
+  <link rel="stylesheet" href="./src/styles/base.css" />
+  <link rel="stylesheet" href="./src/styles/layout.css" />
+  <link rel="stylesheet" href="./src/styles/components.css" />
+  <link rel="stylesheet" href="./src/styles/pages/dashboard.css" />
+  <link rel="stylesheet" href="./src/styles/pages/entities.css" />
+  <link rel="stylesheet" href="./src/styles/pages/tenants.css" />
+  <link rel="stylesheet" href="./src/styles/pages/billing.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Application mount points, one per overlay layer -->
+  <div id="app-root"></div>
+  <div id="panel-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" role="status" aria-live="polite" aria-atomic="false"></div>
+
+  <script type="module" src="./src/app/app.js"></script>
+</body>
+</html>
