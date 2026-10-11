@@ -30,6 +30,12 @@ export function resolveRoute(path) {
     return { status: "ok", route, path: normalised };
   }
 
+  if (route.redirectTo)
+    return {
+      status: "redirect",
+      path: HOME_FOR_ROLE[session.role] ?? "/login",
+    };
+
   const role = session.role;
 
   if (!route.roles?.includes(role)) {

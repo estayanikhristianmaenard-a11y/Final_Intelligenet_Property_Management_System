@@ -70,7 +70,7 @@ export const PERMISSION_MATRIX = {
     "exception:review": ALL,
     "exception:resolve": ALL,
     "payment:confirm": ALL,
-    "payment:report": ALL,
+    "payment:report": NONE,
     "receipt:view": ALL,
     "report:read": ALL,
     "notification:send": ALL,
@@ -154,17 +154,26 @@ export function permissionsFor(role) {
 
 /** The capability rows rendered in Settings → Roles & Permissions. */
 export const CAPABILITY_ROWS = [
-  { label: "System maintenance & user accounts", permission: "system:maintain" },
+  {
+    label: "System maintenance & user accounts",
+    permission: "system:maintain",
+  },
   { label: "Audit log", permission: "admin:audit" },
   { label: "View dashboard", permission: "dashboard:read" },
   { label: "Manage properties & units", permission: "property:write" },
   { label: "Manage tenants", permission: "tenant:write" },
-  { label: "Configure billing rules & allocations", permission: "billing:configure" },
+  {
+    label: "Configure billing rules & allocations",
+    permission: "billing:configure",
+  },
   { label: "Review OCR-extracted bills", permission: "ocr:review" },
   { label: "Review Exception Queue", permission: "exception:review" },
   { label: "Confirm tenant-reported payments", permission: "payment:confirm" },
   { label: "View reports", permission: "report:read" },
   { label: "View own bills", permission: "tenant:billing" },
   { label: "Report a payment", permission: "tenant:report_payment" },
-  { label: "Receive Web Push notifications", permission: "tenant:notifications" },
+  {
+    label: "Receive Web Push notifications",
+    permission: "tenant:notifications",
+  },
 ];

@@ -19,7 +19,13 @@ let activeModal = null;
  * @param {(close:()=>void)=>void} [config.onMount]
  * @returns {{close:()=>void}}
  */
-export function openModal({ title, subtitle = "", body, footer = null, onMount }) {
+export function openModal({
+  title,
+  subtitle = "",
+  body,
+  footer = null,
+  onMount,
+}) {
   closeModal();
 
   const root = document.getElementById("modal-root");
@@ -41,11 +47,18 @@ export function openModal({ title, subtitle = "", body, footer = null, onMount }
           <h3 class="modal__title">${title}</h3>
           ${subtitle ? html`<p class="modal__subtitle">${subtitle}</p>` : null}
         </div>
-        <button class="icon-btn" type="button" data-close aria-label="Close dialog">
+        <button
+          class="icon-btn"
+          type="button"
+          data-close
+          aria-label="Close dialog"
+        >
           ${icon("x", { size: 17 })}
         </button>
       </div>
-      <div class="modal__body">${body instanceof TrustedString || typeof body === "string" ? body : ""}</div>
+      <div class="modal__body">
+        ${body instanceof TrustedString || typeof body === "string" ? body : ""}
+      </div>
       ${footer ? html`<div class="modal__footer">${footer}</div>` : null}`,
   );
 
@@ -75,13 +88,17 @@ export function openModal({ title, subtitle = "", body, footer = null, onMount }
   backdrop.addEventListener("mousedown", (event) => {
     if (event.target === backdrop) close();
   });
-  dialog.querySelector("[data-close]")?.addEventListener("click", close);
+  dialog
+    .querySelectorAll("[data-close]")
+    .forEach((button) => button.addEventListener("click", close));
   document.addEventListener("keydown", onKey);
 
   activeModal = { close };
   onMount?.(close);
 
-  const firstField = dialog.querySelector("input, textarea, select, button:not([data-close])");
+  const firstField = dialog.querySelector(
+    "input, textarea, select, button:not([data-close])",
+  );
   firstField?.focus();
 
   return { close };

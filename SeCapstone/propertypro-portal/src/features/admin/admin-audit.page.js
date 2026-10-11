@@ -10,7 +10,14 @@ import { ROLE_LABEL } from "../../config/constants.js";
 
 /** Admin Audit Log — read-only, system-maintenance scope. */
 export async function renderAdminAudit(container) {
-  render(container, frame(html`<div class="card"><div class="card__body">${skeletonRows(7)}</div></div>`));
+  render(
+    container,
+    frame(
+      html`<div class="card">
+        <div class="card__body">${skeletonRows(7)}</div>
+      </div>`,
+    ),
+  );
 
   try {
     const entries = await api.get(endpoints.adminAudit(50));
@@ -39,10 +46,12 @@ function frame(content) {
           <span>Audit Log</span>
         </nav>
         <h1 id="page-title">Audit Log</h1>
-        <p>Signed record of account, role and maintenance activity.</p>
+        <p>Recorded account, role and maintenance activity.</p>
       </div>
       <div class="page-header__actions">
-        <button class="btn btn--secondary" type="button">${icon("download", { size: 15 })} Export</button>
+        <button class="btn btn--secondary" type="button">
+          ${icon("download", { size: 15 })} Export
+        </button>
       </div>
     </div>
     ${content}
@@ -55,32 +64,37 @@ function table(entries) {
     rows: entries,
     emptyTitle: "No audit entries",
     emptyIcon: "shield",
-    toolbar: html`<span class="chip chip--accent">${icon("shield", { size: 12 })} Read-only</span>
+    toolbar: html`<span class="chip chip--accent"
+        >${icon("shield", { size: 12 })} Read-only</span
+      >
       <span class="text-xs text-muted">${entries.length} entries</span>`,
     columns: [
       {
         key: "action",
         label: "Action",
-        render: (row) => html`<span class="cell-stack">
-          <strong>${row.action}</strong>
-          <span>${row.target}</span>
-        </span>`,
+        render: (row) =>
+          html`<span class="cell-stack">
+            <strong>${row.action}</strong>
+            <span>${row.target}</span>
+          </span>`,
       },
       {
         key: "actor",
         label: "Actor",
-        render: (row) => html`<span class="cell-stack">
-          <strong>${row.actor}</strong>
-          <span>${ROLE_LABEL[row.role] ?? row.role}</span>
-        </span>`,
+        render: (row) =>
+          html`<span class="cell-stack">
+            <strong>${row.actor}</strong>
+            <span>${ROLE_LABEL[row.role] ?? row.role}</span>
+          </span>`,
       },
       {
         key: "at",
         label: "When",
         width: "190px",
-        render: (row) => html`<span class="time-cell" title="${dateTime(row.at)}"
-          ><strong>${relative(row.at)}</strong>${dateTime(row.at)}</span
-        >`,
+        render: (row) =>
+          html`<span class="time-cell" title="${dateTime(row.at)}"
+            ><strong>${relative(row.at)}</strong>${dateTime(row.at)}</span
+          >`,
       },
       {
         key: "id",
@@ -89,8 +103,12 @@ function table(entries) {
         render: (row) => html`<span class="chip font-mono">${row.id}</span>`,
       },
     ],
-    footer: html`<span>Audit retention is configured by the Admin</span>
-      <span class="text-muted">Export requires system-maintenance permission</span>`,
+    footer: html`<span
+        >Audit records are retained in the centralized database</span
+      >
+      <span class="text-muted"
+        >Export requires system-maintenance permission</span
+      >`,
   });
 }
 

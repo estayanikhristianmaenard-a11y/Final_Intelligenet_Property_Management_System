@@ -30,14 +30,16 @@ export function refreshShell(patch = {}) {
   state = { ...state, ...patch };
   if (!root) return;
   const previousOutlet = root.querySelector("[data-outlet]");
-  const retained = previousOutlet?.innerHTML ?? "";
 
   const holder = document.createElement("div");
   render(holder, shellMarkup());
   root.replaceChildren(...holder.childNodes);
 
   outlet = root.querySelector("[data-outlet]");
-  if (outlet) outlet.innerHTML = retained;
+  if (outlet && previousOutlet) {
+    outlet.replaceWith(previousOutlet);
+    outlet = previousOutlet;
+  }
   bindChrome();
 }
 
@@ -48,7 +50,9 @@ export function outletElement() {
 
 /** Update nav count badges (fetched once, refreshed after mutations). */
 export function setBadges(badges) {
+  if (!session.isAuthenticated) return;
   state = { ...state, badges };
+  refreshShell();
 }
 
 function shellMarkup() {
@@ -64,16 +68,23 @@ function shellMarkup() {
       <header class="topbar">
         ${topbar({ user, notifications: state.badges?.unreadNotifications ?? 0, menuOpen: state.menuOpen })}
       </header>
-      <main class="page-host" id="main-content" data-outlet tabindex="-1"></main>
+      <main
+        class="page-host"
+        id="main-content"
+        data-outlet
+        tabindex="-1"
+      ></main>
     </div>
   </div>`;
 }
 
 function bindChrome() {
   /* Mobile drawer */
-  root.querySelector('[data-action="toggle-nav"]')?.addEventListener("click", () => {
-    refreshShell({ navOpen: !state.navOpen });
-  });
+  root
+    .querySelector('[data-action="toggle-nav"]')
+    ?.addEventListener("click", () => {
+      refreshShell({ navOpen: !state.navOpen });
+    });
 
   /* Close the drawer whenever the scrim (rendered by pages) or nav link is used */
   root.querySelectorAll(".sidebar a").forEach((link) => {
@@ -84,36 +95,53 @@ function bindChrome() {
   });
 
   /* User menu */
-  root.querySelector('[data-action="toggle-user-menu"]')?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    refreshShell({ menuOpen: !state.menuOpen });
-  });
+  root
+    .querySelector('[data-action="toggle-user-menu"]')
+    ?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      refreshShell({ menuOpen: !state.menuOpen });
+    });
 
   root.querySelectorAll('[data-action="switch-role"]').forEach((button) => {
     button.addEventListener("click", async () => {
       const role = button.getAttribute("data-role");
-      await session.signIn(role);
-      refreshShell({ menuOpen: false, navOpen: false });
-      window.dispatchEvent(new CustomEvent("app:role-changed", { detail: { role } }));
+      await session.signOut();
+      window.location.hash = "/login";
     });
   });
 
-  root.querySelector('[data-action="sign-out"]')?.addEventListener("click", () => {
-    session.signOut();
-    window.dispatchEvent(new CustomEvent("app:signed-out"));
-  });
+  root
+    .querySelector('[data-action="sign-out"]')
+    ?.addEventListener("click", async () => {
+      await session.signOut();
+      window.dispatchEvent(new CustomEvent("app:signed-out"));
+    });
 
-  root.querySelector('[data-action="notifications"]')?.addEventListener("click", () => {
-    const home = session.role === "tenant" ? "#/tenant/notifications" : "#/bills?tab=exceptions";
-    window.location.hash = home.replace("#", "");
-  });
+  root
+    .querySelector('[data-action="notifications"]')
+    ?.addEventListener("click", () => {
+      const home =
+        session.role === "tenant"
+          ? "#/tenant/notifications"
+          : session.role === "admin"
+            ? "#/admin/audit"
+            : "#/bills?tab=exceptions";
+      window.location.hash = home.replace("#", "");
+    });
 
-  root.querySelector('[data-action="global-search"]')?.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter") return;
-    const value = event.target.value?.trim();
-    if (!value) return;
-    window.location.hash = `/tenants?q=${encodeURIComponent(value)}`;
-  });
+  root
+    .querySelector('[data-action="global-search"]')
+    ?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      const value = event.target.value?.trim();
+      if (!value) return;
+      window.location.hash =
+        session.role === "manager"
+          ? `/tenants?q=${encodeURIComponent(value)}`
+          : session.role === "tenant"
+            ? "/tenant/bills"
+            : "/admin/settings";
+    });
 
   /* Dismiss the user menu on outside click */
   if (state.menuOpen) {

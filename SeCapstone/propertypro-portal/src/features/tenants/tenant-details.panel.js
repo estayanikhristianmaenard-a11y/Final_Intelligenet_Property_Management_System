@@ -13,6 +13,12 @@ import { endpoints } from "../../api/endpoints.js";
 import { can } from "../../auth/rbac.js";
 import session from "../../auth/session.js";
 import { initials, avatarTone, peso } from "../../utils/format.js";
+import {
+  entityForm,
+  uploadSource,
+  download,
+  dialogForm,
+} from "../../app/workflows.js";
 
 /**
  * Tenant Details slide-out panel.
@@ -31,6 +37,7 @@ let activeApi = null;
 let activeTenant = null;
 let detachRootListener = null;
 let onChangedCallback = null;
+let panelSequence = 0;
 
 /**
  * @param {string} tenantId
@@ -38,6 +45,7 @@ let onChangedCallback = null;
  */
 export function openTenantPanel(tenantId, { onChanged } = {}) {
   closeTenantPanel();
+  const sequence = panelSequence;
 
   onChangedCallback = onChanged ?? null;
   activeTenant = null;
@@ -57,7 +65,7 @@ export function openTenantPanel(tenantId, { onChanged } = {}) {
 
   loadTenant(tenantId)
     .then((tenant) => {
-      if (!activeApi) return;
+      if (!activeApi || sequence !== panelSequence) return;
       activeTenant = tenant;
       activeApi.update({
         header: tenantHeader(tenant),
@@ -71,13 +79,15 @@ export function openTenantPanel(tenantId, { onChanged } = {}) {
       });
     })
     .catch((error) => {
-      if (!activeApi) return;
+      if (!activeApi || sequence !== panelSequence) return;
       activeApi.update({
         header: loadingHeader(),
         renderBody: () =>
           html`<div class="panel-section">
             <div class="notice-strip notice-strip--danger">
-              <span class="notice-strip__icon">${icon("alert-triangle", { size: 14 })}</span>
+              <span class="notice-strip__icon"
+                >${icon("alert-triangle", { size: 14 })}</span
+              >
               <span>${error.message}</span>
             </div>
           </div>`,
@@ -88,6 +98,7 @@ export function openTenantPanel(tenantId, { onChanged } = {}) {
 }
 
 export function closeTenantPanel() {
+  panelSequence++;
   detachRootListener?.();
   detachRootListener = null;
   activeApi = null;
@@ -101,7 +112,11 @@ const TABS = [
   { id: "overview", label: "Overview" },
   { id: "billing", label: "Billing", count: (t) => t.bills?.length ?? 0 },
   { id: "payments", label: "Payments", count: (t) => t.payments?.length ?? 0 },
-  { id: "documents", label: "Documents", count: (t) => t.documents?.length ?? 0 },
+  {
+    id: "documents",
+    label: "Documents",
+    count: (t) => t.documents?.length ?? 0,
+  },
 ];
 
 function renderTab(tabId, tenant, { canConfirm }) {
@@ -124,15 +139,24 @@ function loadingHeader() {
   return html`<div class="panel-drawer__identity">
     <span class="avatar avatar--lg" style="background:var(--gray-200)"></span>
     <div>
-      <div class="skeleton" style="width:150px;height:15px;margin-bottom:6px"></div>
+      <div
+        class="skeleton"
+        style="width:150px;height:15px;margin-bottom:6px"
+      ></div>
       <div class="skeleton" style="width:110px;height:11px"></div>
     </div>
   </div>`;
 }
 
 function loadingFooter() {
-  return html`<span class="skeleton grow" style="height:38px;border-radius:8px"></span>
-    <span class="skeleton" style="width:150px;height:38px;border-radius:8px"></span>`;
+  return html`<span
+      class="skeleton grow"
+      style="height:38px;border-radius:8px"
+    ></span>
+    <span
+      class="skeleton"
+      style="width:150px;height:38px;border-radius:8px"
+    ></span>`;
 }
 
 function footer(canMessage) {
@@ -145,7 +169,11 @@ function footer(canMessage) {
     >
       ${icon("send", { size: 15 })} Send Message
     </button>
-    <button class="btn btn--secondary grow" type="button" data-action="view-profile">
+    <button
+      class="btn btn--secondary grow"
+      type="button"
+      data-action="view-profile"
+    >
       ${icon("user", { size: 15 })} View Full Profile
     </button>
   `;
@@ -153,7 +181,9 @@ function footer(canMessage) {
 
 function tenantHeader(tenant) {
   return html`<div class="panel-drawer__identity">
-      <span class="avatar avatar--lg ${avatarTone(tenant.fullName)}">${initials(tenant.fullName)}</span>
+      <span class="avatar avatar--lg ${avatarTone(tenant.fullName)}"
+        >${initials(tenant.fullName)}</span
+      >
       <div style="min-width:0">
         <h2>${tenant.fullName}</h2>
         <p>${tenant.propertyName} · ${tenant.email}</p>
@@ -169,7 +199,8 @@ function tenantHeader(tenant) {
       >
       <span class="grow"></span>
       <span class="panel-identity-row__unit"
-        >${icon("receipt", { size: 14 })} <b>${peso(tenant.monthlyRent)}</b>/mo</span
+        >${icon("receipt", { size: 14 })}
+        <b>${peso(tenant.monthlyRent)}</b>/mo</span
       >
     </div>`;
 }
@@ -193,18 +224,69 @@ function attachRootListener({ canConfirm, canMessage }) {
     /* --- Send Message ------------------------------------------------- */
     if (target.closest('[data-action="send-message"]')) {
       if (!canMessage) return;
-      openSendMessage(activeTenant?.fullName ?? "this tenant");
+      if (activeTenant) openSendMessage(activeTenant);
       return;
     }
 
     /* --- View Full Profile -------------------------------------------- */
     if (target.closest('[data-action="view-profile"]')) {
+      if (activeTenant)
+        await entityForm("tenants", activeTenant.id, refreshTenant);
+      return;
+    }
+    try {
+      if (target.closest("[data-upload-document]")) {
+        await uploadSource(refreshTenant, activeTenant.id);
+        return;
+      }
+      const documentButton = target.closest("[data-document]");
+      if (documentButton) {
+        await download(
+          "/" +
+            (documentButton.dataset.kind === "receipt"
+              ? "receipts"
+              : "documents") +
+            "/" +
+            documentButton.dataset.document,
+          documentButton.dataset.filename,
+          { preview: documentButton.dataset.preview === "true" },
+        );
+        return;
+      }
+      const receiptButton = target.closest("[data-receipt]");
+      if (receiptButton) {
+        await download(
+          "/receipts/" + receiptButton.dataset.receipt,
+          receiptButton.dataset.receipt + ".html",
+        );
+        return;
+      }
+      const rejectButton = target.closest("[data-reject-payment]");
+      if (rejectButton) {
+        dialogForm({
+          title: "Reject payment report",
+          fields: [
+            {
+              key: "reason",
+              label: "Reason",
+              type: "textarea",
+              required: true,
+            },
+          ],
+          save: (data) =>
+            api.post(
+              "/payments/" + rejectButton.dataset.rejectPayment + "/reject",
+              data,
+            ),
+          onSaved: refreshTenant,
+        });
+        return;
+      }
+    } catch (error) {
       toast({
-        title: "Full profile",
-        message: activeTenant
-          ? `${activeTenant.fullName} · ${activeTenant.unitCode} — the dedicated profile route is planned for Phase 2.`
-          : "The dedicated profile route is planned for Phase 2.",
-        tone: "info",
+        title: "Operation failed",
+        message: error.message,
+        tone: "danger",
       });
       return;
     }
@@ -216,7 +298,9 @@ function attachRootListener({ canConfirm, canMessage }) {
       confirmBtn.setAttribute("aria-disabled", "true");
       try {
         const payment = await api.post(
-          endpoints.confirmPayment(confirmBtn.getAttribute("data-confirm-payment")),
+          endpoints.confirmPayment(
+            confirmBtn.getAttribute("data-confirm-payment"),
+          ),
         );
         toastSuccess(
           "Payment confirmed",
@@ -224,10 +308,17 @@ function attachRootListener({ canConfirm, canMessage }) {
         );
         const fresh = await loadTenant(activeTenant.id);
         activeTenant = fresh;
-        activeApi?.update({ renderBody: (tabId) => renderTab(tabId, fresh, { canConfirm }) });
+        activeApi?.update({
+          renderBody: (tabId) => renderTab(tabId, fresh, { canConfirm }),
+        });
         onChangedCallback?.();
+        window.dispatchEvent(new CustomEvent("app:data-changed"));
       } catch (error) {
-        toast({ title: "Confirmation failed", message: error.message, tone: "danger" });
+        toast({
+          title: "Confirmation failed",
+          message: error.message,
+          tone: "danger",
+        });
         confirmBtn.removeAttribute("aria-disabled");
       }
     }
@@ -237,38 +328,88 @@ function attachRootListener({ canConfirm, canMessage }) {
   detachRootListener = () => root.removeEventListener("click", handler);
 }
 
-function openSendMessage(name) {
+async function refreshTenant() {
+  if (!activeTenant) return;
+  const id = activeTenant.id,
+    sequence = panelSequence,
+    fresh = await loadTenant(id);
+  if (sequence !== panelSequence) return;
+  activeTenant = fresh;
+  activeApi?.update({
+    header: tenantHeader(fresh),
+    renderBody: (tabId) =>
+      renderTab(tabId, fresh, {
+        canConfirm: can(session.role, "payment:confirm"),
+      }),
+  });
+  await onChangedCallback?.();
+  window.dispatchEvent(new CustomEvent("app:data-changed"));
+}
+
+function openSendMessage(tenant) {
+  const name = tenant.fullName;
   openModal({
     title: "Send message",
     subtitle: `Delivered to ${name} through the authenticated portal inbox`,
     body: html`
       <div class="field">
         <label class="field__label" for="msg-subject">Subject</label>
-        <input class="input" id="msg-subject" type="text" value="Billing update" />
+        <input
+          class="input"
+          id="msg-subject"
+          type="text"
+          value="Billing update"
+        />
       </div>
       <div class="field">
         <label class="field__label" for="msg-body">Message</label>
-        <textarea class="textarea" id="msg-body" placeholder="Type your message…"></textarea>
+        <textarea
+          class="textarea"
+          id="msg-body"
+          placeholder="Type your message…"
+        ></textarea>
         <span class="field__hint"
-          >Portal inbox only — the system does not send tenant SMS or e-mail.</span
+          >Portal inbox only — the system does not send tenant SMS or
+          e-mail.</span
         >
       </div>
     `,
     footer: html`
-      <button class="btn btn--secondary" type="button" data-close>Cancel</button>
+      <button class="btn btn--secondary" type="button" data-close>
+        Cancel
+      </button>
       <button class="btn btn--primary" type="button" data-send>
         ${icon("send", { size: 15 })} Send
       </button>
     `,
     onMount: (close) => {
-      document.querySelector(".modal [data-send]")?.addEventListener("click", async () => {
-        const modal = document.querySelector(".modal");
-        const subject = modal?.querySelector("#msg-subject")?.value ?? "";
-        const body = modal?.querySelector("#msg-body")?.value ?? "";
-        await api.post(endpoints.messages(), { to: name, subject, body });
-        close();
-        toastSuccess("Message sent", `Delivered to ${name}'s portal inbox.`);
-      });
+      document
+        .querySelector(".modal [data-send]")
+        ?.addEventListener("click", async () => {
+          const modal = document.querySelector(".modal");
+          const subject = modal?.querySelector("#msg-subject")?.value ?? "";
+          const body = modal?.querySelector("#msg-body")?.value ?? "";
+          const button = modal.querySelector("[data-send]");
+          button.disabled = true;
+          try {
+            await api.post(endpoints.messages(), {
+              tenantId: tenant.id,
+              subject,
+              body,
+            });
+            close();
+            toastSuccess("Message sent", `Saved to ${name}'s portal inbox.`);
+            await onChangedCallback?.();
+          } catch (error) {
+            toast({
+              title: "Message failed",
+              message: error.message,
+              tone: "danger",
+            });
+          } finally {
+            button.disabled = false;
+          }
+        });
     },
   });
 }

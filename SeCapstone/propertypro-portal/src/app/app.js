@@ -9,6 +9,8 @@ import { api } from "../api/client.js";
 import { icon } from "../components/icon.js";
 import { closePanel } from "../components/side-panel.js";
 import { ROLE } from "../config/constants.js";
+import { bindWorkflows } from "./workflows.js";
+import { closeModal } from "../components/modal.js";
 
 import { renderDashboard } from "../features/dashboard/dashboard.page.js";
 import { renderProperties } from "../features/properties/properties.page.js";
@@ -16,7 +18,7 @@ import { renderUnits } from "../features/units/units.page.js";
 import { renderTenants } from "../features/tenants/tenants.page.js";
 import { renderBills } from "../features/billing/bills.page.js";
 import { renderReports } from "../features/reports/reports.page.js";
-import { renderSettings } from "../features/settings/settings.page.js";
+import { renderSettings } from "../features/settings/settings-live.js";
 
 import { renderAdminDashboard } from "../features/admin/admin-dashboard.page.js";
 import { renderAdminAudit } from "../features/admin/admin-audit.page.js";
@@ -28,7 +30,10 @@ import { renderTenantNotifications } from "../features/tenant/tenant-notificatio
 import { renderTenantSettings } from "../features/tenant/tenant-settings.page.js";
 
 import { renderLogin } from "../features/auth/login.page.js";
-import { renderAccessDenied, renderNotFound } from "../features/errors/access-denied.page.js";
+import {
+  renderAccessDenied,
+  renderNotFound,
+} from "../features/errors/access-denied.page.js";
 
 /**
  * Application bootstrap.
@@ -64,12 +69,15 @@ const PAGES = {
 };
 
 let bootstrapped = false;
+let routeSequence = 0;
 
-export function bootstrap(root) {
+export async function bootstrap(root) {
   if (bootstrapped) return;
   bootstrapped = true;
+  await session.restore();
 
   onRouteChange(() => route());
+  window.addEventListener("app:data-changed", () => loadBadges());
   window.addEventListener("app:role-changed", async () => {
     await loadBadges();
     const home = session.homePath;
@@ -78,12 +86,13 @@ export function bootstrap(root) {
   });
   window.addEventListener("app:signed-out", () => {
     closePanel();
+    closeModal();
     route();
   });
 
   if (!window.location.hash) {
     window.location.hash = session.isAuthenticated
-      ? HOME_FOR_ROLE[session.role] ?? "/dashboard"
+      ? (HOME_FOR_ROLE[session.role] ?? "/dashboard")
       : "/login";
   }
 
@@ -91,6 +100,7 @@ export function bootstrap(root) {
 }
 
 async function route(root = document.getElementById("app-root")) {
+  const sequence = ++routeSequence;
   const { path, query } = currentRoute();
   const normalised = normalisePath(path);
   const decision = resolveRoute(normalised);
@@ -114,11 +124,13 @@ async function route(root = document.getElementById("app-root")) {
   if (!outlet) {
     outlet = mountShell(root);
     await loadBadges();
+    if (sequence !== routeSequence) return;
   }
 
   refreshShell({ activePath: normalised, menuOpen: false });
   outlet = outletElement();
   closePanel();
+  closeModal();
 
   /* --- Guard results ---------------------------------------------------- */
   if (decision.status === "denied") {
@@ -149,7 +161,15 @@ async function route(root = document.getElementById("app-root")) {
   }
 
   try {
-    await renderer(outlet, { path: normalised, query });
+    const stage = document.createElement("div");
+    outlet.replaceChildren(stage);
+    await renderer(stage, { path: normalised, query, onChanged: loadBadges });
+    if (sequence !== routeSequence) return;
+    bindWorkflows(stage, {
+      page: decision.route.page,
+      onChanged: loadBadges,
+      refresh: () => navigate(normalised, Object.fromEntries(query)),
+    });
   } catch (error) {
     console.error("[PropertyPro] page render failed", error);
     render(
@@ -194,7 +214,7 @@ export async function loadBadges() {
     } else if (role === ROLE.TENANT) {
       const [notifications, bills] = await Promise.all([
         api.get(endpoints.notifications()),
-        api.get(endpoints.tenantBills(session.user?.tenantId ?? "tnt-001")),
+        api.get(endpoints.tenantBills(session.user?.tenantId)),
       ]);
       setBadges({
         myBills: bills.filter((b) => b.paymentStatus !== "paid").length,

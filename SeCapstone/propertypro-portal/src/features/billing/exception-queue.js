@@ -8,6 +8,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { relative, dateTime } from "../../utils/format.js";
 import { EXCEPTION_SEVERITY_META } from "../../config/constants.js";
+import { correctSource, correctRent, download } from "../../app/workflows.js";
 
 /**
  * Exception Queue.
@@ -19,7 +20,10 @@ import { EXCEPTION_SEVERITY_META } from "../../config/constants.js";
  * @param {Array} exceptions
  * @param {{onChanged?:()=>void, canReview?:boolean}} [options]
  */
-export function exceptionQueue(exceptions, { onChanged, canReview = true } = {}) {
+export function exceptionQueue(
+  exceptions,
+  { onChanged, canReview = true } = {},
+) {
   if (!exceptions.length) {
     return emptyState({
       iconName: "check-circle",
@@ -34,7 +38,8 @@ export function exceptionQueue(exceptions, { onChanged, canReview = true } = {})
 }
 
 function exceptionCard(record, { onChanged, canReview }) {
-  const severity = EXCEPTION_SEVERITY_META[record.severity] ?? EXCEPTION_SEVERITY_META.medium;
+  const severity =
+    EXCEPTION_SEVERITY_META[record.severity] ?? EXCEPTION_SEVERITY_META.medium;
   const resolved = record.state !== "open";
 
   return html`<article
@@ -46,7 +51,9 @@ function exceptionCard(record, { onChanged, canReview }) {
         <div class="exception-card__reason">
           ${icon("alert-triangle", { size: 15 })} ${record.reason}
         </div>
-        <div class="exception-card__id mt-1">${record.id} · ${record.source.replace("_", " ")}</div>
+        <div class="exception-card__id mt-1">
+          ${record.id} · ${record.source.replace("_", " ")}
+        </div>
       </div>
       <div class="row row-2">
         <span
@@ -54,9 +61,15 @@ function exceptionCard(record, { onChanged, canReview }) {
           style="--sev-bg:${severity.bg};--sev-fg:${severity.fg}"
           >${severity.label}</span
         >
-        ${resolved
-          ? badge(record.state === "corrected" ? "Corrected" : "Revalidated", "success", { dot: true })
-          : badge("Review", "violet", { dot: true })}
+        ${
+          resolved
+            ? badge(
+                record.state === "corrected" ? "Corrected" : "Revalidated",
+                "success",
+                { dot: true },
+              )
+            : badge("Review", "violet", { dot: true })
+        }
       </div>
     </div>
 
@@ -70,41 +83,52 @@ function exceptionCard(record, { onChanged, canReview }) {
       <p class="text-xs text-secondary mb-3">${record.detail}</p>
       <div class="exception-card__grid">
         ${record.fields.map(
-          (field) => html`<div class="desc-item">
-            <span class="desc-item__label">${field.label}</span>
-            <span class="desc-item__value ${field.missing ? "text-danger" : ""}"
-              >${field.value}</span
-            >
-          </div>`,
+          (field) =>
+            html`<div class="desc-item">
+              <span class="desc-item__label">${field.label}</span>
+              <span
+                class="desc-item__value ${field.missing ? "text-danger" : ""}"
+                >${field.value}</span
+              >
+            </div>`,
         )}
       </div>
     </div>
 
-    ${resolved
-      ? html`<div class="exception-card__foot">
-          <span class="reconciliation-ok">${icon("check-circle", { size: 13 })} Resolved — record reprocessed.</span>
-        </div>`
-      : html`<div class="exception-card__foot">
-          <button
-            class="btn btn--primary btn--sm"
-            type="button"
-            data-exc-review="${record.id}"
-            ${canReview ? "" : "disabled"}
-          >
-            ${icon("edit", { size: 14 })} Review & correct
-          </button>
-          <button
-            class="btn btn--secondary btn--sm"
-            type="button"
-            data-exc-revalidate="${record.id}"
-            ${canReview ? "" : "disabled"}
-          >
-            ${icon("refresh", { size: 14 })} Revalidate
-          </button>
-          <button class="btn btn--ghost btn--sm" type="button" data-exc-source="${record.sourceId}">
-            ${icon("eye", { size: 14 })} Open source record
-          </button>
-        </div>`}
+    ${
+      resolved
+        ? html`<div class="exception-card__foot">
+            <span class="reconciliation-ok"
+              >${icon("check-circle", { size: 13 })} Resolved — record
+              reprocessed.</span
+            >
+          </div>`
+        : html`<div class="exception-card__foot">
+            <button
+              class="btn btn--primary btn--sm"
+              type="button"
+              data-exc-review="${record.id}"
+              ${canReview ? "" : "disabled"}
+            >
+              ${icon("edit", { size: 14 })} Review & correct
+            </button>
+            <button
+              class="btn btn--secondary btn--sm"
+              type="button"
+              data-exc-revalidate="${record.id}"
+              ${canReview ? "" : "disabled"}
+            >
+              ${icon("refresh", { size: 14 })} Revalidate
+            </button>
+            <button
+              class="btn btn--ghost btn--sm"
+              type="button"
+              data-exc-source="${record.sourceId}"
+            >
+              ${icon("eye", { size: 14 })} Open source record
+            </button>
+          </div>`
+    }
   </article>`;
 }
 
@@ -113,13 +137,42 @@ function exceptionCard(record, { onChanged, canReview }) {
  * @param {HTMLElement} container
  * @param {{onChanged?:()=>void, canReview?:boolean}} [options]
  */
-export function bindExceptionQueue(container, { onChanged, canReview = true } = {}) {
+export function bindExceptionQueue(
+  container,
+  { onChanged, canReview = true } = {},
+) {
   if (!canReview) return;
 
   container.querySelectorAll("[data-exc-review]").forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.getAttribute("data-exc-review");
-      openCorrectionModal(id, onChanged);
+      api
+        .get(endpoints.exceptions())
+        .then((records) => {
+          const record = records.find((e) => e.id === id);
+          if (record?.billId && !record.sourceId) {
+            correctRent(record.billId, onChanged);
+            return;
+          }
+          if (!record?.sourceId) {
+            toast({
+              title: "Configuration review",
+              message:
+                record?.detail ??
+                "Correct the lease or occupancy configuration, then generate rent.",
+              tone: "warning",
+            });
+            return;
+          }
+          correctSource(record.sourceId, onChanged);
+        })
+        .catch((error) =>
+          toast({
+            title: "Review failed",
+            message: error.message,
+            tone: "danger",
+          }),
+        );
     });
   });
 
@@ -128,75 +181,48 @@ export function bindExceptionQueue(container, { onChanged, canReview = true } = 
       const id = button.getAttribute("data-exc-revalidate");
       button.setAttribute("aria-disabled", "true");
       try {
-        await api.post(endpoints.resolveException(id), { revalidate: true });
-        toastSuccess("Record revalidated", `${id} re-entered the billing pipeline.`);
-        onChanged?.();
+        if (button.disabled) return;
+        button.disabled = true;
+        const result = await api.post(endpoints.resolveException(id), {
+          revalidate: true,
+        });
+        toast({
+          title: result.failures?.length
+            ? "Review still required"
+            : "Record finalized",
+          message: result.failures?.length
+            ? result.failures.map((f) => f.reason).join("; ")
+            : `${id} passed revalidation.`,
+          tone: result.failures?.length ? "warning" : "success",
+        });
+        await onChanged?.();
       } catch (error) {
-        toast({ title: "Revalidation failed", message: error.message, tone: "danger" });
+        toast({
+          title: "Revalidation failed",
+          message: error.message,
+          tone: "danger",
+        });
         button.removeAttribute("aria-disabled");
+        button.disabled = false;
       }
     });
   });
 
   container.querySelectorAll("[data-exc-source]").forEach((button) => {
-    button.addEventListener("click", () => {
-      toast({
-        title: "Source record",
-        message: `Opening ${button.getAttribute("data-exc-source")} is wired to the billing detail route.`,
-        tone: "info",
-      });
+    button.addEventListener("click", async () => {
+      try {
+        const id = button.dataset.excSource;
+        if (!id)
+          throw new Error("This exception refers to the lease configuration.");
+        await download("/incoming/" + id + "/source", id + ".source");
+      } catch (error) {
+        toast({
+          title: "Source unavailable",
+          message: error.message,
+          tone: "danger",
+        });
+      }
     });
-  });
-}
-
-function openCorrectionModal(id, onChanged) {
-  openModal({
-    title: "Correct exception record",
-    subtitle: `${id} — corrections are stored with the centralised record`,
-    body: html`
-      <div class="field">
-        <label class="field__label" for="exc-field">Field to correct</label>
-        <select class="select input" id="exc-field">
-          <option>Account / reference identifier</option>
-          <option>Amount due</option>
-          <option>Due date</option>
-          <option>Billing period</option>
-          <option>Property / unit mapping</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="field__label" for="exc-value">Corrected value</label>
-        <input class="input" id="exc-value" type="text" placeholder="Enter the corrected value" />
-        <span class="field__hint"
-          >The record is revalidated and recomputed after saving.</span
-        >
-      </div>
-      <div class="field">
-        <label class="field__label" for="exc-note">Correction note</label>
-        <textarea class="textarea" id="exc-note" style="min-height:80px" placeholder="Why is this correction being applied?"></textarea>
-      </div>
-    `,
-    footer: html`
-      <button class="btn btn--secondary" type="button" data-close>Cancel</button>
-      <button class="btn btn--primary" type="button" data-save>
-        ${icon("check", { size: 15 })} Save & revalidate
-      </button>
-    `,
-    onMount: (close) => {
-      document.querySelector(".modal [data-save]")?.addEventListener("click", async () => {
-        try {
-          await api.post(endpoints.resolveException(id), { revalidate: false });
-          close();
-          toastSuccess(
-            "Correction applied",
-            `${id} was corrected, revalidated and reprocessed.`,
-          );
-          onChanged?.();
-        } catch (error) {
-          toast({ title: "Correction failed", message: error.message, tone: "danger" });
-        }
-      });
-    },
   });
 }
 

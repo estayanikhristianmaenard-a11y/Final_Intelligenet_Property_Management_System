@@ -1,167 +1,155 @@
-# PropertyPro Manager Portal — Backend API Contract
+﻿# PropertyPro database and API contract
 
-The front-end talks to the backend **only** through [`src/api/client.js`](../src/api/client.js),
-using the path builders in [`src/api/endpoints.js`](../src/api/endpoints.js).
+Version 2.0 · 11 October 2026. The implementation is `server/index.js`, `service.js`, `rules.js`, `integrations.js`, and `store.js`. This is an implemented REST API, not a proposed mock contract.
 
-Today `apiConfig.MODE = "mock"` routes every call to an in-browser adapter
-([`src/api/mock/adapter.js`](../src/api/mock/adapter.js)) so the UI is fully
-demonstrable with no server. Setting `MODE = "live"` switches the *same* calls
-to `fetch()` against `BASE_URL` with the session bearer token.
+## Transport and authentication
 
-Base URL: `http://localhost:8080/api/v1` (configurable via `VITE_API_URL`).
+Base path: `/api/v1`. Requests and errors are JSON unless a download is requested. Login uses POST. Every protected endpoint requires `Authorization: Bearer <token>`. No cookie authentication is used. The frontend clears its cached session and returns to login after a protected request returns 401.
 
----
+Sessions last eight hours, are stored by SHA-256 token hash, and survive server restarts. Plain tokens remain in browser sessionStorage. Passwords use salted scrypt; account password changes invalidate stored sessions. Login throttling is per process, address and email. CORS uses an explicit allowed-origin set; it does not use wildcard credentials. Request bodies are limited to 15 MB and must be JSON objects.
 
-## Conventions
+Status codes: 200 success, 400 malformed request, 401 missing/expired/invalid credentials, 403 denied role/ownership/origin, 404 unknown record/endpoint, 409 dependency/history/idempotency conflict, 413 request size, 415 content type, 422 invalid domain input, 429 login throttle, 503 unconfigured integration. Unexpected server errors return a generic message and are logged locally.
 
-| Concern | Rule |
+```json
+{"message":"Access denied","code":null}
+```
+
+Admin has system maintenance permissions only. Manager owns business administration and confirmation. Tenant accesses only the linked tenant record. A caller cannot choose a role through the login request.
+
+## Persistent database
+
+SQLite is a central server database in WAL mode with foreign keys enabled and synchronous transactional domain mutations. Entity tables use permanent primary keys, indexed relationship columns and JSON payloads for detailed/versioned records. This is a relational database with flexible payloads, not browser storage. It is designed for a single application server; there is no horizontal write-cluster implementation.
+
+| Table | Relationship / constraint |
 | --- | --- |
-| Transport | JSON over HTTP, `Content-Type: application/json` |
-| Auth | `Authorization: Bearer <token>` returned by `POST /auth/login` |
-| Errors | Non-2xx returns `{ "message": string, "code"?: string }` |
-| Dates | ISO-8601 (`2026-10-09`) or full ISO datetime for events |
-| Money | Decimal/number with **exactly 2 decimal places**, currency `PHP` |
-| Enums | Values below are exact — the UI renders labels from them |
+| properties | Permanent property ID |
+| units | FK propertyId; unique unit code enforced by service |
+| tenants | FKs unitId, propertyId; permanent tenant ID |
+| assignments | FKs tenantId, unitId; current start/end/occupancy |
+| leases | FKs tenantId, unitId; original start/end/anniversary |
+| users | Unique email (case-insensitive); optional unique tenantId FK |
+| sessions | User FK, hashed token, expiry |
+| incoming | Original source metadata, hash, raw extraction, normalized fields, rules/outcomes |
+| mappings | Unit FK; unique normalized provider/account pair |
+| bills | Tenant/property/source FKs; unique cycleKey; lines, status, revision snapshots |
+| lines | Bill FK, cascade dependency; synchronized line status |
+| allocations | Source/bill/tenant FKs; nonnegative integer cents; frozen recipient list/date |
+| payments | Bill/tenant FKs; report/confirmation/rejection history |
+| receipts | Unique payment FK; bill/tenant FKs; issued only after confirmation |
+| credits | Tenant and original advance-bill FKs; one application reference |
+| rent_cycles | Unit FK; persisted lease/group cycle deduplication |
+| exceptions | Source/bill FKs; rule, failure and open/revalidated state |
+| corrections | Source/bill/Manager FKs; field, old/new values, reason, revision; configuration target when applicable |
+| notifications | Tenant FK; unique eventKey; read status and delivery metadata |
+| subscriptions | User FK; actual Web Push subscription |
+| messages | Tenant FK; permanent recipient and Manager sender identity |
+| documents | Tenant FK; protected file metadata |
+| audit / activity | Actual operation records and UI feed |
+| settings / intake_messages | Stored policy/scheduler state and IMAP UID deduplication |
 
-### Enums
+Lease and assignment rows currently mirror one active tenancy per tenant record. Transfers/renewals with retained multi-lease history under the same identity are not implemented. Existing financial records retain their frozen assignment/allocation context and prevent destructive changes.
 
+```mermaid
+flowchart LR
+  Property --> Unit
+  Unit --> Assignment
+  Tenant --> Assignment
+  Tenant --> Lease
+  Unit --> Lease
+  Tenant --> User
+  Source --> Mapping
+  Mapping --> Unit
+  Source --> Bill
+  Tenant --> Bill
+  Bill --> Allocation
+  Bill --> Payment
+  Payment --> Receipt
+  Payment --> Credit
+  Bill --> Notification
+  Source --> Exception
+  Exception --> Correction
 ```
-role            : admin | manager | tenant
-payment_status  : unpaid | tenant_reported_paid | paid
-category        : rent | electricity | water
-arrangement     : individual | shared_occupancy
-unit_status     : occupied | vacant | notice | maintenance
-ocr_status      : processing | validated | failed
-exception_state : open | corrected | revalidated
-severity        : high | medium | low
-activity_status : Pending | Paid | Unpaid | Review
+
+## Implemented endpoints
+
+Role `Own` means Tenant ownership or Manager business access, as specified by the endpoint.
+
+| Method and path | Role | Operation |
+| --- | --- | --- |
+| POST /auth/login | Public | `{email,password}` → `{token,user}` |
+| GET /auth/me | Authenticated | Restore server-authorized user |
+| POST /auth/logout | Authenticated | Invalidate current token |
+| PATCH /auth/profile | Authenticated | Save name/email/phone/preferences or currentPassword + new password |
+| GET /dashboard/stats, /dashboard/activity?limit=12 | Manager | Derived counters and actual events |
+| GET/POST /properties, /units, /tenants, /mappings | Manager | Lists and validated creates |
+| GET/PATCH/DELETE /properties/:id, /units/:id, /mappings/:id | Manager | Read/edit/delete unused records |
+| GET /tenants/:id | Own | Tenant detail, own bills/payments/documents |
+| PATCH/DELETE /tenants/:id | Manager | Edit/end assignment; protected deletion |
+| GET /tenants/:id/bills, /payments, /documents | Own | Scoped related records |
+| GET /tenant/unit | Tenant | Assigned unit |
+| GET /bills?status=&tenantId=&q= | Own | Scoped bill list |
+| GET /bills/:id | Own | Bill detail and lines |
+| GET /bills/incoming?status= | Manager | Extracted sources and processing state |
+| POST /rent/generate | Manager | Catch up eligible anniversary cycles |
+| POST /intake/upload | Manager | `{filename,type,base64}` → extraction and validation |
+| POST /intake/sync | Manager | Real configured IMAP sync |
+| GET /incoming/:id | Manager | Normalized source and rule results |
+| GET /incoming/:id/source | Manager | Protected original bytes |
+| POST /incoming/:id/correct | Manager | `{field,value,reason}` → retained correction/revalidation |
+| POST /bills/:id/correct-rent | Manager | `{amount,reason}` whole-unit source amount; revise unpaid frozen cycle |
+| GET /exceptions?state= | Manager | Review records |
+| POST /exceptions/:id/resolve | Manager | Source correction or `{revalidate:true}`; unresolved failures remain open |
+| POST /bills/:id/report-payment | Tenant | Full outstanding `{method,reference}` |
+| GET /payments?status=&tenantId= | Own | Payment history, including rejected reports |
+| POST /payments/:id/confirm | Manager | Idempotent confirmation and unique receipt |
+| POST /payments/:id/reject | Manager | `{reason}`; retained rejection and unpaid bill |
+| GET /receipts/:id | Own | Escaped HTML receipt |
+| POST /documents | Manager | `{tenantId,filename,type,base64}` protected upload |
+| GET /documents/:id | Own | Protected file bytes and audit record |
+| GET /messages | Tenant/Manager | Own inbox / Manager message records |
+| POST /messages | Manager | `{tenantId,subject,body}` persisted portal message |
+| GET /notifications | Tenant | Own saved events |
+| POST /notifications/read | Tenant | Mark own events read |
+| GET /notifications/push-config | Tenant | Public key and configuration flag only |
+| POST /notifications/push-subscription | Tenant | Actual browser `{endpoint,keys}`; supported HTTPS push-service allowlist |
+| GET/PATCH /settings/profile, /settings/billing-rules | Manager | Policy/mailer-address/delivery settings |
+| GET /reports/summary?range=current | Manager | current, 1d, 30d, 365d, all |
+| GET /exports/tenants, /exports/reports?range=, /exports/audit | Manager; Admin for audit | CSV with formula escaping |
+| GET/POST /admin/users | Admin | Safe account list/create |
+| PATCH /admin/users/:id | Admin | Role/status/password maintenance; invalidates sessions |
+| GET /admin/audit?limit=50, /admin/services | Admin | Actual audit and observed component state |
+| POST /admin/health, /admin/backup, /admin/ocr-restart, /admin/purge | Admin | Integrity/state checks, snapshot, worker restart, temp-cache purge |
+
+Manager GET /notifications currently returns an empty list: Manager navigation uses billing/exception counters. Messages use the portal inbox; there is no SMS or tenant email endpoint.
+
+### Payload examples
+
+```json
+{"name":"Building E","letter":"E","address":"Pasig address","city":"Pasig City","type":"apartment"}
 ```
 
-> **Business rule:** `tenant_reported_paid` must **never** transition to `paid`
-> without an explicit `POST /payments/:id/confirm` from a Manager token.
-> A receipt number is issued only on that transition.
+```json
+{"propertyId":"prp-...","code":"E-101","floor":"Ground Floor","floorNumber":1,"type":"Studio","monthlyRent":"10000.01","arrangement":"individual"}
+```
 
----
+```json
+{"fullName":"Example Tenant","email":"tenant@example.test","unitId":"uni-...","leaseStart":"2026-10-11","assignmentStart":"2026-10-11","leaseEnd":null,"assignmentEnd":null,"occupancy":"active"}
+```
 
-## Endpoints
+Account creation additionally needs name, email, role, password and a real tenantId for the Tenant role. Tenant creation does not silently create a login account; account maintenance belongs to Admin.
 
-### Auth
+Correction dates use ISO `YYYY-MM-DD`. Required utility fields are provider, accountRef, amountDue, dueDate, periodStart and periodEnd. V02 accepts nonnegative money and valid ordered period endpoints; it does not impose an extra due-date-versus-period-end rule. Ambiguous/conflicting extraction enters V01 review. The source retains raw text, hash, original file, applied rule identifiers, per-rule validation results and overall processing outcome.
 
-| Method | Path | Body → Response |
-| --- | --- | --- |
-| `POST` | `/auth/login` | `{ email, password }` → `{ token, user }` |
-| `GET` | `/auth/me` | → `user` |
+Only `unpaid`, `tenant_reported_paid`, and `paid` are payment statuses. A rejected payment report uses `unpaid` plus rejection metadata. A zero-balance credit-settled bill retains its status and explicit credit information; it is not a fictitious cash confirmation.
 
-### Dashboard (Manager)
+Amounts are returned in PHP with at most two decimal places; allocations are computed/stored as integer centavos. `amount` in rent correction is the whole-unit rent for that cycle, not an individual share. Finalized recipient lists remain fixed. Confirmed/report-pending charges cannot be corrected silently.
 
-| Method | Path | Response |
-| --- | --- | --- |
-| `GET` | `/dashboard/stats` | `{ totalUnits:{value,delta}, totalTenants:{value,delta}, incomingBills:{value,delta}, exceptionQueue:{value,delta}, occupancy, openExceptions, outstanding, collected }` |
-| `GET` | `/dashboard/activity?limit=` | `{ items: ActivityEvent[], total }` |
+Manager settings permit an intake address and pushEnabled. Equal splitting, required first advance, non-prorated rent and three-day reminders are fixed paper policy; attempts to enable conflicting options return 422. Credentials and VAPID private keys are configured only on the server through `.env`.
 
-`ActivityEvent = { id, type, subject, actor, status, timestamp, href }`
-`type ∈ Utility Bill Received | Tenant Payment | Exception Queue | Payment Confirmed | Receipt Generated | Web Push Notification | Bill Finalized | Correction Applied`
+## Integration verification
 
-### Portfolio
+The tests run an actual HTTP server, authorize all roles, check tenant ownership and private-file denial, create/edit/delete records, finalize MIME/PDF/image sources, revise bills, report/reject/confirm payments, download receipts/documents, create a backup and reopen it. Persistence/session invalidation, integer reconciliation and idempotency are asserted. A real browser verifies connected screens and controls.
 
-| Method | Path | Notes |
-| --- | --- | --- |
-| `GET` | `/properties` | `Property[]` incl. occupancy rollups |
-| `GET` | `/properties/:id` | single `Property` |
-| `GET` | `/units?propertyId=&status=&q=` | `Unit[]` |
-| `GET` | `/tenants?q=&propertyId=` | `Tenant[]` (summary) |
-| `GET` | `/tenants/:id` | `Tenant & { bills, payments, documents, summary }` |
-| `GET` | `/tenants/:id/bills` | `Bill[]` |
-| `GET` | `/tenants/:id/payments` | `Payment[]` |
-| `GET` | `/tenants/:id/documents` | `Document[]` |
+Web Push encrypted request construction/retry uses a test transport; it does not prove external delivery. Live IMAP login/retrieval is pending a real account. See [QA report](qa-report.md) and [manual](user-manual.md).
 
-Full field lists are declared as JSDoc typedefs in
-[`src/models/index.js`](../src/models/index.js) — implement the JSON to match.
-
-### Billing
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| `GET` | `/bills?status=&tenantId=&q=` | `Bill[]` |
-| `GET` | `/bills/incoming?status=` | OCR-extracted `IncomingBill[]`, newest first |
-| `GET` | `/payments?status=` | `Payment[]`, newest first |
-| `POST` | `/bills/:id/report-payment` | `{ method, reference }` → `{ bill, payment }`; sets status `tenant_reported_paid` |
-| `POST` | `/payments/:id/confirm` | Manager only → `Payment` with `status: paid` + `receiptNumber` |
-
-### Exceptions
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| `GET` | `/exceptions?state=` | `ExceptionRecord[]` |
-| `POST` | `/exceptions/:id/resolve` | `{ revalidate: boolean }` → record; sets `corrected` or `revalidated` |
-
-### Notifications (Web Push only)
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| `GET` | `/notifications` | `Notification[]` for the signed-in tenant |
-| `POST` | `/messages` | `{ to, subject, body }` → portal-inbox message |
-| `POST` | `/notifications/push-subscription` | Web Push subscription object |
-
-> The system **must not** expose SMS, GSM or tenant-e-mail notification
-> endpoints — those are explicitly out of scope for the study.
-
-### Reports & settings
-
-| Method | Path | Response |
-| --- | --- | --- |
-| `GET` | `/reports/summary?range=` | `{ byCategory, byProperty, byStatus, byStatusPercent, outstanding, collected, openExceptions, occupancy }` |
-| `GET` | `/settings/profile` | `{ intakeMailbox, allocationRule, advanceRentEnabled, prorateEnabled, reminderDays, pushEnabled }` |
-| `GET` | `/settings/billing-rules` | Manager billing configuration |
-
-### Admin (system maintenance only)
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| `GET` | `/admin/services` | service health rows |
-| `GET` | `/admin/audit?limit=` | audit log entries |
-| `GET` | `/admin/users` | accounts + roles |
-
-> The `admin` role must be **denied** (HTTP 403) on every property, unit,
-> tenant, billing, exception, payment-confirmation and receipt endpoint.
-
----
-
-## Front-end RBAC matrix
-
-Rendered live in **Admin → Settings → Role-based access control matrix** and
-authoritatively defined in
-[`src/auth/rbac.js`](../src/auth/rbac.js). The backend must mirror it; the
-front-end guard is defence-in-depth only.
-
-| Capability | Admin | Manager | Tenant |
-| --- | :--: | :--: | :--: |
-| System maintenance & user accounts | ✓ | — | — |
-| Audit log | ✓ | — | — |
-| View dashboard | — | ✓ | — |
-| Manage properties & units | — | ✓ | — |
-| Manage tenants | — | ✓ | — |
-| Configure billing rules & allocations | — | ✓ | — |
-| Review OCR-extracted bills | — | ✓ | — |
-| Review Exception Queue | — | ✓ | — |
-| Confirm tenant-reported payments | — | ✓ | — |
-| View reports | — | ✓ | — |
-| View own bills | — | — | ✓ |
-| Report a payment | — | — | ✓ |
-| Receive Web Push notifications | — | — | ✓ |
-
----
-
-## Connecting a real backend
-
-1. Implement the endpoints above (any stack — the contract is plain REST/JSON).
-2. In `src/config/api.js` set:
-   ```js
-   MODE: "live",
-   BASE_URL: "https://your-api.example.com/api/v1",
-   ```
-   …or export `VITE_API_MODE=live` and `VITE_API_URL=…`.
-3. Ensure CORS allows the portal origin and returns `401`/`403` correctly —
-   the client already surfaces `ApiError.isUnauthorized` / `isForbidden`.
-
-No feature module needs to change.
+Implementation references: [Node SQLite API](https://nodejs.org/api/sqlite.html), [ImapFlow fetch](https://imapflow.com/docs/guides/fetching-messages/), [web-push](https://github.com/web-push-libs/web-push), [Tesseract.js](https://github.com/naptha/tesseract.js).
