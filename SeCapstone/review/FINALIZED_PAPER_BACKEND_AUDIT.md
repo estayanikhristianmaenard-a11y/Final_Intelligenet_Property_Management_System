@@ -4,7 +4,7 @@ Baseline: `../papers/FINAL_MANUSCRIPT.pdf`, 40 pages; page numbers are PDF pages
 
 ## User-confirmed payment-policy revision — 12 October 2026
 
-The user clarified that Tenants pay utility providers directly, including shared obligations, and Managers confirm rent only. Paste-ready manuscript replacements are in [PAYMENT_WORKFLOW_MANUSCRIPT_REVISION.md](PAYMENT_WORKFLOW_MANUSCRIPT_REVISION.md). The existing finalized PDF and backend have not yet adopted that distinction. The audit table below remains an assessment of the existing PDF; do not treat it as verification of the proposed personal utility tracker.
+The revised agreement separates rent confirmation from personal utility tracking. Tenants arrange one payer for a shared utility bill; the system calculates shares but does not collect contributions or verify provider settlement. Intake includes property-email attachments and Manager-uploaded clear printed-bill images. Managers may record checked rent payments without Tenant reports. Confirmed advance may cover a selected rent cycle with Manager approval, without reuse or automatic replacement. Missed cycles retain original due dates; reminders use a 9 AM Philippine-time cutoff three calendar days before due. Complete replacement paragraphs and exact locations are in [PAYMENT_WORKFLOW_MANUSCRIPT_REVISION.md](PAYMENT_WORKFLOW_MANUSCRIPT_REVISION.md). The current PDF and backend have not adopted all these revisions. The audit below describes the existing baseline, not verification of the revised functions.
 
 | Requirement | Finding |
 | --- | --- |
