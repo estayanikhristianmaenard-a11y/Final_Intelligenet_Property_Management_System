@@ -4,6 +4,7 @@ import session from "../../auth/session.js";
 import { ROLE, ROLE_LABEL, ROLE_SCOPE } from "../../config/constants.js";
 import { HOME_FOR_ROLE } from "../../config/navigation.js";
 import { initials, avatarTone } from "../../utils/format.js";
+import { isMockMode } from "../../config/api.js";
 
 /**
  * Login portal.
@@ -16,6 +17,7 @@ import { initials, avatarTone } from "../../utils/format.js";
  * @param {{redirectTo?:string}} [ctx]
  */
 export function renderLogin(container, { redirectTo = "" } = {}) {
+  if (!isMockMode()) return renderLiveLogin(container);
   let selectedRole = ROLE.MANAGER;
 
   const paint = () => {
@@ -140,6 +142,19 @@ function iconForRole(role) {
   if (role === ROLE.ADMIN) return "shield";
   if (role === ROLE.TENANT) return "user";
   return "chart";
+}
+
+function renderLiveLogin(container) {
+  render(container, html`<div class="auth-shell"><aside class="auth-hero"><div class="auth-hero__brand">${icon('building2')} PropertyPro</div><div class="auth-hero__copy"><h2>Property management</h2><p>Access your property and tenant records securely.</p></div></aside><main class="auth-panel" id="main-content"><div class="auth-card"><h1>Sign in</h1><p class="auth-card__sub">Use the account assigned to you.</p><form data-login><div class="field"><label class="field__label" for="email">Email</label><input class="input" id="email" name="email" type="email" autocomplete="username" required></div><div class="field"><label class="field__label" for="password">Password</label><input class="input" id="password" name="password" type="password" autocomplete="current-password" required></div><p data-error role="alert" style="white-space:pre-wrap"></p><button class="btn btn--primary btn--lg btn--block">Sign in</button></form></div></main></div>`);
+  const form = container.querySelector('[data-login]');
+  form.onsubmit = async event => {
+    event.preventDefault();
+    form.querySelector('button').disabled = true;
+    form.querySelector('[data-error]').textContent = '';
+    try { await session.signIn(null, Object.fromEntries(new FormData(form))); }
+    catch(error) { form.querySelector('[data-error]').textContent = error.message; }
+    finally { form.querySelector('button').disabled = false; }
+  };
 }
 
 function emailFor(role) {

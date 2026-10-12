@@ -8,6 +8,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import session from "../../auth/session.js";
 import { peso, date, relative, dateTime } from "../../utils/format.js";
+import {isMockMode} from '../../config/api.js';
 
 /**
  * Tenant view — "My Bills & Payments".
@@ -21,10 +22,11 @@ export async function renderTenantBills(container) {
   try {
     const [bills, payments] = await Promise.all([
       api.get(endpoints.tenantBills(tenantId)),
-      api.get(endpoints.tenantPayments(tenantId)),
+      isMockMode() ? api.get(endpoints.tenantPayments(tenantId)) : Promise.resolve([]),
     ]);
     render(container, frame(content(bills, payments)));
     bind(container, bills);
+    if(!isMockMode()) container.querySelectorAll('[data-action="report-payment"], [data-report-bill]').forEach(button=>{button.disabled=true;button.title='Payment reporting is under development.';});
   } catch (error) {
     render(
       container,

@@ -8,6 +8,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, count, dateTime, relative } from "../../utils/format.js";
 import { closePanel } from "../../components/side-panel.js";
+import {isMockMode} from '../../config/api.js';
 
 /**
  * Manager Dashboard — the primary Phase 1 landing view.
@@ -136,7 +137,7 @@ function body({ stats, properties, units, activity }) {
           <div>
             <h2 class="card__title" id="overview-title">Property Overview</h2>
             <p class="card__subtitle">
-              Buildings A–D · unit-level occupancy indicators
+              Properties · unit-level occupancy indicators
             </p>
           </div>
           <a class="btn btn--ghost btn--sm" href="#/properties"
@@ -195,6 +196,7 @@ function body({ stats, properties, units, activity }) {
 }
 
 function attentionItems(stats) {
+  if (!isMockMode()) return html`<div class="card__body"><p>Billing intake, exceptions, and payment processing are under development.</p></div>`;
   const items = [
     {
       icon: "alert-triangle",

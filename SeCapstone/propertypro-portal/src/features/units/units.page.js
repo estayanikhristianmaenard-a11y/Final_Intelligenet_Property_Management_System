@@ -7,6 +7,9 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, initials, avatarTone } from "../../utils/format.js";
 import { UNIT_STATUS_META } from "../../config/constants.js";
+import {isMockMode} from '../../config/api.js';
+import {openRecordEditor} from '../foundation/foundation.page.js';
+let liveBuildings=[];
 
 /**
  * Units page — grouped by floor, filterable by building.
@@ -15,7 +18,8 @@ import { UNIT_STATUS_META } from "../../config/constants.js";
  * @param {HTMLElement} container
  * @param {{query:URLSearchParams}} ctx
  */
-export async function renderUnits(container, { query } = {}) {
+export async function renderUnits(container, { query = new URLSearchParams() } = {}) {
+  if (!isMockMode()) liveBuildings=await api.get(endpoints.properties());
   let propertyId = query.get("property") ?? "";
   let statusFilter = "";
 
@@ -32,6 +36,9 @@ export async function renderUnits(container, { query } = {}) {
   };
 
   function bind() {
+    if (!isMockMode()) container.querySelectorAll('[data-edit-unit]').forEach(button=>button.onclick=()=>openRecordEditor('units',load,button.dataset.editUnit));
+    if (!isMockMode()) container.querySelectorAll('[data-assign]').forEach(button=>button.onclick=()=>{window.location.hash='/assignments';});
+    if (!isMockMode()) container.querySelector('.page-header__actions button').onclick=()=>openRecordEditor('units',load);
     container.querySelectorAll("[data-building]").forEach((chip) => {
       chip.addEventListener("click", () => {
         propertyId = chip.getAttribute("data-building");
@@ -73,7 +80,7 @@ export async function renderUnits(container, { query } = {}) {
 }
 
 function frame(content, { propertyId }) {
-  const buildings = ["prp-a", "prp-b", "prp-c", "prp-d"];
+  const buildings = isMockMode() ? ["prp-a", "prp-b", "prp-c", "prp-d"] : liveBuildings.map(p=>p.id);
 
   return html`<section class="page" aria-labelledby="page-title">
     <div class="page-header">
@@ -99,7 +106,7 @@ function frame(content, { propertyId }) {
           type="button"
           data-building="${id}"
         >
-          ${id.slice(-1).toUpperCase()}
+          ${isMockMode() ? id.slice(-1).toUpperCase() : liveBuildings.find(p=>p.id===id)?.name}
         </button>`,
       )}
       <span style="width:1px;height:20px;background:var(--border-default)"></span>
@@ -183,6 +190,7 @@ function unitRow(unit) {
     <td><span class="money">${peso(unit.monthlyRent)}</span></td>
     <td>${unitStatusBadge(unit.status)}</td>
     <td class="cell-actions">
+      ${!isMockMode()?html`<button class="btn btn--ghost btn--sm" type="button" data-edit-unit="${unit.id}">Edit</button>`:null}
       ${hasTenant
         ? html`<button
             class="btn btn--soft btn--sm"
@@ -191,7 +199,7 @@ function unitRow(unit) {
           >
             Details
           </button>`
-        : html`<button class="btn btn--secondary btn--sm" type="button">Assign</button>`}
+        : html`<button class="btn btn--secondary btn--sm" type="button" data-assign>Assign</button>`}
     </td>
   </tr>`;
 }

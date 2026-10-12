@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net">
+  <diagram id="simple-billing" name="Figure 2.2 - Billing Workflow Overview">
+    <mxGraphModel grid="1" gridSize="10" page="0" pageWidth="1100" pageHeight="1600" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" value="Start" vertex="1" parent="1" style="rounded=1;arcSize=40;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="430" y="10" width="140" height="45" />
+        </mxCell>
+        <mxCell id="type" value="Billing type?" vertex="1" parent="1" style="shape=rhombus;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="380" y="85" width="240" height="110" />
+        </mxCell>
+        <mxCell id="rent" value="Check lease and cycle eligibility&lt;br&gt;Prepare rent when eligible" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="90" y="235" width="300" height="85" />
+        </mxCell>
+        <mxCell id="utility" value="Retrieve utility bill&lt;br&gt;OCR, validation and classification" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="650" y="235" width="300" height="85" />
+        </mxCell>
+        <mxCell id="rules" value="Apply billing and allocation rules&lt;br&gt;Revalidate corrected records" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="365" y="385" width="300" height="85" />
+        </mxCell>
+        <mxCell id="valid" value="Valid billing record&lt;br&gt;and exact allocation total?" vertex="1" parent="1" style="shape=rhombus;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="365" y="510" width="300" height="130" />
+        </mxCell>
+        <mxCell id="exception" value="Exception Queue&lt;br&gt;Block finalization" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="760" y="530" width="270" height="70" />
+        </mxCell>
+        <mxCell id="correction" value="Manager review and correction&lt;br&gt;Retain history" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="760" y="650" width="270" height="80" />
+        </mxCell>
+        <mxCell id="final" value="Finalize bill: Unpaid" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="385" y="695" width="260" height="70" />
+        </mxCell>
+        <mxCell id="notify" value="Permitted Web Push alerts&lt;br&gt;Authenticated portal access" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="45" y="690" width="280" height="80" />
+        </mxCell>
+        <mxCell id="credit" value="Manager confirms applicable&lt;br&gt;advance-credit application&lt;br&gt;Compute remaining balance" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="355" y="805" width="320" height="100" />
+        </mxCell>
+        <mxCell id="settled" value="Final rent fully covered&lt;br&gt;by confirmed advance credit?" vertex="1" parent="1" style="shape=rhombus;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="365" y="950" width="300" height="130" />
+        </mxCell>
+        <mxCell id="creditpaid" value="Paid: retain original payment/receipt&lt;br&gt;No new cash payment or receipt" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="20" y="960" width="300" height="90" />
+        </mxCell>
+        <mxCell id="creditend" value="End" vertex="1" parent="1" style="rounded=1;arcSize=40;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="95" y="1100" width="140" height="45" />
+        </mxCell>
+        <mxCell id="report" value="Full outstanding balance&lt;br&gt;payment reported?" vertex="1" parent="1" style="shape=rhombus;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="365" y="1130" width="300" height="130" />
+        </mxCell>
+        <mxCell id="unpaid" value="Remains Unpaid" vertex="1" parent="1" style="rounded=1;arcSize=40;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="780" y="1160" width="220" height="60" />
+        </mxCell>
+        <mxCell id="reported" value="Tenant Reported Paid" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="385" y="1300" width="260" height="70" />
+        </mxCell>
+        <mxCell id="review" value="Manager review after&lt;br&gt;external verification" vertex="1" parent="1" style="shape=rhombus;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="365" y="1420" width="300" height="130" />
+        </mxCell>
+        <mxCell id="pending" value="Remains Tenant&lt;br&gt;Reported Paid" vertex="1" parent="1" style="rounded=1;arcSize=40;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="40" y="1610" width="250" height="75" />
+        </mxCell>
+        <mxCell id="rejected" value="Record reason and history&lt;br&gt;Return to Unpaid" vertex="1" parent="1" style="rounded=1;arcSize=40;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="385" y="1610" width="270" height="75" />
+        </mxCell>
+        <mxCell id="paid" value="Paid: issue digital receipt&lt;br&gt;Repeat confirmation reuses receipt" vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="750" y="1610" width="300" height="85" />
+        </mxCell>
+        <mxCell id="end" value="End" vertex="1" parent="1" style="rounded=1;arcSize=40;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="830" y="1740" width="140" height="45" />
+        </mxCell>
+        <mxCell id="note" value="Overview only: detailed rent, eligibility, rounding, correction, credit and notification rules are explained in the manuscript." vertex="1" parent="1" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ECECFF;strokeColor=#9370DB;fontColor=#111111;fontFamily=Arial;fontSize=18;spacing=8;">
+          <mxGeometry as="geometry" x="70" y="1840" width="960" height="65" />
+        </mxCell>
+        <mxCell id="e1" source="start" target="type" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e2" source="type" target="rent" value="Rent" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="240" y="140" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" source="type" target="utility" value="Electricity / Water" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="800" y="140" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" source="rent" target="rules" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="240" y="355" />
+              <mxPoint x="515" y="355" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" source="utility" target="rules" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="800" y="355" />
+              <mxPoint x="515" y="355" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" source="rules" target="valid" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e7" source="valid" target="exception" value="No" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e8" source="exception" target="correction" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e9" source="correction" target="rules" value="Revalidate and recompute" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1080" y="690" />
+              <mxPoint x="1080" y="427" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" source="valid" target="final" value="Yes" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e11" source="final" target="notify" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e12" source="final" target="credit" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e13" source="credit" target="settled" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e14" source="settled" target="creditpaid" value="Yes" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e15" source="creditpaid" target="creditend" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e16" source="settled" target="report" value="No" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e17" source="report" target="unpaid" value="No" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e18" source="report" target="reported" value="Yes" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e19" source="reported" target="review" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e20" source="review" target="pending" value="Pending" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="165" y="1485" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e21" source="review" target="rejected" value="Rejected" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e22" source="review" target="paid" value="Confirmed" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="900" y="1485" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e23" source="paid" target="end" value="" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontColor=#111111;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

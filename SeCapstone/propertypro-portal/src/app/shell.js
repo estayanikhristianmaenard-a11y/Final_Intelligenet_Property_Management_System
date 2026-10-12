@@ -30,14 +30,13 @@ export function refreshShell(patch = {}) {
   state = { ...state, ...patch };
   if (!root) return;
   const previousOutlet = root.querySelector("[data-outlet]");
-  const retained = previousOutlet?.innerHTML ?? "";
 
   const holder = document.createElement("div");
   render(holder, shellMarkup());
+  if (previousOutlet) holder.querySelector('[data-outlet]').replaceWith(previousOutlet);
   root.replaceChildren(...holder.childNodes);
 
   outlet = root.querySelector("[data-outlet]");
-  if (outlet) outlet.innerHTML = retained;
   bindChrome();
 }
 
@@ -98,9 +97,14 @@ function bindChrome() {
     });
   });
 
-  root.querySelector('[data-action="sign-out"]')?.addEventListener("click", () => {
-    session.signOut();
-    window.dispatchEvent(new CustomEvent("app:signed-out"));
+  root.querySelector('[data-action="sign-out"]')?.addEventListener("click", async () => {
+    try {
+      await session.signOut();
+      window.dispatchEvent(new CustomEvent("app:signed-out"));
+    } catch (error) {
+      const { toast } = await import('../components/toast.js');
+      toast({title:'Sign out failed',message:error.message,tone:'danger'});
+    }
   });
 
   root.querySelector('[data-action="notifications"]')?.addEventListener("click", () => {

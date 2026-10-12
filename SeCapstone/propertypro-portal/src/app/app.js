@@ -9,6 +9,8 @@ import { api } from "../api/client.js";
 import { icon } from "../components/icon.js";
 import { closePanel } from "../components/side-panel.js";
 import { ROLE } from "../config/constants.js";
+import { isMockMode } from "../config/api.js";
+import { renderLivePage } from "../features/foundation/foundation.page.js";
 
 import { renderDashboard } from "../features/dashboard/dashboard.page.js";
 import { renderProperties } from "../features/properties/properties.page.js";
@@ -65,9 +67,11 @@ const PAGES = {
 
 let bootstrapped = false;
 
-export function bootstrap(root) {
+export async function bootstrap(root) {
   if (bootstrapped) return;
   bootstrapped = true;
+  try { await session.restore(); }
+  catch(error) { render(root, html`<p role="alert">Unable to connect: ${error.message}</p>`); return; }
 
   onRouteChange(() => route());
   window.addEventListener("app:role-changed", async () => {
@@ -143,14 +147,19 @@ async function route(root = document.getElementById("app-root")) {
 
   /* --- Render the page -------------------------------------------------- */
   const renderer = PAGES[decision.route.page];
-  if (!renderer) {
+  if (!renderer && isMockMode()) {
     renderNotFound(outlet, { path: normalised });
     return;
   }
 
   try {
-    await renderer(outlet, { path: normalised, query });
+    if (!isMockMode() && !['dashboard','properties','units','tenants','tenantHome','bills','tenantBills'].includes(decision.route.page)) await renderLivePage(outlet, {page:decision.route.page, query});
+    else await renderer(outlet, { path: normalised, query });
   } catch (error) {
+    if (!isMockMode() && error.status === 401) {
+      window.location.href = '/portal#/login';
+      return;
+    }
     console.error("[PropertyPro] page render failed", error);
     render(
       outlet,
@@ -176,6 +185,12 @@ function loginHost() {
 /** Refresh sidebar count badges for the active role. */
 export async function loadBadges() {
   if (!session.isAuthenticated) return;
+  if (!isMockMode()) {
+    if (session.role === ROLE.MANAGER) {
+      try { const records=await api.get('/foundation/records'); setBadges({tenants:records.tenants.length}); } catch { /* page renderer reports errors */ }
+    }
+    return;
+  }
   const role = session.role;
 
   try {

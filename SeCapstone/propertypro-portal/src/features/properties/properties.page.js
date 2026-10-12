@@ -5,6 +5,8 @@ import { skeletonRows, emptyState } from "../../components/empty-state.js";
 import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, count } from "../../utils/format.js";
+import {isMockMode} from '../../config/api.js';
+import {openRecordEditor} from '../foundation/foundation.page.js';
 
 /** Properties portfolio — Buildings A–D with occupancy and revenue. */
 export async function renderProperties(container) {
@@ -13,6 +15,8 @@ export async function renderProperties(container) {
   try {
     const properties = await api.get(endpoints.properties());
     render(container, frame(grid(properties)));
+    if (!isMockMode()) container.querySelector('.page-header__actions button').onclick=()=>openRecordEditor('properties',()=>renderProperties(container));
+    if (!isMockMode()) container.querySelectorAll('[data-edit-property]').forEach(button=>button.onclick=()=>openRecordEditor('properties',()=>renderProperties(container),button.dataset.editProperty));
   } catch (error) {
     render(
       container,
@@ -95,6 +99,7 @@ function grid(properties) {
           <a class="btn btn--secondary btn--sm full-width" href="#/units?property=${property.id}">
             ${icon("grid", { size: 14 })} View units
           </a>
+          ${!isMockMode()?html`<button class="btn btn--ghost btn--sm full-width" type="button" data-edit-property="${property.id}">Edit property</button>`:null}
         </div>
       </article>`,
     )}

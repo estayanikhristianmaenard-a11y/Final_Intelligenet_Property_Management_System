@@ -44,7 +44,7 @@ export function statCard({
         >${icon(iconName, { size: 19 })}</span
       >
     </div>
-    <div class="stat-card__value">${count(value)}</div>
+    <div class="stat-card__value">${typeof value === 'string' ? value : count(value)}</div>
     <div class="stat-card__foot">${trend}<span>${caption}</span></div>
   `;
 

@@ -1,5 +1,7 @@
 # PropertyPro Manager Portal
 
+The prototype is now integrated with the [Laravel backend](../backend/LOCAL_DEVELOPMENT.md) at **http://127.0.0.1:8080/portal**. Live mode provides persistent accounts, properties, units, tenants, leases, and dated occupancy assignments, using this portal's existing shell and design system. Later modules show under-development notices. The root [project README](../../README.md) documents the canonical folder structure, frontend/backend functions, and database. The historical Phase 1 overview below describes the static mock preview, not completed live billing features.
+
 Phase 1 — **UI Dashboard & Front-End Architecture** for the capstone system
 *"Intelligent Property Management Workflow with OCR-Enabled Automated Billing
 Classification and Tenant Notification"* (Pasig City, A.Y. 2026–2027).

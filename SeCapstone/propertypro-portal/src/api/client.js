@@ -7,7 +7,7 @@ import { dispatchMock } from "./mock/adapter.js";
  *
  * Single choke-point for every network call the portal makes. In `mock` mode
  * requests are routed to the in-browser adapter; in `live` mode they become
- * `fetch()` calls carrying the session bearer token, a timeout and a typed
+ * same-origin `fetch()` calls carrying session cookies, CSRF, a timeout and a typed
  * error envelope — so features never branch on the environment themselves.
  */
 
@@ -34,7 +34,8 @@ function buildHeaders(extra = {}) {
     Accept: "application/json",
     ...extra,
   };
-  if (session.token) headers.Authorization = `Bearer ${session.token}`;
+  const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+  if (csrf) headers['X-CSRF-TOKEN'] = csrf;
   return headers;
 }
 
@@ -53,7 +54,7 @@ async function liveRequest(path, { method = "GET", body, signal, timeout } = {})
       ),
       body: body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
-      credentials: "include",
+      credentials: "same-origin",
     });
 
     const text = await response.text();
@@ -61,7 +62,7 @@ async function liveRequest(path, { method = "GET", body, signal, timeout } = {})
 
     if (!response.ok) {
       throw new ApiError(
-        parsed?.message ?? `${method} ${path} failed with ${response.status}`,
+        parsed?.errors ? Object.values(parsed.errors).flat().join("\n") : parsed?.message ?? `${method} ${path} failed with ${response.status}`,
         { status: response.status, body: parsed, path },
       );
     }

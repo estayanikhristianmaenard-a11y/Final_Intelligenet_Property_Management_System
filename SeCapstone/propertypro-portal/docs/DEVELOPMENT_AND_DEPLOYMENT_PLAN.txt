@@ -1,0 +1,82 @@
+PROPERTYPRO: DEVELOPMENT AND FUTURE PUBLIC DEPLOYMENT
+
+Decision
+Build a working local system first using the existing HTML/CSS/JavaScript
+portal, a Laravel PHP backend, and MySQL or compatible MariaDB. Preserve
+the finalized Chapters 1–2 scope. Framework selection changes implementation,
+not the approved system functions. Do not rebuild the frontend in React/Vue
+or add microservices merely to prepare for deployment.
+
+Local setup
+Use XAMPP's database and a supported PHP version compatible with the selected
+Laravel release. Laravel needs Composer and the required PHP extensions.
+Verify installed versions before installing dependencies. XAMPP is a local
+development environment, not the intended public production setup.
+Prefer one origin for the portal and API to simplify session authentication.
+Use Laravel Sanctum session-cookie authentication with CSRF protection;
+derive roles and record permissions on the server, not from demo role selection
+or editable browser storage. Keep existing mock mode explicitly separate.
+
+Implementation sequence
+1. Foundation: database migrations, login/logout, authenticated identity,
+   server-side Admin/Manager/Tenant permissions, property/unit/tenant/lease
+   records and dated occupancy assignments for shared units.
+2. Configuration: provider/account mappings, individual/shared arrangements,
+   fixed monthly anniversary rent, one-month advance and eligible groups.
+3. Intake/OCR: designated mailbox attachment retrieval and an existing OCR
+   engine tested on selected PDFs and clear images. Prototype extraction on
+   representative bills early; select the engine based on measured results.
+   No model training or autonomous billing decisions.
+4. Rules/exceptions: five-field validation, mappings, duplicates, traceable
+   rules, correction history, revalidation and blocked invalid finalization.
+5. Billing: exact centavo arithmetic, eligible membership snapshots,
+   deterministic remainder distribution, reconciliation, idempotent rent
+   cycles/finalization and controlled advance-credit settlement.
+6. Payments/alerts: full outstanding-balance reporting, Manager external
+   verification, rejection reasons, receipt uniqueness/reuse, finalized
+   corrections and Web Push with eligible Philippine-time reminders.
+7. Integration: test permissions and tenant isolation, computation, duplicate
+   processing, recovery, OCR boundaries and the five approved quality criteria.
+
+Engineering rules
+Use migrations and foreign keys for durable relationships. Store monetary
+values in integer centavos or exact database decimals; do not compute charges
+using binary floating-point arithmetic. Use transactions and uniqueness
+constraints for billing cycles, confirmation, credit use and receipt creation.
+Retain history rather than overwriting confirmed payments or receipts.
+Private source bills and receipts must require authorized access.
+Use environment configuration for credentials; do not commit passwords,
+mailbox secrets, push keys, or production tenant data.
+Start background jobs with Laravel's database queue and scheduler; Redis is
+optional only if a demonstrated deployment need arises. Jobs must be safe to
+retry. The mailbox is intake only; external tenant alerts are Web Push only.
+Do not claim push-service acceptance means delivery or reading.
+
+Future public deployment
+Deploy the same application to a maintained Linux host with supported PHP,
+Composer, Apache/Nginx, MySQL/MariaDB, HTTPS, private file storage, a scheduler
+and a supervised queue worker. Choose hosting after proving the OCR runtime
+and PDF-processing requirements; basic static hosting is insufficient.
+Match local and hosted dependency/database versions where possible.
+Expose only the application's public directory. Disable debug output;
+configure HTTPS cookies, trusted hosts/proxies and production secrets.
+Use a restricted database account, backups with a tested restore procedure,
+error/job monitoring and dependency updates. Test with separate accounts
+before inviting real tenants. Public rollout is a separate explicit action.
+Keep browser push permission optional and portal access available without it.
+
+Cost expectations
+Frameworks and open-source tools need no software purchase. Hosting, domains,
+storage and computing resources may cost money. No free public hosting or OCR
+accuracy guarantee is assumed. Avoid a paid OCR API unless separately chosen.
+
+Immediate environment findings
+The XAMPP PHP executable and database client exist at C:/xampp. PHP and
+Composer were not found on the current shell PATH. Verify PHP execution,
+Composer availability and required extensions before scaffolding Laravel.
+
+Authority
+The finalized manuscript PDF under D:/CAPSTONE/Papers is the requirements
+baseline. References and mockup completion are outside the present development
+task. Study sampling/instruments remain adviser-dependent. Build evidence
+before claiming that any system feature or evaluation result is complete.

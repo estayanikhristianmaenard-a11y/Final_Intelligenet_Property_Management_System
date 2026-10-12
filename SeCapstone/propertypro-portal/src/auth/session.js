@@ -1,13 +1,13 @@
 import { ROLE, ROLE_LABEL } from "../config/constants.js";
 import { HOME_FOR_ROLE } from "../config/navigation.js";
+import { isMockMode } from "../config/api.js";
 
 /**
  * Session store.
  *
  * Holds the signed-in user, exposes a tiny pub/sub so the shell re-renders on
- * auth changes, and persists across reloads via localStorage. In `mock` mode
- * signing in is a role selection; in `live` mode the same `signIn()` call
- * posts to `/auth/login` and stores the returned bearer token.
+ * auth changes. Mock identities persist in localStorage. Live identity is
+ * restored from the server session; no browser-stored role or token is trusted.
  */
 
 const STORAGE_KEY = "propertypro.auth.session";
@@ -61,7 +61,7 @@ function persist(state) {
 
 class SessionStore {
   constructor() {
-    this.state = load() ?? { user: null, token: null };
+    this.state = (isMockMode() ? load() : null) ?? { user: null, token: null };
     this.listeners = new Set();
   }
 
@@ -94,7 +94,7 @@ class SessionStore {
 
   #set(next) {
     this.state = next;
-    persist(next);
+    if (isMockMode()) persist(next);
     this.#emit();
   }
 
@@ -105,20 +105,18 @@ class SessionStore {
    * @param {{password?:string}} [credentials]
    */
   async signIn(role, credentials = {}) {
+    if (!isMockMode()) {
+      const { api } = await import("../api/client.js");
+      const user = await api.post('/auth/login', credentials);
+      this.#set({user, token:null});
+      // Login rotates the session and CSRF token. Obtain a fresh page before writes.
+      window.location.href = '/portal' + this.homePath;
+      return user;
+    }
     const identity = DEMO_USERS[role];
     if (!identity) throw new Error(`Unknown role: ${role}`);
 
-    const { isMockMode } = await import("../config/api.js");
-    let token = `mock-token-${role}`;
-
-    if (!isMockMode()) {
-      const { api } = await import("../api/client.js");
-      const response = await api.post("/auth/login", {
-        email: identity.email,
-        password: credentials.password ?? "",
-      });
-      token = response.token;
-    }
+    const token = `mock-token-${role}`;
 
     this.#set({
       user: { ...identity },
@@ -128,8 +126,26 @@ class SessionStore {
     return this.state.user;
   }
 
-  signOut() {
+  async signOut() {
+    if (!isMockMode()) {
+      const { api } = await import("../api/client.js");
+      await api.post('/auth/logout', {});
+      this.#set({ user: null, token: null });
+      window.location.href = '/portal#/login';
+      return;
+    }
     this.#set({ user: null, token: null });
+  }
+
+  async restore() {
+    if (isMockMode()) return;
+    const { api } = await import('../api/client.js');
+    try {
+      this.#set({user:await api.get('/auth/me'),token:null});
+    } catch (error) {
+      this.#set({user:null,token:null});
+      if (error.status !== 401) throw error;
+    }
   }
 
   /** Replace the cached user (e.g. after a profile update). */
@@ -138,7 +154,7 @@ class SessionStore {
     this.#set({ ...this.state, user: { ...this.state.user, ...patch } });
   }
 
-  /** Bearer token handed to the API client on live requests. */
+  /** Demo token retained only for mock compatibility. */
   get token() {
     return this.state.token;
   }

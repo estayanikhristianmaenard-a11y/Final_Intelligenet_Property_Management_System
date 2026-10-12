@@ -12,6 +12,7 @@ import { endpoints } from "../../api/endpoints.js";
 import { can } from "../../auth/rbac.js";
 import session from "../../auth/session.js";
 import { peso, count, date, relative, dateTime, initials, avatarTone } from "../../utils/format.js";
+import {isMockMode} from '../../config/api.js';
 
 const SEGMENTS = [
   { id: "incoming", label: "Incoming Bills (OCR)", icon: "inbox" },
@@ -26,17 +27,18 @@ const SEGMENTS = [
  * @param {HTMLElement} container
  * @param {{query:URLSearchParams, onChanged?:()=>void}} ctx
  */
-export async function renderBills(container, { query, onChanged } = {}) {
+export async function renderBills(container, { query = new URLSearchParams(), onChanged } = {}) {
   const role = session.role;
   const canConfirm = can(role, "payment:confirm");
   const canReview = can(role, "exception:review");
 
   let activeTab = SEGMENTS.some((s) => s.id === query.get("tab"))
     ? query.get("tab")
-    : "incoming";
+    : (isMockMode() ? "incoming" : "records");
   let statusFilter = "";
 
   const load = async () => {
+    if(!isMockMode()) { paint({incoming:[],bills:await api.get(endpoints.bills()),payments:[],exceptions:[]});return; }
     const [incoming, bills, payments, exceptions] = await Promise.all([
       api.get(endpoints.incomingBills()),
       api.get(endpoints.bills()),
@@ -50,6 +52,14 @@ export async function renderBills(container, { query, onChanged } = {}) {
     render(container, frame(segmentBar(data, activeTab), activeTab, stats(data)));
     renderBody(data);
     bindSegment();
+    if(!isMockMode()) {
+      const actions=container.querySelector('.page-header__actions');
+      container.querySelectorAll('[data-report-payment], [data-confirm-payment]').forEach(button=>{button.disabled=true;button.title='Payment processing is under development.';});
+      const button=document.createElement('button');button.className='btn btn--primary';button.textContent="Generate today's rent";
+      button.onclick=async()=>{button.disabled=true;try {const result=await api.post('/rent/generate',{});toast({title:'Rent generation checked',message:`${result.cycle_ids.length} due cycles available. ${result.blocked.map(b=>'Lease #'+b.lease_id+': '+b.reason).join(' ')}`,tone:result.blocked.length?'warning':'success'});await load();}catch(error){toast({title:'Generation failed',message:error.message,tone:'danger'});}finally{button.disabled=false;}};
+      actions?.append(button);
+      const note=document.createElement('p');note.className='notice-strip';note.textContent='Rent records are available. OCR, payment reporting/confirmation, receipts, and exception processing are under development.';container.querySelector('.page-header')?.after(note);
+    }
   };
 
   const renderBody = (data) => {

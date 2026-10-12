@@ -7,6 +7,9 @@ import { openTenantPanel } from "./tenant-details.panel.js";
 import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, initials, avatarTone, date } from "../../utils/format.js";
+import {isMockMode} from '../../config/api.js';
+import {openRecordEditor} from '../foundation/foundation.page.js';
+let liveProperties=[];
 
 /**
  * Tenants directory.
@@ -15,7 +18,8 @@ import { peso, initials, avatarTone, date } from "../../utils/format.js";
  * @param {HTMLElement} container
  * @param {{query:URLSearchParams}} ctx
  */
-export async function renderTenants(container, { query } = {}) {
+export async function renderTenants(container, { query = new URLSearchParams() } = {}) {
+  if (!isMockMode()) liveProperties=await api.get(endpoints.properties());
   let keyword = query.get("q") ?? "";
   let propertyFilter = query.get("property") ?? "";
   let unbind = null;
@@ -35,6 +39,7 @@ export async function renderTenants(container, { query } = {}) {
   };
 
   function bindControls() {
+    if (!isMockMode()) container.querySelector('.page-header__actions .btn--primary').onclick=()=>openRecordEditor('tenants',load);
     const search = container.querySelector('[data-role="tenant-search"]');
     search?.addEventListener("input", (event) => {
       keyword = event.target.value;
@@ -83,7 +88,7 @@ function frame(content) {
         <p>Select a tenant to open their details panel.</p>
       </div>
       <div class="page-header__actions">
-        <button class="btn btn--secondary" type="button">${icon("download", { size: 15 })} Export</button>
+        ${isMockMode()?html`<button class="btn btn--secondary" type="button">${icon("download", { size: 15 })} Export</button>`:null}
         <button class="btn btn--primary" type="button">${icon("plus", { size: 15 })} Add tenant</button>
       </div>
     </div>
@@ -103,13 +108,13 @@ function table(tenants, { loading, keyword, propertyFilter }) {
         aria-label="Search tenants"
       />
     </span>
-    ${["prp-a", "prp-b", "prp-c", "prp-d"].map(
+    ${(isMockMode() ? ["prp-a", "prp-b", "prp-c", "prp-d"] : liveProperties.map(p=>p.id)).map(
       (id) => html`<button
         class="filter-chip ${propertyFilter === id ? "is-active" : ""}"
         type="button"
         data-property-filter="${id}"
       >
-        Building ${id.slice(-1).toUpperCase()}
+        ${isMockMode() ? 'Building '+id.slice(-1).toUpperCase() : liveProperties.find(p=>p.id===id)?.name}
       </button>`,
     )}
     <span class="table-toolbar__spacer"></span>

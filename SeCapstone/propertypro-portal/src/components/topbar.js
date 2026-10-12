@@ -2,6 +2,7 @@ import { html } from "../utils/dom.js";
 import { icon } from "./icon.js";
 import { ROLE, ROLE_LABEL, ROLE_SCOPE } from "../config/constants.js";
 import { initials, avatarTone } from "../utils/format.js";
+import { isMockMode } from "../config/api.js";
 
 /**
  * Top bar: global search, notification bell and the user menu.
@@ -66,6 +67,7 @@ export function topbar({ user, notifications = 0, menuOpen = false }) {
 }
 
 function userMenu(activeRole) {
+  if (!isMockMode()) return html`<div class="menu-popover" role="menu"><p class="menu-popover__label">${ROLE_LABEL[activeRole]}</p><button class="menu-popover__item menu-popover__item--danger" type="button" role="menuitem" data-action="sign-out">${icon("logout", {size:16})} Sign out</button></div>`;
   const roles = [ROLE.MANAGER, ROLE.ADMIN, ROLE.TENANT];
 
   return html`<div class="menu-popover" role="menu">

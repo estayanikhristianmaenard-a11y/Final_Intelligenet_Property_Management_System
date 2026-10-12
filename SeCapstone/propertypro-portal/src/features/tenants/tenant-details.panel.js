@@ -13,6 +13,8 @@ import { endpoints } from "../../api/endpoints.js";
 import { can } from "../../auth/rbac.js";
 import session from "../../auth/session.js";
 import { initials, avatarTone, peso } from "../../utils/format.js";
+import {isMockMode} from '../../config/api.js';
+import {openRecordEditor} from '../foundation/foundation.page.js';
 
 /**
  * Tenant Details slide-out panel.
@@ -136,6 +138,7 @@ function loadingFooter() {
 }
 
 function footer(canMessage) {
+  if(!isMockMode()) return html`<button class="btn btn--primary grow" type="button" data-action="edit-tenant">${icon('user',{size:15})} Edit tenant</button><a class="btn btn--secondary grow" href="#/assignments">Manage assignment</a>`;
   return html`
     <button
       class="btn ${canMessage ? "btn--primary" : "btn--secondary"} grow"
@@ -189,6 +192,11 @@ function attachRootListener({ canConfirm, canMessage }) {
 
     const disabled = target.closest("[disabled], [aria-disabled='true']");
     if (disabled && disabled === target.closest("button")) return;
+    if(target.closest('[data-action="edit-tenant"]') && activeTenant && session.role==='manager') {
+      const id=activeTenant.id;
+      await openRecordEditor('tenants',async()=>{await onChangedCallback?.();openTenantPanel(id,{onChanged:onChangedCallback});},id);
+      return;
+    }
 
     /* --- Send Message ------------------------------------------------- */
     if (target.closest('[data-action="send-message"]')) {
