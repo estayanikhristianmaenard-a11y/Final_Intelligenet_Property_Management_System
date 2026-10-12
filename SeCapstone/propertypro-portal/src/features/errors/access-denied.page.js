@@ -25,31 +25,46 @@ export function renderAccessDenied(container, { path = "" } = {}) {
       <div class="access-denied">
         <div>
           <div class="access-denied__badge">${icon("lock", { size: 30 })}</div>
-          <p class="text-xs font-semibold text-danger" style="letter-spacing:.1em;text-transform:uppercase">
+          <p
+            class="text-xs font-semibold text-danger"
+            style="letter-spacing:.1em;text-transform:uppercase"
+          >
             403 · Access denied
           </p>
-          <h1 class="mt-2">This view is not available to the ${ROLE_LABEL[role]} role</h1>
+          <h1 class="mt-2">
+            This view is not available to the ${ROLE_LABEL[role]} role
+          </h1>
           <p>
-            ${allowed} Your session is scoped to <strong>${ROLE_LABEL[role]}</strong> —
-            ${ROLE_SCOPE[role].toLowerCase()}. Role-based access control restricts both navigation
-            and data access on this route${path ? html` <code>${path}</code>` : ""}.
+            ${allowed} Your session is scoped to
+            <strong>${ROLE_LABEL[role]}</strong> —
+            ${ROLE_SCOPE[role].toLowerCase()}. Role-based access control
+            restricts both navigation and data access on this
+            route${path ? html` <code>${path}</code>` : ""}.
           </p>
 
           <div class="access-denied__actions">
             <a class="btn btn--primary" href="${session.homePath}"
               >${icon("home", { size: 15 })} Go to my dashboard</a
             >
-            <button class="btn btn--secondary" type="button" data-action="switch-role">
+            <button
+              class="btn btn--secondary"
+              type="button"
+              data-action="switch-role"
+            >
               ${icon("refresh", { size: 15 })} Switch role
             </button>
           </div>
 
           <div class="error-state__roles mt-6">
-            ${[ROLE_LABEL.admin, ROLE_LABEL.manager, ROLE_LABEL.tenant]
-              .map((label) => html`<span class="chip">${label} view</span>`)}
+            ${[ROLE_LABEL.admin, ROLE_LABEL.manager, ROLE_LABEL.tenant].map(
+              (label) => html`<span class="chip">${label} view</span>`,
+            )}
           </div>
 
-          <p class="text-xs text-muted mt-4" style="max-width:56ch;margin-inline:auto">
+          <p
+            class="text-xs text-muted mt-4"
+            style="max-width:56ch;margin-inline:auto"
+          >
             The frontend guard is defence-in-depth. The backend must return
             <code>403 Forbidden</code> for every endpoint a role is not granted.
           </p>
@@ -58,10 +73,12 @@ export function renderAccessDenied(container, { path = "" } = {}) {
     </section>`,
   );
 
-  container.querySelector('[data-action="switch-role"]')?.addEventListener("click", () => {
-    session.signOut();
-    location.hash = "/login";
-  });
+  container
+    .querySelector('[data-action="switch-role"]')
+    ?.addEventListener("click", async () => {
+      await session.signOut();
+      location.hash = "/login";
+    });
 }
 
 /** 404 — unknown route. */
@@ -89,9 +106,10 @@ function describeAllowedRoles(path) {
   else if (path.startsWith("/tenant")) owners.push("Tenant");
   else owners.push("Manager");
 
-  return html`This route belongs to the <strong>${owners.join(" or ")}</strong> role${
-    owners.length > 1 ? "s" : ""
-  }.`;
+  return html`This route belongs to the
+    <strong>${owners.join(" or ")}</strong> role${
+      owners.length > 1 ? "s" : ""
+    }.`;
 }
 
 export { can };

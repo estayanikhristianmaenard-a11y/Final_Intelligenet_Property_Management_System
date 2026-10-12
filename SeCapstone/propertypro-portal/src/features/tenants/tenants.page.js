@@ -7,9 +7,6 @@ import { openTenantPanel } from "./tenant-details.panel.js";
 import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, initials, avatarTone, date } from "../../utils/format.js";
-import {isMockMode} from '../../config/api.js';
-import {openRecordEditor} from '../foundation/foundation.page.js';
-let liveProperties=[];
 
 /**
  * Tenants directory.
@@ -18,20 +15,29 @@ let liveProperties=[];
  * @param {HTMLElement} container
  * @param {{query:URLSearchParams}} ctx
  */
-export async function renderTenants(container, { query = new URLSearchParams() } = {}) {
-  if (!isMockMode()) liveProperties=await api.get(endpoints.properties());
+export async function renderTenants(
+  container,
+  { query = new URLSearchParams() } = {},
+) {
   let keyword = query.get("q") ?? "";
   let propertyFilter = query.get("property") ?? "";
   let unbind = null;
+  let properties = [];
 
   const paint = (tenants, { loading = false } = {}) => {
     unbind?.();
-    render(container, frame(table(tenants, { loading, keyword, propertyFilter })));
-    unbind = bindRowClicks(container, (id) => openTenantPanel(id, { onChanged: load }));
+    render(
+      container,
+      frame(table(tenants, { loading, keyword, propertyFilter, properties })),
+    );
+    unbind = bindRowClicks(container, (id) =>
+      openTenantPanel(id, { onChanged: load }),
+    );
     bindControls();
   };
 
   const load = async () => {
+    properties = await api.get(endpoints.properties());
     const tenants = await api.get(
       endpoints.tenants({ q: keyword, propertyId: propertyFilter }),
     );
@@ -39,7 +45,6 @@ export async function renderTenants(container, { query = new URLSearchParams() }
   };
 
   function bindControls() {
-    if (!isMockMode()) container.querySelector('.page-header__actions .btn--primary').onclick=()=>openRecordEditor('tenants',load);
     const search = container.querySelector('[data-role="tenant-search"]');
     search?.addEventListener("input", (event) => {
       keyword = event.target.value;
@@ -88,15 +93,19 @@ function frame(content) {
         <p>Select a tenant to open their details panel.</p>
       </div>
       <div class="page-header__actions">
-        ${isMockMode()?html`<button class="btn btn--secondary" type="button">${icon("download", { size: 15 })} Export</button>`:null}
-        <button class="btn btn--primary" type="button">${icon("plus", { size: 15 })} Add tenant</button>
+        <button class="btn btn--secondary" type="button">
+          ${icon("download", { size: 15 })} Export
+        </button>
+        <button class="btn btn--primary" type="button">
+          ${icon("plus", { size: 15 })} Add tenant
+        </button>
       </div>
     </div>
     ${content}
   </section>`;
 }
 
-function table(tenants, { loading, keyword, propertyFilter }) {
+function table(tenants, { loading, keyword, propertyFilter, properties = [] }) {
   const toolbar = html`
     <span class="field-inline">
       ${icon("search", { size: 15 })}
@@ -108,17 +117,20 @@ function table(tenants, { loading, keyword, propertyFilter }) {
         aria-label="Search tenants"
       />
     </span>
-    ${(isMockMode() ? ["prp-a", "prp-b", "prp-c", "prp-d"] : liveProperties.map(p=>p.id)).map(
-      (id) => html`<button
-        class="filter-chip ${propertyFilter === id ? "is-active" : ""}"
-        type="button"
-        data-property-filter="${id}"
-      >
-        ${isMockMode() ? 'Building '+id.slice(-1).toUpperCase() : liveProperties.find(p=>p.id===id)?.name}
-      </button>`,
+    ${(properties ?? []).map(
+      (id) =>
+        html`<button
+          class="filter-chip ${propertyFilter === id.id ? "is-active" : ""}"
+          type="button"
+          data-property-filter="${id.id}"
+        >
+          ${id.name}
+        </button>`,
     )}
     <span class="table-toolbar__spacer"></span>
-    <span class="text-xs text-muted">${loading ? "Loading…" : `${tenants.length} tenants`}</span>
+    <span class="text-xs text-muted"
+      >${loading ? "Loading…" : `${tenants.length} tenants`}</span
+    >
   `;
 
   if (loading) {
@@ -140,21 +152,25 @@ function table(tenants, { loading, keyword, propertyFilter }) {
       {
         key: "fullName",
         label: "Tenant",
-        render: (row) => html`<span class="cell-entity">
-          <span class="avatar ${avatarTone(row.fullName)}">${initials(row.fullName)}</span>
-          <span class="cell-entity__meta">
-            <strong>${row.fullName}</strong>
-            <span>${row.email}</span>
-          </span>
-        </span>`,
+        render: (row) =>
+          html`<span class="cell-entity">
+            <span class="avatar ${avatarTone(row.fullName)}"
+              >${initials(row.fullName)}</span
+            >
+            <span class="cell-entity__meta">
+              <strong>${row.fullName}</strong>
+              <span>${row.email}</span>
+            </span>
+          </span>`,
       },
       {
         key: "unitCode",
         label: "Unit",
-        render: (row) => html`<span class="cell-stack">
-          <strong class="font-mono">${row.unitCode}</strong>
-          <span>${row.propertyName} · ${row.floor}</span>
-        </span>`,
+        render: (row) =>
+          html`<span class="cell-stack">
+            <strong class="font-mono">${row.unitCode}</strong>
+            <span>${row.propertyName} · ${row.floor}</span>
+          </span>`,
       },
       {
         key: "arrangement",
@@ -168,12 +184,14 @@ function table(tenants, { loading, keyword, propertyFilter }) {
       {
         key: "monthlyRent",
         label: "Monthly rent",
-        render: (row) => html`<span class="money">${peso(row.monthlyRent)}</span>`,
+        render: (row) =>
+          html`<span class="money">${peso(row.monthlyRent)}</span>`,
       },
       {
         key: "leaseStart",
         label: "Lease start",
-        render: (row) => html`<span class="text-xs">${date(row.leaseStart)}</span>`,
+        render: (row) =>
+          html`<span class="text-xs">${date(row.leaseStart)}</span>`,
       },
       {
         key: "occupancy",
@@ -187,10 +205,22 @@ function table(tenants, { loading, keyword, propertyFilter }) {
         key: "actions",
         label: "",
         className: "cell-actions",
-        render: () =>
-          html`<span class="icon-btn" data-no-row title="Open details"
-            >${icon("chevron-right", { size: 16 })}</span
-          >`,
+        render: (row) =>
+          html`<button
+              class="btn btn--ghost btn--sm"
+              data-edit-entity="tenants"
+              data-id="${row.id}"
+              data-no-row
+            >
+              Edit / end lease</button
+            ><button
+              class="btn btn--ghost btn--sm"
+              data-delete-entity="tenants"
+              data-id="${row.id}"
+              data-no-row
+            >
+              Delete
+            </button>`,
       },
     ],
     footer: html`<span>Click any row to open the Tenant Details panel</span>

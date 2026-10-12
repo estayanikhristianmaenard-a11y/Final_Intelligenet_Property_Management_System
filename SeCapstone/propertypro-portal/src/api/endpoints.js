@@ -1,29 +1,10 @@
-/**
- * Endpoint registry.
- *
- * Every backend path the portal can call lives here, so swapping the mock
- * adapter for a real REST server only requires changing `apiConfig.BASE_URL`
- * and `apiConfig.MODE` — feature code calls `endpoints.*` and never string-
- * concatenates a URL itself.
- *
- * Expected backend surface (see docs/api-contract.md):
- *   GET    /auth/login
- *   GET    /dashboard/stats        GET /dashboard/activity
- *   GET    /properties             GET /properties/:id
- *   GET    /units                  GET /units/:id
- *   GET    /tenants                GET /tenants/:id
- *   GET    /bills                  GET /bills/incoming
- *   GET    /payments               GET /exceptions
- *   POST   /payments/:id/report    POST /payments/:id/confirm
- *   POST   /exceptions/:id/resolve POST /messages
- *   GET    /reports/summary        GET /notifications
- *   GET    /settings/profile       GET /admin/services
- *   GET    /admin/audit
- */
+/** Registry of API paths used by the portal. See docs/api-contract.md. */
 
 const q = (params) => {
   const search = new URLSearchParams(
-    Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ""),
+    Object.entries(params).filter(
+      ([, v]) => v !== undefined && v !== null && v !== "",
+    ),
   );
   const str = search.toString();
   return str ? `?${str}` : "";
@@ -42,7 +23,7 @@ export const endpoints = {
   properties: () => "/properties",
   property: (id) => `/properties/${encodeURIComponent(id)}`,
   units: (filters = {}) => `/units${q(filters)}`,
-  unit: (id) => `/unit/${encodeURIComponent(id)}`,
+  unit: (id) => `/units/${encodeURIComponent(id)}`,
 
   /* people */
   tenants: (filters = {}) => `/tenants${q(filters)}`,
@@ -55,7 +36,8 @@ export const endpoints = {
   bills: (filters = {}) => `/bills${q(filters)}`,
   incomingBills: (filters = {}) => `/bills/incoming${q(filters)}`,
   payments: (filters = {}) => `/payments${q(filters)}`,
-  reportPayment: (billId) => `/bills/${encodeURIComponent(billId)}/report-payment`,
+  reportPayment: (billId) =>
+    `/bills/${encodeURIComponent(billId)}/report-payment`,
   confirmPayment: (paymentId) =>
     `/payments/${encodeURIComponent(paymentId)}/confirm`,
   receipt: (id) => `/receipts/${encodeURIComponent(id)}`,
@@ -70,7 +52,7 @@ export const endpoints = {
   pushSubscription: () => "/notifications/push-subscription",
 
   /* reporting */
-  reportsSummary: (range = "30d") => `/reports/summary${q({ range })}`,
+  reportsSummary: (range = "current") => `/reports/summary${q({ range })}`,
 
   /* settings */
   profile: () => "/settings/profile",

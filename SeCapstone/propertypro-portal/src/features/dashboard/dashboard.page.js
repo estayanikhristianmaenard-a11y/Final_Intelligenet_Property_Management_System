@@ -8,7 +8,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, count, dateTime, relative } from "../../utils/format.js";
 import { closePanel } from "../../components/side-panel.js";
-import {isMockMode} from '../../config/api.js';
+import { navigate } from "../../app/router.js";
 
 /**
  * Manager Dashboard — the primary Phase 1 landing view.
@@ -34,7 +34,7 @@ export async function renderDashboard(container) {
     ]);
 
     render(container, pageFrame(body({ stats, properties, units, activity })));
-    bind(container);
+    bind(container, activity.items);
   } catch (error) {
     render(
       container,
@@ -62,9 +62,15 @@ function pageFrame(content) {
         <p>Portfolio health, billing intake and exceptions at a glance.</p>
       </div>
       <div class="page-header__actions">
-        <span class="chip">${icon("calendar", { size: 13 })} ${cycleLabel()}</span>
-        <a class="btn btn--secondary" href="#/reports">${icon("chart", { size: 15 })} Reports</a>
-        <a class="btn btn--primary" href="#/bills">${icon("inbox", { size: 15 })} Review bills</a>
+        <span class="chip"
+          >${icon("calendar", { size: 13 })} ${cycleLabel()}</span
+        >
+        <a class="btn btn--secondary" href="#/reports"
+          >${icon("chart", { size: 15 })} Reports</a
+        >
+        <a class="btn btn--primary" href="#/bills"
+          >${icon("inbox", { size: 15 })} Review bills</a
+        >
       </div>
     </div>
     ${content}
@@ -76,7 +82,10 @@ function skeleton() {
     <div class="stat-row">
       ${Array.from(
         { length: 4 },
-        () => html`<div class="stat-card"><div class="skeleton" style="height:96px"></div></div>`,
+        () =>
+          html`<div class="stat-card">
+            <div class="skeleton" style="height:96px"></div>
+          </div>`,
       )}
     </div>
     <div class="card"><div class="card__body">${skeletonRows(4)}</div></div>
@@ -137,37 +146,41 @@ function body({ stats, properties, units, activity }) {
           <div>
             <h2 class="card__title" id="overview-title">Property Overview</h2>
             <p class="card__subtitle">
-              Properties · unit-level occupancy indicators
+              Recorded properties · unit-level occupancy indicators
             </p>
           </div>
           <a class="btn btn--ghost btn--sm" href="#/properties"
             >All properties ${icon("arrow-right", { size: 14 })}</a
           >
         </div>
-        <div class="card__body">
-          ${propertyOverview({ properties, units })}
-        </div>
+        <div class="card__body">${propertyOverview({ properties, units })}</div>
       </section>
 
       <section class="card" aria-labelledby="attention-title">
         <div class="card__header">
           <div>
             <h2 class="card__title" id="attention-title">Needs attention</h2>
-            <p class="card__subtitle">“Automate by default, intervene by exception”</p>
+            <p class="card__subtitle">
+              “Automate by default, intervene by exception”
+            </p>
           </div>
-          <span class="badge badge--danger">${count(stats.openExceptions)} open</span>
+          <span class="badge badge--danger"
+            >${count(stats.openExceptions)} open</span
+          >
         </div>
-        <div class="attention-list">
-          ${attentionItems(stats)}
-        </div>
+        <div class="attention-list">${attentionItems(stats)}</div>
         <div class="card__footer">
           <div class="quick-actions">
             <a class="quick-action" href="#/bills?tab=exceptions">
-              <span class="quick-action__icon">${icon("alert-triangle", { size: 16 })}</span>
+              <span class="quick-action__icon"
+                >${icon("alert-triangle", { size: 16 })}</span
+              >
               Exception Queue
             </a>
             <a class="quick-action" href="#/bills?tab=incoming">
-              <span class="quick-action__icon">${icon("inbox", { size: 16 })}</span>
+              <span class="quick-action__icon"
+                >${icon("inbox", { size: 16 })}</span
+              >
               OCR intake
             </a>
           </div>
@@ -187,7 +200,7 @@ function body({ stats, properties, units, activity }) {
         </div>
       </div>
       <div class="card__body card__body--flush" data-activity>
-        ${recentActivity(activity, { href: "#/bills" })}
+        ${recentActivity(activity, { href: "#/bills", onRefresh: () => {} })}
       </div>
     </section>
   `;
@@ -196,7 +209,6 @@ function body({ stats, properties, units, activity }) {
 }
 
 function attentionItems(stats) {
-  if (!isMockMode()) return html`<div class="card__body"><p>Billing intake, exceptions, and payment processing are under development.</p></div>`;
   const items = [
     {
       icon: "alert-triangle",
@@ -225,36 +237,64 @@ function attentionItems(stats) {
   ];
 
   return html`${items.map(
-    (item) => html`<a class="attention-item" href="${item.href}">
-      <span class="attention-item__icon" style="--tone:${item.color};--tone-bg:${item.bg}"
-        >${icon(item.icon, { size: 16 })}</span
-      >
-      <span class="attention-item__body">
-        <span class="attention-item__title">${item.title}</span>
-        <span class="attention-item__meta">${item.meta}</span>
-      </span>
-      <span class="attention-item__chevron">${icon("chevron-right", { size: 15 })}</span>
-    </a>`,
+    (item) =>
+      html`<a class="attention-item" href="${item.href}">
+        <span
+          class="attention-item__icon"
+          style="--tone:${item.color};--tone-bg:${item.bg}"
+          >${icon(item.icon, { size: 16 })}</span
+        >
+        <span class="attention-item__body">
+          <span class="attention-item__title">${item.title}</span>
+          <span class="attention-item__meta">${item.meta}</span>
+        </span>
+        <span class="attention-item__chevron"
+          >${icon("chevron-right", { size: 15 })}</span
+        >
+      </a>`,
   )}`;
 }
 
-function bind(container) {
-  container.querySelector('[data-action="refresh-activity"]')?.addEventListener("click", async (event) => {
-    const button = event.currentTarget;
-    button.setAttribute("aria-disabled", "true");
-    try {
-      const activity = await api.get(endpoints.activity(8));
-      const host = container.querySelector("[data-activity]");
-      if (host) render(host, recentActivity(activity, { href: "#/bills" }));
-      bind(container);
-    } finally {
-      button.removeAttribute("aria-disabled");
-    }
+function bind(container, items = []) {
+  container.querySelectorAll("[data-activity] [data-row-id]").forEach((row) => {
+    const open = () => {
+      const href =
+        items.find((i) => i.id === row.dataset.rowId)?.href ?? "#/bills";
+      location.hash = href;
+    };
+    row.addEventListener("click", open);
+    row.addEventListener("keydown", (event) => {
+      if (["Enter", " "].includes(event.key)) {
+        event.preventDefault();
+        open();
+      }
+    });
   });
+  container
+    .querySelector('[data-action="refresh-activity"]')
+    ?.addEventListener("click", async (event) => {
+      const button = event.currentTarget;
+      button.setAttribute("aria-disabled", "true");
+      try {
+        const activity = await api.get(endpoints.activity(8));
+        const host = container.querySelector("[data-activity]");
+        if (host)
+          render(
+            host,
+            recentActivity(activity, { href: "#/bills", onRefresh: () => {} }),
+          );
+        bind(container, activity.items);
+      } finally {
+        button.removeAttribute("aria-disabled");
+      }
+    });
 }
 
 function cycleLabel() {
-  return new Date().toLocaleDateString("en-PH", { month: "long", year: "numeric" });
+  return new Date().toLocaleDateString("en-PH", {
+    month: "long",
+    year: "numeric",
+  });
 }
 
 export { relative, dateTime };

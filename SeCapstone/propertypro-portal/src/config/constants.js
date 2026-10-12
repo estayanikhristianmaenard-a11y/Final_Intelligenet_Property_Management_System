@@ -14,7 +14,7 @@ export const APP = {
   name: "PropertyPro",
   portal: "Manager Portal",
   tagline: "Intelligent Property Management Workflow",
-  version: "0.1.0-phase1",
+  version: "2.0.0",
   locale: "en-PH",
   currency: "PHP",
 };
@@ -91,7 +91,11 @@ export const BILLING_CATEGORY = {
 
 export const BILLING_CATEGORY_META = {
   [BILLING_CATEGORY.RENT]: { label: "Rent", short: "Rent", tone: "primary" },
-  [BILLING_CATEGORY.ELECTRICITY]: { label: "Electricity", short: "Elec.", tone: "warning" },
+  [BILLING_CATEGORY.ELECTRICITY]: {
+    label: "Electricity",
+    short: "Elec.",
+    tone: "warning",
+  },
   [BILLING_CATEGORY.WATER]: { label: "Water", short: "Water", tone: "info" },
 };
 

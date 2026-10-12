@@ -1,15 +1,7 @@
-import { apiConfig, isMockMode } from "../config/api.js";
+import { apiConfig } from "../config/api.js";
 import session from "../auth/session.js";
-import { dispatchMock } from "./mock/adapter.js";
 
-/**
- * API client.
- *
- * Single choke-point for every network call the portal makes. In `mock` mode
- * requests are routed to the in-browser adapter; in `live` mode they become
- * same-origin `fetch()` calls carrying session cookies, CSRF, a timeout and a typed
- * error envelope — so features never branch on the environment themselves.
- */
+/** Authenticated REST client with timeouts, typed errors and expired-session cleanup. */
 
 export class ApiError extends Error {
   constructor(message, { status = 0, body = null, path = "" } = {}) {
@@ -34,35 +26,42 @@ function buildHeaders(extra = {}) {
     Accept: "application/json",
     ...extra,
   };
-  const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
-  if (csrf) headers['X-CSRF-TOKEN'] = csrf;
+  if (session.token) headers.Authorization = `Bearer ${session.token}`;
   return headers;
 }
 
-async function liveRequest(path, { method = "GET", body, signal, timeout } = {}) {
+async function liveRequest(
+  path,
+  { method = "GET", body, signal, timeout } = {},
+) {
   const url = `${apiConfig.BASE_URL}${path}`;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeout ?? apiConfig.TIMEOUT_MS);
+  const timer = setTimeout(
+    () => controller.abort(),
+    timeout ?? apiConfig.TIMEOUT_MS,
+  );
   const onAbort = () => controller.abort();
   signal?.addEventListener("abort", onAbort, { once: true });
 
   try {
     const response = await fetch(url, {
       method,
-      headers: buildHeaders(
-        body ? { "Content-Type": "application/json" } : {},
-      ),
+      headers: buildHeaders(body ? { "Content-Type": "application/json" } : {}),
       body: body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
-      credentials: "same-origin",
+      credentials: "omit",
     });
 
     const text = await response.text();
     const parsed = text ? safeJson(text) : null;
 
     if (!response.ok) {
+      if (response.status === 401 && path !== "/auth/login") {
+        session.clear();
+        window.dispatchEvent(new CustomEvent("app:signed-out"));
+      }
       throw new ApiError(
-        parsed?.errors ? Object.values(parsed.errors).flat().join("\n") : parsed?.message ?? `${method} ${path} failed with ${response.status}`,
+        parsed?.message ?? `${method} ${path} failed with ${response.status}`,
         { status: response.status, body: parsed, path },
       );
     }
@@ -90,16 +89,16 @@ function safeJson(text) {
 async function request(path, options = {}) {
   const method = options.method ?? "GET";
 
-  if (isMockMode()) {
-    return dispatchMock({ path, method, body: options.body, params: options.params });
-  }
-
   if (method === "GET" && options.params) {
     const search = new URLSearchParams(
       Object.entries(options.params).filter(([, v]) => v != null),
     );
     const qs = search.toString();
-    if (qs) return liveRequest(`${path}${path.includes("?") ? "&" : "?"}${qs}`, options);
+    if (qs)
+      return liveRequest(
+        `${path}${path.includes("?") ? "&" : "?"}${qs}`,
+        options,
+      );
   }
 
   return liveRequest(path, options);
@@ -107,10 +106,14 @@ async function request(path, options = {}) {
 
 export const api = {
   get: (path, options = {}) => request(path, { ...options, method: "GET" }),
-  post: (path, body, options = {}) => request(path, { ...options, method: "POST", body }),
-  patch: (path, body, options = {}) => request(path, { ...options, method: "PATCH", body }),
-  put: (path, body, options = {}) => request(path, { ...options, method: "PUT", body }),
-  delete: (path, options = {}) => request(path, { ...options, method: "DELETE" }),
+  post: (path, body, options = {}) =>
+    request(path, { ...options, method: "POST", body }),
+  patch: (path, body, options = {}) =>
+    request(path, { ...options, method: "PATCH", body }),
+  put: (path, body, options = {}) =>
+    request(path, { ...options, method: "PUT", body }),
+  delete: (path, options = {}) =>
+    request(path, { ...options, method: "DELETE" }),
   request,
 };
 

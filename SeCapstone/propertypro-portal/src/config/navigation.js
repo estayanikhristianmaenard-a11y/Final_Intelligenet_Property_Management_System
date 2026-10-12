@@ -1,5 +1,4 @@
 import { ROLE } from "./constants.js";
-import { isMockMode } from "./api.js";
 
 /**
  * Sidebar navigation registry.
@@ -14,8 +13,6 @@ import { isMockMode } from "./api.js";
 
 /** @type {NavItem[]} */
 export const NAV_ITEMS = [
-  {id:'leases',label:'Leases',path:'#/leases',icon:'file',section:'Portfolio',roles:[ROLE.MANAGER],permission:'unit:read'},
-  {id:'assignments',label:'Occupancy assignments',path:'#/assignments',icon:'users',section:'Portfolio',roles:[ROLE.MANAGER],permission:'tenant:read'},
   /* ---------------------------------------------------------- Manager --- */
   {
     id: "dashboard",
@@ -154,8 +151,6 @@ export const NAV_ITEMS = [
 
 /** Route table consumed by the router + RBAC guard. */
 export const ROUTES = [
-  {path:'/leases',page:'leases',roles:[ROLE.MANAGER],permission:'unit:read'},
-  {path:'/assignments',page:'assignments',roles:[ROLE.MANAGER],permission:'tenant:read'},
   { path: "/", redirectTo: "/dashboard" },
   { path: "/dashboard", page: "dashboard", roles: [ROLE.MANAGER], permission: "dashboard:read" },
   { path: "/properties", page: "properties", roles: [ROLE.MANAGER], permission: "property:read" },
@@ -187,7 +182,7 @@ export const HOME_FOR_ROLE = {
 
 /** Nav items visible to a role, preserving registry order. */
 export function navForRole(role) {
-  return NAV_ITEMS.filter((item) => item.roles.includes(role) && (!isMockMode() || !['leases','assignments'].includes(item.id)));
+  return NAV_ITEMS.filter((item) => item.roles.includes(role));
 }
 
 /** Group nav items by their `section`, preserving first-seen section order. */

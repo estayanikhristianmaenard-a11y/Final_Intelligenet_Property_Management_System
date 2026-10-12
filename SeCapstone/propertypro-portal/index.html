@@ -18,7 +18,6 @@
   <link rel="stylesheet" href="./src/styles/pages/entities.css" />
   <link rel="stylesheet" href="./src/styles/pages/tenants.css" />
   <link rel="stylesheet" href="./src/styles/pages/billing.css" />
-  <link rel="stylesheet" href="./src/styles/pages/foundation.css" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -29,6 +28,12 @@
   <div id="modal-root"></div>
   <div id="toast-root" class="toast-root" role="status" aria-live="polite" aria-atomic="false"></div>
 
+  <noscript>PropertyPro requires JavaScript. Enable it and open the portal through its local server.</noscript>
+  <script>
+    if (location.protocol === 'file:') {
+      document.getElementById('app-root').textContent = 'Open PropertyPro through http://localhost:8080/ after starting the server with npm start. Opening index.html directly blocks the application modules.';
+    }
+  </script>
   <script type="module" src="./src/app/app.js"></script>
 </body>
 </html>

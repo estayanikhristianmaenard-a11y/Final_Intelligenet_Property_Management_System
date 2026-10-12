@@ -7,9 +7,6 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, initials, avatarTone } from "../../utils/format.js";
 import { UNIT_STATUS_META } from "../../config/constants.js";
-import {isMockMode} from '../../config/api.js';
-import {openRecordEditor} from '../foundation/foundation.page.js';
-let liveBuildings=[];
 
 /**
  * Units page — grouped by floor, filterable by building.
@@ -18,12 +15,16 @@ let liveBuildings=[];
  * @param {HTMLElement} container
  * @param {{query:URLSearchParams}} ctx
  */
-export async function renderUnits(container, { query = new URLSearchParams() } = {}) {
-  if (!isMockMode()) liveBuildings=await api.get(endpoints.properties());
+export async function renderUnits(
+  container,
+  { query = new URLSearchParams() } = {},
+) {
   let propertyId = query.get("property") ?? "";
   let statusFilter = "";
+  let properties = [];
 
   const load = async () => {
+    properties = await api.get(endpoints.properties());
     const units = await api.get(
       endpoints.units({ propertyId, status: statusFilter }),
     );
@@ -32,17 +33,18 @@ export async function renderUnits(container, { query = new URLSearchParams() } =
   };
 
   const paint = (units) => {
-    render(container, frame(content(units), { propertyId }));
+    render(container, frame(content(units), { propertyId, properties }));
   };
 
   function bind() {
-    if (!isMockMode()) container.querySelectorAll('[data-edit-unit]').forEach(button=>button.onclick=()=>openRecordEditor('units',load,button.dataset.editUnit));
-    if (!isMockMode()) container.querySelectorAll('[data-assign]').forEach(button=>button.onclick=()=>{window.location.hash='/assignments';});
-    if (!isMockMode()) container.querySelector('.page-header__actions button').onclick=()=>openRecordEditor('units',load);
     container.querySelectorAll("[data-building]").forEach((chip) => {
       chip.addEventListener("click", () => {
         propertyId = chip.getAttribute("data-building");
-        history.replaceState(null, "", `#/units${propertyId ? `?property=${propertyId}` : ""}`);
+        history.replaceState(
+          null,
+          "",
+          `#/units${propertyId ? `?property=${propertyId}` : ""}`,
+        );
         load();
       });
     });
@@ -61,7 +63,15 @@ export async function renderUnits(container, { query = new URLSearchParams() } =
     });
   }
 
-  render(container, frame(html`<div class="card"><div class="card__body">${skeletonRows(6)}</div></div>`, { propertyId }));
+  render(
+    container,
+    frame(
+      html`<div class="card">
+        <div class="card__body">${skeletonRows(6)}</div>
+      </div>`,
+      { propertyId, properties },
+    ),
+  );
   try {
     await load();
   } catch (error) {
@@ -74,13 +84,13 @@ export async function renderUnits(container, { query = new URLSearchParams() } =
           body: error.message,
         }),
       ),
-      { propertyId },
+      { propertyId, properties },
     );
   }
 }
 
-function frame(content, { propertyId }) {
-  const buildings = isMockMode() ? ["prp-a", "prp-b", "prp-c", "prp-d"] : liveBuildings.map(p=>p.id);
+function frame(content, { propertyId, properties }) {
+  const buildings = properties ?? [];
 
   return html`<section class="page" aria-labelledby="page-title">
     <div class="page-header">
@@ -94,27 +104,42 @@ function frame(content, { propertyId }) {
         <p>Unit register with occupancy, arrangement and rent configuration.</p>
       </div>
       <div class="page-header__actions">
-        <button class="btn btn--primary" type="button">${icon("plus", { size: 15 })} Add unit</button>
+        <button class="btn btn--primary" type="button">
+          ${icon("plus", { size: 15 })} Add unit
+        </button>
       </div>
     </div>
 
-    <div class="filter-bar" style="border:1px solid var(--border-subtle);border-radius:12px;margin-bottom:var(--space-4);background:#fff">
+    <div
+      class="filter-bar"
+      style="border:1px solid var(--border-subtle);border-radius:12px;margin-bottom:var(--space-4);background:#fff"
+    >
       <span class="text-xs font-semibold text-muted">Building</span>
+      <button
+        class="filter-chip ${!propertyId ? "is-active" : ""}"
+        data-building=""
+      >
+        All properties
+      </button>
       ${buildings.map(
-        (id) => html`<button
-          class="filter-chip ${propertyId === id ? "is-active" : ""}"
-          type="button"
-          data-building="${id}"
-        >
-          ${isMockMode() ? id.slice(-1).toUpperCase() : liveBuildings.find(p=>p.id===id)?.name}
-        </button>`,
+        (id) =>
+          html`<button
+            class="filter-chip ${propertyId === id.id ? "is-active" : ""}"
+            type="button"
+            data-building="${id.id}"
+          >
+            ${id.name}
+          </button>`,
       )}
-      <span style="width:1px;height:20px;background:var(--border-default)"></span>
+      <span
+        style="width:1px;height:20px;background:var(--border-default)"
+      ></span>
       <span class="text-xs font-semibold text-muted">Status</span>
       ${Object.entries(UNIT_STATUS_META).map(
-        ([key, meta]) => html`<button class="filter-chip" type="button" data-status="${key}">
-          ${meta.label}
-        </button>`,
+        ([key, meta]) =>
+          html`<button class="filter-chip" type="button" data-status="${key}">
+            ${meta.label}
+          </button>`,
       )}
     </div>
 
@@ -135,30 +160,35 @@ function content(units) {
 
   return html`<div class="card">
     ${floors.map(
-      (group) => html`<div class="floor-group">
-        <div class="floor-group__head">
-          <span>${group.floor}</span>
-          <span>${group.units.length} units · ${group.units.filter((u) => u.status === "occupied").length} occupied</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" aria-label="${group.floor} units">
-            <thead>
-              <tr>
-                <th scope="col">Unit</th>
-                <th scope="col">Type</th>
-                <th scope="col">Occupant</th>
-                <th scope="col">Arrangement</th>
-                <th scope="col">Monthly rent</th>
-                <th scope="col">Status</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              ${group.units.map((unit) => unitRow(unit))}
-            </tbody>
-          </table>
-        </div>
-      </div>`,
+      (group) =>
+        html`<div class="floor-group">
+          <div class="floor-group__head">
+            <span>${group.floor}</span>
+            <span
+              >${group.units.length} units ·
+              ${group.units.filter((u) => u.status === "occupied").length}
+              occupied</span
+            >
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" aria-label="${group.floor} units">
+              <thead>
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Occupant</th>
+                  <th scope="col">Arrangement</th>
+                  <th scope="col">Monthly rent</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${group.units.map((unit) => unitRow(unit))}
+              </tbody>
+            </table>
+          </div>
+        </div>`,
     )}
   </div>`;
 }
@@ -175,31 +205,61 @@ function unitRow(unit) {
     </td>
     <td class="text-xs">${unit.type}</td>
     <td>
-      ${hasTenant
-        ? html`<span class="cell-entity">
-            <span class="avatar avatar--sm ${avatarTone(unit.tenantName)}">${initials(unit.tenantName)}</span>
-            <span class="cell-entity__meta"><strong>${unit.tenantName}</strong></span>
-          </span>`
-        : html`<span class="text-xs text-muted">— vacant —</span>`}
+      ${
+        hasTenant
+          ? html`<span class="cell-entity">
+              <span class="avatar avatar--sm ${avatarTone(unit.tenantName)}"
+                >${initials(unit.tenantName)}</span
+              >
+              <span class="cell-entity__meta"
+                ><strong>${unit.tenantName}</strong></span
+              >
+            </span>`
+          : html`<span class="text-xs text-muted">— vacant —</span>`
+      }
     </td>
     <td>
-      ${unit.arrangement === "shared_occupancy"
-        ? badge(`Shared · ${unit.occupants}`, "violet")
-        : badge("Individual", "neutral")}
+      ${
+        unit.arrangement === "shared_occupancy"
+          ? badge(`Shared · ${unit.occupants}`, "violet")
+          : badge("Individual", "neutral")
+      }
     </td>
     <td><span class="money">${peso(unit.monthlyRent)}</span></td>
     <td>${unitStatusBadge(unit.status)}</td>
     <td class="cell-actions">
-      ${!isMockMode()?html`<button class="btn btn--ghost btn--sm" type="button" data-edit-unit="${unit.id}">Edit</button>`:null}
-      ${hasTenant
-        ? html`<button
-            class="btn btn--soft btn--sm"
-            type="button"
-            data-open-tenant="${unit.tenantId}"
-          >
-            Details
-          </button>`
-        : html`<button class="btn btn--secondary btn--sm" type="button" data-assign>Assign</button>`}
+      ${
+        hasTenant
+          ? html`<button
+              class="btn btn--soft btn--sm"
+              type="button"
+              data-open-tenant="${unit.tenantId}"
+            >
+              Details
+            </button>`
+          : html`<button
+              class="btn btn--secondary btn--sm"
+              type="button"
+              data-assign="${unit.id}"
+            >
+              Assign
+            </button>`
+      }
+      <button
+        class="btn btn--ghost btn--sm"
+        data-edit-entity="units"
+        data-id="${unit.id}"
+      >
+        Edit
+      </button>
+      <button
+        class="btn btn--ghost btn--sm"
+        data-delete-entity="units"
+        data-id="${unit.id}"
+      >
+        Delete
+      </button>
+      ${unit.arrangement === "shared_occupancy" && hasTenant ? html`<button class="btn btn--secondary btn--sm" data-assign="${unit.id}">Add occupant</button>` : null}
     </td>
   </tr>`;
 }
