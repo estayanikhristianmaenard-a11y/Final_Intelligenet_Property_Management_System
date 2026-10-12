@@ -2,6 +2,10 @@
 
 Version 2.0 · 11 October 2026. The implementation is `server/index.js`, `service.js`, `rules.js`, `integrations.js`, and `store.js`. This is an implemented REST API, not a proposed mock contract.
 
+## Manager-confirmed advance application (12 October 2026 update)
+
+`POST /api/v1/bills/:id/apply-advance` accepts `{ "confirmed": true }` for a Manager. The bill must be the final applicable rent cycle with available confirmed credit and an original confirmed receipt. Reported/Paid bills or excess credit require review. Generation, scheduling and confirmation alone do not apply credit. A fully covered bill becomes Paid with the original receipt/payment; no new payment/receipt is created. A remaining balance stays Unpaid. Retries return the existing settlement. `GET /bills` exposes `availableAdvanceCredit` for eligible final Unpaid records. Application records the Manager and preserves prior values.
+
 ## Transport and authentication
 
 Base path: `/api/v1`. Requests and errors are JSON unless a download is requested. Login uses POST. Every protected endpoint requires `Authorization: Bearer <token>`. No cookie authentication is used. The frontend clears its cached session and returns to login after a protected request returns 401.

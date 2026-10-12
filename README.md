@@ -88,6 +88,8 @@ The authoritative database definition is `server/store.js`; the database is `DAT
 
 ## Verification and remaining work
 
+The [finalized-paper backend audit](SeCapstone/review/FINALIZED_PAPER_BACKEND_AUDIT.md) uses the approved 40-page baseline. Manager-confirmed final advance application and Paid/original-receipt settlement were corrected. Outstanding manuscript gaps are explicitly listed there; current code is not claimed to satisfy every requirement.
+
 The inspected application passed 24 backend tests and one actual Edge browser test. Run `npm.cmd test` in the portal directory; tests use isolated databases. These development checks are not participant evaluation or production certification.
 
 The tests use real generated PDF/image extraction, HTTP authorization, an actual browser, and a test transport for Push. Windows uses installed Microsoft Edge; set `BROWSER_EXECUTABLE` for another Chromium executable. Other platforms need an installed Playwright Chromium browser.

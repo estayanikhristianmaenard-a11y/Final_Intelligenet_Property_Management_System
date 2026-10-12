@@ -121,6 +121,20 @@ export async function renderBills(
   };
 
   const bindBody = (data) => {
+    container.querySelectorAll('[data-apply-advance]').forEach(button => {
+      button.onclick = async () => {
+        const bill = data.bills.find(b => b.id === button.dataset.applyAdvance);
+        if (!window.confirm(`Apply ${peso(bill.availableAdvanceCredit)} confirmed advance credit to this final rent bill? A covered bill will reuse the original payment and receipt.`)) return;
+        button.disabled = true;
+        try {
+          await api.post(`/bills/${encodeURIComponent(bill.id)}/apply-advance`, {confirmed:true});
+          toastSuccess('Advance credit applied');
+          await load();
+          await onChanged?.();
+        } catch(error) {toast({title:'Credit application blocked',message:error.message,tone:'danger'});}
+        finally {button.disabled=false;}
+      };
+    });
     bindExceptionQueue(container, {
       onChanged: () => {
         load();
@@ -534,6 +548,7 @@ function recordsTable(bills, { canConfirm }) {
         className: "cell-actions",
         render: (row) =>
           html`<span class="row row-2" style="justify-content:flex-end">
+            ${canConfirm && row.availableAdvanceCredit > 0 ? html`<button class="btn btn--primary btn--sm" data-apply-advance="${row.id}" data-no-row>Apply advance ${peso(row.availableAdvanceCredit)}</button>` : null}
             <button
               class="btn btn--soft btn--sm"
               type="button"

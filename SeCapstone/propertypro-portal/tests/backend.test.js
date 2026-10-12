@@ -215,9 +215,23 @@ test("confirmed advance credit applies once to the final applicable cycle", () =
       f.tenants[0].id,
     );
     f.v.generateRent("2026-03-31");
-    const final = f.v
+    let final = f.v
       .bills(f.tenantUser)
       .find((b) => b.dueDate === "2026-02-28");
+    assert.equal(final.totalDue,100);
+    assert.equal(final.paymentStatus,'unpaid');
+    assert.throws(()=>f.v.report(f.tenantUser,final.id,{method:'cash'}),e=>e.status===409);
+    assert.throws(()=>f.v.applyAdvance(f.tenantUser,final.id,{confirmed:true}),e=>e.status===403);
+    assert.throws(()=>f.v.applyAdvance(f.admin,final.id,{confirmed:true}),e=>e.status===403);
+    assert.throws(()=>f.v.applyAdvance(f.manager,final.id,{confirmed:false}),e=>e.status===422);
+    const receiptCount=f.s.all('receipts').length;
+    const paymentCount=f.s.all('payments').length;
+    final=f.v.applyAdvance(f.manager,final.id,{confirmed:true}).bill;
+    assert.equal(final.paymentStatus,'paid');
+    assert.equal(final.receiptId,f.s.get('bills',first.id).receiptId);
+    assert.equal(f.v.applyAdvance(f.manager,final.id,{confirmed:true}).unchanged,true);
+    assert.equal(f.s.all('receipts').length,receiptCount);
+    assert.equal(f.s.all('payments').length,paymentCount);
     assert.equal(final.totalDue, 0);
     assert.equal(final.lines[0].credit, 100);
     assert.equal(
@@ -229,6 +243,24 @@ test("confirmed advance credit applies once to the final applicable cycle", () =
     f.s.close();
   }
 });
+test("partial final advance leaves only the remaining balance to report", () => {
+  const f=fixture();
+  try {
+    f.v.generateRent('2026-01-31');
+    const first=f.v.bills(f.tenantUser)[0];
+    f.v.confirm(f.manager,f.v.report(f.tenantUser,first.id,{method:'cash'}).payment.id);
+    f.v.writeEntity(f.manager,'tenants',{leaseEnd:'2026-03-30',assignmentEnd:'2026-03-30',reason:'Final cycle recorded'},f.tenants[0].id);
+    f.v.generateRent('2026-03-31');
+    const final=f.v.bills(f.tenantUser).find(b=>b.dueDate==='2026-02-28');
+    f.v.correctRent(f.manager,final.id,{amount:150,reason:'Correct recorded fixed cycle rent'});
+    const result=f.v.applyAdvance(f.manager,final.id,{confirmed:true}).bill;
+    assert.equal(result.totalDue,50);
+    assert.equal(result.paymentStatus,'unpaid');
+    assert.equal(f.s.all('receipts').length,1);
+    assert.equal(f.v.report(f.tenantUser,final.id,{method:'cash'}).payment.amount,50);
+  } finally {f.s.close();}
+});
+
 test("utility validation, correction, duplicate hold and protected financial history", () => {
   const f = fixture(":memory:", true);
   try {
@@ -541,7 +573,7 @@ test("conflicting extraction is held and requires a correction to each conflicti
     f.s.close();
   }
 });
-test("late confirmation applies credit to existing unpaid final bill and preserves revisions", () => {
+test("late confirmation waits for Manager credit application and preserves revisions", () => {
   const f = fixture();
   try {
     f.v.writeEntity(
@@ -557,7 +589,8 @@ test("late confirmation applies credit to existing unpaid final bill and preserv
       final = f.v.bills(f.tenantUser).find((b) => b.dueDate === "2026-02-28");
     const p = f.v.report(f.tenantUser, first.id, { method: "cash" }).payment;
     f.v.confirm(f.manager, p.id);
-    const revised = f.s.get("bills", final.id);
+    assert.equal(f.s.get('bills',final.id).totalDue,100);
+    const revised = f.v.applyAdvance(f.manager,final.id,{confirmed:true}).bill;
     assert.equal(revised.totalDue, 0);
     assert.equal(revised.revisions[0].totalDue, 100);
     assert.equal(

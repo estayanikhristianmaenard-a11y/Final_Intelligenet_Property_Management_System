@@ -143,6 +143,8 @@ Database/API checks verified PK/FK integrity, protected dependent deletes, uniqu
 
 ## 6. Selected ISO/IEC 25010:2023 characteristics
 
+**12 October finalized-baseline update:** the [40-page backend audit](../../review/FINALIZED_PAPER_BACKEND_AUDIT.md) identifies remaining manuscript gaps. Automatic advance settlement was replaced with explicit Manager confirmation; covered final bills now reuse the original payment/receipt and become Paid. Pending credit must be reviewed before reporting the remaining final balance. The earlier verification record below describes the previous build and does not establish full agreement with the finalized manuscript.
+
 These are evidence-based evaluations of the five characteristics requested by the paper/user, not certification or a full standard conformance claim.
 
 | Characteristic | Evidence and practical limit |
