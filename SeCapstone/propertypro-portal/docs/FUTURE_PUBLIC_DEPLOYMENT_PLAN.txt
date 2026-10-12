@@ -1,0 +1,52 @@
+PROPERTYPRO — FUTURE PUBLIC DEPLOYMENT
+Updated: 12 October 2026
+
+This plan does not purchase hosting, publish the application or invite users.
+Current development uses the existing frontend, Node.js 24+ and SQLite.
+
+Before release
+Confirm paper scope and real property policies. Verify roles, tenant privacy,
+centavo reconciliation, duplicate/retry behavior, advance credit, payment
+rejection/confirmation and receipt uniqueness. Complete provider-layout OCR,
+real mailbox and external Push acceptance. Exercise protected documents,
+backup restoration, scheduler downtime/recovery and supported browsers.
+Document transfer/renewal limitations and review historical rent recovery.
+
+Hosting
+Deploy one Node service on maintained hosting with private persistent storage,
+HTTPS reverse proxy, supervised process/restarts and appropriate resource
+limits for PDF/image extraction. Serve frontend/API from one origin. Configure
+the service's HOST, PORT, DATA_DIR, PORTAL_URL and allowed origins correctly.
+Keep secrets outside Git. Do not expose SQLite, source bills, backups or server
+source through a static web root. The in-process scheduler needs the service
+running; define downtime/recovery controls before relying on reminders.
+
+Database
+SQLite is suitable for evaluating this single-server design; actual concurrency
+and data growth must be measured. Do not use ephemeral hosting disks or assume
+multiple independent instances can safely share a file database. Evaluate a
+database migration only if measured hosting/concurrency needs require it.
+Do not switch databases simply because deployment is public. Document the
+schema migration and account/data migration if a change is chosen.
+Independent property Managers need record-ownership isolation; currently they
+share one organization/portfolio.
+
+Security and operations
+Use unique accounts/passwords, revoke demo access, verify bearer-session and
+browser storage behavior, restrict allowed origins, secure private files,
+limit uploads/requests, review dependencies, and test actual access boundaries.
+Configure real mailbox credentials and stable VAPID keys; never commit them.
+Monitor errors, extraction jobs, scheduler health, disk usage and backups.
+Back up the database and related documents together; demonstrate restoration.
+Plan release rollback and retain a known-good build before deployment changes.
+
+Tenant access
+Tenants sign in through the deployed HTTPS portal in their browser. Push is
+optional; permission denial or delivery failure must leave billing accessible.
+Subscriptions must be registered on the public origin. No tenant SMS/email
+alerts, payment gateways or independent payment verification are added.
+
+Release decision
+Select hosting/budget after proving resource and persistent-storage needs.
+Free software does not establish free reliable hosting. Agree acceptance
+criteria and rollout ownership with the group before inviting real users.

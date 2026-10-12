@@ -9,8 +9,8 @@ Opening `index.html` as a `file://` URL blocks the application's ES modules. Thi
 In PowerShell:
 
 ```powershell
-Set-Location 'E:\xampp\htdocs\Final_Intelligenet_Property_Management_System\SeCapstone\propertypro-portal'
-npm.cmd install
+Set-Location 'D:\Systems\Final_Intelligenet_Property_Management_System\SeCapstone\propertypro-portal'
+npm.cmd ci
 npm.cmd run setup
 npm.cmd start
 ```

@@ -26,6 +26,10 @@ Cookie/CSRF Laravel authentication, numeric IDs and MySQL migrations are incompa
 4. Live IMAP, external Push, real provider variants/scanned PDFs, public deployment, security and load testing retain acceptance gaps.
 5. MySQL data/accounts are not migrated into SQLite. Node setup needs its own isolated database and accounts. Do not run setup against retained operational data without review.
 
-## Next step
+## Decision update — 12 October 2026
+
+The user accepted Node.js + SQLite as the sole backend and authorized removing the retired Laravel source/tools and integrating relevant review/docs/tools into main. The active checkout no longer retains a second backend. The backup branch preserves that implementation. Development/deployment plans are rewritten for Node, and a Node startup helper replaces Composer. The historical inspection findings above remain relevant; database/accounts were not automatically migrated.
+
+## Historical recommendation before this decision
 
 Review and run the candidate, then push a review branch and open a pull request if the team accepts the direction. Do not force-push, merge directly into main, combine the two databases automatically, or reintroduce Laravel API adapters into the Node portal.

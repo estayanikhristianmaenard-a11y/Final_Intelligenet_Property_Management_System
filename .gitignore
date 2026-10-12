@@ -1,4 +1,3 @@
-SeCapstone/tools/composer.phar
-SeCapstone/tools/composer-home/
+.local-backups/
 .integration/
 **/data-demo-review/

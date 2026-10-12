@@ -5,7 +5,7 @@ The existing portal now uses a Node.js API and a centralized SQLite database. Th
 Use Node.js **24 or newer**. From this directory:
 
 ```powershell
-npm.cmd install
+npm.cmd ci
 npm.cmd run setup
 npm.cmd start
 ```
