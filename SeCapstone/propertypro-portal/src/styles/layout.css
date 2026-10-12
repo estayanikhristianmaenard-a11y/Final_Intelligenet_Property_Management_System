@@ -584,6 +584,9 @@
 }
 
 @media (max-width: 720px) {
+  .page-header__actions { flex-wrap: wrap; max-width: 100%; }
+  .btn, .filter-chip, .icon-btn { min-height: 44px; }
+  input.input, select.input, textarea { font-size: 16px; }
   .topbar__search {
     display: none;
   }

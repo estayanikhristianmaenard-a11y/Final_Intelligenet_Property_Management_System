@@ -9,6 +9,8 @@ From the repository root:
 .\SeCapstone\tools\start-local.ps1 -Demo
 # Subsequent normal startup
 .\SeCapstone\tools\start-local.ps1
+# Same-Wi-Fi phone access: replace with your computer's IPv4 address
+.\SeCapstone\tools\start-local.ps1 -LanAddress 192.168.1.20
 ```
 
 Requires Node.js 24+. The helper installs locked dependencies if absent and refuses to continue when initialization fails. It does not change execution policy. If PowerShell blocks it, use the direct npm commands in the [project README](../../README.md). Use `-Port 8081` when 8080 is occupied.

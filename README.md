@@ -19,6 +19,8 @@ For an explicitly isolated demonstration, configure `DATA_DIR=data/demo` and run
 
 A [PowerShell startup helper](SeCapstone/tools/README.md) is also provided. No public deployment was performed.
 
+For phones on the same Wi-Fi, use the [local-network demo instructions](SeCapstone/propertypro-portal/docs/LOCAL_NETWORK_DEMO.md). Start with `-LanAddress YOUR_COMPUTER_IP`; tenants open that computer address in their mobile browser. The interface adapts to phones/tablets/desktops. Local HTTP phone access does not enable secure-origin Web Push.
+
 ## Manuscript baseline
 
 The single user-confirmed finalized manuscript is [FINAL_MANUSCRIPT.pdf](SeCapstone/papers/FINAL_MANUSCRIPT.pdf), 40 pages. Its SHA-256 matches the previously approved PDF in `D:/CAPSTONE/Papers/` exactly. References and mockups remain excluded at the user's request.

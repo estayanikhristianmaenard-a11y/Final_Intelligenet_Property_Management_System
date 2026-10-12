@@ -1,4 +1,4 @@
-param([switch]$Setup, [switch]$Demo, [int]$Port = 8080)
+param([switch]$Setup, [switch]$Demo, [int]$Port = 8080, [string]$LanAddress)
 $ErrorActionPreference = 'Stop'
 $portal = Join-Path (Split-Path $PSScriptRoot -Parent) 'propertypro-portal'
 $nodeCommand = Get-Command node -ErrorAction SilentlyContinue
@@ -25,6 +25,16 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Setup failed. Check whether this database is already initialized.' }
     }
     $env:PORT = [string]$Port
+    if ($LanAddress) {
+        $address = $null
+        if (-not [Net.IPAddress]::TryParse($LanAddress,[ref]$address) -or $address.AddressFamily -ne [Net.Sockets.AddressFamily]::InterNetwork) { throw 'Supply your computer Wi-Fi IPv4 address, for example 192.168.1.20.' }
+        $env:HOST = '0.0.0.0'
+        $env:PORTAL_URL = "http://${LanAddress}:$Port/"
+        $env:ALLOWED_ORIGINS = "http://localhost,http://localhost:$Port,http://127.0.0.1:$Port,http://${LanAddress}:$Port"
+        Write-Host "Tenant access on the same Wi-Fi: $env:PORTAL_URL"
+    } else {
+        $env:HOST = '127.0.0.1'
+    }
     & npm.cmd start
     if ($LASTEXITCODE -ne 0) { throw 'Server startup failed.' }
 } finally { Pop-Location }
