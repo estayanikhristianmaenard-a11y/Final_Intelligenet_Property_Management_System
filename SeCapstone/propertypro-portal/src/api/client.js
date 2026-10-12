@@ -35,6 +35,7 @@ async function liveRequest(
   { method = "GET", body, signal, timeout } = {},
 ) {
   const url = `${apiConfig.BASE_URL}${path}`;
+  const requestToken = session.token;
   const controller = new AbortController();
   const timer = setTimeout(
     () => controller.abort(),
@@ -56,7 +57,11 @@ async function liveRequest(
     const parsed = text ? safeJson(text) : null;
 
     if (!response.ok) {
-      if (response.status === 401 && path !== "/auth/login") {
+      if (
+        response.status === 401 &&
+        path !== "/auth/login" &&
+        session.token === requestToken
+      ) {
         session.clear();
         window.dispatchEvent(new CustomEvent("app:signed-out"));
       }

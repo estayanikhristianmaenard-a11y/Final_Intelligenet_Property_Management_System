@@ -12,7 +12,7 @@
     "setup": "node --env-file-if-exists=.env server/setup.js",
     "push:keys": "node server/keys.js",
     "test:backend": "node --test tests/backend.test.js",
-    "test:browser": "node --test tests/browser.test.js"
+    "test:browser": "node --test tests/browser.test.js tests/routing.browser.test.js"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",
