@@ -3,6 +3,8 @@ import { icon } from "../../components/icon.js";
 import session from "../../auth/session.js";
 import { ROLE, ROLE_LABEL, ROLE_SCOPE } from "../../config/constants.js";
 import { HOME_FOR_ROLE } from "../../config/navigation.js";
+import { resolveRoute, normalisePath } from "../../auth/guards.js";
+import { navigate } from "../../app/router.js";
 import { initials, avatarTone } from "../../utils/format.js";
 import { toastDanger } from "../../components/toast.js";
 
@@ -100,13 +102,26 @@ export function renderLogin(container, { redirectTo = "" } = {}) {
             </div>
             <div class="field">
               <label class="field__label" for="login-password">Password</label>
-              <input
-                class="input"
-                id="login-password"
-                type="password"
-                autocomplete="current-password"
-                required
-              />
+              <div class="auth-password">
+                <input
+                  class="input"
+                  id="login-password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                />
+                <button
+                  class="auth-password__toggle"
+                  type="button"
+                  aria-label="Show password"
+                  aria-controls="login-password"
+                  title="Show password"
+                  data-toggle-password
+                >
+                  ${icon("eye", { size: 16 })}
+                  <span data-password-toggle-label>Show</span>
+                </button>
+              </div>
             </div>
 
             <button
@@ -138,6 +153,20 @@ export function renderLogin(container, { redirectTo = "" } = {}) {
     });
 
     container
+      .querySelector("[data-toggle-password]")
+      .addEventListener("click", (event) => {
+        const button = event.currentTarget;
+        const password = container.querySelector("#login-password");
+        const visible = password.type === "password";
+        password.type = visible ? "text" : "password";
+        const label = visible ? "Hide password" : "Show password";
+        button.setAttribute("aria-label", label);
+        button.title = label;
+        button.querySelector("[data-password-toggle-label]").textContent =
+          visible ? "Hide" : "Show";
+      });
+
+    container
       .querySelector("[data-sign-in]")
       ?.addEventListener("click", async (event) => {
         const button = event.currentTarget;
@@ -151,15 +180,13 @@ export function renderLogin(container, { redirectTo = "" } = {}) {
             email: email.value.trim(),
             password: password.value,
           });
-          const home = `#${HOME_FOR_ROLE[session.role] ?? "/dashboard"}`;
-          const destination =
-            redirectTo && redirectTo !== "/login" && redirectTo !== "/"
-              ? redirectTo
-              : home;
-          window.location.hash = destination.startsWith("#")
-            ? destination.slice(1)
-            : destination;
-          if (!window.location.hash) window.location.hash = home.slice(1);
+          const home = HOME_FOR_ROLE[session.role] ?? "/dashboard";
+          const targetPath = normalisePath(redirectTo);
+          const permitted =
+            redirectTo &&
+            !["/login", "/", "/403"].includes(targetPath) &&
+            resolveRoute(targetPath).status === "ok";
+          navigate(permitted ? redirectTo.replace(/^#/, "") : home);
         } catch (error) {
           toastDanger("Sign in failed", error.message);
         } finally {
