@@ -1,6 +1,10 @@
 ﻿# Finalized Chapters 1–2 baseline
 
-Authoritative source: D:/CAPSTONE/Papers/Intelligent Property Management Workflow with OCR-Enabled Automated Billing Classification and Tenant Notification.pdf
+Project baseline: ../papers/FINAL_MANUSCRIPT.pdf (40 pages).
+
+This copy matches the authoritative source D:/CAPSTONE/Papers/Intelligent Property Management Workflow with OCR-Enabled Automated Billing Classification and Tenant Notification.pdf byte-for-byte (SHA-256 09cd5a1ee5edbe0bf23b59861695cc8a3b542e9b940d29f9be21337d3c512ae9).
+
+The different 51-page manuscript supplied with the Node implementation is retained in ../papers/archive/ADDITIONAL_MANUSCRIPT_51_PAGES.pdf. The QA report used it as a reference, but it has not been established as the user-approved replacement baseline.
 
 The 40-page PDF was reviewed for content, approved scope, billing workflow, tables, and embedded diagrams. No further substantive paragraph revision was identified. References and mockup images were excluded at the user's request.
 

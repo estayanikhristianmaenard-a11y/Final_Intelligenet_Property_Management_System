@@ -19,11 +19,23 @@ For an explicitly isolated demonstration, configure `DATA_DIR=data/demo` and run
 
 A [PowerShell startup helper](SeCapstone/tools/README.md) is also provided. No public deployment was performed.
 
+## Manuscript baseline
+
+The single user-confirmed finalized manuscript is [FINAL_MANUSCRIPT.pdf](SeCapstone/papers/FINAL_MANUSCRIPT.pdf), 40 pages. Its SHA-256 matches the previously approved PDF in `D:/CAPSTONE/Papers/` exactly. References and mockups remain excluded at the user's request.
+
+The different 51-page document supplied with the groupmate's work is preserved as [additional manuscript reference](SeCapstone/papers/archive/ADDITIONAL_MANUSCRIPT_51_PAGES.pdf). It is not an exact duplicate. The QA report used that document as its reference; that does not establish that the user approved it as the finalized replacement. Reconcile differing requirements before changing the locked workflow.
+
+This root README consolidates the former portal README. Tool instructions remain separate because they explain script-specific options.
+
 ## Folder structure
 
 ```text
 README.md                              Stack, structure, responsibilities
 SeCapstone/
+  papers/
+    FINAL_MANUSCRIPT.pdf                User-confirmed finalized 40-page manuscript
+    archive/
+      ADDITIONAL_MANUSCRIPT_51_PAGES.pdf Different reference used by groupmate's QA
   propertypro-portal/
     index.html                         Existing web entry
     server/
@@ -55,7 +67,7 @@ SeCapstone/
   tools/                               Node startup helper and instructions
 ```
 
-`.env`, `node_modules`, private databases/documents/backups, and generated test results are not version-controlled source. `.integration` contains local review worktrees and `.local-backups` contains retired local configuration; both are ignored.
+`.env`, `node_modules`, private databases/documents/backups, and generated test results are not version-controlled source. `.local-backups` contains ignored retired configuration for recovery, not an active project module. Temporary integration worktrees have been removed.
 
 ## Frontend, backend and database responsibilities
 
@@ -75,6 +87,10 @@ The authoritative database definition is `server/store.js`; the database is `DAT
 ## Verification and remaining work
 
 The inspected application passed 24 backend tests and one actual Edge browser test. Run `npm.cmd test` in the portal directory; tests use isolated databases. These development checks are not participant evaluation or production certification.
+
+The tests use real generated PDF/image extraction, HTTP authorization, an actual browser, and a test transport for Push. Windows uses installed Microsoft Edge; set `BROWSER_EXECUTABLE` for another Chromium executable. Other platforms need an installed Playwright Chromium browser.
+
+Implemented rule identifiers include V01–V04, C01–C02, A01 and R01. Live Gmail retrieval and external Push still need real credentials/configuration and acceptance checks; `propertymanager@gmail.com` is a placeholder. The Node server serves only public frontend files. Private DATA_DIR files, OCR cache and backups need restricted permissions; public hosting requires HTTPS and an appropriate reverse proxy.
 
 Managers currently collaborate in one shared portfolio. Separate landlords need ownership scoping. Historical transfers/renewals remain restricted. Live mailbox and external Push delivery, representative provider layouts, scanned-PDF handling, deployment security and load testing still need acceptance work. Notifications do not prove payment or readership.
 
