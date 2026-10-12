@@ -1,5 +1,11 @@
 import { render, html } from "../utils/dom.js";
-import { mountShell, refreshShell, outletElement, setBadges } from "./shell.js";
+import {
+  mountShell,
+  unmountShell,
+  refreshShell,
+  outletElement,
+  setBadges,
+} from "./shell.js";
 import { currentRoute, onRouteChange, navigate } from "./router.js";
 import { resolveRoute, normalisePath } from "../auth/guards.js";
 import session from "../auth/session.js";
@@ -87,6 +93,8 @@ export async function bootstrap(root) {
   window.addEventListener("app:signed-out", () => {
     closePanel();
     closeModal();
+    unmountShell();
+    window.history.replaceState(null, "", "#/login");
     route();
   });
 
@@ -107,6 +115,7 @@ async function route(root = document.getElementById("app-root")) {
 
   /* --- Unauthenticated ------------------------------------------------- */
   if (decision.status === "login") {
+    unmountShell();
     render(root, loginHost());
     const outlet = root.querySelector("[data-auth-outlet]");
     /* Only honour a deep link when it is a real destination, not the login,
@@ -114,7 +123,7 @@ async function route(root = document.getElementById("app-root")) {
     const deepLink =
       normalised === "/login" || normalised === "/" || normalised === "/403"
         ? ""
-        : normalised;
+        : normalised + (query.size ? `?${query.toString()}` : "");
     renderLogin(outlet, { redirectTo: deepLink });
     return;
   }
@@ -197,6 +206,7 @@ function loginHost() {
 export async function loadBadges() {
   if (!session.isAuthenticated) return;
   const role = session.role;
+  const token = session.token;
 
   try {
     if (role === ROLE.MANAGER) {
@@ -205,6 +215,7 @@ export async function loadBadges() {
         api.get(endpoints.tenants()),
         api.get(endpoints.notifications()),
       ]);
+      if (session.token !== token) return;
       setBadges({
         tenants: tenants.length,
         exceptions: stats.openExceptions,
@@ -216,12 +227,14 @@ export async function loadBadges() {
         api.get(endpoints.notifications()),
         api.get(endpoints.tenantBills(session.user?.tenantId)),
       ]);
+      if (session.token !== token) return;
       setBadges({
         myBills: bills.filter((b) => b.paymentStatus !== "paid").length,
         unreadNotifications: notifications.filter((n) => !n.read).length,
       });
     } else {
       const users = await api.get(endpoints.adminUsers());
+      if (session.token !== token) return;
       setBadges({ unreadNotifications: 0, accounts: users.length });
     }
   } catch {

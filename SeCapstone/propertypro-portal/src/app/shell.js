@@ -15,6 +15,22 @@ import session from "../auth/session.js";
 let root = null;
 let outlet = null;
 let state = { activePath: "/", badges: {}, menuOpen: false, navOpen: false };
+let menuCloser = null;
+let menuTimer = null;
+
+function clearMenuDismissal() {
+  if (menuTimer !== null) clearTimeout(menuTimer);
+  if (menuCloser) document.removeEventListener("click", menuCloser);
+  menuTimer = null;
+  menuCloser = null;
+}
+
+export function unmountShell() {
+  clearMenuDismissal();
+  root = null;
+  outlet = null;
+  state = { activePath: "/", badges: {}, menuOpen: false, navOpen: false };
+}
 
 /** Mount the shell once. Subsequent calls reuse the same DOM. */
 export function mountShell(target) {
@@ -27,8 +43,9 @@ export function mountShell(target) {
 
 /** Re-render the shell chrome (sidebar/topbar) without touching the outlet. */
 export function refreshShell(patch = {}) {
+  if (!root || !session.isAuthenticated || !root.querySelector("[data-outlet]"))
+    return;
   state = { ...state, ...patch };
-  if (!root) return;
   const previousOutlet = root.querySelector("[data-outlet]");
 
   const holder = document.createElement("div");
@@ -79,6 +96,7 @@ function shellMarkup() {
 }
 
 function bindChrome() {
+  clearMenuDismissal();
   /* Mobile drawer */
   root
     .querySelector('[data-action="toggle-nav"]')
@@ -145,13 +163,14 @@ function bindChrome() {
 
   /* Dismiss the user menu on outside click */
   if (state.menuOpen) {
-    setTimeout(() => {
-      const closer = (event) => {
+    menuTimer = setTimeout(() => {
+      menuTimer = null;
+      menuCloser = (event) => {
         if (event.target.closest?.(".user-menu")) return;
-        document.removeEventListener("click", closer);
+        clearMenuDismissal();
         if (state.menuOpen) refreshShell({ menuOpen: false });
       };
-      document.addEventListener("click", closer);
+      document.addEventListener("click", menuCloser);
     }, 0);
   }
 }
