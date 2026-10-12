@@ -2,6 +2,10 @@
 
 Baseline: `../papers/FINAL_MANUSCRIPT.pdf`, 40 pages; page numbers are PDF pages. This review supersedes using the archived 51-page reference as the approved baseline. Development tests are not participant evaluation or production certification.
 
+## User-confirmed payment-policy revision — 12 October 2026
+
+The user clarified that Tenants pay utility providers directly, including shared obligations, and Managers confirm rent only. Paste-ready manuscript replacements are in [PAYMENT_WORKFLOW_MANUSCRIPT_REVISION.md](PAYMENT_WORKFLOW_MANUSCRIPT_REVISION.md). The existing finalized PDF and backend have not yet adopted that distinction. The audit table below remains an assessment of the existing PDF; do not treat it as verification of the proposed personal utility tracker.
+
 | Requirement | Finding |
 | --- | --- |
 | Scope/rules, pp. 14–18 | Existing extraction engine and explicit rules; no autonomous AI, gateways or tenant SMS/email. |
