@@ -82,6 +82,6 @@ Managers currently collaborate in one shared portfolio. Separate landlords need 
 - [Implementation and user manual](SeCapstone/propertypro-portal/docs/user-manual.md)
 - [Locked development plan](SeCapstone/propertypro-portal/docs/DEVELOPMENT_AND_DEPLOYMENT_PLAN.txt)
 - [Future public deployment plan](SeCapstone/propertypro-portal/docs/FUTURE_PUBLIC_DEPLOYMENT_PLAN.txt)
-- [Integration inspection history](SeCapstone/review/GIT_INTEGRATION_REVIEW.md)
+- [Finalized manuscript baseline](SeCapstone/review/FINAL_MANUSCRIPT_CHECK.md)
 
 Keep manuscript review material separate from application runtime. References and mockups remain excluded from the finalized manuscript baseline at the user's request. Treat generated example data as demonstration material.
