@@ -9,7 +9,7 @@ The user confirmed completion of the final presentation fixes: Figure 2.1 captio
 Preserve rent/electricity/water scope, deterministic processing, Manager-only confirmation, equal allocation, exception revalidation, advance-credit receipt reuse, and Web Push limitations. No implementation or evaluation results are claimed. Sampling, instruments, scoring, OCR layouts, and acceptance criteria remain to be settled before final data collection. Citations were not independently verified.
 
 Retained files:
-- DEVELOPMENT_NOTES.md: historical findings; recheck current code before development.
+- Current implementation findings and acceptance gaps are in propertypro-portal/docs/qa-report.md.
 - REFERENCES_TO_RESTORE.txt: recovered references for later restoration, not a verified bibliography.
 - 2.2_Process_Flowchart_SIMPLE.drawio: selected editable overview; the manuscript PDF is authoritative for the adopted figure.
 

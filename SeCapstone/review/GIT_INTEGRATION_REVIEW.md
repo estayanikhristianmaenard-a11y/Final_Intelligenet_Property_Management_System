@@ -1,4 +1,6 @@
-# Git integration review — 12 October 2026
+# Historical Git integration review — 12 October 2026
+
+Current state: Node.js + SQLite is the sole active stack. Cleanup was pushed to main as e07c6ff. The retired backend is absent from the active project. References below describe the earlier comparison, not current dependencies. Use the root README and Node user manual for setup.
 
 Recommendation: use the groupmate's Node.js/SQLite application for controlled local capstone development. It covers more approved workflows and retains a coherent frontend/server combination. This is not a claim of production readiness or an error-free system.
 
@@ -16,7 +18,7 @@ Local Laravel passed 12 backend tests, 94 assertions. Fetched Node passed 24 bac
 
 ## Integration method
 
-Cookie/CSRF Laravel authentication, numeric IDs and MySQL migrations are incompatible with Node bearer sessions, text IDs and SQLite schema. The candidate therefore retains the groupmate's whole portal/server module rather than mixing API clients or authentication implementations. Local Laravel frontend adapters/plans/tests are preserved in the backup commit. Laravel backend source is retained as inactive reference code. Both commit histories are retained.
+Cookie/CSRF Laravel authentication, numeric IDs and MySQL migrations are incompatible with Node bearer sessions, text IDs and SQLite schema. The integration keeps the groupmate's whole portal/server module rather than mixing incompatible API clients. The retired backend and its frontend adapters are preserved only in Git history and the backup branch. Both histories are retained.
 
 ## Material limits
 
