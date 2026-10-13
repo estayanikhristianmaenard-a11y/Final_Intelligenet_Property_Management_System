@@ -461,6 +461,10 @@
 }
 
 @media (max-width: 720px) {
+  .tenant-hero-card__unit { flex-wrap: wrap; overflow-wrap: anywhere; }
+  .notification-item { flex-wrap: wrap; }
+  .notification-item__body { overflow-wrap: anywhere; }
+  .notification-item__time { margin-left: 46px; }
   .tenant-hero-card {
     grid-template-columns: minmax(0, 1fr);
   }

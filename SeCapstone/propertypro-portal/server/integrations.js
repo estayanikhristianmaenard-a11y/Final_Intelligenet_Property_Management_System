@@ -263,7 +263,7 @@ export class Integrations {
             sub.subscription,
             JSON.stringify({
               title: n.title,
-              body: n.body,
+              body: "Sign in to PropertyPro to view your billing update.",
               id: n.id,
               url:
                 this.env.PORTAL_URL ?? "http://localhost:8080/#/tenant/bills",

@@ -1,0 +1,45 @@
+PROPERTYPRO — LOCKED DEVELOPMENT STACK
+Updated: 12 October 2026
+
+Use the existing HTML/CSS/JavaScript interface and Node.js 24+ backend in
+SeCapstone/propertypro-portal. SQLite is the single local database. npm and
+package-lock.json manage dependencies. Do not run a second backend or combine
+unrelated authentication/data models. The retired backend is recoverable from
+backup/local-laravel-20261012 in Git.
+
+Source responsibilities
+server/index.js: HTTP routes, static-file boundaries and minute scheduler.
+server/service.js: authentication, authorization and business workflows.
+server/store.js: SQLite schema, persistence, transactions and backups.
+server/rules.js: validation, Philippine dates and whole-centavo allocation.
+server/integrations.js: email intake, extraction and Web Push integrations.
+src/: original portal screens, components, session and API client.
+tests/: backend scenarios, browser workflow and extraction fixtures.
+docs/: API contract, manual, QA evidence and deployment guidance.
+
+Local workflow
+Install Node 24+, run npm ci, initialize an empty portfolio with npm run setup,
+and start with npm start. Use the HTTP URL, not index.html through file://.
+Use an explicit separate demo DATA_DIR for generated example records.
+Keep the server running for periodic intake, rent and reminders.
+Secrets, database, documents and backups remain private and ignored by Git.
+
+Development priorities
+Keep the approved rent/electricity/water scope. Verify provider document
+layouts independently; never treat OCR output as automatically valid.
+Preserve deterministic validation/allocation, duplicate prevention,
+correction history, Manager payment confirmation, receipt reuse and advance
+credit controls. Test amendments/transfers before enabling historical changes.
+The current application assumes Managers collaborate in one portfolio.
+Independent landlords require ownership boundaries before public operation.
+
+Acceptance work
+Configure a real designated mailbox and verify reconnect/duplicate behavior.
+Test real optional Web Push permission, enrollment, background delivery and
+click-through on supported devices. Test failures and retries without blocking
+portal access. Notifications do not prove payment or readership.
+Complete measured testing and the five selected software-quality criteria;
+automated development tests are not completed participant evaluation.
+Do not add tenant SMS/email, gateways, autonomous AI or other excluded scope.
+
+Public deployment is separate. See FUTURE_PUBLIC_DEPLOYMENT_PLAN.txt.

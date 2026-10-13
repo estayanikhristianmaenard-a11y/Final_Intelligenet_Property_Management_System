@@ -316,6 +316,8 @@ export function createApp({
         output = service.tenant(user, p.split("/")[2]);
       else if (p === "/bills" && verb === "GET")
         output = service.bills(user, query);
+      else if (/^\/bills\/[^/]+\/apply-advance$/.test(p) && verb === "POST")
+        output = service.applyAdvance(user, p.split("/")[2], body);
       else if (
         /^\/bills\/[^/]+$/.test(p) &&
         p !== "/bills/incoming" &&

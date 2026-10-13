@@ -719,7 +719,20 @@ export class Service {
     );
     this.s.activity("Bill Finalized", b.id, "Unpaid", "#/bills?tab=records");
   }
-  reconcileAdvanceCredits() {
+  applyAdvance(user, id, body) {
+    this.role(user, "manager");
+    requireValue(body.confirmed === true, "Manager confirmation of credit application is required");
+    return this.s.transaction(() => {
+      const bill = this.must("bills", id);
+      const credit = this.s.get("credits", "advance:" + bill.tenantId);
+      requireValue(credit && (!credit.appliedBillId || credit.appliedBillId === id), "No available confirmed advance for this bill", 409);
+      if (credit.appliedBillId === id) return { bill, unchanged: true };
+      this.reconcileAdvanceCredits(user, id);
+      requireValue(this.s.get("credits", credit.id).appliedBillId === id, "Credit cannot be applied: review final-cycle eligibility, payment status and amount", 409);
+      return { bill: this.must("bills", id), unchanged: false };
+    });
+  }
+  reconcileAdvanceCredits(user = null, targetBillId = null) {
     for (const credit of this.s
       .all("credits")
       .filter((c) => !c.appliedBillId)) {
@@ -737,6 +750,7 @@ export class Service {
         )
         .sort((a, b) => b.dueDate.localeCompare(a.dueDate))[0];
       if (!final) continue;
+      if (targetBillId && targetBillId !== final.id) continue;
       const line = final.lines.find(
           (l) => l.category === "rent" && !l.isAdvance,
         ),
@@ -771,6 +785,12 @@ export class Service {
           });
         continue;
       }
+      // Generation, corrections, confirmation and scheduling never authorize settlement.
+      if (!user) continue;
+      this.role(user, "manager");
+      const original = this.must("bills", credit.billId);
+      const receipt = original.receiptId && this.s.get("receipts", original.receiptId);
+      requireValue(original.paymentStatus === "paid" && receipt && receipt.tenantId === tenant.id, "Advance must have a confirmed payment and original receipt", 409);
       final.revisions = [
         ...(final.revisions ?? []),
         {
@@ -791,12 +811,19 @@ export class Service {
       );
       final.revision++;
       final.creditSettled = final.totalDue === 0;
+      if (final.creditSettled) {
+        final.paymentStatus = "paid";
+        final.receiptId = original.receiptId;
+        final.settlementPaymentId = receipt.paymentId;
+        final.lines = final.lines.map(l => ({ ...l, paymentStatus: "paid" }));
+      }
       this.saveBill(final);
       this.s.save("credits", {
         ...credit,
         appliedBillId: final.id,
         appliedAmount: money(amount),
         appliedAt: new Date().toISOString(),
+        appliedBy: user.id,
       });
       for (const e of this.s
         .all("exceptions")
@@ -813,7 +840,7 @@ export class Service {
         "billing",
         "credit:" + credit.id + ":" + final.id,
       );
-      this.s.audit(null, "Confirmed advance applied to final rent", final.id);
+      this.s.audit(user, "Confirmed advance applied to final rent", final.id);
     }
   }
   correctRent(user, id, body) {
@@ -1404,6 +1431,13 @@ export class Service {
               .toLowerCase()
               .includes(filters.q.toLowerCase())),
       )
+      .map(b => {
+        const credit = this.s.get("credits", "advance:" + b.tenantId);
+        const tenant = this.must("tenants", b.tenantId);
+        const end = tenant.assignmentEnd ?? tenant.leaseEnd;
+        const isFinal = end && !b.sourceId && b.dueDate <= end && monthAfter(b.dueDate, Number(tenant.leaseStart.slice(-2))) > end;
+        return { ...b, availableAdvanceCredit: isFinal && credit && !credit.appliedBillId && b.paymentStatus === "unpaid" ? credit.amount : 0 };
+      })
       .sort(
         (a, b) =>
           b.dueDate.localeCompare(a.dueDate) ||
@@ -1427,6 +1461,8 @@ export class Service {
     this.role(user, "tenant");
     const bill = this.must("bills", id);
     this.own(user, bill.tenantId);
+    const view = this.bills(user, {tenantId: bill.tenantId}).find(b => b.id === id);
+    requireValue(!view.availableAdvanceCredit, "Manager must review/apply the confirmed final-cycle advance before the remaining balance is reported", 409);
     requireValue(
       ["cash", "bank_transfer", "e_wallet"].includes(body.method),
       "Select a valid payment method",

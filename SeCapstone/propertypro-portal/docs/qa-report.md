@@ -6,7 +6,9 @@ PropertyPro 2.0 · 11 October 2026
 
 **Local integrated workflows pass the verification suite. Production/provider acceptance remains pending.** The final suite has 25 tests: 24 backend/integration scenarios and one comprehensive real-browser scenario. Live Gmail retrieval and external provider-to-browser push delivery were not verified because the supplied email address is made up and no live integration configuration/device subscription was provided. Those checks are not marked resolved.
 
-The primary reference is the newer 51-page **Intelligent Property Management Workflow with OCR-Enabled Automated Billing Classification and Tenant Notification.pdf**, in the parent SeCapstone directory. Pages 21–22 define the functions, pages 30–35 define rent/intake/allocation and the V01–R01 rules. This report also uses the actual existing source and the previously reported QA-001–QA-026 register. The research PDFs were read without modification.
+The reference used when this QA report was prepared was the 51-page manuscript, now preserved at [additional manuscript reference](../../papers/archive/ADDITIONAL_MANUSCRIPT_51_PAGES.pdf). Pages 21–22 define the functions, pages 30–35 define rent/intake/allocation and the V01–R01 rules. The report also used the actual source and the previously reported QA-001–QA-026 register. The research PDFs were read without modification.
+
+Repository organization update: the user-confirmed finalized baseline is the distinct [40-page manuscript](../../papers/FINAL_MANUSCRIPT.pdf). This report's earlier description of the 51-page copy as newer does not establish approval of that copy. Its verification provenance remains the 51-page reference; differences must be reconciled before claiming complete agreement with the finalized baseline.
 
 Adjustments made to conform to that paper:
 
@@ -140,6 +142,8 @@ The browser test generated `test-results/admin-browser.png` (1440-pixel desktop 
 Database/API checks verified PK/FK integrity, protected dependent deletes, unique mappings/receipts/cycles/events, all three roles, other-tenant denial, CORS denial, private Node static-file denial, settings persistence, real downloadable file bodies, and SQLite backup consistency. The complete endpoint/table list is in [api-contract.md](api-contract.md).
 
 ## 6. Selected ISO/IEC 25010:2023 characteristics
+
+**12 October finalized-baseline update:** the [40-page backend audit](../../review/FINALIZED_PAPER_BACKEND_AUDIT.md) identifies remaining manuscript gaps. Automatic advance settlement was replaced with explicit Manager confirmation; covered final bills now reuse the original payment/receipt and become Paid. Pending credit must be reviewed before reporting the remaining final balance. The earlier verification record below describes the previous build and does not establish full agreement with the finalized manuscript.
 
 These are evidence-based evaluations of the five characteristics requested by the paper/user, not certification or a full standard conformance claim.
 

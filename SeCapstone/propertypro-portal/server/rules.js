@@ -24,7 +24,8 @@ export function cents(value) {
       /^\d+(?:\.\d{1,2})?$/.test(String(value)),
     "Amount must be nonnegative with at most two decimal places",
   );
-  const n = Math.round(Number(value) * 100);
+  const [whole, fraction = ""] = String(value).split(".");
+  const n = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
   requireValue(
     Number.isSafeInteger(n) && n <= 100_000_000_000,
     "Amount exceeds supported limit",

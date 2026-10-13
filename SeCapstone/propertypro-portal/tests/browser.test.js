@@ -4,6 +4,9 @@ import { mkdtempSync, rmSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium, expect } from "@playwright/test";
+
+// Local OCR/browser work may exceed the default 5s on shared student laptops.
+expect.configure({ timeout: 15000 });
 import { createApp } from "../server/index.js";
 import { Store } from "../server/store.js";
 import { Service } from "../server/service.js";
