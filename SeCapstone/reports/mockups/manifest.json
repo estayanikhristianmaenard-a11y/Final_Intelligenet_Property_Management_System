@@ -1,0 +1,258 @@
+{
+  "capturedAt": "2026-10-16T12:41:13.623Z",
+  "source": "Current local code; isolated synthetic showcase; no external delivery",
+  "records": [
+    {
+      "file": "07-login-desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Demo login / desktop"
+    },
+    {
+      "file": "08-login-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Demo login / phone"
+    },
+    {
+      "file": "01-manager-dashboard.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /dashboard"
+    },
+    {
+      "file": "02-property-management.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /properties"
+    },
+    {
+      "file": "03-billing-management.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /bills"
+    },
+    {
+      "file": "09-manager-bill-review.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /bills?tab=incoming"
+    },
+    {
+      "file": "36-manager-ocr-review-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Inline OCR correction / phone"
+    },
+    {
+      "file": "10-manager-settings.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /settings"
+    },
+    {
+      "file": "31-manager-units.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /units"
+    },
+    {
+      "file": "32-manager-tenants.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /tenants"
+    },
+    {
+      "file": "33-manager-reports.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager /reports"
+    },
+    {
+      "file": "39-manager-unsaved-changes.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Unsaved profile changes / Cancel and Save"
+    },
+    {
+      "file": "38-manager-processing-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Bill-processing state / response deliberately paused"
+    },
+    {
+      "file": "15-rent-payment-review.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Manager reviews a reported rent payment"
+    },
+    {
+      "file": "16-rent-payment-confirmed.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Manager-confirmed payment and original receipt reference"
+    },
+    {
+      "file": "04-tenant-dashboard.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "tenant /tenant"
+    },
+    {
+      "file": "06-mobile-tenant.png",
+      "width": 390,
+      "height": 844,
+      "label": "tenant /tenant"
+    },
+    {
+      "file": "11-tenant-bills-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "tenant /tenant/bills"
+    },
+    {
+      "file": "12-tenant-alerts-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "tenant /tenant/notifications"
+    },
+    {
+      "file": "13-tenant-settings-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "tenant /tenant/settings"
+    },
+    {
+      "file": "14-tenant-tablet.png",
+      "width": 820,
+      "height": 1000,
+      "label": "tenant /tenant"
+    },
+    {
+      "file": "27-receipt-list-desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Receipt list / spaced amounts and actions"
+    },
+    {
+      "file": "28-receipt-list-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Receipt list / spaced amounts and actions"
+    },
+    {
+      "file": "25-receipt-view-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Protected receipt preview / no download required"
+    },
+    {
+      "file": "26-receipt-view-desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Protected receipt preview with Print and Download"
+    },
+    {
+      "file": "23-calendar-next-month-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Next-month rent estimate / icons / no predicted utilities"
+    },
+    {
+      "file": "24-calendar-next-month-desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Next-month scheduled rent, separate from actual current bills"
+    },
+    {
+      "file": "17-tenant-rent-report.png",
+      "width": 390,
+      "height": 844,
+      "label": "Tenant rent-report dialog; not submitted"
+    },
+    {
+      "file": "37-tenant-bill-filters-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Expanded mobile bill filters / active count"
+    },
+    {
+      "file": "20-tenant-no-matching-bills.png",
+      "width": 390,
+      "height": 844,
+      "label": "Empty filter result with Reset filters recovery"
+    },
+    {
+      "file": "21-tenant-bills-loading.png",
+      "width": 390,
+      "height": 844,
+      "label": "Loading state / deliberately paused test response"
+    },
+    {
+      "file": "22-tenant-bills-error.png",
+      "width": 390,
+      "height": 844,
+      "label": "Recoverable error / deliberately simulated 503 response"
+    },
+    {
+      "file": "29-independent-manager-workspace.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "manager-b /dashboard"
+    },
+    {
+      "file": "30-independent-tenant-workspace.png",
+      "width": 390,
+      "height": 844,
+      "label": "tenant-b /tenant"
+    },
+    {
+      "file": "05-admin-dashboard.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "admin /admin"
+    },
+    {
+      "file": "41-admin-status-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "admin /admin"
+    },
+    {
+      "file": "42-admin-status-evidence.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "admin /admin"
+    },
+    {
+      "file": "34-admin-audit.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "admin /admin/audit"
+    },
+    {
+      "file": "35-admin-workspaces-accounts.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "admin /admin/settings"
+    },
+    {
+      "file": "40-admin-audit-older-records.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "admin /admin/audit?page=2"
+    },
+    {
+      "file": "18-rent-receipt-desktop.png",
+      "width": 1100,
+      "height": 1050,
+      "label": "Original confirmed-payment receipt / full document"
+    },
+    {
+      "file": "19-rent-receipt-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Original confirmed-payment receipt / full document"
+    }
+  ]
+}

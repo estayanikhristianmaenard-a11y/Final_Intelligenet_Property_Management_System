@@ -1,0 +1,30 @@
+{
+  "id": "electricity-001",
+  "origin": "synthetic",
+  "independentActualBill": false,
+  "expectedFields": {
+    "provider": "Meralco",
+    "accountRef": "TEST-MERALCO-001",
+    "amountDue": 100.01,
+    "dueDate": "2026-10-18",
+    "periodStart": "2026-10-01",
+    "periodEnd": "2026-10-14"
+  },
+  "expectedOutcome": "valid_with_verified_mapping_and_occupancy",
+  "files": [
+    {
+      "path": "bill-digital.pdf",
+      "method": "pdf_text"
+    },
+    {
+      "path": "email-attachment.eml",
+      "method": "email_attachment"
+    },
+    {
+      "path": "email-summary.eml",
+      "method": "email_text"
+    }
+  ],
+  "duplicateExpectation": "Versions in this case represent one bill; a second accepted version must not create another charge.",
+  "notes": "Invented development data; not an independently collected provider bill."
+}

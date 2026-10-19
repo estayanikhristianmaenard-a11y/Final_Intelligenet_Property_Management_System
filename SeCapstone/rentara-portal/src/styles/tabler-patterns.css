@@ -1,0 +1,212 @@
+/* Selected Tabler presentation patterns adapted to the existing PropertyPro UI.
+   See docs/TABLER_DESIGN_ADAPTATION.md for sources and scope. */
+.rentara-mark { display:block; flex-shrink:0; }
+.sidebar__wordmark > span { max-width:180px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.workspace-label { display:block; max-width:22ch; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:11px; font-weight:400; line-height:1.3; color:inherit; }
+.disclosure-card > summary { cursor:pointer; list-style:none; }
+.disclosure-card > summary::-webkit-details-marker { display:none; }
+.disclosure-card > summary::after { content:"+"; font-size:20px; line-height:1; }
+.disclosure-card[open] > summary::after { content:"−"; }
+.disclosure-card > summary .card__title { flex:1; }
+.disclosure-card > summary:focus-visible { outline:2px solid var(--primary-600); outline-offset:-3px; }
+/* Keep receipt amounts distinct from their actions at every screen size. */
+.tenant-bills-page .receipt-actions { display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; }
+.tenant-bills-page .receipt-actions .btn { margin:0; white-space:nowrap; }
+.tenant-bills-page .receipt-summary { display:flex; align-items:center; gap:24px; }
+.tenant-bills-page .receipt-summary > .money { min-width:100px; text-align:right; white-space:nowrap; }
+.tenant-bills-page .tenant-receipt-list .mini-list__item { gap:16px; padding:20px 0; }
+.tenant-bills-page .tenant-receipt-list .mini-list__item:first-child { padding-top:8px; }
+.tenant-bills-page .tenant-receipt-list .mini-list__item:last-child { padding-bottom:8px; }
+.tenant-bills-page .tenant-receipt-list .mini-list__body > span { display:block; margin-top:4px; }
+@media(max-width:1000px) {
+  .tenant-bills-page .tenant-receipt-list .mini-list__item { display:grid; grid-template-columns:32px minmax(0,1fr); gap:16px; }
+  .tenant-bills-page .receipt-summary { grid-column:1 / -1; justify-content:space-between; gap:16px; }
+}
+@media(max-width:480px) {
+  .tenant-bills-page .receipt-summary { flex-direction:column; align-items:stretch; gap:12px; }
+  .tenant-bills-page .receipt-summary > .money { text-align:left; }
+  .tenant-bills-page .receipt-actions .btn { min-height:44px; }
+}
+.auth-brand-icon { color:#fff; }
+@media(max-width:720px) {
+  .service-row { flex-direction:column; align-items:stretch; gap:8px; padding:14px 18px; }
+  .service-row__name { min-width:0; }
+  .service-row > .row { min-width:0; flex-wrap:wrap; gap:8px; justify-content:space-between; }
+  .service-row > .row > .text-xs { flex:1 1 100%; overflow-wrap:anywhere; }
+  .topbar__mobile-brand { display:inline-flex; align-items:center; gap:7px; }
+}
+.modal--bill-detail { width:min(780px,calc(100vw - 32px)); max-width:780px; }
+.modal--receipt { width:min(540px,calc(100vw - 24px)); max-width:540px; }
+.modal--receipt .modal__body { padding:0; overflow:hidden; }
+.receipt-document-frame { display:block; width:100%; height:min(68dvh,700px); border:0; background:var(--gray-50); }
+.modal--receipt .modal__footer { flex-wrap:wrap; gap:8px; }
+.modal--receipt,
+.modal--receipt .modal__header,
+.modal--receipt .modal__footer { background:#fff; color:#000; border-color:#000; }
+.modal--receipt .modal__title,
+.modal--receipt .icon-btn { color:#000; }
+.modal--receipt .btn { background:#fff; color:#000; border:1px solid #000; box-shadow:none; }
+.modal--receipt .btn--primary { background:#000; color:#fff; }
+.modal--receipt .btn:hover,
+.modal--receipt .icon-btn:hover { background:#000; color:#fff; border-color:#000; }
+.modal--receipt .btn--primary:hover { background:#fff; color:#000; }
+.modal--receipt .btn:focus-visible,
+.modal--receipt .icon-btn:focus-visible { outline:2px solid #000; outline-offset:3px; box-shadow:none; }
+.bill-detail { display:grid; gap:24px; min-width:0; }
+.bill-detail__summary { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:20px; border:1px solid var(--border-subtle); border-radius:10px; background:var(--gray-50); }
+.bill-detail__eyebrow { font-size:13px; font-weight:600; color:var(--text-secondary); }
+.bill-detail__amount { margin:6px 0; font-size:clamp(28px,4vw,38px); font-weight:650; letter-spacing:-.035em; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.bill-data-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 24px; margin:0; }
+.bill-data-grid__item { min-width:0; }
+.bill-data-grid dt,.source-review__fields dt { font-size:12px; color:var(--text-muted); font-weight:500; margin-bottom:5px; }
+.bill-data-grid dd,.source-review__fields dd { margin:0; font-size:14px; font-weight:500; overflow-wrap:anywhere; }
+.bill-detail__section h3 { margin:0 0 12px; font-size:16px; font-weight:600; }
+.bill-charge-list { margin:0; }
+.bill-charge-list__row { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:20px; padding:14px 0; border-bottom:1px solid var(--border-subtle); }
+.bill-charge-list__row dt { font-size:14px; font-weight:500; }
+.bill-charge-list__row small,.bill-tracking-history small { display:block; margin-top:4px; color:var(--text-muted); font-size:12px; font-weight:400; }
+.bill-charge-list__row dd { margin:0; font-size:15px; font-weight:600; font-variant-numeric:tabular-nums; }
+.bill-detail__allocation { margin-top:12px; font-size:13px; color:var(--text-secondary); line-height:1.6; }
+.bill-tracking-history { list-style:none; margin:0; padding:0; }
+.bill-tracking-history li { display:flex; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-subtle); font-size:13px; }
+.bill-tracking-history time { color:var(--text-muted); text-align:right; }
+.source-review__fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; padding:16px 0; margin:0 0 16px; border-block:1px solid var(--border-subtle); }
+.source-review__fields > div { min-width:0; }
+.data-table thead th { font-size:12px; font-weight:600; text-transform:none; letter-spacing:0; color:var(--text-secondary); background:var(--gray-50); }
+.data-table tbody td { vertical-align:middle; }
+.data-table .money { font-variant-numeric:tabular-nums; }
+.field__hint { max-width:65ch; line-height:1.5; }
+.settings-nav { padding:8px; border-color:var(--border-subtle); box-shadow:none; }
+.settings-nav__item { min-height:44px; border-radius:7px; border-left:3px solid transparent; transition:background-color var(--duration-fast) var(--ui-ease),color var(--duration-fast) var(--ui-ease),border-color var(--duration-fast) var(--ui-ease); }
+.settings-nav__item.is-active { border-left-color:var(--primary-600); background:var(--primary-50); color:var(--primary-800); }
+.settings-layout .card__header { border-bottom:1px solid var(--border-subtle); padding-bottom:18px; }
+.settings-layout .card__footer { display:flex; align-items:center; gap:12px; background:var(--gray-50); }
+.settings-layout .stack > section { scroll-margin-top:calc(var(--topbar-height) + 20px); }
+.portal-alerts-page .notification-item { padding:20px 24px; align-items:flex-start; }
+.portal-alerts-page .notification-item__icon { width:36px; height:36px; border-radius:50%; }
+.portal-alerts-page .notification-item__body p { max-width:65ch; font-size:14px; line-height:1.6; margin-top:5px; }
+.portal-alerts-page .notification-item__body strong { font-size:15px; font-weight:600; }
+.portal-alerts-page .notification-item__time { padding-top:3px; font-size:12px; }
+.portal-alerts-page .push-summary .card__body { padding-top:0; }
+.portal-alerts-page .push-summary .card__header { align-items:center; }
+.empty-state { padding:36px 24px; gap:10px; }
+.empty-state__icon { width:44px; height:44px; border-radius:50%; background:var(--primary-50); color:var(--primary-600); }
+.empty-state h4 { font-size:18px; font-weight:600; line-height:1.4; color:var(--text-primary); }
+.empty-state p { max-width:46ch; font-size:14px; line-height:1.6; }
+.empty-state .btn,.empty-state .text-link { margin-top:8px; }
+.sidebar .nav-item { min-height:44px; border-radius:7px; }
+.sidebar .nav-item.is-active { background:rgba(147,197,253,.17); box-shadow:inset 0 0 0 1px rgba(191,219,254,.13); }
+.sidebar .nav-item.is-active::before { left:0; height:18px; width:2px; border-radius:2px; background:#bfdbfe; }
+.sidebar__section-label { font-size:11px; letter-spacing:.08em; color:#a5b6cc; }
+.sidebar__logo { box-shadow:none; background:rgba(147,197,253,.15); border:1px solid rgba(191,219,254,.2); }
+@media(max-width:720px) {
+  .bill-data-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 16px; }
+  .bill-detail__summary { flex-wrap:wrap; padding:16px; }
+  .bill-tracking-history li { flex-wrap:wrap; gap:6px; }
+  .bill-tracking-history time { text-align:left; }
+  .bill-charge-list__row { gap:12px; }
+  .source-review__fields { grid-template-columns:minmax(0,1fr); }
+  .portal-alerts-page .notification-item { padding:18px; gap:12px; }
+  .portal-alerts-page .notification-item__time { margin-left:48px; }
+  .settings-layout .card__header { padding-bottom:16px; }
+  .empty-state { padding:28px 18px; }
+}
+@media(prefers-reduced-motion:reduce) { .settings-nav__item { transition:none; } }
+
+/* Review refinements: compact journeys, explicit statuses, consistent tablet brand. */
+.bill-urgency { display:inline-block; margin-left:6px; color:var(--warning-700); font-size:12px; font-weight:600; }
+.tenant-property-banner { padding:12px 20px; }
+.tenant-property-banner h2 { font-size:20px; }
+.tenant-property-banner p { margin-top:3px; }
+.tenant-property-banner__mark { width:40px; height:40px; }
+.tenant-home-page .tenant-rent-card > .card__header { padding:18px 22px 8px; }
+.tenant-home-page .tenant-rent-card > .card__body { padding:4px 22px 18px; }
+.tenant-rent-card__amount { margin:6px 0; }
+.tenant-rent-card .card__footer { gap:8px; }
+.tenant-utility-card .card__body { padding-block:4px; }
+.tenant-utility-row { padding:14px 0; gap:8px 12px; }
+.tenant-utility-row__status { max-width:150px; font-size:12px; line-height:1.4; }
+.tenant-utility-card__disclaimer { margin:6px 0 0; font-size:13px; line-height:1.5; color:var(--text-secondary); }
+.tenant-utility-card .card__footer .text-link { margin-top:0; }
+.tenant-calendar__day { display:flex; flex-direction:column; justify-content:center; gap:3px; min-height:52px; }
+.tenant-calendar__markers { display:flex; align-items:center; justify-content:center; gap:1px; min-height:10px; }
+.tenant-calendar__markers .icon { width:12px; height:12px; }
+.tenant-calendar__markers:has(> span:nth-child(3)) .icon { width:9px; height:10px; }
+.calendar-category { display:inline-flex; align-items:center; gap:4px; color:var(--primary-700); }
+.calendar-category--electricity { color:#a16207; }
+.calendar-category--water { color:#0369a1; }
+.tenant-calendar__day.is-selected .calendar-category { color:inherit; }
+.tenant-calendar__day.has-estimate { border:1px dashed var(--primary-500); }
+.tenant-calendar__legend { flex-wrap:wrap; gap:8px 14px; align-items:center; }
+.tenant-calendar__help { margin-top:10px; font-size:12px; line-height:1.5; color:var(--text-muted); }
+.tenant-calendar__event { align-items:flex-start; flex-wrap:wrap; }
+.tenant-calendar__event > span { display:flex; flex-wrap:wrap; gap:4px; min-width:0; }
+.tenant-calendar__event small { color:var(--text-muted); font-size:12px; }
+@media(prefers-reduced-motion:no-preference) {
+  .tenant-calendar__day .calendar-category { transition:color var(--duration-fast) var(--ui-ease); }
+  .tenant-calendar__selected { animation:calendar-details-in var(--duration-base) var(--ui-ease); }
+  .tenant-utility-row.is-saved .badge { animation:status-saved 600ms ease-out; }
+  .modal-backdrop.is-closing { animation:portal-backdrop-out var(--duration-base) var(--ui-ease) forwards; pointer-events:none; }
+  .modal-backdrop.is-closing .modal { animation:portal-dialog-out var(--duration-base) var(--ui-ease) forwards; }
+  @keyframes calendar-details-in { from { opacity:.5; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes status-saved { from { box-shadow:0 0 0 3px var(--primary-200); } to { box-shadow:0 0 0 0 transparent; } }
+  @keyframes portal-backdrop-out { to { opacity:0; } }
+  @keyframes portal-dialog-out { to { opacity:0; transform:translateY(6px); } }
+}
+.push-device-summary { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; border:1px solid var(--border-subtle); border-radius:8px; background:var(--surface-panel); }
+.push-device-summary strong { font-size:13px; }
+.push-device-summary p { margin:4px 0 0; font-size:13px; color:var(--text-secondary); line-height:1.5; max-width:60ch; }
+.push-device-summary .btn { flex-shrink:0; }
+.property-card__banner { min-height:0; height:auto; padding:14px 20px 0; background:transparent; }
+.property-card__banner::after { display:none; }
+.property-card__badge { background:var(--gray-100); color:var(--text-secondary); border:0; font-size:11px; }
+.property-card__body { padding-top:12px; }
+.manager-billing-page .ocr-bill { grid-template-columns:40px minmax(0,1fr); gap:12px; padding:20px 22px; }
+.manager-billing-page .ocr-bill__thumb { width:40px; height:44px; }
+.manager-billing-page .ocr-bill__side { grid-column:2; display:flex; flex-direction:row; justify-content:flex-start; align-items:center; flex-wrap:wrap; gap:8px; }
+.manager-billing-page .ocr-bill__side .btn { width:auto; }
+.manager-billing-page .ocr-bill__side [data-review-ocr] { order:-1; }
+.ocr-bill__method { margin-top:12px; font-size:12px; color:var(--text-muted); }
+.ocr-bill__reason { margin-top:6px; font-size:13px; line-height:1.5; color:var(--warning-700); max-width:80ch; }
+.ocr-bill__fields { gap:12px 24px; }
+.ocr-bill__ref { overflow-wrap:anywhere; }
+@media(min-width:721px) and (max-width:1100px) {
+  .topbar__mobile-brand { display:inline-flex; align-items:center; gap:7px; font-size:18px; font-weight:700; color:var(--text-inverse); }
+  .topbar__search { width:min(300px,38vw); flex:0 1 300px; }
+}
+@media(max-width:900px) {
+  .tenant-home-grid { gap:14px; }
+  .tenant-property-banner { padding:12px 16px; }
+  .tenant-property-banner h2 { font-size:19px; }
+  .tenant-home-page .tenant-rent-card > .card__header { padding:14px 18px 6px; }
+  .tenant-home-page .tenant-rent-card > .card__body { padding:2px 18px 14px; }
+}
+@media(max-width:720px) {
+  .tenant-property-banner__mark { width:36px; height:36px; }
+  .tenant-property-banner__mark .icon { width:26px; height:26px; }
+  .tenant-rent-card__amount { font-size:32px; }
+  .tenant-utility-row { grid-template-columns:36px minmax(0,1fr); gap:6px 10px; }
+  .tenant-utility-row__icon { width:36px; height:36px; grid-row:1 / span 2; align-self:start; }
+  .tenant-utility-row__status { grid-column:2; justify-self:start; max-width:none; }
+  .tenant-utility-row__details { gap:2px; }
+  .tenant-utility-row__amount { font-size:18px; }
+  .tenant-utility-row__action { margin-top:4px; }
+  .push-device-summary { flex-wrap:wrap; gap:10px; }
+  .push-device-summary .btn { min-height:44px; }
+  .tenant-bills-page .data-table[aria-label="My bills"] tr { gap:10px 12px; padding:16px; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-label]::before { display:none; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="lines"] { grid-column:1; grid-row:1; align-self:center; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="totalDue"] { grid-column:2; grid-row:1; text-align:right; align-self:center; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="cycle"] { grid-row:2; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="cycle"] .cell-stack { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 8px; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="cycle"] strong { font-size:13px; font-weight:500; color:var(--text-secondary); }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="cycle"] .cell-stack > span { grid-column:1 / -1; font-size:13px; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="cycle"] button { grid-column:2; grid-row:1; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="paymentStatus"] { grid-row:3; font-size:13px; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="paymentStatus"] small { margin-top:3px; max-width:none; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="receiptId"]:not(:has(*)),
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="actions"]:not(:has(*)) { display:none; }
+  .manager-billing-page .ocr-bill { padding:16px; grid-template-columns:minmax(0,1fr); }
+  .manager-billing-page .ocr-bill__thumb { display:none; }
+  .manager-billing-page .ocr-bill__side { grid-column:1; }
+}

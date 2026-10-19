@@ -1,6 +1,6 @@
 # Consolidated workflow decisions
 
-Finalized for manuscript drafting on 12 October 2026. This is the current agreed rule set and supersedes earlier exploratory notes. It does not mean the PDF or backend already implements every rule.
+Recorded for manuscript drafting on 12 October 2026. These decisions superseded earlier exploratory notes at that checkpoint; they do not mean the PDF or backend implements every rule. See the [latest paper review](FINAL_PAPER_REVIEW.md) for subsequent accepted changes, including supplementary rent email notifications that supersede the original blanket Tenant-email exclusion below.
 
 | Area | Agreed rule |
 | --- | --- |
@@ -29,4 +29,4 @@ Finalized for manuscript drafting on 12 October 2026. This is the current agreed
 
 ## Next steps
 
-Use UPDATED_PDF_CONTENT_REVIEW.md for the remaining manuscript edits. Finalize the manuscript, update the diagrams, export a revised PDF for comparison, then align backend behavior and tests. No completed implementation, participant evaluation or production readiness is claimed by this decision document.
+Use the [latest paper review](FINAL_PAPER_REVIEW.md) for remaining manuscript presentation fixes and the [application QA report](../rentara-portal/docs/qa-report.md) for current implementation evidence. Earlier review snapshots are preserved in the [archive](archive/2026-10-manuscript-checkpoints/README.md). No completed participant evaluation or production readiness is claimed by this decision document.

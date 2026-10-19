@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Rentara</title>
+  <rect width="64" height="64" rx="13" fill="#1c3154"/>
+  <path d="M17 53V23L32 11l16 12v9c0 7-5 11-12 11H20m13 0 15 10M19 28h15a7 7 0 0 1 0 14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

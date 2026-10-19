@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="310" height="350" viewBox="0 0 310 350" role="img" aria-labelledby="title desc">
+  <title id="title">Illustrative utility bill</title>
+  <desc id="desc">A document outline showing the five fields extracted from a utility bill. No real account information is included.</desc>
+  <g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round">
+    <path d="M15 15 H245 L295 65 V335 H15 Z"/>
+    <path d="M245 15 V65 H295"/>
+    <path d="M35 88 H275"/>
+    <rect x="35" y="105" width="240" height="35"/>
+    <rect x="35" y="150" width="240" height="35"/>
+    <rect x="35" y="195" width="240" height="35"/>
+    <rect x="35" y="240" width="240" height="35"/>
+    <rect x="35" y="285" width="240" height="35"/>
+  </g>
+  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18">
+    <text x="35" y="52">UTILITY BILL</text>
+    <text x="35" y="77">Illustrative only</text>
+    <text x="47" y="129">Provider</text>
+    <text x="47" y="174">Account / reference</text>
+    <text x="47" y="219">Billing period</text>
+    <text x="47" y="264">Amount due</text>
+    <text x="47" y="309">Due date</text>
+  </g>
+</svg>

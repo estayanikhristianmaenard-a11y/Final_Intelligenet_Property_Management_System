@@ -1,0 +1,39 @@
+{
+  "name": "rentara-portal",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "setup:acceptance": "node server/acceptance-setup.js",
+    "setup:https": "node tools/setup-local-https.mjs",
+    "verify:email-billing": "node --env-file-if-exists=.env tools/verify-email-billing.mjs",
+    "setup:utility-intake": "node tools/setup-utility-intake.mjs",
+    "start:acceptance": "node --env-file-if-exists=.env --env-file=.env.acceptance tools/start-acceptance.mjs",
+    "previews:refresh": "node tools/refresh-design-previews.mjs",
+    "test": "node --test --test-concurrency=2 tests/*.test.js",
+    "setup": "node --env-file-if-exists=.env server/setup.js",
+    "demo:showcase": "node server/demo-showcase.js --activate",
+    "push:keys": "node server/keys.js",
+    "integrations:check": "node --env-file-if-exists=.env tools/check-integrations.mjs",
+    "test:backend": "node --test tests/backend.test.js tests/rent-email.test.js tests/workspaces.test.js",
+    "test:browser": "node --test --test-concurrency=2 tests/browser.test.js tests/*.browser.test.js"
+  },
+  "dependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
+    "imapflow": "^1.0.195",
+    "mailparser": "^3.7.4",
+    "nodemailer": "^10.1.0",
+    "pdfjs-dist": "^6.2.108",
+    "tesseract.js": "^6.0.1",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.9.10"
+  }
+}

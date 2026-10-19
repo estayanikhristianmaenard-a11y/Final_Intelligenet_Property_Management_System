@@ -1,0 +1,17 @@
+From: Rentara <rentara2026@gmail.com>
+Subject: Rentara: rent payment confirmed
+
+Rentara
+
+Hello Maria Santos,
+
+Your rent payment is confirmed
+
+Your Manager has confirmed your rent payment. Sign in to view your rent record and any confirmed receipt.
+
+View payment record:
+https://rentara.example/#/tenant/bills
+
+This notice reflects the recorded confirmation. It does not collect another payment or issue another receipt.
+
+For questions about your rent, contact your property Manager. Manage rent email preferences in the portal's Settings. Sending this email does not change your payment status.

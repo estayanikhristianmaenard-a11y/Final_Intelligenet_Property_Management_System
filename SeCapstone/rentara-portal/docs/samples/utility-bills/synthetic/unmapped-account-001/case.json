@@ -1,0 +1,22 @@
+{
+  "id": "unmapped-account-001",
+  "origin": "synthetic",
+  "independentActualBill": false,
+  "expectedFields": {
+    "provider": "Meralco",
+    "accountRef": "TEST-UNMAPPED-999",
+    "amountDue": 100.01,
+    "dueDate": "2026-10-18",
+    "periodStart": "2026-10-01",
+    "periodEnd": "2026-10-14"
+  },
+  "expectedOutcome": "exception_until_account_mapping_is_configured",
+  "files": [
+    {
+      "path": "bill-digital.pdf",
+      "method": "pdf_text"
+    }
+  ],
+  "duplicateExpectation": "Versions in this case represent one bill; a second accepted version must not create another charge.",
+  "notes": "Invented development data; not an independently collected provider bill."
+}

@@ -1,8 +1,0 @@
-Options -Indexes
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteRule ^(?:data|server|node_modules|tests|docs)/ - [F,L]
-</IfModule>
-<FilesMatch "^(?:\.env(?:\..*)?|package(?:-lock)?\.json|.*\.(?:sqlite|sqlite-wal|sqlite-shm|db))$">
-  Require all denied
-</FilesMatch>

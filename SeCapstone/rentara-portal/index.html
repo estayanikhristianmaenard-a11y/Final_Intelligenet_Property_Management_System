@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="Rentara — property records, utility bill processing, rent payments and tenant updates in one portal." />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Rentara | Property management</title>
+
+  <link rel="icon" type="image/svg+xml" href="./src/assets/rentara-icon.svg" />
+
+  <!-- Design system: tokens → base → layout → components → pages -->
+  <link rel="stylesheet" href="./src/styles/tokens.css" />
+  <link rel="stylesheet" href="./src/styles/base.css" />
+  <link rel="stylesheet" href="./src/styles/layout.css" />
+  <link rel="stylesheet" href="./src/styles/components.css" />
+  <link rel="stylesheet" href="./src/styles/pages/dashboard.css" />
+  <link rel="stylesheet" href="./src/styles/pages/entities.css" />
+  <link rel="stylesheet" href="./src/styles/pages/tenants.css" />
+  <link rel="stylesheet" href="./src/styles/pages/billing.css" />
+  <link rel="stylesheet" href="./src/styles/polish.css" />
+  <link rel="stylesheet" href="./src/styles/tabler-patterns.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Application mount points, one per overlay layer -->
+  <div id="app-root"></div>
+  <div id="panel-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" role="status" aria-live="polite" aria-atomic="false"></div>
+
+  <noscript>Rentara requires JavaScript. Enable it and open the portal through its local server.</noscript>
+  <script>
+    if (location.protocol === 'file:') {
+      document.getElementById('app-root').textContent = 'Open Rentara through http://localhost:8080/ after starting the server with npm start. Opening index.html directly blocks the application modules.';
+    }
+  </script>
+  <script type="module" src="./src/app/app.js"></script>
+</body>
+</html>

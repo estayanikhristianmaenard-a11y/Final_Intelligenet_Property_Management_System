@@ -1,0 +1,22 @@
+From: Rentara <rentara2026@gmail.com>
+Subject: Rentara: rent billing update
+
+Rentara
+
+Hello Maria Santos,
+
+Your rent bill is ready
+
+Here is a summary of your current rent bill. Open Rentara to view the full breakdown or report a payment.
+
+Bill total: PHP 6,000.00
+Billing month: 2026-10
+Due date: October 18, 2026
+Status: Unpaid
+
+View bill:
+https://rentara.example/#/tenant/bills
+
+If you have already paid, you can report the payment in the portal for your Manager to check.
+
+For questions about your rent, contact your property Manager. Manage rent email preferences in the portal's Settings. Sending this email does not change your payment status.

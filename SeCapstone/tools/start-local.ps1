@@ -1,6 +1,6 @@
 param([switch]$Setup, [switch]$Demo, [int]$Port = 8080, [string]$LanAddress)
 $ErrorActionPreference = 'Stop'
-$portal = Join-Path (Split-Path $PSScriptRoot -Parent) 'propertypro-portal'
+$portal = Join-Path (Split-Path $PSScriptRoot -Parent) 'rentara-portal'
 $nodeCommand = Get-Command node -ErrorAction SilentlyContinue
 if (-not $nodeCommand -and (Test-Path -LiteralPath 'D:\Program Files\nodejs\node.exe')) {
     $env:Path = 'D:\Program Files\nodejs;' + $env:Path

@@ -1,3 +1,8 @@
+# Shared code, research documents, anonymized samples and .agents/skills are included.
+# These are private/local recovery files rather than project distribution files.
 .local-backups/
 .integration/
 **/data-demo-review/
+# The original bill contains identifying information; share anonymized samples instead.
+/SeCapstone/SOA.pdf
+/.private-bill-review/

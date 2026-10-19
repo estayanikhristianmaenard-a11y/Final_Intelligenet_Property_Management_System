@@ -1,0 +1,26 @@
+{
+  "id": "meralco-001",
+  "origin": "anonymized_actual_layout",
+  "independentActualBill": true,
+  "expectedFields": {
+    "provider": "Meralco",
+    "accountRef": "9990000001",
+    "amountDue": 1567.17,
+    "dueDate": "2026-10-08",
+    "periodStart": "2026-08-27",
+    "periodEnd": "2026-09-26"
+  },
+  "expectedOutcome": "valid_with_verified_mapping_and_occupancy",
+  "files": [
+    {
+      "path": "bill-digital.pdf",
+      "method": "pdf_text"
+    },
+    {
+      "path": "bill-scanned.pdf",
+      "method": "pdf_ocr"
+    }
+  ],
+  "duplicateExpectation": "Versions in this case represent one bill; a second accepted version must not create another charge.",
+  "notes": "Anonymized test copy; never use for payment."
+}

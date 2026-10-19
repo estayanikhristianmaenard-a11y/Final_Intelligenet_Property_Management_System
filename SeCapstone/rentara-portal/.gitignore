@@ -1,0 +1,13 @@
+# Installed locally using npm ci; package.json and package-lock.json are shared.
+node_modules/
+# The project owner explicitly chose to share the team-owned .env through Git.
+# Other environment variants remain local; the clean setup template is also shared.
+.env.*
+!.env
+!.env.example
+# Runtime databases, sessions, uploaded originals and private integration settings.
+# Teammates can recreate the populated synthetic demo using npm run demo:showcase.
+data/
+# Generated test output; tests and fixture source files are shared.
+coverage/
+test-results/

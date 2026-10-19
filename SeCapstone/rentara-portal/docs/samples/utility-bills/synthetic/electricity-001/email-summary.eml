@@ -1,0 +1,12 @@
+From: bills@example.test
+To: property@example.test
+Subject: Synthetic bill summary
+Message-ID: <synthetic-summary@example.test>
+Content-Type: text/plain; charset=utf-8
+
+SYNTHETIC DEMO BILL - NOT A REAL PROVIDER DOCUMENT
+Meralco
+Account: TEST-MERALCO-001
+Amount Due: 100.01
+Due Date: 2026-10-18
+Billing Period: 2026-10-01 to 2026-10-14

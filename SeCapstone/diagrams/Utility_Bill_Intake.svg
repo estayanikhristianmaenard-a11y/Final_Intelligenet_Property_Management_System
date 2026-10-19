@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="900" viewBox="0 0 1000 900" role="img" aria-labelledby="title desc">
+<title id="title">Utility Bill Intake with graphical OCR extraction</title>
+<desc id="desc">Two supported intake sources feed extraction. Five illustrative bill areas connect through OCR to their corresponding extracted fields. OCR reads image text; field identification organizes it. Readable email and PDF text use a separate direct extraction path. All values require validation by billing rules. No real bill data is shown.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#FFFFFF" stroke-width="2"/></marker></defs>
+<g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round">
+<rect x="10" y="10" width="980" height="815"/>
+<path d="M10 60 H990"/>
+<rect x="60" y="85" width="360" height="90"/><rect x="580" y="85" width="360" height="90"/>
+<path d="M240 175 V205 H760 V175"/>
+<path d="M500 205 V240" marker-end="url(#arrow)"/>
+<rect x="35" y="240" width="930" height="560"/>
+<path d="M35 285 H965"/>
+<path d="M60 315 H335 L380 360 V650 H60 Z M335 315 V360 H380"/>
+<rect x="420" y="365" width="155" height="280"/>
+<rect x="620" y="315" width="320" height="335"/>
+<rect x="60" y="690" width="515" height="80"/>
+<path d="M575 730 H780 V650" marker-end="url(#arrow)"/>
+<path d="M940 605 H952 V810 H500 V855" marker-end="url(#arrow)"/>
+</g>
+<g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">
+<text x="500" y="42">UTILITY BILL INTAKE</text>
+<text x="240" y="116">Manager Upload</text><text x="240" y="145">Optional clear photo / scan</text>
+<text x="760" y="116">Receive Billing Emails</text><text x="760" y="145">Property mailbox: text / attachments</text>
+<text x="500" y="269">BILL EXTRACTION</text>
+<text x="210" y="346">Illustrative bill image</text>
+<text x="497" y="394">OCR</text><text x="497" y="427">Reads image</text><text x="497" y="451">text</text>
+<text x="497" y="565">Field</text><text x="497" y="589">identification</text>
+<text x="780" y="346">EXTRACTED BILL DETAILS</text>
+<text x="317" y="719">Readable email / digital PDF</text><text x="317" y="751">Direct Text Extraction</text>
+<text x="780" y="684">Values require validation</text>
+<text x="500" y="881">To Billing Rules</text>
+</g>
+<g fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="80" y="375" width="280" height="36"/><rect x="640" y="375" width="280" height="36"/><path d="M360 393 H420" marker-end="url(#arrow)"/><path d="M575 393 H640" marker-end="url(#arrow)"/></g>
+<g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle"><text x="220" y="399">Provider</text><text x="780" y="399">Provider</text></g>
+<g fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="80" y="423" width="280" height="36"/><rect x="640" y="423" width="280" height="36"/><path d="M360 441 H420" marker-end="url(#arrow)"/><path d="M575 441 H640" marker-end="url(#arrow)"/></g>
+<g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle"><text x="220" y="447">Account / reference</text><text x="780" y="447">Account / reference</text></g>
+<g fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="80" y="471" width="280" height="36"/><rect x="640" y="471" width="280" height="36"/><path d="M360 489 H420" marker-end="url(#arrow)"/><path d="M575 489 H640" marker-end="url(#arrow)"/></g>
+<g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle"><text x="220" y="495">Billing period</text><text x="780" y="495">Billing period</text></g>
+<g fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="80" y="519" width="280" height="36"/><rect x="640" y="519" width="280" height="36"/><path d="M360 537 H420" marker-end="url(#arrow)"/><path d="M575 537 H640" marker-end="url(#arrow)"/></g>
+<g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle"><text x="220" y="543">Amount due</text><text x="780" y="543">Amount due</text></g>
+<g fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="80" y="567" width="280" height="36"/><rect x="640" y="567" width="280" height="36"/><path d="M360 585 H420" marker-end="url(#arrow)"/><path d="M575 585 H640" marker-end="url(#arrow)"/></g>
+<g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle"><text x="220" y="591">Due date</text><text x="780" y="591">Due date</text></g>
+</svg>

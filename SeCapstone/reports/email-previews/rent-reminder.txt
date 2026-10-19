@@ -1,0 +1,22 @@
+From: Rentara <rentara2026@gmail.com>
+Subject: Rentara: rent due-date reminder
+
+Rentara
+
+Hello Maria Santos,
+
+A reminder about your rent
+
+Your rent is due in three calendar days. Sign in to review the bill and its due date.
+
+Bill total: PHP 6,000.00
+Billing month: 2026-10
+Due date: October 18, 2026
+Status: Unpaid
+
+View bill:
+https://rentara.example/#/tenant/bills
+
+If you have already paid, report the payment in the portal for your Manager to check. This reminder does not confirm a payment.
+
+For questions about your rent, contact your property Manager. Manage rent email preferences in the portal's Settings. Sending this email does not change your payment status.

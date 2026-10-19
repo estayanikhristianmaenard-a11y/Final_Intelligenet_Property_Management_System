@@ -1,0 +1,181 @@
+/* =============================================================================
+   Design tokens
+   Single source of truth for colour, type, spacing, radius, shadow and motion.
+   Every other stylesheet consumes these variables only.
+   ========================================================================== */
+
+:root {
+  /* --- Brand / primary ---------------------------------------------------- */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #172554;
+
+  /* --- Neutrals ----------------------------------------------------------- */
+  --gray-25: #fcfcfd;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --gray-950: #020617;
+
+  /* --- Semantic status ---------------------------------------------------- */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-500: #ef4444;
+  --danger-600: #dc2626;
+  --danger-700: #b91c1c;
+
+  --info-50: #f0f9ff;
+  --info-100: #e0f2fe;
+  --info-500: #0ea5e9;
+  --info-600: #0284c7;
+  --info-700: #0369a1;
+
+  --violet-50: #f5f3ff;
+  --violet-100: #ede9fe;
+  --violet-500: #8b5cf6;
+  --violet-600: #7c3aed;
+
+  /* --- Surfaces ----------------------------------------------------------- */
+  --surface-canvas: #f3f6fa;
+  --surface-panel: #ffffff;
+  --surface-subtle: var(--gray-50);
+  --surface-inset: var(--gray-100);
+  --surface-sidebar: #24364b;
+  --surface-topbar: #e8eff7;
+  --surface-bottom-nav: #edf3fa;
+  --surface-sidebar-gradient: linear-gradient(160deg, #17263f 0%, #1c3154 60%, #203e67 100%);
+  --surface-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --surface-sidebar-active: #436489;
+
+  --border-subtle: #e2e8f0;
+  --border-default: var(--gray-200);
+  --border-strong: var(--gray-300);
+
+  /* --- Text --------------------------------------------------------------- */
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-600);
+  --text-muted: var(--gray-500);
+  --text-inverse: #ffffff;
+  --text-sidebar: #f1f5f9;
+  --text-sidebar-active: #ffffff;
+
+  /* --- Typography --------------------------------------------------------- */
+  --font-sans:
+    "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont,
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
+    monospace;
+
+  --text-2xs: 0.75rem; /* 12px */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.8125rem; /* 13px */
+  --text-base: 0.9375rem; /* 15px */
+  --text-md: 0.9375rem; /* 15px */
+  --text-lg: 1.0625rem; /* 17px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* --- Spacing scale ------------------------------------------------------ */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* --- Radius ------------------------------------------------------------- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 22px;
+  --radius-pill: 999px;
+
+  /* --- Elevation ---------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm:
+    0 1px 3px rgba(15, 23, 42, 0.07), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md:
+    0 4px 12px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg:
+    0 12px 28px rgba(15, 23, 42, 0.12), 0 4px 8px rgba(15, 23, 42, 0.05);
+  --shadow-xl:
+    0 24px 56px rgba(15, 23, 42, 0.18), 0 6px 14px rgba(15, 23, 42, 0.07);
+  --shadow-panel: -12px 0 40px rgba(15, 23, 42, 0.14);
+
+  /* --- Layout ------------------------------------------------------------- */
+  --sidebar-width: 264px;
+  --sidebar-collapsed: 76px;
+  --sidebar-hover-duration: 800ms;
+  --sidebar-label-fade-duration: 420ms;
+  --sidebar-label-slide-duration: 520ms;
+  --topbar-height: 64px;
+  --content-max: 1440px;
+  --panel-width: 580px;
+
+  /* --- Motion ------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 280ms;
+  --duration-base: 360ms;
+  --duration-slow: 480ms;
+
+  /* --- Stacking ----------------------------------------------------------- */
+  --z-sticky: 20;
+  --z-topbar: 40;
+  --z-drawer: 60;
+  --z-panel: 80;
+  --z-modal: 100;
+  --z-toast: 120;
+}
+
+/* Dark preference is intentionally scoped to the reading surface only;
+   the portal ships a single calibrated light theme for Phase 1. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }
+}

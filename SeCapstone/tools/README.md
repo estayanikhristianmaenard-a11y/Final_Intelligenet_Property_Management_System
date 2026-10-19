@@ -1,5 +1,9 @@
 # Local Node tools
 
+For the separate acceptance portfolio with Android HTTPS, use `./SeCapstone/tools/start-acceptance.ps1 -LanAddress YOUR_LAPTOP_IP` from the repository root. See the [acceptance guide](../rentara-portal/docs/local-acceptance-setup.md) for accounts and the manual certificate installation on each Android phone. Normal HTTP startup below remains available.
+
+The acceptance helper preserves an explicitly enabled dedicated Gmail-label intake setting. Outgoing rent email remains off. Configure that separate intake once with `npm.cmd run setup:utility-intake` from the application directory; see the guide for provider-label routing and pause/restart instructions.
+
 From the repository root:
 
 ```powershell

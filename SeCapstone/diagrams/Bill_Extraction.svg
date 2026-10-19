@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="255" viewBox="0 0 540 255" role="img" aria-labelledby="title desc">
+  <title id="title">Bill Extraction</title>
+  <desc id="desc">Two extraction methods: OCR reads text from clear bill images, and direct text extraction reads readable email summaries and digital PDFs. Both provide text for identifying billing fields; validation occurs separately.</desc>
+  <g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round">
+    <rect x="10" y="10" width="520" height="235"/>
+    <path d="M10 55 H530"/>
+    <rect x="30" y="75" width="230" height="115"/>
+    <rect x="280" y="75" width="230" height="115"/>
+    <path d="M145 190 V215 H395 V190 M270 215 V240"/>
+    <path d="M264 233 L270 240 L276 233"/>
+  </g>
+  <g fill="#FFFFFF" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">
+    <text x="270" y="39">BILL EXTRACTION</text>
+    <text x="145" y="103">Clear bill images</text>
+    <text x="145" y="137">OCR</text>
+    <text x="145" y="171">Read text from images</text>
+    <text x="395" y="103">Readable email / PDF</text>
+    <text x="395" y="137">Direct Text Extraction</text>
+    <text x="395" y="171">Read existing text</text>
+  </g>
+</svg>

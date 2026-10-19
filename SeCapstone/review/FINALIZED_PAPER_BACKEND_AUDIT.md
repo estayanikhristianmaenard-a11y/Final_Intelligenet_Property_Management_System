@@ -1,35 +1,29 @@
-# Finalized manuscript-to-backend audit
+# Manuscript alignment - implementation status
 
-Baseline: `../papers/FINAL_MANUSCRIPT.pdf`, 40 pages; page numbers are PDF pages. This review supersedes using the archived 51-page reference as the approved baseline. Development tests are not participant evaluation or production certification.
+Updated 12 October 2026 against the current 45-page manuscript and WORKFLOW_DECISION_NOTES.md. Changes are local and uncommitted. References and mockup approval remain excluded.
 
-## User-confirmed payment-policy revision — 12 October 2026
+## Implemented audit fixes
 
-The revised agreement separates rent confirmation from personal utility tracking. Tenants arrange one payer for a shared utility bill; the system calculates shares but does not collect contributions or verify provider settlement. Intake includes property-email attachments and optional Manager uploads of clear printed-bill images. Handing out the paper alone does not create a portal record. Managers may record checked rent payments without Tenant reports. Confirmed advance is reserved for the final applicable rent cycle, with explicit Manager application and no reuse. Flexible credit requests and shield/heart behavior are postponed. Missed cycles retain original due dates; reminders use a 9 AM Philippine-time cutoff three calendar days before due. Consolidated rules are in [WORKFLOW_DECISION_NOTES.md](WORKFLOW_DECISION_NOTES.md), and remaining manuscript edits are in [UPDATED_PDF_CONTENT_REVIEW.md](UPDATED_PDF_CONTENT_REVIEW.md). The latest reviewed 46-page export incorporates the corrected manuscript passages; its Introduction and diagram updates remain pending. Backend alignment still requires separate verification. The audit below describes the earlier 40-page baseline, not verification of the revised functions.
-
-| Requirement | Finding |
+| Requirement | Current implementation |
 | --- | --- |
-| Scope/rules, pp. 14–18 | Existing extraction engine and explicit rules; no autonomous AI, gateways or tenant SMS/email. |
-| Roles, pp. 15, 29 | API role checks and Tenant isolation exist; Managers collaborate within one portfolio. Independent landlord ownership is not explicit in the paper. |
-| Anniversary/short months/end cutoff, p. 23 | Calendar helpers and unique cycle keys exist. Historical catch-up requires policy reconciliation below. |
-| Separate first advance, p. 23 | Current and advance lines exist; confirmed payment makes credit available. |
-| Manager-confirmed credit, pp. 23, 30 | Fixed automatic application: Manager now explicitly confirms through `/bills/:id/apply-advance`. Generation, correction, scheduling and payment confirmation alone do not authorize credit use. |
-| Paid final/original receipt, p. 23 | Fixed: fully covered final becomes Paid, reusing the original confirmed payment/receipt; no new cash payment/receipt. Retries reuse settlement, and audit records the Manager. |
-| Whole centavos/frozen recipients, pp. 19, 26 | Integer split/remainders and stored recipients exist. Decimal conversion now parses digits instead of multiplying binary fractions. |
-| Intake/OCR/validation/duplicates, pp. 23–25 | Engines, IMAP adapter, V01–V04 and source checks exist. Real provider/mailbox acceptance is outstanding. |
-| Payment states/confirmation/rejection, p. 27 | Full-balance reporting, Manager-only confirmation/rejection and receipt uniqueness are tested. |
-| Corrections/history, pp. 27–28 | Unpaid correction/revalidation and preserved recipients exist. Paid linked charge/balance revisions remain incomplete. |
-| Push/reminders, pp. 28–29 | Three-day Philippine-date checks and dedup exist. External Push body now stays generic; complete billing remains authenticated. Exact cutoff needs further work. |
-| Shared occupants/relationships, p. 28 | Multiple occupants and FK relationships exist. Historical transfers/renewals remain restricted. |
-| Evaluation, pp. 39–40 | Automated development tests exist; representative samples, devices and instruments still need acceptance work. |
+| Rent-only payments/receipts | Server rejects utility financial reports and confirmations. Payment lists exclude utility transactions from the current rent workflow. |
+| Personal utility tracker | Tenant-only mark/undo, own-bill/share authorization, dated version history, no receipt, and unverified-provider notice. Available in Tenant bill table and bill details. |
+| Direct Manager rent recording | Exact outstanding amount, actual payment date, explicit external-check confirmation and retry identifier. Pending reports cannot be duplicated. Atomic recording/confirmation uses nested SQLite savepoints. |
+| Final-cycle advance | Existing Manager-only explicit application and original-receipt reuse preserved. Remaining balance may be reported or recorded. |
+| Reminder cutoff | Three days before actual due date, 9 AM Asia/Manila. Minute scheduler processes the 9:00-9:01 slot; late arrivals and missed slots are excluded. Current utility marks and pending rent reports suppress reminders. |
+| Paid rent corrections | Linked charge/balance revisions preserve original paid transactions and receipts. Nonzero differences require external settlement review; no automatic refund or duplicate receipt. Pending reports require review before correction. |
+| Utility corrections | Source/bill revisions and earlier personal marks retained; current version must be reviewed before a new mark. |
+| Missing due-rent recipients | Active unprocessable cycles create A01 exceptions, which resolve after assignment repair and successful generation. Ineligible/inactive occupancy is distinguished. |
+| Core email/OCR processing | Existing common email/upload pipeline retained. Digital PDF, image recognition, MIME attachments, mapping, duplicate and exception tests remain applicable. |
 
-## Remaining gaps
+## Validation
 
-1. **Paid linked revisions:** the paper requires retaining payment/receipt plus a linked revised charge/balance. Current discrepancy holds preserve transactions but do not complete that record-only correction workflow. No automatic refund is required.
-2. **Missed rent cycles:** current catch-up processes historical cycles with historical due/coverage dates. The paper says generation occurs on the anniversary. Define recovery without claiming processing happened earlier or silently erasing debts.
-3. **Missing rent occupants:** utility missing groups enter exceptions; a due active lease with no eligible rent occupants can be skipped. Such unprocessable due cases need A01 queue routing, distinct from inactive leases.
-4. **Reminder cutoff:** scheduler checks during the three-day calendar date, but paper excludes bills available after the scheduled reminder time. A precise cutoff and late-availability tests remain necessary.
-5. **External acceptance:** real mailbox, external HTTPS phone Push, actual provider layouts/scanned-PDF boundaries and devices remain unverified by fixture tests.
+Full combined suite passed with 28 tests: 26 backend and two real-browser tests. It includes utility mark/undo browser interactions, role-routing regressions, rent receipts, OCR and existing billing protections. Two subsequently added focused tests passed for reminder cutoff/late arrivals and missing-rent exception recovery (30 distinct passing tests across these runs). Syntax checks and git diff whitespace checks passed. This is development testing, not participant evaluation or certification.
 
-Historical settlements in retained databases are not rewritten automatically. Old zero-balance Unpaid records may need a separate Manager-led review. No independent-Manager organizations or historical transfer redesign were added without a confirmed requirement.
+## Remaining external acceptance
 
-Credit regression tests now cover waiting for Manager action, Tenant/Admin denial, explicit confirmation, Paid status/original receipt reuse, retries and no extra payment/receipt. Existing allocation, payment, correction, extraction, reminder and browser checks remain applicable.
+Actual property-mailbox credentials/access, real selected-provider PDFs/photos, and HTTPS Web Push on actual Tenant phones have not been verified in this session. No claim of real delivery or readership is made. Supported layouts/limits and evaluator/sample counts still require documented acceptance and adviser agreement. The application does not train a model, predict next utility due dates, verify provider payment, or integrate gateways.
+
+Older utility payment/receipt records remain historical and are not silently rewritten. Paid correction differences are recorded for external review rather than settled automatically. Existing shared-portfolio access does not claim independent landlord organization isolation or separate per-provider arrangement flexibility beyond saved unit configuration.
+
+No commit or push was performed.
