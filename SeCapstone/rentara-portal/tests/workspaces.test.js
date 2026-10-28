@@ -18,6 +18,52 @@ const clean = (dir) => {
   rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 };
 
+test("independent mailbox settings and a failed workspace job cannot spill into another workspace", async (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "rentara-workspace-failure-"));
+  const store = new Store(":memory:"), service = new Service(store);
+  bootstrap(service, { adminPassword: password, managerPassword: password });
+  const workspace = service.workspaceWrite(store.get("users", "usr-admin"), { name: "Independent owner B" });
+  const config = join(dir, "integration-test.json");
+  writeFileSync(config, JSON.stringify({ [workspace.id]: {
+    IMAP_HOST: "imap-b.example.test", IMAP_USER: "owner-b@example.test", IMAP_PASSWORD: "B-test-only", IMAP_MAILBOX: "Bills B",
+  } }));
+  const app = createApp({ store, dataDir: dir, env: {
+    IMAP_HOST: "imap-a.example.test", IMAP_USER: "owner-a@example.test", IMAP_PASSWORD: "A-test-only", IMAP_MAILBOX: "Bills A",
+    WORKSPACE_CONFIG_FILE: config,
+  } });
+  try {
+    const a = app.integrations.forWorkspace(DEFAULT_WORKSPACE);
+    const b = app.integrations.forWorkspace(workspace.id);
+    assert.notEqual(a, b);
+    assert.equal(a.env.IMAP_USER, "owner-a@example.test");
+    assert.equal(b.env.IMAP_USER, "owner-b@example.test");
+    assert.equal(a.env.IMAP_MAILBOX, "Bills A");
+    assert.equal(b.env.IMAP_MAILBOX, "Bills B");
+    let aCalls = 0, bCalls = 0;
+    a.tick = async () => {
+      assert.equal(store.workspaceId, DEFAULT_WORKSPACE);
+      aCalls++;
+      await new Promise(r => setTimeout(r, 2));
+      throw new Error("Simulated owner A job failure");
+    };
+    b.tick = async () => {
+      assert.equal(store.workspaceId, workspace.id);
+      bCalls++;
+      store.save("settings", { id: "job-proof", runs: bCalls });
+    };
+    const errors = t.mock.method(console, "error", () => {});
+    await app.integrations.tick();
+    await app.integrations.tick();
+    assert.equal(aCalls, 2);
+    assert.equal(bCalls, 2, "Owner B runs even after owner A fails, on every later cycle");
+    assert.equal(store.get("settings", "job-proof"), null);
+    assert.equal(store.withWorkspace(workspace.id, () => store.get("settings", "job-proof")).runs, 2);
+    assert.equal(store.workspaceId, DEFAULT_WORKSPACE);
+    assert.equal(errors.mock.calls.length, 2);
+    assert.deepEqual(errors.mock.calls[0].arguments, ["Workspace scheduler failed:", DEFAULT_WORKSPACE]);
+  } finally { await app.close(); clean(dir); }
+});
+
 test(
   "two independent workspaces isolate HTTP reads, writes, files, payments, exports and concurrent requests",
   { timeout: 60000 },

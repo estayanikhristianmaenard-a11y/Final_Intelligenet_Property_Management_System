@@ -1,0 +1,21 @@
+{
+  "verifiedAt": "2026-10-22T10:49:25.676Z",
+  "source": "One anonymized actual-layout Meralco bill",
+  "method": "pdf_ocr",
+  "fields": "passed",
+  "tenantVisibility": "passed",
+  "portalAlerts": 2,
+  "duplicatePrevention": "passed",
+  "shares": [
+    {
+      "tenant": "William Jake Casas",
+      "amount": 783.59
+    },
+    {
+      "tenant": "Khristian Maenard D. Estayani",
+      "amount": 783.58
+    }
+  ],
+  "externalMessagesSent": 0,
+  "presentationBillImported": false
+}

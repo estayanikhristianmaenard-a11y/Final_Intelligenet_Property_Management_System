@@ -5,6 +5,8 @@ node_modules/
 .env.*
 !.env
 !.env.example
+# Share named profile templates, while keeping generated laptop profiles local.
+!.env.*.example
 # Runtime databases, sessions, uploaded originals and private integration settings.
 # Teammates can recreate the populated synthetic demo using npm run demo:showcase.
 data/

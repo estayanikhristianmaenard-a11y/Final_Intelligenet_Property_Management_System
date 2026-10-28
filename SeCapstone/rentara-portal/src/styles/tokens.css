@@ -62,16 +62,16 @@
   --violet-600: #7c3aed;
 
   /* --- Surfaces ----------------------------------------------------------- */
-  --surface-canvas: #f3f6fa;
+  --surface-canvas: #f3f6f9;
   --surface-panel: #ffffff;
   --surface-subtle: var(--gray-50);
   --surface-inset: var(--gray-100);
-  --surface-sidebar: #24364b;
-  --surface-topbar: #e8eff7;
-  --surface-bottom-nav: #edf3fa;
-  --surface-sidebar-gradient: linear-gradient(160deg, #17263f 0%, #1c3154 60%, #203e67 100%);
+  --surface-sidebar: #173d59;
+  --surface-topbar: #e7eef4;
+  --surface-bottom-nav: #e5edf5;
+  --surface-sidebar-gradient: linear-gradient(165deg, #173d59, #204863);
   --surface-sidebar-hover: rgba(255, 255, 255, 0.06);
-  --surface-sidebar-active: #436489;
+  --surface-sidebar-active: #345d78;
 
   --border-subtle: #e2e8f0;
   --border-default: var(--gray-200);

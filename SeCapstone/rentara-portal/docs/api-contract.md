@@ -169,6 +169,37 @@ Manager settings permit an intake address and pushEnabled. Equal splitting, requ
 
 The tests run an actual HTTP server, authorize all roles, check tenant ownership and private-file denial, create/edit/delete records, finalize MIME/PDF/image sources, revise bills, report/reject/confirm payments, download receipts/documents, create a backup and reopen it. Persistence/session invalidation, integer reconciliation and idempotency are asserted. A real browser verifies connected screens and controls.
 
-Web Push encrypted request construction/retry uses a test transport; it does not prove external delivery. Live IMAP login/retrieval is pending a real account. See [QA report](qa-report.md) and [manual](user-manual.md).
+Web Push encrypted request construction/retry uses a test transport; it does not prove external delivery. Controlled Gmail authentication, rent email receipt and dedicated-label retrieval with synthetic content were verified earlier; actual provider-format acceptance and device Push remain pending. See [QA report](qa-report.md) and [manual](user-manual.md).
+
+## Intake failure and recovery additions — 22 October 2026
+
+- `POST /intake/sync` still returns `{ imported }` for a clean run. If messages fail content/size limits, it returns `{ imported, failed }`, saves one workspace-scoped held-message notice per mailbox identity/UID, and continues later messages. `last-intake.status` may be `completed_with_errors`; Manager/Admin feedback distinguishes it from a clean run. Transport/storage failures are not marked successfully processed.
+- `POST /exceptions/:id/retry-email` is Manager-only and checks the exception in the authenticated workspace. It retries the exact held message, preserving normal bill validation/duplicate checks. Resolved holds cannot be repeatedly retried. A missing/changed mailbox identity requires an uploaded supported copy rather than guessing.
+- `POST /exceptions/:id/close-email` requires that workspace's Manager and `{ reason }` of 8–1000 characters. It saves `closed`, handling reason, actor and time for an open email notice. It creates no bill, payment or receipt. Regular source-field corrections remain separate.
+- `POST /admin/backup` remains Admin-only. It now returns `{ filename, bundle, files }`, where `filename` is the relative SQLite path beneath `DATA_DIR/backups/`, `bundle` is the complete recovery folder and `files` counts included source/document files. The package contains the snapshot, referenced files from all workspaces, and a checksum manifest. It excludes integration credentials and temp/unreferenced files. No manifest is written for an incomplete package.
+- Restore is the offline `backup:restore` command, not a public HTTP endpoint. It verifies paths, file integrity, database integrity and reference coverage; refuses existing destinations; and revokes old login sessions after copying. See [recovery procedure](backup-and-recovery.md).
 
 Implementation references: [Node SQLite API](https://nodejs.org/api/sqlite.html), [ImapFlow fetch](https://imapflow.com/docs/guides/fetching-messages/), [web-push](https://github.com/web-push-libs/web-push), [Tesseract.js](https://github.com/naptha/tesseract.js).
+
+## Staff operations and proposals ? 23 October 2026
+
+Staff is a workspace-scoped account role alongside Manager and Tenant. Admin may assign that role and workspace. Current authenticated membership is used for each request. Staff receives permitted operational reads, intake upload/sync and descriptive PATCH operations on existing records; financial mutations remain Manager-only. Private Tenant document access remains Manager/own-Tenant only.
+
+Base path `/api/v1`:
+
+| Method and path | Allowed role | Input / result |
+| --- | --- | --- |
+| GET `/correction-proposals` | Staff, Manager | Workspace proposal history with source and actor display names |
+| POST `/incoming/:id/proposals` | Staff | `{changes:{dueDate:"2026-10-08",amountDue:1567.17},reason:"Checked original bill"}` |
+| POST `/correction-proposals/:id/decision` | Manager | `{decision:"approve"}` or `{decision:"reject",reason:"Explain why"}` |
+| POST `/exceptions/:id/notes` | Staff, Manager | `{note:"Investigation details",escalate:true}`; optional escalation |
+
+Correction allowlist: provider, accountRef, amountDue, dueDate, periodStart, periodEnd. Reasons/notes require 3?1000 characters. Only unfinalized sources may have a proposal; at most one pending proposal per source. Actor, role and workspace are server-derived. Approval returns `{proposal,document,billIds}` on application, or a proposal with `stale`/`returned` state and explanation when blocked; clients must inspect state, not HTTP success alone. Deciding an already decided proposal returns 409. No decision endpoint grants permission to override duplicates or skip validation.
+
+The `correction_proposals` SQLite table uses the existing JSON-record/workspace storage pattern. Related exception notes stay with exceptions; applied field changes also retain correction records. Migration is additive. See [current role matrix and fields](staff-implementation-plan.md).
+
+## Automatic processing status ? 23 October 2026
+
+`GET /api/v1/automation/status` is read-only for authenticated Staff/Manager in their own workspace. Returns checkedAt, scheduleIntervalMs (60000), mailboxIntervalMs (300000), mailboxConfigured, nextMailboxCheckAt, and lastCycle (nullable). The latest cycle contains startedAt/completedAt and fixed per-job states/times; it contains no configuration credentials or raw provider errors. Access does not trigger processing. Tenant/Admin receive 403; another business cannot select the current workspace with request fields.
+
+Runtime startup invokes `createApp().startAutomation()`, which starts immediately and then every minute with no overlap. Calling it twice on the same app returns the existing controller. Closing the application stops/waits for scheduled work. `automation-cycle` is a bounded record in existing workspace settings, not a new database table or unbounded audit stream. Job completion is not a delivery/payment guarantee. See [automatic workflow](automated-workflow.md).

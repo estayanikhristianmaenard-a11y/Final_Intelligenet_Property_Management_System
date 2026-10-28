@@ -1,3 +1,4 @@
+import { descriptiveFields } from "./staff-workflow.js";
 import {
   randomBytes,
   createHash,
@@ -162,10 +163,10 @@ export class Service {
       );
   }
   own(user, tenantId) {
-    this.role(user, "manager", "tenant");
+    this.role(user, "manager", "staff", "tenant");
     this.must("tenants", tenantId);
     requireValue(
-      user.role === "manager" || user.tenantId === tenantId,
+      user.role !== "tenant" || user.tenantId === tenantId,
       "Access denied",
       403,
     );
@@ -259,7 +260,7 @@ export class Service {
   writeUser(user, body, id) {
     const old = id ? this.must("users", id) : null;
     requireValue(
-      ["admin", "manager", "tenant"].includes(body.role ?? old?.role),
+      ["admin", "manager", "staff", "tenant"].includes(body.role ?? old?.role),
       "Invalid role",
     );
     const next = {
@@ -294,7 +295,7 @@ export class Service {
         403,
       );
     } else next.tenantId = null;
-    if (next.role === "manager")
+    if (["manager", "staff"].includes(next.role))
       next.workspaceId =
         body.workspaceId || old?.workspaceId || DEFAULT_WORKSPACE;
     if (next.role === "admin") next.workspaceId = null;
@@ -423,7 +424,7 @@ export class Service {
     const tenant = this.tenants().find((t) => t.id === id),
       bills = this.bills(user, { tenantId: id }),
       payments = this.payments(user, { tenantId: id }),
-      documents = this.documents(user, id);
+      documents = user.role === "staff" ? [] : this.documents(user, id);
     return {
       ...tenant,
       bills,
@@ -447,7 +448,12 @@ export class Service {
     };
   }
   writeEntity(user, kind, body, id) {
-    this.role(user, "manager");
+    this.role(user, "manager", "staff");
+    if (user.role === "staff") {
+      const allowed = descriptiveFields[kind] ?? [];
+      requireValue(id && allowed.length && Object.keys(body).every(key => allowed.includes(key)),
+        "Staff may update descriptive fields on existing records only", 403);
+    }
     requireValue(
       ["properties", "units", "tenants", "mappings"].includes(kind),
       "Invalid entity",
@@ -678,7 +684,7 @@ export class Service {
             at: new Date().toISOString(),
           });
       this.s.save(kind, p);
-      if (kind === "tenants") {
+      if (kind === "tenants" && user.role === "manager") {
         this.s.save("assignments", {
           id: "assignment-" + p.id,
           tenantId: p.id,
@@ -695,16 +701,18 @@ export class Service {
           end: p.leaseEnd,
           anniversaryDay: Number(p.leaseStart.slice(-2)),
         });
+      }
+      if (kind === "tenants") {
         const account = this.s.all("users").find((u) => u.tenantId === p.id);
         if (account)
           this.s.save("users", {
             ...account,
             name: p.fullName,
-            email: p.email,
+            ...(user.role === "manager" ? { email: p.email } : {}),
             phone: p.phone,
           });
       }
-      if (kind === "tenants") this.reconcileAdvanceCredits();
+      if (kind === "tenants" && user.role === "manager") this.reconcileAdvanceCredits();
       this.s.audit(
         user,
         id ? "Record updated" : "Record created",
@@ -1525,6 +1533,7 @@ export class Service {
   correctException(user, id, body) {
     this.role(user, "manager");
     const e = this.must("exceptions", id);
+    requireValue(!e.intakeMessageId, "Use Retry email for a held mailbox message, or upload a supported bill copy", 409);
     if (!e.sourceId) {
       const result = this.generateRent();
       const fresh = this.must("exceptions", id);
@@ -1593,13 +1602,13 @@ export class Service {
     return this.processIncoming(doc.id, user);
   }
   bills(user, filters = {}) {
-    this.role(user, "manager", "tenant");
+    this.role(user, "manager", "staff", "tenant");
     if (filters.tenantId) this.own(user, filters.tenantId);
     return this.s
       .all("bills")
       .filter(
         (b) =>
-          (user.role === "manager" || b.tenantId === user.tenantId) &&
+          (user.role !== "tenant" || b.tenantId === user.tenantId) &&
           (!filters.tenantId || b.tenantId === filters.tenantId) &&
           (!filters.status || b.paymentStatus === filters.status) &&
           (!filters.q ||
@@ -1647,14 +1656,14 @@ export class Service {
       );
   }
   payments(user, filters = {}) {
-    this.role(user, "manager", "tenant");
+    this.role(user, "manager", "staff", "tenant");
     if (filters.tenantId) this.own(user, filters.tenantId);
     return this.s
       .all("payments")
       .filter(
         (p) =>
           this.isRent(this.must("bills", p.billId)) &&
-          (user.role === "manager" || p.tenantId === user.tenantId) &&
+          (user.role !== "tenant" || p.tenantId === user.tenantId) &&
           (!filters.tenantId || p.tenantId === filters.tenantId) &&
           (!filters.status || p.status === filters.status),
       )

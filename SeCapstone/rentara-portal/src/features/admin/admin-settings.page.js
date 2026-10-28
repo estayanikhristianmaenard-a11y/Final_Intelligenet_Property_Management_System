@@ -31,7 +31,33 @@ export async function renderAdminSettings(container) {
 
   try {
     const [users,workspaces] = await Promise.all([api.get(endpoints.adminUsers()),api.get("/admin/workspaces")]);
-    render(container, frame(html`${workspacesSection(workspaces,users)}${usersSection(users,workspaces)}`));
+    render(container, frame(html`${workspacesSection(workspaces,users)}
+      <section class="account-filters" aria-label="Filter accounts">
+        <label>Search accounts<input class="input" type="search" data-account-search placeholder="Name or email" /></label>
+        <label>Business<select class="input select" data-account-workspace><option value="">All businesses</option>${workspaces.map(w => html`<option value="${w.id}">${w.name}</option>`)}</select></label>
+        <label>Role<select class="input select" data-account-role><option value="">All roles</option>${["admin","manager","staff","tenant"].map(role => html`<option>${role}</option>`)}</select></label>
+        <label>Status<select class="input select" data-account-status><option value="">All statuses</option><option>active</option><option>suspended</option></select></label>
+      </section>${usersSection(users,workspaces)}`));
+    const apply = () => {
+      const term = container.querySelector("[data-account-search]").value.toLowerCase().trim();
+      const workspace = container.querySelector("[data-account-workspace]").value;
+      const role = container.querySelector("[data-account-role]").value;
+      const status = container.querySelector("[data-account-status]").value;
+      let visible = 0;
+      container.querySelectorAll('[aria-label="User accounts"] tbody tr').forEach(row => {
+        const user = users.find(u => u.id === row.dataset.rowId);
+        row.hidden = !user || !`${user.name} ${user.email}`.toLowerCase().includes(term) ||
+          Boolean(workspace && user.workspaceId !== workspace) || Boolean(role && user.role !== role) || Boolean(status && user.status !== status);
+        if (!row.hidden) visible++;
+      });
+      container.querySelector("[data-account-result]").textContent = `${visible} of ${users.length} accounts`;
+    };
+    container.querySelectorAll(".account-filters input,.account-filters select").forEach(control => control.addEventListener("input", apply));
+    container.querySelectorAll("[data-workspace-members]").forEach(button => button.addEventListener("click", () => {
+      container.querySelector("[data-account-workspace]").value = button.dataset.workspaceMembers;
+      apply(); container.querySelector("[data-account-search]").focus({preventScroll:true});
+      container.querySelector(".account-filters").scrollIntoView({block:"nearest"});
+    }));
   } catch (error) {
     render(
       container,
@@ -73,7 +99,7 @@ function frame(content) {
 }
 
 function workspacesSection(workspaces,users) {
-  return html`<section class="card"><div class="card__header"><h2 class="card__title">Workspaces</h2></div><div class="card__body"><p class="text-sm text-muted mb-3">Create one workspace per property business, then assign its Manager account. Admin accounts maintain the system.</p><div class="mini-list">${workspaces.map(workspace=>html`<div class="mini-list__item"><span class="mini-list__body"><strong>${workspace.name}</strong><span>${users.filter(user=>user.workspaceId===workspace.id && user.role==="manager").length} Managers</span></span><button type="button" class="btn btn--secondary btn--sm" data-rename-workspace="${workspace.id}">Rename<span class="sr-only"> ${workspace.name}</span></button></div>`)}</div></div></section>`;
+  return html`<section class="card"><div class="card__header"><h2 class="card__title">Workspaces</h2></div><div class="card__body"><p class="text-sm text-muted mb-3">Create one workspace per property business, then assign its Manager account. Admin accounts maintain the system.</p><div class="mini-list">${workspaces.map(workspace=>html`<div class="mini-list__item"><span class="mini-list__body"><strong>${workspace.name}</strong><span>${users.filter(user=>user.workspaceId===workspace.id && user.role==="manager").length} Managers</span></span><button type="button" class="btn btn--secondary btn--sm" data-workspace-members="${workspace.id}">View members</button><button type="button" class="btn btn--secondary btn--sm" data-rename-workspace="${workspace.id}">Rename<span class="sr-only"> ${workspace.name}</span></button></div>`)}</div></div></section>`;
 }
 function usersSection(users,workspaces) {
   return dataTable({
@@ -83,7 +109,7 @@ function usersSection(users,workspaces) {
         >${icon("users", { size: 12 })} Accounts</span
       >
       <span class="table-toolbar__spacer"></span>
-      <span class="text-xs text-muted">${users.length} accounts</span>`,
+      <span class="text-xs text-muted" data-account-result>${users.length} accounts</span>`,
     emptyTitle: "No accounts",
     emptyIcon: "users",
     columns: [
@@ -167,7 +193,7 @@ function usersSection(users,workspaces) {
 }
 
 function matrixSection() {
-  const roles = [ROLE.ADMIN, ROLE.MANAGER, ROLE.TENANT];
+  const roles = [ROLE.ADMIN, ROLE.MANAGER, ROLE.STAFF, ROLE.TENANT];
 
   return html`<section class="card">
     <div class="card__header">

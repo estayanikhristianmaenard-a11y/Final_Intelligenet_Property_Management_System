@@ -1,3 +1,5 @@
+import { startScheduler, automationStatus } from "./scheduler.js";
+import { listProposals, submitProposal, decideProposal, addExceptionNote } from "./staff-workflow.js";
 import { serverTransport } from "./transport.js";
 import { promises as fs } from "node:fs";
 import { resolve, join, extname } from "node:path";
@@ -9,6 +11,7 @@ import { Integrations } from "./integrations.js";
 import { workspaceIntegrations } from "./workspace-integrations.js";
 import { renderRentReceipt } from "./receipt-view.js";
 import { HttpError, requireValue, philippineDate } from "./rules.js";
+import { createRecoveryBackup } from "./recovery.js";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 // Admin home is a maintenance summary; the authorized full audit remains intact.
@@ -230,6 +233,14 @@ export function createApp({
             items: items.slice(0, Math.min(Number(query.limit) || 12, 200)),
             total: items.length,
           };
+        } else if (p === "/correction-proposals" && verb === "GET") {
+          output = listProposals(service, user);
+        } else if (/^\/incoming\/[^/]+\/proposals$/.test(p) && verb === "POST") {
+          output = submitProposal(service, user, p.split("/")[2], body);
+        } else if (/^\/correction-proposals\/[^/]+\/decision$/.test(p) && verb === "POST") {
+          output = decideProposal(service, user, p.split("/")[2], body);
+        } else if (/^\/exceptions\/[^/]+\/notes$/.test(p) && verb === "POST") {
+          output = addExceptionNote(service, user, p.split("/")[2], body);
         } else if (p === "/admin/workspaces") {
           service.role(user, "admin");
           if (verb === "GET") output = s.all("workspaces");
@@ -269,12 +280,8 @@ export function createApp({
           s.audit(user, "System status refreshed", "services");
         } else if (p === "/admin/backup" && verb === "POST") {
           service.role(user, "admin");
-          const name = `backup-${Date.now()}.sqlite`,
-            dir = join(dataDir, "backups");
-          await fs.mkdir(dir, { recursive: true });
-          await s.backup(join(dir, name));
-          s.audit(user, "Database backup completed", name);
-          output = { filename: name };
+          output = await createRecoveryBackup(s, dataDir);
+          s.audit(user, "Database backup completed", output.bundle);
         } else if (p === "/admin/ocr-restart" && verb === "POST") {
           service.role(user, "admin");
           await external.close();
@@ -330,7 +337,7 @@ export function createApp({
         } else if (/^\/tenants\/[^/]+$/.test(p) && verb === "GET")
           output = service.tenant(user, p.split("/")[2]);
         else if (/^\/(properties|units|tenants|mappings)(\/[^/]+)?$/.test(p)) {
-          service.role(user, "manager");
+          service.role(user, "manager", "staff");
           const [, kind, id] = p.split("/");
           if (verb === "GET") {
             if (kind === "properties")
@@ -356,6 +363,7 @@ export function createApp({
         ) {
           const [, , id, kind] = p.split("/");
           service.own(user, id);
+          if (kind === "documents") service.role(user, "manager", "tenant");
           service.must("tenants", id);
           output =
             kind === "bills"
@@ -377,8 +385,11 @@ export function createApp({
           const b = service.must("bills", p.split("/")[2]);
           service.own(user, b.tenantId);
           output = b;
+        } else if (p === "/automation/status" && verb === "GET") {
+          service.role(user, "manager", "staff");
+          output = automationStatus(integration);
         } else if (p === "/bills/incoming" && verb === "GET") {
-          service.role(user, "manager");
+          service.role(user, "manager", "staff");
           output = s
             .all("incoming")
             .filter((d) => !query.status || d.ocrStatus === query.status)
@@ -386,10 +397,23 @@ export function createApp({
         } else if (p === "/rent/generate" && verb === "POST") {
           service.role(user, "manager");
           output = service.generateRent();
+        } else if (/^\/exceptions\/[^/]+\/close-email$/.test(p) && verb === "POST") {
+          service.role(user, "manager");
+          const record = service.must("exceptions", p.split("/")[2]);
+          requireValue(record.intakeMessageId && record.state === "open", "Only an open email notice can be closed", 409);
+          requireValue(typeof body.reason === "string" && body.reason.trim().length >= 8 && body.reason.length <= 1000, "Record how this email was handled (8-1000 characters)");
+          output = s.save("exceptions", { ...record, state: "closed", resolutionReason: body.reason.trim(), resolvedAt: new Date().toISOString(), resolvedBy: user.id });
+          s.audit(user, "Email notice closed", record.id);
+        } else if (/^\/exceptions\/[^/]+\/retry-email$/.test(p) && verb === "POST") {
+          service.role(user, "manager");
+          const record = service.must("exceptions", p.split("/")[2]);
+          requireValue(record.intakeMessageId && record.state === "open", "Only a held email can be retried", 409);
+          output = await integration.syncMailbox(user, { retryKey: record.intakeMessageId });
+          s.audit(user, "Held email retried", record.id);
         } else if (p === "/intake/sync" && verb === "POST")
           output = await integration.syncMailbox(user);
         else if (p === "/intake/upload" && verb === "POST") {
-          service.role(user, "manager");
+          service.role(user, "manager", "staff");
           requireValue(
             typeof body.base64 === "string" &&
               /^[A-Za-z0-9+/]*={0,2}$/.test(body.base64),
@@ -402,7 +426,7 @@ export function createApp({
           );
           s.audit(user, "Source uploaded", output.document.id);
         } else if (/^\/incoming\/[^/]+\/source$/.test(p) && verb === "GET") {
-          service.role(user, "manager");
+          service.role(user, "manager", "staff");
           const d = service.must("incoming", p.split("/")[2]);
           const sourceFileId = d.sourceFileId ?? d.id;
           requireValue(
@@ -426,7 +450,7 @@ export function createApp({
           s.audit(user, "Source downloaded", d.id);
           return;
         } else if (/^\/incoming\/[^/]+$/.test(p) && verb === "GET") {
-          service.role(user, "manager");
+          service.role(user, "manager", "staff");
           output = service.must("incoming", p.split("/")[2]);
         } else if (/^\/incoming\/[^/]+\/correct$/.test(p) && verb === "POST") {
           service.role(user, "manager");
@@ -471,7 +495,7 @@ export function createApp({
           respond(receiptHtml(receipt), 200, "text/html");
           return;
         } else if (p === "/exceptions" && verb === "GET") {
-          service.role(user, "manager");
+          service.role(user, "manager", "staff");
           output = s
             .all("exceptions")
             .filter((e) => !query.state || e.state === query.state)
@@ -479,7 +503,7 @@ export function createApp({
         } else if (/^\/exceptions\/[^/]+\/resolve$/.test(p) && verb === "POST")
           output = service.correctException(user, p.split("/")[2], body);
         else if (p === "/notifications" && verb === "GET") {
-          service.role(user, "tenant", "manager");
+          service.role(user, "tenant", "manager", "staff");
           output =
             user.role === "tenant"
               ? s
@@ -604,6 +628,7 @@ export function createApp({
           });
           s.audit(user, "Tenant document uploaded", id);
         } else if (/^\/documents\/[^/]+$/.test(p) && verb === "GET") {
+          service.role(user, "manager", "tenant");
           const d = service.must("documents", p.split("/")[2]);
           service.own(user, d.tenantId);
           const bytes = await fs.readFile(
@@ -635,12 +660,18 @@ export function createApp({
       if (status === 500) console.error(e);
     }
   });
+  let scheduler = null;
   return {
     server,
+    startAutomation(options) {
+      scheduler ??= startScheduler(external, options);
+      return scheduler;
+    },
     service,
     integrations: external,
     store: s,
     async close() {
+      await scheduler?.stop();
       await external.close();
       if (server.listening) await new Promise((r) => server.close(r));
       s.close();
@@ -665,17 +696,11 @@ if (
       () =>
         console.log(`Rentara: ${process.env.TLS_CERT_FILE ? "https" : "http"}://localhost:${process.env.PORT || 8080}/`),
     );
-    const tick = () =>
-      app.integrations
-        .tick()
-        .catch((e) => console.error("Scheduler:", e.message));
-    tick();
-    const timer = setInterval(tick, 60_000);
+    app.startAutomation();
     let closing = false;
     const close = async () => {
       if (closing) return;
       closing = true;
-      clearInterval(timer);
       await app.close();
     };
     process.on("SIGINT", close);

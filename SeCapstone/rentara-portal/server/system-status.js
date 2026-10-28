@@ -49,8 +49,9 @@ export async function systemStatus(runtime) {
       const intake=s.get("settings","last-intake");
       const lastAttemptAt=iso(intake?.attemptedAt);
       const lastSuccessAt=iso(intake?.successfulAt ?? (intake?.status === "completed" ? intake.attemptedAt : null));
-      return {state:!configured ? "not_configured" : intake?.status === "failed" ? "last_attempt_failed" : intake?.status === "completed" ? "recorded_success" : "unverified",
-        lastAttemptAt,lastSuccessAt,detail:!configured ? "Required IMAP configuration is missing." : intake?.status === "failed" ? "The last recorded mailbox sync failed." : intake?.status === "completed" ? "A completed mailbox sync is recorded; this is not a live connection test." : "Configured; a completed mailbox sync has not been verified.",
+      const held = intake?.status === "completed_with_errors";
+      return {state:!configured ? "not_configured" : intake?.status === "failed" || held ? "last_attempt_failed" : intake?.status === "completed" ? "recorded_success" : "unverified",
+        lastAttemptAt,lastSuccessAt,detail:!configured ? "Required IMAP configuration is missing." : held ? `${intake.heldMessages} email(s) held for Manager review; other messages continued processing.` : intake?.status === "failed" ? "The last recorded mailbox sync failed." : intake?.status === "completed" ? "A completed mailbox sync is recorded; this is not a live connection test." : "Configured; a completed mailbox sync has not been verified.",
         nextStep:!configured ? "Configure the property mailbox on the server when email intake is needed." : "Review sync dates. A Manager can deliberately synchronize the configured mailbox."};
     }),
     check("svc-rent-email","Rent email notifications","SMTP enablement/configuration and recorded sending results","Server acceptance does not prove inbox delivery or readership; no email is sent by this check.",()=>{

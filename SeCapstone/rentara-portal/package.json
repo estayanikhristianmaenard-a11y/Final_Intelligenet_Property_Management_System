@@ -9,18 +9,22 @@
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
     "setup:acceptance": "node server/acceptance-setup.js",
+    "demo:group:prepare": "node tools/prepare-group-demo.mjs",
+    "demo:group": "node --env-file-if-exists=.env --env-file=.env.acceptance tools/start-group-demo.mjs",
     "setup:https": "node tools/setup-local-https.mjs",
     "verify:email-billing": "node --env-file-if-exists=.env tools/verify-email-billing.mjs",
     "setup:utility-intake": "node tools/setup-utility-intake.mjs",
+    "backup:restore": "node tools/restore-backup.mjs",
     "start:acceptance": "node --env-file-if-exists=.env --env-file=.env.acceptance tools/start-acceptance.mjs",
     "previews:refresh": "node tools/refresh-design-previews.mjs",
-    "test": "node --test --test-concurrency=2 tests/*.test.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
     "setup": "node --env-file-if-exists=.env server/setup.js",
     "demo:showcase": "node server/demo-showcase.js --activate",
     "push:keys": "node server/keys.js",
     "integrations:check": "node --env-file-if-exists=.env tools/check-integrations.mjs",
     "test:backend": "node --test tests/backend.test.js tests/rent-email.test.js tests/workspaces.test.js",
-    "test:browser": "node --test --test-concurrency=2 tests/browser.test.js tests/*.browser.test.js"
+    "test:browser": "node --test --test-concurrency=1 tests/browser.test.js tests/*.browser.test.js",
+    "demo:staff:prepare": "node tools/setup-staff-demo.mjs"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",

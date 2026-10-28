@@ -1,0 +1,264 @@
+<mxfile host="app.diagrams.net" agent="PropertyPro local diagram update">
+  <diagram id="simple-billing" name="Figure 2.2 - Billing Process Flowchart">
+    <mxGraphModel dx="6275" dy="2796" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1550" pageHeight="2050" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Start" vertex="1">
+          <mxGeometry height="45" width="140" x="445" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="type" parent="1" style="shape=rhombus;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Rent or Utility?" vertex="1">
+          <mxGeometry height="110" width="240" x="395" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="rent" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Check Rent Cycle" vertex="1">
+          <mxGeometry height="85" width="300" x="90" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="utility" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Receive Utility Bill&#10;Email or upload&#10;Extract details (Text/OCR)" vertex="1">
+          <mxGeometry height="100" width="300" x="640" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="rules" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Check Bill and Calculate Shares&#10;Recheck corrected records" vertex="1">
+          <mxGeometry height="85" width="300" x="365" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="valid" parent="1" style="shape=rhombus;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Bill Valid?&#10;Shares Match Total?" vertex="1">
+          <mxGeometry height="130" width="300" x="365" y="775" as="geometry" />
+        </mxCell>
+        <mxCell id="exception" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Bills for Review&#10;Block finalization" vertex="1">
+          <mxGeometry height="70" width="270" x="800" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="correction" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Staff investigates and prepares&#10;correction proposal / evidence" vertex="1">
+          <mxGeometry height="80" width="270" x="800" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="final" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Finalize Bill&#10;Rent: Unpaid&#10;Utility: Not Marked Paid" vertex="1">
+          <mxGeometry height="95" width="260" x="385" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="notify" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Portal Alerts + Web Push&#10;Rent Email Updates" vertex="1">
+          <mxGeometry height="95" width="280" x="-45" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="credit" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Apply advance only for eligible final cycle. The manager confirms application. Otherwise, keep rent unchanged. Calculate remaining rent" vertex="1">
+          <mxGeometry height="125" width="320" x="355" y="1260" as="geometry" />
+        </mxCell>
+        <mxCell id="settled" parent="1" style="shape=rhombus;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Final Rent Fully Covered&#10;by Confirmed Advance?" vertex="1">
+          <mxGeometry height="130" width="300" x="365" y="1430" as="geometry" />
+        </mxCell>
+        <mxCell id="creditpaid" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Paid: Reuse Original&#10;Payment and Receipt&#10;No new cash payment" vertex="1">
+          <mxGeometry height="90" width="300" x="-55" y="1450" as="geometry" />
+        </mxCell>
+        <mxCell id="creditend" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="End" vertex="1">
+          <mxGeometry height="45" width="140" x="-240" y="1662.5" as="geometry" />
+        </mxCell>
+        <mxCell id="report" parent="1" style="shape=rhombus;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Rent Payment Action?" vertex="1">
+          <mxGeometry height="130" width="300" x="365" y="1620" as="geometry" />
+        </mxCell>
+        <mxCell id="JMQHdkGuiB_yleObI4EE-1" edge="1" parent="1" source="unpaid" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;shadow=0;dashed=0;opacity=100;strokeColor=#000000;strokeWidth=2;align=center;verticalAlign=middle;spacingLeft=0;spacing=0;fontFamily=Arial;fontSize=18;fontColor=#000000;labelBorderColor=none;labelBackgroundColor=none;startArrow=none;endArrow=block;endFill=0;fillColor=none;gradientColor=none;whiteSpace=nowrap;overflow=visible;" target="creditend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="unpaid" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Remains Unpaid" vertex="1">
+          <mxGeometry height="60" width="220" x="-15" y="1655" as="geometry" />
+        </mxCell>
+        <mxCell id="reported" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Tenant Reported Paid" vertex="1">
+          <mxGeometry height="70" width="260" x="385" y="1810" as="geometry" />
+        </mxCell>
+        <mxCell id="review" parent="1" style="shape=rhombus;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Manager Decision?&#10;After external checking" vertex="1">
+          <mxGeometry height="130" width="300" x="365" y="1930" as="geometry" />
+        </mxCell>
+        <mxCell id="pending" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Remains Tenant&#10;Reported Paid" vertex="1">
+          <mxGeometry height="75" width="250" x="-30" y="2140" as="geometry" />
+        </mxCell>
+        <mxCell id="rejected" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Keep Rejection Reason&#10;Return to Unpaid" vertex="1">
+          <mxGeometry height="75" width="270" x="380" y="2140" as="geometry" />
+        </mxCell>
+        <mxCell id="paid" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Paid: Confirmed Rent Receipt&#10;Reuse receipt on retry&#10;Send rent email notice" vertex="1">
+          <mxGeometry height="105" width="300" x="785" y="2140" as="geometry" />
+        </mxCell>
+        <mxCell id="end" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="End" vertex="1">
+          <mxGeometry height="45" width="140" x="865" y="2310" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="type" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="type" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0;exitY=0.5;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rent" value="Rent">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="type" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=1;exitY=0.5;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="utility" value="Electricity / Water">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="rent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rent-eligible" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="utility" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rules" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="615" />
+              <mxPoint x="515" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="rules" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="valid" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="valid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="exception" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="exception" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="correction" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="proposal-decision" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=1;exitY=0.5;entryX=1;entryY=0.5;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rules" value="Authorize: freshness + revalidation">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+            <Array as="points">
+              <mxPoint x="1160" y="990" />
+              <mxPoint x="1160" y="692.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="valid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;exitDx=0;exitDy=0;overflow=visible;" target="final" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="final" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="notify" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="credit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="settled" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="settled" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="creditpaid" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="creditpaid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="creditend" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="settled" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="report" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="report" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeWidth=2;exitDx=0;exitDy=0;entryDx=0;entryDy=0;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="unpaid" value="No action">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="report" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="reported" value="Tenant report">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="reported" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="review" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="review" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0;exitY=0.5;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="pending" value="Pending">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="review" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rejected" value="Rejected">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="review" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=1;exitY=0.5;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="paid" value="Confirmed">
+          <mxGeometry relative="1" x="0.0392" y="26" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="935" y="1995" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="paid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="end" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="path" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;shape=rhombus;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Rent or Utility?" vertex="1">
+          <mxGeometry height="110" width="300" x="365" y="1110" as="geometry" />
+        </mxCell>
+        <mxCell id="personal" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Tenant Utility Tracker&#10;Not Marked Paid / Self-Reported Paid&#10;Provider payment not verified" vertex="1">
+          <mxGeometry height="140" width="360" x="-85" y="1095" as="geometry" />
+        </mxCell>
+        <mxCell id="utility-end" parent="1" style="rounded=1;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;arcSize=40;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="End: Tracking Saved" vertex="1">
+          <mxGeometry height="60" width="270" x="-40" y="1280" as="geometry" />
+        </mxCell>
+        <mxCell id="final-path" edge="1" parent="1" source="final" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;fontSize=18;labelBackgroundColor=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;startArrow=none;dashed=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;overflow=visible;" target="path" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rent-path" edge="1" parent="1" source="path" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;fontSize=18;labelBackgroundColor=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;startArrow=none;dashed=0;curved=0;overflow=visible;" target="credit" value="Rent">
+          <mxGeometry relative="1" x="-0.211" y="30" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="utility-path" edge="1" parent="1" source="path" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;fontSize=18;labelBackgroundColor=none;strokeColor=#000000;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeWidth=2;entryDx=0;entryDy=0;fontColor=#000000;fontFamily=Arial;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;startArrow=none;dashed=0;curved=0;overflow=visible;" target="personal" value="Electricity /&#10; Water">
+          <mxGeometry relative="1" x="-0.2667" y="-34" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="utility-save" edge="1" parent="1" source="personal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;fontSize=18;labelBackgroundColor=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;startArrow=none;dashed=0;curved=0;overflow=visible;" target="utility-end" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="direct" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Manager Records Rent Payment&#10;After external checking" vertex="1">
+          <mxGeometry height="90" width="280" x="795" y="1810" as="geometry" />
+        </mxCell>
+        <mxCell id="direct-review" edge="1" parent="1" source="direct" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;startArrow=none;dashed=0;curved=0;overflow=visible;" target="paid" value="">
+          <mxGeometry relative="1" x="-0.4333" y="66" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="direct-action" edge="1" parent="1" source="report" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;fontSize=18;labelBackgroundColor=none;strokeColor=#000000;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitDx=0;exitDy=0;strokeWidth=2;fontColor=#000000;fontFamily=Arial;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;startArrow=none;dashed=0;curved=0;overflow=visible;" target="direct" value="Manager record">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rent-eligible" parent="1" style="shape=rhombus;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Eligible cycle?" vertex="1">
+          <mxGeometry height="100" width="240" x="120" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="rent-prepare" parent="1" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="Prepare Rent" vertex="1">
+          <mxGeometry height="65" width="270" x="105" y="515" as="geometry" />
+        </mxCell>
+        <mxCell id="rent-no-bill" parent="1" style="rounded=1;arcSize=40;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;spacing=6;strokeWidth=2;labelBackgroundColor=none;gradientColor=none;labelBorderColor=none;shadow=0;opacity=100;fontOpacity=100;strokeOpacity=100;" value="End: No new rent bill" vertex="1">
+          <mxGeometry height="60" width="240" x="-290" y="385" as="geometry" />
+        </mxCell>
+        <mxCell id="eligible-yes" edge="1" parent="1" source="rent-eligible" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rent-prepare" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eligible-no" edge="1" parent="1" source="rent-eligible" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rent-no-bill" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="prepared-rent-rules" edge="1" parent="1" source="rent-prepare" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;labelBackgroundColor=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;fillColor=none;gradientColor=none;labelBorderColor=none;shadow=0;whiteSpace=nowrap;spacing=0;opacity=100;fontOpacity=100;strokeOpacity=100;endFill=0;startArrow=none;dashed=0;curved=0;overflow=visible;" target="rules" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="615" />
+              <mxPoint x="515" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="proposal-decision" value="Manager decision?" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;rhombus;" vertex="1" parent="1">
+          <mxGeometry x="800" y="1080" width="270" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="proposal-rejected" value="Keep reason&#10;Return proposal to Staff" style="rounded=0;html=0;whiteSpace=wrap;fillColor=none;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="1080" width="230" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="proposal-submit" value="Submit proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;whiteSpace=nowrap;" edge="1" parent="1" source="correction" target="proposal-decision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="proposal-reject" value="Reject / stale" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;whiteSpace=nowrap;" edge="1" parent="1" source="proposal-decision" target="proposal-rejected">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="proposal-return" value="Revise proposal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;whiteSpace=nowrap;" edge="1" parent="1" source="proposal-rejected" target="correction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="manager-direct-correction" value="Manager direct correction; retain history" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;whiteSpace=nowrap;" edge="1" parent="1" source="exception" target="rules">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

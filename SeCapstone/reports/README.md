@@ -2,6 +2,9 @@
 
 | Folder | Purpose |
 | --- | --- |
+| [demo-files](demo-files/README.md) | Downloadable demo-bill ZIP with anonymized/synthetic inputs, expected values and duplicate/mapping instructions. |
+| [templates](templates/README.md) | Blank Excel information sheet for collecting property, unit, utility-account and Tenant details. |
+| [Design starting point](design-concepts/README.md) | Selected Case Sheet reference, current implementation links and one archive of superseded drafts. |
 | [mockups](mockups/README.md) | Current PNGs captured from the implemented portal, with synthetic records and capture metadata. |
 | [email-previews](email-previews) | Current HTML, plain-text and PNG versions of the three rent email notices. No email is sent by generating these. |
 | [branding/icon-options](branding/icon-options/preview.html) | Original icon options; option 02 is selected and implemented. Runtime favicon and brand component are in the application `src`. |

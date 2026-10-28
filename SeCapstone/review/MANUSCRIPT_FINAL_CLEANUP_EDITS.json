@@ -1,0 +1,162 @@
+[
+  {
+    "file": "CHAPTER_I_REVISED.md",
+    "old": "Based on these ideas, the study proposes a web-based workflow that helps property managers organize billing information and allows tenants to view their bills and history. Its main concept is to receive supported utility-bill emails and documents, extract available information through text parsing or OCR, and use predefined rules to process valid records or identify those requiring Manager review. In this study, \"intelligent\" refers to OCR-assisted extraction and rule-based processing rather than autonomous decision-making. The workflow separates Manager-confirmed rent payments from personal utility tracking and provides permitted Web Push alerts and supplementary rent email notifications that direct tenants to the authenticated portal.",
+    "new": "Based on these ideas, the study proposes a web-based workflow that helps property managers organize billing information and allows tenants to view their bills and history. The system receives supported utility-bill emails and documents, extracts available information through text parsing or OCR, and uses predefined rules to process valid records. Staff investigates records that require review, while the Manager handles decisions requiring financial authority. In this study, \"intelligent\" refers to OCR-assisted extraction and rule-based processing rather than autonomous decision-making. The workflow separates Manager-confirmed rent payments from personal utility tracking and provides permitted Web Push alerts and supplementary rent email notifications that direct tenants to the authenticated portal."
+  },
+  {
+    "file": "CHAPTER_I_REVISED.md",
+    "old": "3. How does the developed system perform when evaluated using the selected ISO/IEC 25010:2023 quality characteristics in terms of:",
+    "new": "3. How does the developed system perform when evaluated using the selected ISO/IEC 25010:2023 quality characteristics of Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security?"
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "old": "The framework connects property and unit management, Tenant management, utility-provider and account mapping, and rent configuration with email intake, optional Staff or Manager bill uploads, direct text extraction, OCR, validation, rule-based classification, duplicate checking, billing computation, and the Exception Queue. Billing records, rent payment-status management, advance-credit application, confirmed rent receipts, personal utility tracking, Web Push notifications, and rent email notification records use the Centralized Database. The Admin, Manager, Tenant, and Utility Provider interact with these components according to their defined responsibilities.",
+    "new": "The framework connects property and unit records, tenant records, utility-account mappings, and rent settings with utility intake, text extraction or OCR, validation, classification, and billing computation. It also includes exception handling, rent confirmation, advance-credit application, confirmed rent receipts, personal utility tracking, and permitted notifications. These functions use one centralized database. Admin maintains accounts and authorized workspace assignments. Staff handles permitted daily operations and investigates exceptions, while the Manager controls financial settings and decisions. Tenants access their own records, and utility providers supply billing information through supported sources."
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "old": "The methodology is appropriate for the proposed system because its functions are interconnected but can be developed in manageable groups. These functions include system foundation, property and billing configuration, utility-bill intake, direct text extraction, OCR extraction, rule-based processing, exception handling, Billing Computation, payment and receipt management, tenant access, Centralized Database functions, Web Push Notifications, and supplementary rent email notifications. The methodology will also support the intended automate by default, intervene by exception approach.",
+    "new": "The methodology is appropriate because the system can be developed in related groups of functions and checked as each group is added. These groups cover configuration, utility intake and extraction, validation, billing, payment records, tenant access, and notifications. Valid records will proceed automatically, while exceptions will require the appropriate user action."
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "old": "The planned iterations will be applied progressively, beginning with the system foundation and configuration functions and continuing with property-email intake, optional Staff or Manager bill uploads, direct text extraction, OCR extraction, rule-based processing, exception handling, Billing Computation, rent payment and receipt management, approved advance-credit application, personal utility tracking, Tenant access, Web Push Notifications, and supplementary rent email notifications. Each iteration will build upon related functions developed in earlier iterations.",
+    "new": "The iterations will begin with system foundation and configuration, followed by utility intake, extraction, validation, and billing. Later iterations will add payment records, tenant access, receipts, and permitted notifications. Each iteration will build on the functions completed earlier."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "This chapter discusses the capabilities of the developed Intelligent Property Management Workflow with OCR-Enabled Automated Billing Classification and Tenant Notification, the development stages undertaken, and the available testing results. The discussion follows the Statement of the Problem in Chapter I and the Iterative Software Development Methodology in Chapter II. The evidence reported here consists of recorded local development checks and a controlled Gmail self-test. It does not represent completed participant evaluation or unrestricted readiness for deployment.",
+    "new": "This chapter presents the system’s capabilities, development stages, and testing results. The discussion follows the research questions in Chapter I and the iterative development process in Chapter II. The results cover the recorded development tests and the controlled email-intake test. Formal user evaluation remains pending."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The system was developed through repeated planning, design, construction, testing, review, and refinement. Related functions were introduced progressively and integrated with earlier functions. The seven development areas correspond to the iteration plan in Chapter II. They describe the organization of the work rather than claim that formal sprint ceremonies or participant evaluation were completed.",
+    "new": "The system was developed through repeated planning, design, development, testing, and review. Related functions were added gradually and checked with the existing functions. The seven development areas follow the iteration plan in Chapter II."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Requirements and system foundation. The researchers established the billing scope, user responsibilities, record relationships, authentication, and workspace access. The implemented roles are Admin, Staff, Manager, and Tenant. Staff was introduced to handle routine operations and investigation while preserving Manager authority over financial decisions. Admin account maintenance does not grant authority to confirm rent or impersonate a Tenant.",
+    "new": "Development began with the billing scope, user responsibilities, record relationships, authentication, and workspace access. The system includes Admin, Staff, Manager, and Tenant roles. Staff handles permitted daily operations and investigation, while the Manager retains financial authority. Admin maintains accounts without confirming rent or acting as another user."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Property and billing configuration. Property, unit, Tenant occupancy, rent, and verified utility-account mappings were connected to the billing workflow. Individual and shared arrangements use saved configuration. The system retains the distinction between configured monthly rent, generated charges, confirmed rent payments, and personal utility marks.",
+    "new": "Property and billing configuration connected properties, units, tenant occupancy, rent settings, and verified utility-account mappings. Saved settings determine individual and shared billing arrangements. Configured rent, generated charges, confirmed rent payments, and personal utility marks remain separate records."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Email intake, upload, and extraction. The designated property mailbox and optional Staff or Manager uploads provide supported utility sources. Readable email and digital-PDF text use direct extraction, while supported image and scanned-PDF sources use OCR. These paths retain the source and extract the amount due, due date, billing period, provider, and account or reference identifier. Unsupported, encrypted, unreadable, masked, or conflicting inputs require review rather than guessed data. A password-protected attachment requires review and an available readable supported source; the system does not recover its password or infer hidden account characters.",
+    "new": "Utility intake was added through the designated property mailbox and optional Staff or Manager uploads. Readable email summaries and digital PDFs use direct text extraction, while supported images and scanned PDFs use OCR. The system retains each source and extracts the amount due, due date, billing period, provider, and account or reference identifier. Unsupported, encrypted, unreadable, masked, or conflicting sources require review and a readable supported source when necessary. The system does not recover document passwords or guess hidden account details."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Rule-based validation and exception handling. Extracted values undergo required-field, date, period, mapping, and duplicate checks. Staff may investigate an unfinalized source and submit a correction proposal with a reason. The proposal remains separate from live billing. Manager authorization checks current access and context and reruns validation in one transaction. Rejected, stale, or invalid proposals do not apply the proposed billing change. Valid sources proceed automatically without requiring approval of every bill.",
+    "new": "Validation checks required fields, dates, billing periods, account mappings, and duplicates. Staff may investigate an unfinalized source and submit a correction proposal with a reason. A proposal does not change live billing. Before applying an authorized correction, the system checks that the source and billing context are still current and repeats validation in one transaction. Rejected, outdated, or invalid proposals leave the proposed change unapplied. Valid sources proceed automatically without approval of every bill."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Billing computation and finalization. Rent follows the configured monthly anniversary cycle and short-month rule. Shared charges use whole-centavo allocation so the shares equal the source total. Repeated processing is checked to prevent duplicate charges. Final-cycle advance application remains Manager-controlled and reuses the original confirmed transaction and receipt instead of creating a second cash payment.",
+    "new": "Billing computation follows the configured monthly rent anniversary and short-month rule. Shared charges are divided in whole centavos so that the shares equal the source total. Repeated processing is checked to prevent duplicate charges. Only the Manager may authorize final-cycle advance application, which reuses the original confirmed payment and receipt."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Rent payment, utility tracking, receipts, and notifications. A Tenant may report rent payment for external checking and Manager confirmation. The Manager may also record an externally checked rent payment directly. Only confirmed rent creates a rent receipt. Electricity and water use Tenant-owned personal marks and do not establish provider settlement. Portal notifications, supplementary rent email, and the implemented Web Push components are separate channels. Real-device Web Push acceptance remains pending. The calendar distinguishes actual received utility dates from labelled future rent estimates.",
+    "new": "Rent reporting, confirmation, receipts, utility tracking, and notifications were then connected to tenant access. A Tenant may report rent payment for Manager confirmation after external checking. The Manager may also record an externally checked payment directly. Only confirmed rent produces a rent receipt. Electricity and water use personal tracking marks that do not verify provider payment. Portal alerts, supplementary rent email, and Web Push use separate channels. The calendar shows actual utility due dates and labelled future rent estimates."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Integration and testing. Related modules were checked through service, HTTP, browser, extraction, restart, and isolation tests. Identified issues were investigated and corrected before regression checks were repeated. The latest recorded full run is described in Section 3.2. Formal participant evaluation remains separate from these development activities.",
+    "new": "The integrated system was checked through service, HTTP, browser, extraction, persistence, and access-isolation tests. Identified issues were investigated and corrected, then the affected tests were repeated. Section 3.2 presents the recorded results."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The automatic scheduler runs only while the backend is available. Internet access is required for live mailbox retrieval and external notification services. Local supported processing can continue when its required files and components are available, but an internet connection alone does not make an unavailable server operate continuously.",
+    "new": "Scheduled processing requires a running backend. Live mailbox retrieval and external notifications also require internet access. Supported local processing can continue when its required files and components are available."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The selected ISO/IEC 25010:2023 characteristics remain Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security, as defined in Chapters I and II. Each characteristic requires evidence appropriate to its purpose; a passed automated suite does not establish a score for every characteristic.",
+    "new": "The evaluation follows the five selected ISO/IEC 25010:2023 characteristics in Chapters I and II: Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security. Development tests provide preliminary evidence, while formal evaluation remains pending."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Performance Efficiency has not yet been established through a controlled response-time, resource-use, or concurrent-user study. The full-suite duration reported in Section 3.2.3 measures the time taken by the test suite and must not be presented as bill-processing latency or evidence of production capacity.",
+    "new": "Performance Efficiency still requires controlled measurements of response time, resource use, and concurrent access. The suite duration in Section 3.2.3 is the time taken to execute the tests, rather than the time taken to process one bill."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Interaction Capability has preliminary evidence from automated browser journeys and phone-sized layout checks. These checks do not replace actual-device tasks, participant feedback, or an adviser-approved usability questionnaire. The proposed interface redesign remains separate from the implemented screens and must be checked after application.",
+    "new": "Interaction Capability was checked through automated browser tasks and phone-sized layouts. Actual-device tasks and participant feedback remain pending. The proposed interface redesign has not yet been applied to the system."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Reliability is supported by the recorded duplicate, replay, restart-persistence, invalid-correction rollback, and independent-job failure scenarios. These bounded checks do not establish long-term availability or operation while the server is shut down.",
+    "new": "Reliability checks covered duplicate prevention, repeated intake, retained records after restart, rollback of invalid corrections, and continued processing when an independent job failed. These tests cover the recorded scenarios rather than long-term availability."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Security has evidence from selected authentication, role, record-access, and workspace-isolation checks. It has not been established through a complete penetration test or legal compliance audit. No questionnaire ratings, respondent counts, OCR accuracy percentage, load capacity, or security certification are reported as completed results.",
+    "new": "Security checks covered selected authentication, role restrictions, record access, and workspace separation. A complete penetration test and legal compliance audit were outside these development checks."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Setup instructions, demonstration procedures, sample bill files, a manual test guide, and a user manual have been prepared. They explain account access, property and billing setup, incoming bills, review and correction, rent confirmation, personal utility tracking, and receipt access. Local HTTPS and device instructions support the controlled demonstration; they are not evidence of public deployment. The guides require a final check after the visual redesign and remaining acceptance activities are completed.",
+    "new": "Setup instructions, demonstration procedures, sample bill files, a manual test guide, and a user manual have been prepared. These explain account access, property and billing setup, utility intake, correction handling, rent confirmation, personal utility tracking, and receipt access. Local HTTPS instructions support the controlled demonstration. The guides will require a final review after the planned interface changes and remaining acceptance checks."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The recorded development environment uses the Node.js backend, SQLite storage, and HTML, CSS, and JavaScript frontend. The package configuration requires Node.js 24 or later. Extraction and communication dependencies include Tesseract.js, PDF.js, MailParser, ImapFlow, Nodemailer, and web-push. Browser automation uses Playwright. Windows PowerShell commands are recorded in the development evidence. Exact historical CPU, RAM, operating-system build, browser build, and dependency versions for the reported run must be transcribed from retained environment records before a final experimental report is submitted; current requirements are not substitutes for measured historical specifications.",
+    "new": "The development tests used a Node.js backend, SQLite storage, and an HTML, CSS, and JavaScript frontend. The project configuration requires Node.js 24 or later. The extraction and communication tools include Tesseract.js, PDF.js, MailParser, ImapFlow, Nodemailer, and web-push. Browser tests use Playwright, and the development records include Windows PowerShell commands. The retained test records do not include the exact CPU, RAM, operating-system build, browser build, or installed dependency versions for the reported run. This limits reproduction of the same test environment."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The scope covered valid utility intake, extraction, mapping, equal allocation, linked portal alerts, exception investigation, Staff proposals, Manager decisions, duplicate controls, rent reporting, rent confirmation, receipt reuse, personal utility marks, restart persistence, workspace isolation, and responsive browser behavior. Deliberately introduced job failures checked whether one failed automatic job prevented other jobs from continuing. These failure messages were part of expected test scenarios rather than evidence that their assertions failed.",
+    "new": "Testing covered utility intake, extraction, account mapping, equal allocation, portal alerts, exception investigation, Staff proposals, Manager decisions, and duplicate prevention. It also covered rent reporting and confirmation, receipt reuse, personal utility tracking, retained records after restart, workspace separation, and responsive browser layouts. Some tests deliberately caused an automatic job to fail to check whether other jobs could continue."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The retained full-suite log dated 23 October 2026 records 99 tests, 99 passes, zero failures, zero cancellations, zero skips, and zero pending tests. Its recorded duration is 327,685.211 milliseconds, approximately 328 seconds. The pass rate for that executed suite is 99 divided by 99 multiplied by 100, or 100 percent. This percentage describes the executed automated assertions only; it is not a percentage of system completion, extraction accuracy, overall quality, or participant acceptance. The suite was not rerun as part of preparing this manuscript.",
+    "new": "The retained automated test log dated 23 October 2026 records 99 tests, with 99 passes and no failures, cancellations, skips, or pending tests. The run took approximately 328 seconds. Its pass rate was 100 percent for the executed tests. This result does not measure OCR accuracy, overall system completion, or participant acceptance."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The table groups related cases for discussion. It does not assign invented per-category test counts, and its rows should not be added to the suite total as additional tests.",
+    "new": "Table 3.1 groups the scenarios covered by the recorded run. The categories describe test coverage and are not additional tests beyond the reported total of 99."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The separate Gmail self-test on 23 October 2026 demonstrated a different boundary. A self-addressed synthetic scanned bill entered the configured demonstration label and was retrieved through the normal scheduler. Recorded OCR and validation produced two allocated charges of PHP 450.00 from a PHP 900.00 source, due on 29 October 2026. Both assigned Tenant accounts could retrieve their bill and linked portal alert. Repeated synchronization retained the same bill identifiers without creating another charge. This establishes one observed controlled intake path, not general provider accuracy. Rent-email sending and Web Push delivery remained disabled during that self-test.",
+    "new": "A separate controlled Gmail test on 23 October 2026 used a self-addressed synthetic scanned bill. The message entered the configured demonstration label and was retrieved by the scheduler. OCR and validation produced two charges of PHP 450.00 from a PHP 900.00 source, due on 29 October 2026. Both assigned Tenant accounts could access their bill and linked portal alert. Repeated synchronization did not create another charge. This result covers one controlled email-intake path. Rent-email sending and Web Push delivery were disabled during that test."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The dated QA records document an intermittent profile-field reset during a browser journey. A controlled delayed response reproduced redundant rendering of the same route while it was still loading. The application was adjusted to share the in-progress render for the same account, role, and URL. The targeted regression and subsequent full run passed. This finding concerns a recorded development defect and its correction; it does not establish that the application has no remaining defects.",
+    "new": "The QA records identify an intermittent profile-field reset during a browser task. A delayed response reproduced the issue: the same page rendered again while it was still loading. The application was corrected to reuse the ongoing render for the same account, role, and URL. The targeted regression test and the subsequent full test run passed."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Other documented corrections included an empty category label on unmapped sources, currency formatting in proposal summaries, narrow-screen wrapping, and outdated test assumptions after removal of demo-login shortcuts. The available summary does not replace an exhaustive issue register. Each additional confirmed defect should retain its reproduction steps, expected and actual behavior, resolution, and verification result.",
+    "new": "Other application corrections addressed an empty category label on unmapped sources, currency formatting in proposal summaries, and narrow-screen wrapping. Separately, test scripts were updated after the demo-login shortcuts were removed. These script updates were adjustments to the tests rather than additional application defects."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Outstanding issues include uncompleted actual-device acceptance, unverified real-recipient notification delivery, the deferred Web Push acceptance checks, and the unimplemented visual redesign. Encrypted or insufficient bill sources are supported limitations requiring review rather than defects to be concealed through guessed account matching or automatic password handling.",
+    "new": "Remaining work includes actual-device acceptance, confirmation of notification delivery to the intended recipients, Web Push checks, and the planned interface redesign. Encrypted or insufficient bill sources remain processing limitations that require review and an available supported source."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Complete the agreed interface redesign without changing billing calculations or role authority, then repeat relevant interface and cross-role regression tests. Check actual Android devices using the current trusted HTTPS address. Verify source review, rent reporting, receipt viewing, personal utility marks, navigation, long content, and scroll stability on those devices.",
+    "new": "The planned interface redesign should be completed while preserving billing calculations and role permissions. The affected interface and cross-role tests should then be repeated. Actual Android testing should check source review, rent reporting, receipt viewing, personal utility tracking, navigation, long content, and scroll stability using the trusted HTTPS address."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "Conduct explicitly authorized live rent-email and supported-device Web Push checks separately from automated transport tests. Evaluate representative, consented, anonymized provider documents with manually verified field values, separating direct text extraction from OCR. Record the test hardware, software versions, sample counts, measurement procedure, failures, and exclusions. Complete the adviser-approved user evaluation and document its actual respondents and scoring procedure before drawing ISO/IEC quality conclusions.",
+    "new": "Further testing should verify authorized live rent-email delivery and Web Push on supported devices. Extraction accuracy should be measured using consented, anonymized provider documents and manually checked field values, with direct text extraction and OCR reported separately. Future evaluation should record the hardware, software versions, sample counts, procedure, and failures. Participant selection, questionnaire scoring, and user tasks should follow the adviser-approved evaluation plan."
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "old": "The available evidence supports that the included development scenarios passed at the recorded checkpoint and that one controlled Gmail-to-Tenant intake path operated as documented. It does not establish a fully evaluated, publicly deployed, continuously available, or defect-free system. The system can be used for a controlled demonstration subject to the documented setup and acceptance checks. A final release assessment depends on the remaining device, notification, interface, documentation, and formal evaluation work. Chapter IV is deferred until its required outline and the relevant final evidence are confirmed.\n",
+    "new": "The recorded results show that the system passed the included development tests and completed one controlled Gmail-to-Tenant intake test. These results support a controlled demonstration under the documented setup. Actual-device checks, notification delivery, interface refinement, and formal user evaluation remain necessary before an overall release assessment."
+  }
+]

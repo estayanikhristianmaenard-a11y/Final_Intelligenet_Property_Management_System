@@ -52,7 +52,7 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
               overflowElements:[...document.querySelectorAll("main *")].filter(visible).filter(e=>e.getBoundingClientRect().right>innerWidth+1 && !e.closest(".table-wrap")).slice(0,8).map(e=>`${e.tagName}.${e.className}`)};
           });
           records.push({role,path,width,...result});
-          if (width > 1100) assert.equal(result.topbarColor,"rgb(232, 239, 247)");
+          if (width > 1100) assert.equal(result.topbarColor,"rgb(231, 238, 244)");
           else assert.ok(result.topbarImage.includes("linear-gradient"));
           assert.equal(result.bottomNavVisible, role === "tenant" && width <= 1100);
           if (width < 720) {

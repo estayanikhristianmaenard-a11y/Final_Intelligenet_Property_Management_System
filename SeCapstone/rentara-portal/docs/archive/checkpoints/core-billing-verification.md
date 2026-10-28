@@ -1,4 +1,4 @@
-> **Historical investigation record.** Its dated findings and limitations are retained for traceability. For the latest verified behavior and remaining work, use [Current QA status](qa-report.md).
+> **Historical investigation record.** Its dated findings and limitations are retained for traceability. For the latest verified behavior and remaining work, use [Current QA status](../../qa-report.md).
 
 # Core billing workflow verification
 

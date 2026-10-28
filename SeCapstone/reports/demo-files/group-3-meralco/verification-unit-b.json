@@ -1,0 +1,19 @@
+{
+  "verifiedAt": "2026-10-22T10:56:30.626Z",
+  "source": "Synthetic Unit B derivative of the same anonymized layout; not another independent bill",
+  "method": "pdf_ocr",
+  "unit": "B",
+  "account": "9990000002",
+  "fields": "passed",
+  "tenantVisibility": "passed",
+  "portalAlerts": 1,
+  "duplicatePrevention": "passed",
+  "shares": [
+    {
+      "tenant": "Jullian Matthew B. Magtapat",
+      "amount": 1567.17
+    }
+  ],
+  "externalMessagesSent": 0,
+  "presentationBillImported": false
+}

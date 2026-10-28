@@ -154,7 +154,7 @@ function bindChrome() {
       const value = event.target.value?.trim();
       if (!value) return;
       window.location.hash =
-        session.role === "manager"
+        ["manager", "staff"].includes(session.role)
           ? `/tenants?q=${encodeURIComponent(value)}`
           : session.role === "tenant"
             ? "/tenant/bills"

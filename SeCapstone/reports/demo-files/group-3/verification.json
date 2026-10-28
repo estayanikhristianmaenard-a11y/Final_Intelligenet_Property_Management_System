@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-10-22T09:47:27.071Z",
+  "mode": "Isolated synthetic test; no Gmail messages sent",
+  "results": [
+    {
+      "unit": "A",
+      "account": "G3000101",
+      "amount": 900,
+      "method": "pdf_ocr",
+      "tenantBills": 2,
+      "verified": true
+    },
+    {
+      "unit": "B",
+      "account": "G3000102",
+      "amount": 1200,
+      "method": "pdf_text",
+      "tenantBills": 1,
+      "verified": true
+    }
+  ],
+  "duplicatePrevention": true,
+  "tenantVisibility": true
+}

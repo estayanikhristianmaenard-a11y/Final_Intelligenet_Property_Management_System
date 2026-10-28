@@ -1,0 +1,29 @@
+{
+  "method": "Native mxGraph geometry at scale 1; excludes container rectangles and checks their leaf nodes. Review print layout separately.",
+  "figures": [
+    {
+      "file": "2.1_Architectural_Framework.drawio",
+      "sourceSha256": "9d1cff66d444f854f1e676ad098cc7238aa451babfb73aef9e947dc35f07267c",
+      "sharedSegmentPairsBefore": 7,
+      "sharedSegmentPairsAfter": 0,
+      "labelCollisions": 0,
+      "lineCrossings": "Plain crossings are permitted without jumps. Connectors must avoid unrelated shapes and labels."
+    },
+    {
+      "file": "2.2_Process_Flowchart_SIMPLE.drawio",
+      "sourceSha256": "1ea3becec0da5cb88167f70f78b609b89826ecd52f5b2779b5bdb83630066251",
+      "sharedSegmentPairsBefore": 6,
+      "sharedSegmentPairsAfter": 1,
+      "labelCollisions": 0,
+      "lineCrossings": "Plain crossings are permitted without jumps. Connectors must avoid unrelated shapes and labels."
+    },
+    {
+      "file": "2.3_FullBlown_DFD.drawio",
+      "sourceSha256": "45df97b5512a1b57040464ca6c9a77c5894d3de3e9c4eda560e0aae43cf80db1",
+      "sharedSegmentPairsBefore": 5,
+      "sharedSegmentPairsAfter": 0,
+      "labelCollisions": 0,
+      "lineCrossings": "Plain crossings are permitted without jumps. Connectors must avoid unrelated shapes and labels."
+    }
+  ]
+}

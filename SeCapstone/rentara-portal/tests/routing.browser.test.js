@@ -52,8 +52,10 @@ test(
       const go = async (path) => page.goto(origin + "/#" + path);
       const login = async (role, heading, path) => {
         await expect(page.locator("h1")).toHaveText("Welcome back");
-        await page.locator(`[data-role="${role}"]`).click();
-        // This click reproduced the old outside-menu listener replacing the login screen.
+
+        await page.locator("#login-email").fill({ manager: "manager@propertypro.ph", tenant: "maria.santos@gmail.com", admin: "admin@propertypro.ph" }[role]);
+        // Focusing normal login must not let old shell listeners replace it.
+        await page.locator("#login-email").click();
         await expect(page.locator("#login-password")).toBeVisible();
         await expect(page.locator(".app-shell")).toHaveCount(0);
         await page.locator("#login-password").fill(password);

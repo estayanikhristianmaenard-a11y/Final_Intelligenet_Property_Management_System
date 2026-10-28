@@ -1,0 +1,14 @@
+{
+  "verifiedAt": "2026-10-22T10:07:27.033Z",
+  "synthetic": true,
+  "method": "pdf_ocr",
+  "amount": 275.5,
+  "unit": "G3-B",
+  "account": "G3W0102",
+  "tenantBillCount": 1,
+  "tenantIsolation": "passed",
+  "portalAlert": "passed",
+  "duplicatePrevention": "passed",
+  "externalMessagesSent": 0,
+  "presentationBillImported": false
+}

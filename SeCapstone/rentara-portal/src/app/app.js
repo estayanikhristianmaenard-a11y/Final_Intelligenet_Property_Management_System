@@ -1,3 +1,5 @@
+import { renderStaffDashboard } from "../features/dashboard/staff-dashboard.page.js";
+import { renderStaffAccount } from "../features/settings/staff-account.page.js";
 import { render, html } from "../utils/dom.js";
 import {
   mountShell,
@@ -27,7 +29,7 @@ import { renderUnits } from "../features/units/units.page.js";
 import { renderTenants } from "../features/tenants/tenants.page.js";
 import { renderBills } from "../features/billing/bills.page.js";
 import { renderReports } from "../features/reports/reports.page.js";
-import { renderSettings } from "../features/settings/settings-live.js";
+import { renderSettings } from "../features/settings/settings.page.js";
 
 import { renderAdminDashboard } from "../features/admin/admin-dashboard.page.js";
 import { renderAdminAudit } from "../features/admin/admin-audit.page.js";
@@ -55,7 +57,8 @@ import {
  */
 
 const PAGES = {
-  dashboard: renderDashboard,
+  dashboard: (container, context) => session.role === ROLE.STAFF ? renderStaffDashboard(container, context) : renderDashboard(container, context),
+  staffAccount: renderStaffAccount,
   properties: renderProperties,
   units: renderUnits,
   tenants: renderTenants,
@@ -80,6 +83,7 @@ const PAGES = {
 let bootstrapped = false;
 let routeSequence = 0;
 let renderedLocation = null;
+let activePageRender = null;
 
 export async function bootstrap(root) {
   if (bootstrapped) return;
@@ -114,6 +118,10 @@ export async function bootstrap(root) {
 }
 
 async function route(root = document.getElementById("app-root")) {
+  const renderKey = `${session.user?.id}:${session.role}:${window.location.hash}`;
+  // Native navigation can deliver the same route again while its API call is
+  // pending. Share that render; a second renderer could replace the new form.
+  if (activePageRender?.key === renderKey) return;
   // A delayed duplicate route event must not replace a form the user is editing.
   // Clean pages still refresh after completed writes and same-fragment navigation.
   if (session.isAuthenticated && renderedLocation === window.location.hash && hasUnsavedChanges()) return;
@@ -186,6 +194,8 @@ async function route(root = document.getElementById("app-root")) {
     return;
   }
 
+  const pageRender = { key: renderKey };
+  activePageRender = pageRender;
   try {
     const stage = document.createElement("div");
     if (refreshing) stage.style.minHeight = `${outlet.getBoundingClientRect().height}px`;
@@ -219,6 +229,8 @@ async function route(root = document.getElementById("app-root")) {
         </div>
       </section>`,
     );
+  } finally {
+    if (activePageRender === pageRender) activePageRender = null;
   }
 }
 
@@ -247,6 +259,10 @@ export async function loadBadges() {
         bills: 0,
         unreadNotifications: notifications.filter((n) => !n.read).length,
       });
+    } else if (role === ROLE.STAFF) {
+      const exceptions = await api.get(endpoints.exceptions());
+      if (session.token !== token) return;
+      setBadges({ exceptions: exceptions.filter(e => e.state === "open").length, unreadNotifications: 0 });
     } else if (role === ROLE.TENANT) {
       const [notifications, bills] = await Promise.all([
         api.get(endpoints.notifications()),

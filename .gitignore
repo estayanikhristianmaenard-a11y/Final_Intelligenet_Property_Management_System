@@ -6,3 +6,15 @@
 # The original bill contains identifying information; share anonymized samples instead.
 /SeCapstone/SOA.pdf
 /.private-bill-review/
+# Local official diagrams.net rendering dependency; generated figures remain shareable.
+/SeCapstone/diagrams/.render-cache/
+# Root-level browser/test output is regenerated locally, not needed for setup.
+/test-results/
+/coverage/
+# Regenerable Python caches and operating-system metadata.
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
+desktop.ini

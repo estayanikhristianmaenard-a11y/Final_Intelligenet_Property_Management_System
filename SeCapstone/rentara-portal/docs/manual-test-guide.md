@@ -4,6 +4,8 @@ Start with **Tenant on your phone**. First verify that someone can understand th
 
 For the current email-to-bill work, see [verified results and remaining two-phone steps](email-billing-acceptance.md). The default local check uses disposable synthetic records and does not send email. Gmail sending/retrieval remains a separate explicit acceptance step; Android Push still needs actual device permission and delivery checks.
 
+For held emails, verify **Retry email** and **Close email notice** on the Manager's Exception Queue. A bad message must not block a later valid bill, and closing requires a handling reason without marking a bill/payment valid. For maintenance, copy the whole [recovery package](backup-and-recovery.md), restore to a new directory, and check source viewing and original receipts. Use the [role user stories](user-stories.md) to guide the walkthrough; actual provider/device checks remain separate from automated results.
+
 ## Latest UI review checks
 
 Added checks for the lightweight interaction pass:
@@ -45,7 +47,7 @@ The automated checks already passed; this guide records your own device and usab
    ```
 
    Replace `YOUR_CURRENT_IP` with the actual address. On the phone, open `http://YOUR_CURRENT_IP:8080/`. Keep the laptop awake and the terminal running. See [phone setup](local-network-demo.md) if it cannot connect.
-4. On localhost or a private Wi-Fi IP address, choose **Tenant**, **Manager** or **Admin** on the login page to fill the demo email and password. You still select **Sign in** to log in. Use your existing demo accounts. For the documented showcase, all three roles use `LocalDemo!2026`:
+4. Enter the account email and password, then select **Sign in**. There are no role-selection shortcuts. Use your existing demo accounts. The documented showcase accounts use `LocalDemo!2026`:
 
    | Role | Email |
    | --- | --- |
@@ -154,3 +156,84 @@ Real authorized provider samples, live property-mailbox retrieval, actual rent e
 
 Open Admin Dashboard and select **Refresh status**. Confirm one completion message, a new check time, and a maintenance audit entry. Expand **What was checked** to read the method, limits and recorded dates. Missing email/Push configuration should say **Not configured** or **Disabled**. Installed OCR packages should say **Available**, without claiming extraction accuracy. A previous sending success should say **Recorded success**, not currently connected. Refresh must not send messages or process bills. Check the page at phone width and use keyboard navigation to open the disclosures. See [check definitions](system-status.md).
 
+
+## Staff revision acceptance ? 23 October 2026
+
+Use test/demo records, not actual participant/payment records. Prepare the Staff account with `npm run demo:staff:prepare`; restart the existing server.
+
+1. Verify the normal login has email/password fields and no three-role/demo buttons. Log in as Staff.
+2. Check Daily operations, upload/intake, existing properties/units/Tenants and Account on desktop and phone. Staff cannot create/delete enrollment or edit rent, lease, mapping or login email.
+3. Submit a multi-field correction on a failed source. Confirm live extracted values/bills do not change while pending. A second pending proposal must be blocked. Add a note/escalate a setup case.
+4. As Manager, authorize a correct proposal. Confirm it becomes applied, the source is validated, exact equal shares total to the bill, and the right Tenant sees it. No utility receipt is created.
+5. With separate test cases, reject with a reason; change source/context before approval; disable the preparer; submit an invalid correction. Confirm rejected/stale/returned states, preserved reasons and no unintended live billing changes. Retry an already decided proposal: it must not create another bill.
+6. Check Staff cannot authorize proposals, confirm rent, apply advance, change config or reach another business. Manager retains those permitted financial/setup actions; Admin cannot confirm rent.
+7. As Admin, search accounts and filter Staff/business/status; View members must filter without switching identity. Verify Tenant still sees only own records.
+8. Check live Gmail filter/label receipt, two-device HTTPS, rent-only email and optional Web Push separately. These require real-device/external-service checks.
+
+## Automatic processing acceptance ? 23 October 2026
+
+1. Restart the selected server; enable only the intended receiving profile. Open Staff/Manager > Incoming Bills > Automatic processing. Expect a completed startup cycle and the intended mailbox state.
+2. Send a new supported bill and let Gmail apply the configured label. Wait for the next eligible five-minute mailbox check; do not click Sync. Check incoming source, validated fields, correct unit/Tenant, exact shares and portal alert. Refresh/reopen the page to read current data.
+3. Send the same bill again and check duplicate handling; an invalid bill must enter Exceptions instead of finalizing. Staff proposes corrections only where permitted; Manager still authorizes them.
+4. Check rent cycles/reminders using controlled dates in isolated tests. Do not change the operating laptop clock or create real arrears merely to demonstrate reminders. Confirm notification-channel restrictions and no utility receipts.
+5. For an authorized connectivity rehearsal, confirm a failed mailbox attempt is visible and does not stop local jobs. Restore connectivity and wait for the next eligible retry. Do not expose app passwords in screenshots/logs.
+6. Stop/restart normally; already processed UID/source/bill keys must prevent a second charge. Keep external-email/phone delivery checks separate from local transport acceptance.
+
+
+## Intake and work-queue usability check ? 23 October 2026
+
+1. As Staff, open Daily operations. Needs action, With Manager and Returned link to the matching work queue. Counts represent exception cases, so several reasons for one source can be separate cases.
+2. Submit a correction for an unfinalized bill. Its open cases move out of Needs action and appear With Manager; live bill values remain unchanged until authorization.
+3. As Manager, open Your decisions. Staff proposals, rent reports and escalated cases lead to their existing controls. A case covered by a pending proposal is not counted again as an escalated case.
+4. Reject or return a proposal, then open Returned as Staff. Read the decision reason and prepare a revised correction. Applied proposals belong in Resolved; historical decisions remain available under All cases.
+5. In Incoming Bills, switch Result among All results, Needs review, Duplicate, Processed and Processing. An empty result shows guidance rather than a blank list. Duplicate indicates a failed duplicate rule; it is still blocked and must be compared, not charged again.
+6. Confirm each source displays the actual mapped unit code, amount, date and failure reason when available. Long account references are visually shortened but retained in the title/source view. Processed means validation and bill processing passed, not utility payment verification.
+7. Expand Automatic processing. Check the last mailbox attempt, last completed cycle, next eligible check and configuration/failure guidance. This is a page-load snapshot; reopen to refresh. A next eligible time is not a promise of retrieval while the backend is stopped.
+8. On a narrow phone viewport, inspect amounts, due dates, references and action spacing. View bill, report rent, personal utility marks and receipt controls must retain their existing behavior. Check on actual phones after browser checks.
+
+Use disposable test data for rejection/correction checks. Do not reset the successful live Gmail fixture or send it again just to repeat this guide.
+
+
+## Five journeys to check on the actual demo phones
+
+Run this after the automated workflow verification. The automated tests use temporary synthetic portfolios; they do not reset or replace the Group 3 database and do not send Gmail messages.
+
+Start the existing Group 3 demo with `npm.cmd run demo:group -- --receive` from `SeCapstone/rentara-portal`. Use the HTTPS address and port printed by the running process. Each phone uses the laptop's current LAN address, not localhost. Keep the laptop awake and use the reachable shared network/certificate setup already documented in [local acceptance](local-acceptance-setup.md). Never run prepare/reset commands over the working portfolio just to repeat a test.
+
+| Journey | Actions and pass condition |
+| --- | --- |
+| Valid utility bill | Send a fresh synthetic bill yourself using the existing Gmail demo filter and [Group 3 files](../../reports/demo-files/group-3/README.md). A fresh bill needs a genuine different test billing identity/period, not just a renamed copy. Keep the server running and allow the next eligible mailbox cycle (normally up to five minutes). Without clicking Sync, verify the received source, full account mapping, correct unit, shares summing to the source amount, each Tenant's own bill and linked portal alert. |
+| Problem bill | Use an unfinalized source with a known correction. Staff reads evidence and submits a proposal. Live values stay unchanged. Manager rejects with a reason, Staff revises, and Manager authorizes. Only a successful revalidation creates bills; invalid proposals remain returned/held. Mapping/configuration changes belong to Manager. |
+| Duplicate | Re-send/upload the same synthetic bill or its equivalent readable copy. No extra Tenant charge may appear. A duplicate hold can be the correct result; do not remove its guard to make the demo look successful. |
+| Rent and receipt | One Tenant reports a synthetic rent payment. It remains awaiting confirmation. The Manager checks the test record externally and confirms, or rejects with a reason. Confirmation produces one black-and-white receipt. Tenant can view/download it; reopening/retrying must reuse the same receipt. This is not a bank transfer or bank verification. |
+| Restart and isolation | Note the bill/receipt references, stop and restart the same chosen backend, then sign in again on both phones. Prior records and alerts remain, the old mailbox item creates no extra charge, and new eligible work continues. Each Tenant sees only their own share/payment/receipt. Another workspace must not see these records. |
+
+For each row, record the date, account used, bill/source/receipt reference, expected result, actual result and Pass/Fail/Not tested. Do not put account passwords or Gmail app passwords in the record. Check real tapping, scrolling, receipt tabs and the calendar on both phones. Browser emulation does not establish hotspot reachability or actual Android behavior.
+
+The locked-PDF summary fallback was reverted at the user's request. Readable attachments retain priority; a recognized summary is used when no supported attachment is present. Locked PDFs or unresolved masked accounts remain for review. No PDF password storage, masked-CAN guessing or automatic bank verification is part of this check. External rent-email and deferred Web Push delivery require separate, explicitly authorized acceptance checks.
+
+
+## Final three-person walkthrough ? record actual results
+
+Use disposable demo records and the running server profile's exact printed address/port. A phone uses the laptop LAN address, not localhost. Do not rerun setup against an existing working portfolio just to begin this walkthrough. Assign one member as Staff, one as Manager and one as Tenant; use Admin separately to check account visibility. Each person should attempt their task without instructions from the developer first.
+
+| Task | Expected result | Actual result / device / tester / date |
+| --- | --- | --- |
+| Staff opens a held utility case | Issue and next step are clear; original opens; extracted values are separate from a proposal | Pending |
+| Staff enters a correction and reason | Failed preview retry keeps inputs; blank reason blocks submission; pending proposal shows With Manager | Pending |
+| Manager reviews the same case | Original and before/after values are available; authorize revalidates; reject records a reason | Pending |
+| Tenant checks the resulting bill | Correct account/unit, amount and actual due date; no held bill or utility receipt | Pending |
+| Tenant reports rent, then Manager confirms | Report stays pending until confirmation; one viewable monochrome receipt | Pending |
+| Tenant uses utilities and calendar | Personal mark affects own tracking only; estimates are rent-only and labelled | Pending |
+| Phone forms and recovery | Keyboard does not hide the reachable controls; long content fits; retrying a failed read does not repeat a payment | Pending |
+| Separate workspace login | Other portfolio records and protected originals cannot be opened | Pending |
+
+Record any moment when someone asks what a label means or cannot find the next action. Save the task, confusing wording and expected behavior in the existing QA report; do not mark a task passed from a screenshot or an automated result.
+
+## Actual provider email acceptance
+
+Use the dedicated demo label and one consented supported provider email whose full account has a verified mapping. Keep the original Gmail message and an independently checked reference for provider, account, amount, due date and billing period. Do not invent missing account digits or remove a PDF password through guessing.
+
+Check that Gmail applies the configured label automatically; let the running backend reach its next eligible retrieval. Compare the incoming record against the original. A complete valid source should reach the correct Tenant; missing, ambiguous or unreadable details must remain in review. Repeat retrieval and confirm there is no second charge. Check a second mapped unit independently. A supported clear email summary and PDF/image attachment should each be exercised, including a held unsupported/encrypted attachment case according to the current intake behavior.
+
+For rent email, check only an agreed test recipient with clearly labelled test data; confirm inbox presence and the link on the phone. Keep utility email notifications excluded. Browser Push needs its separate permission/trust/delivery check. Record Message-ID or source reference and outcome privately, without app passwords or raw personal bill details in the report. Actual provider delivery, physical-phone results and formal user evaluation remain pending until someone performs and records these steps.

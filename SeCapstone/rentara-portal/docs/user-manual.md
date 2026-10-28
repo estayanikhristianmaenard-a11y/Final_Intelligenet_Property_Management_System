@@ -230,3 +230,33 @@ The Billing calendar uses house, lightning and water-drop icons to identify rent
 Next month's rent date is a **scheduled estimate**, shown with a dashed border and an explicit label. It follows the original monthly anniversary and the short-month fallback, stops after a known occupancy end, and is replaced by an actual bill when available. It does not create a charge, payment, amount, receipt or notification. Utility due dates remain limited to received, validated bills; they are not predicted from the previous month. The user confirmed this distinction for the calendar.
 
 Small control transitions, calendar selection feedback, dialog entry/exit and a brief post-save tracker highlight support interaction without changing payment status early. The tracker highlight appears only after a successful response. Reduced-motion settings disable decorative movement; the approved slow sidebar timing is retained.
+
+## Staff and Manager handoff ? 23 October 2026
+
+Sign in with your account email/password. Your role determines the available pages; there is no role-selection button. Staff starts at Daily operations. Open bill intake to upload or retrieve supported utility bills. Open Bills > Exceptions to inspect original documents, add investigation notes or escalate setup cases. Prepare correction sends proposed fields and a reason to Manager without changing the live bill.
+
+Manager uses Bills > Exceptions to Authorize correction or Reject with a reason. Check the resulting state: applied is successfully revalidated; returned/stale requires another review. Managers may also use existing direct correction tools. Staff may edit only descriptive fields of existing properties/units/Tenants; Manager handles financial setup/enrollment and confirms rent. Utility marks remain personal Tenant tracking. Admin Settings lists all accounts with role, business and status filters; View members filters the directory without impersonating anyone.
+
+Demo commands, boundaries and pending device checks: [Staff handoff](staff-implementation-plan.md).
+
+
+### Finding the next action
+
+Staff's Daily operations has three queues: **Needs action** for investigation, **With Manager** for submitted/escalated cases, and **Returned** for corrections needing another look. Select a queue to open its matching cases. Read the decision reason before preparing a revision. Use **All cases** to review older decisions.
+
+The Manager dashboard starts with **Your decisions**: Staff proposals, rent reports and escalated cases. Managers still have access to daily operations when needed.
+
+In Incoming Bills, the **Result** filter separates Processed, Needs review, Duplicate and Processing. A processed source has passed the existing billing workflow; it does not confirm utility payment. Duplicate records stay blocked for comparison. The mapped unit code appears beside each source when available. Select View bill for a processed source, or Review/Compare bill for a held source.
+
+Expand Automatic processing for the latest recorded mailbox attempt, completed cycle, next eligible check and connection guidance. Reopen the page to refresh this snapshot. The laptop backend must remain running for scheduled work.
+
+
+## Shared Case Sheet
+
+Open **Bills & Payments > Exception Queue**. Select a work queue, then a case. The top of the sheet explains the issue and next step. **What the system extracted** expands the recorded fields; extracted does not mean independently verified. Pending and processed cases keep this section collapsed so the decision or history is easier to find.
+
+Staff selects **Prepare correction**, opens the original bill and enters only corrections supported by readable evidence. Add a reason and source evidence, then **Submit for Manager review**. Manager compares the proposal with the original and selects **Authorize correction** or **Reject proposal**. Reject requires a reason. **Correct directly instead** remains available to Manager. Revalidation still controls whether charges can be published. Do not guess masked account digits or treat utility personal marks as provider settlement.
+
+**Retry original** reloads only the protected source preview after a failed request and keeps entered corrections. **Try again** on a failed home, dashboard, bills or notifications page repeats its read request. These recovery controls do not repeat payment or billing writes. If a save reports an uncertain connection result, check the saved queue before submitting again. Use **Reload saved case** when saving succeeded but refreshing failed.
+
+On phones, the original and correction form stack. Fields remain readable when focused, action buttons use the available width, and the page scrolls normally. The group walkthrough and actual email/device checks are in the [manual test guide](manual-test-guide.md).

@@ -80,11 +80,12 @@ test(
         await expect(page.locator(".modal")).toHaveCount(0);
       };
       await go("/login", "Welcome back");
+      await page.locator("#login-email").fill("manager@propertypro.ph");
       await page.locator("#login-password").fill("incorrect-password");
       await page.locator("[data-sign-in]").click();
       await expect(page.locator("[data-login-error]")).toContainText("Invalid email or password");
-      // Selected example role cannot elevate or replace the authenticated server role.
-      await page.locator('[data-role="tenant"]').click();
+      // Normal login exposes no role chooser; credentials determine the server role.
+      await expect(page.locator(".auth-demo-shortcuts")).toHaveCount(0);
       await page.locator("#login-email").fill("manager@propertypro.ph");
       await page.locator("#login-password").fill(password);
       await page.locator("[data-sign-in]").click();
@@ -266,7 +267,7 @@ test(
       });
       await page.locator("[data-upload]").click();
       await expect(page.locator(".modal")).toHaveCount(0);
-      await expect(page.locator("[data-tab-panel]")).toContainText("Validated");
+      await expect(page.locator("[data-tab-panel]")).toContainText("Processed");
       await page.locator('[data-action="check-rent-cycles"]').click();
       await expect(page.locator('[data-action="check-rent-cycles"]')).toBeEnabled();
       const billsBeforeCycleCheck = store.all("bills").length;
@@ -399,8 +400,11 @@ test(
       assert.equal(workerState, "activated");
       await go("/tenant/settings", "Settings");
       await page.locator("#ts-phone").fill("09123456789");
+      const profileRequests = [];
+      page.on("request", request => { if (request.url().endsWith("/auth/profile") && request.method() === "PATCH") profileRequests.push({phone:request.postDataJSON()?.phone}); });
+      await expect(page.locator("#ts-phone")).toHaveValue("09123456789");
       const [profileResponse] = await Promise.all([
-        page.waitForResponse(response => response.url().endsWith("/auth/profile") && response.request().method() === "PATCH" && response.request().postDataJSON()?.phone === "09123456789"),
+        page.waitForResponse(response => response.url().endsWith("/auth/profile") && response.request().method() === "PATCH").catch(async error => { console.error("Profile request diagnostics", JSON.stringify({requests:profileRequests,phone:await page.locator("#ts-phone").inputValue(),error:await page.locator("#toast-root").innerText()})); throw error; }),
         page.locator('[data-action="save-profile"]').click(),
       ]);
       assert.equal(profileResponse.status(),200);
@@ -559,10 +563,16 @@ test(
       await expect(page.locator("#toast-root")).toContainText(
         "Status refreshed",
       );
+      const backupResponse = page.waitForResponse(response => response.url().endsWith("/api/v1/admin/backup") && response.request().method() === "POST");
       await page
         .getByRole("button", { name: "Back up database", exact: true })
         .click();
-      await expect(page.locator("#toast-root")).toContainText("backup-");
+      const recovery = await (await backupResponse).json();
+      assert.ok(recovery.files > 0);
+      const manifest = JSON.parse(readFileSync(join(dir, "backups", recovery.bundle, "manifest.json"), "utf8"));
+      assert.equal(manifest.files.length, recovery.files + 1);
+      assert.ok(manifest.files.some(file => file.path === "propertypro.sqlite"));
+      await expect(page.locator("#toast-root")).toContainText("Copy the complete backup folder");
       await go("/bills", "Access denied");
       await go("/admin", "System Dashboard");
       await page

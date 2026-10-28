@@ -14,3 +14,7 @@
 - Calendar estimates are rent-only and must remain labelled estimates. Utility dates come from validated received bills. No provider-app access, SMS, payment gateways, automatic bank verification, predictive utility billing, model training, maintenance tickets or flexible advance-credit allowances.
 - Workspaces, backups, access controls and local HTTPS are supporting infrastructure, not new research objectives or evidence of public deployment. Acceptance accounts, fixtures and automated tests are development tools, not actual participants, actual payments or representative accuracy results.
 - Do not broaden the manuscript or delete existing user-approved support features merely to reconcile wording. Flag a genuine scope mismatch and obtain a scope decision before expanding the project.
+
+## Staff revision handoff
+
+- Read `SeCapstone/rentara-portal/docs/staff-implementation-plan.md` before changing Staff/Manager permissions or correction proposals. Staff is now implemented; earlier proposed-only reviews are historical. Preserve workspace scoping, Manager-only financial authority and atomic proposal revalidation. Team members take turns on main; no Git push is authorized for the agent.

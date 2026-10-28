@@ -43,7 +43,7 @@ function frame(content) {
         <p>Boarding houses and residential apartments in Pasig City.</p>
       </div>
       <div class="page-header__actions">
-        <button class="btn btn--primary" type="button">
+        <button data-manager-only class="btn btn--primary" type="button">
           ${icon("plus", { size: 15 })} Add property
         </button>
       </div>

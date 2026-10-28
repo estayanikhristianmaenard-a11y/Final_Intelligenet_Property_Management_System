@@ -40,3 +40,13 @@ For the live acceptance session, use a separate non-showcase database/configurat
 The same Gmail account may support property-mailbox intake and outgoing rent email, but those are separate checks. Incoming provider formats and attachments still need to be verified with actual received samples. SMTP acceptance is not proof of inbox arrival or reading. Phone Web Push is another acceptance step and needs a supported secure context; ordinary LAN HTTP is not sufficient.
 
 Restart the backend after changing configuration when the live session is ready. Sharing `.env` does not enable sending or remove showcase restrictions. No change to the approved billing or utility-tracking workflow is required.
+
+## Group 3 automatic routing and live check - 23 October 2026
+
+The user saved this Gmail filter on the property account: **To:** `rentara2026@gmail.com`; **Subject:** `Group 3 Demo`; **action:** apply `Rentara-Group3-Demo`. Existing matching conversations were left unchecked. No delete/archive/forward action was requested. This is a demo-routing rule, not a verified production sender rule; actual provider filters need their verified sender/format and the business's intended label. Account mapping, not subject/sender, determines the bill's unit.
+
+One synthetic scanned Unit A email was sent through SMTP and observed under the label without manual labelling. Real IMAP retrieval and the normal automatic OCR/billing flow produced two PHP 450.00 Tenant shares and portal alerts. Duplicate sync did not create another charge. Tenant email/Push delivery stayed off. The fresh bill remains in Group 3 for viewing. See [dated QA evidence](qa-report.md).
+
+From the application directory, `node tools/verify-gmail-demo.mjs --check` deliberately verifies Gmail authentication/label access without sending. `--send` is an explicit one-message, self-addressed live test and refuses when a prior submission is recorded. **Do not run --send again for this completed test.** `--verify` checks the exact recorded message/attachment, backs up the database and uses one automatic processing cycle; it does not start a persistent portal server. Its private report is `data/group-demo/live-gmail-test.json`. Normal Group 3 startup remains `npm.cmd run demo:group -- --receive`.
+
+Google documents [filter creation/import](https://support.google.com/mail/answer/6579?hl=en). Programmatic filter creation needs the [Gmail settings OAuth scope](https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.settings.filters/create); IMAP label creation is a separate capability. No connector or new OAuth configuration was installed for this check.

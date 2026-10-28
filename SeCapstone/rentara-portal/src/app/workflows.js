@@ -12,6 +12,7 @@ import { billDetails } from "../features/billing/bill-details.js";
 import { peso, date, periodLabel } from "../utils/format.js";
 import { watchForm } from "./form-state.js";
 import { beginAction } from "../components/action-feedback.js";
+import { sourcePreview } from "../components/source-preview.js";
 let controller;
 export function dialogForm({
   title,
@@ -371,6 +372,11 @@ async function entityForm(kind, id, onSaved, defaults = {}) {
       type: "textarea",
       hint: "Required when changing lease dates, assignment dates or rent with billing history.",
     });
+  if (session.role === "staff") {
+    if (!id) throw new Error("Manager creates billing-linked records.");
+    const allowed = { properties: ["name","letter","address","city","type"], units: ["code","floor","floorNumber","type"], tenants: ["fullName","phone","emergencyContactName","emergencyContactPhone"] }[kind] ?? [];
+    fields = fields.filter(field => allowed.includes(field.key));
+  }
   return dialogForm({
     title: (id ? "Edit " : "Add ") + kind.replace(/s$/, ""),
     fields,
@@ -489,7 +495,7 @@ async function userForm(id, onSaved, passwordOnly = false) {
           key: "role",
           label: "Role",
           type: "select",
-          options: ["admin", "manager", "tenant"],
+          options: ["admin", "manager", "staff", "tenant"],
         },
         { key: "tenantId", label: "Permanent tenant ID (Tenant role only)", hint: "Use the exact Tenant record ID supplied by the Manager. Link the account to that record so bills belong to the correct person; leave blank for Manager/Admin accounts." },
         {key:"workspaceId",label:"Workspace",type:"select",options:workspaces.map(w=>({value:w.id,label:w.name})),required:true,hint:"Managers and tenants can access only this property business. A Tenant must match the workspace of their rental record."},
@@ -532,14 +538,16 @@ async function userForm(id, onSaved, passwordOnly = false) {
   });
 }
 export async function correctSource(id, onSaved) {
+  if (session.role === "staff") {
+    const { proposeCorrection } = await import("../features/billing/correction-proposals.js");
+    return proposeCorrection(id, onSaved);
+  }
   let source;
   try { source = await api.get("/incoming/" + encodeURIComponent(id)); }
   catch (error) { toastDanger("Could not open bill", error.message); return; }
   const sourceFields = [["provider", "Provider"], ["accountRef", "Account / reference"], ["amountDue", "Amount due"], ["dueDate", "Due date"], ["periodStart", "Billing period start"], ["periodEnd", "Billing period end"]];
   const failures = (source.validationResults ?? []).filter(result => result.outcome === "failed").flatMap(result => result.reasons ?? []);
-  let previewUrl = null;
-  let closed = false;
-  const previewController = new AbortController();
+  const preview = sourcePreview(source);
   return dialogForm({
     title: "Review utility bill",
     label: "Save correction",
@@ -547,8 +555,8 @@ export async function correctSource(id, onSaved) {
     className: "modal--source-review",
     values: { field: "accountRef", value: source.accountRef ?? "" },
     snapshot: form => JSON.stringify([String(form.elements.value.value) === String(source[form.elements.field.value] ?? "") ? "" : form.elements.value.value, form.elements.reason.value]),
-    beforeFields: html`<section class="source-review__original" aria-label="Original utility bill"><h4>Original bill</h4><p class="text-sm text-muted" data-source-preview-status>Loading original document…</p><div data-source-preview></div><details class="source-review__text"><summary>Extracted text</summary><pre>${source.rawText || "No readable text was extracted."}</pre></details></section>`,
-    onClose() { closed = true; previewController.abort(); if (previewUrl) URL.revokeObjectURL(previewUrl); },
+    beforeFields: preview.markup,
+    onClose: () => preview.dispose(),
     onReady(modal, form) {
       const summary = document.createElement("div");
       render(summary, html`<h4>Extracted details</h4><p class="text-sm text-muted">Choose a value to correct. Save one field at a time; every correction is revalidated.</p>${failures.length ? html`<div class="notice-strip notice-strip--warning source-review__issues"><strong>Needs attention</strong><ul>${failures.map(reason => html`<li>${reason}</li>`)}</ul></div>` : null}<dl class="source-review__fields">${sourceFields.map(([key, label]) => html`<div data-source-field="${key}" class="${source[key] == null || source[key] === "" ? "is-missing" : ""}"><dt>${label}</dt><dd><span>${source[key] == null || source[key] === "" ? "Missing" : source[key]}</span><button class="btn btn--ghost btn--sm" type="button" data-edit-source-field="${key}" aria-label="Edit ${label}">Edit</button></dd></div>`)}</dl>`);
@@ -569,19 +577,7 @@ export async function correctSource(id, onSaved) {
       summary.querySelectorAll("[data-edit-source-field]").forEach(button => button.addEventListener("click", () => editField(button.dataset.editSourceField)));
       form.elements.field.addEventListener("change", () => editField(form.elements.field.value));
       editField("accountRef", false);
-      const status = modal.querySelector("[data-source-preview-status]");
-      const host = modal.querySelector("[data-source-preview]");
-      fetch(apiConfig.BASE_URL + "/incoming/" + encodeURIComponent(id) + "/source", { headers: { Authorization: "Bearer " + session.token }, signal: previewController.signal })
-        .then(async (response) => {
-          if (!response.ok) throw new Error("Original document is unavailable.");
-          const blob = await response.blob();
-          if (closed) return;
-          previewUrl = URL.createObjectURL(blob);
-          const type = blob.type.split(";")[0];
-          const supported = ["application/pdf", "image/png", "image/jpeg"].includes(type);
-          render(host, html`${type === "application/pdf" ? html`<iframe class="source-review__pdf" title="Original utility bill PDF" src="${previewUrl}"></iframe>` : ["image/png", "image/jpeg"].includes(type) ? html`<img class="source-review__image" src="${previewUrl}" alt="Original utility bill for comparison" />` : html`<p>Use the extracted text below or download the source email.</p>`}<a class="text-link" href="${previewUrl}" download="${source.filename}">Download original</a>`);
-          status.textContent = supported ? "Original document. Extracted values still require validation." : "This source does not support an inline preview.";
-        }).catch((error) => { if (!closed) status.textContent = error.message + " You can still review the extracted text."; });
+      preview.mount(modal);
     },
     fields: [
       {
@@ -838,9 +834,9 @@ export function bindWorkflows(container, { page, onChanged, refresh }) {
               {},
               { timeout: 120000 },
             );
-            toastSuccess(
-              "Mailbox synchronized",
-              result.imported + " messages processed",
+            (result.failed ? toastWarning : toastSuccess)(
+              result.failed ? "Some emails need review" : "Mailbox synchronized",
+              result.imported + " messages processed" + (result.failed ? `; ${result.failed} held in the review queue` : ""),
             );
             await changed();
           } finally {
@@ -873,7 +869,7 @@ export function bindWorkflows(container, { page, onChanged, refresh }) {
             const result = await api.post("/admin/" + maintenance);
             toastSuccess(
               "Operation completed",
-              result.filename ??
+              (result.bundle ? `Database and ${result.files} bill/document files saved. Copy the complete backup folder for recovery.` : result.filename) ??
                 (result.removed !== undefined
                   ? result.removed + " temporary files removed"
                   : text),

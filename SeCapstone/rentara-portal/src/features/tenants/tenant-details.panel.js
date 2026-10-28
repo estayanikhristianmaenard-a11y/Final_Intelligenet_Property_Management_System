@@ -58,7 +58,7 @@ export function openTenantPanel(tenantId, { onChanged } = {}) {
   activeApi = openPanel({
     ariaLabel: "Tenant details",
     header: loadingHeader(),
-    tabs: TABS.map((tab) => ({ id: tab.id, label: tab.label })),
+    tabs: TABS.filter(tab => session.role !== "staff" || tab.id !== "documents").map((tab) => ({ id: tab.id, label: tab.label })),
     renderBody: () => html`<div class="panel-section">${skeletonRows(5)}</div>`,
     footer: loadingFooter(),
     onMount: () => attachRootListener({ canConfirm, canMessage }),
@@ -70,7 +70,7 @@ export function openTenantPanel(tenantId, { onChanged } = {}) {
       activeTenant = tenant;
       activeApi.update({
         header: tenantHeader(tenant),
-        tabs: TABS.map((tab) => ({
+        tabs: TABS.filter(tab => session.role !== "staff" || tab.id !== "documents").map((tab) => ({
           id: tab.id,
           label: tab.label,
           count: tab.count ? tab.count(tenant) : undefined,

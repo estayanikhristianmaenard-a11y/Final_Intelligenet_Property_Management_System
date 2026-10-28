@@ -93,10 +93,10 @@ function frame(content) {
         <p>Select a tenant to open their details panel.</p>
       </div>
       <div class="page-header__actions">
-        <button class="btn btn--secondary" type="button">
+        <button data-manager-only class="btn btn--secondary" type="button">
           ${icon("download", { size: 15 })} Export
         </button>
-        <button class="btn btn--primary" type="button">
+        <button data-manager-only class="btn btn--primary" type="button">
           ${icon("plus", { size: 15 })} Add tenant
         </button>
       </div>

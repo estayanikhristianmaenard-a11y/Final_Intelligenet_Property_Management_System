@@ -1,10 +1,26 @@
 # Next-session checklist
 
-Saved 20 October 2026. Start here when development resumes. This separates unfinished acceptance checks from new code; do not rebuild functions that already exist or add modules outside the [capstone scope](capstone-scope.md).
+## Latest verification - 23 October 2026
+
+After reverting the unapproved locked-PDF summary fallback, all 99 tests passed in a fresh full run. The five existing journeys were checked, including a new file-backed restart/replay/receipt test. Only tests and documentation changed during this verification. See [QA evidence](qa-report.md).
+
+Next is the [five-journey actual-phone checklist](manual-test-guide.md#five-journeys-to-check-on-the-actual-demo-phones). Use the existing Group 3 database without resetting it; do not resend the already successful fixture just to force a fresh result. No new live email or actual Android test was performed in this automated run. Keep locked PDFs and unresolved masked accounts in review; the automatic summary fallback remains removed.
+
+
+## Latest interface checkpoint ? 23 October 2026
+
+Intake result filters, Staff work queues, Manager decisions, phone bill spacing and automatic-processing guidance are implemented. A fresh full suite passed all 98 tests; see [QA report](qa-report.md). The duplicate same-page loading regression is also covered.
+
+Next: restart the running backend, refresh the browser, then check the updated screens on the actual Android phones. Inspect Staff Needs action / With Manager / Returned, Manager decisions and Tenant bill/receipt buttons. Keep the already successful Group 3 Gmail fixture; do not reset/resend it to rehearse. Gmail filter and live synthetic intake success remain recorded below. Actual provider-origin samples, device access and deferred Web Push delivery are separate acceptance checks.
+
+
+**Latest checkpoint - 23 October 2026:** Gmail demo filter saved by the user and a fresh SMTP -> automatic label -> IMAP -> scanned-PDF OCR -> Unit A allocation -> Tenant portal-alert journey passed. Two PHP 450 shares are ready to view. Do not resend/reset this sample merely to rehearse. Full regression remains 96/96 from the preceding automation run. Current evidence is in [QA status](qa-report.md); older entries below retain their dated context. Remaining priorities are actual phones/provider-format acceptance, rent confirmation/receipt journeys and deferred Web Push.
+
+Saved 20 October 2026; verification status updated 22 October. Start here when development resumes. This separates unfinished acceptance checks from new code; do not rebuild functions that already exist or add modules outside the [capstone scope](capstone-scope.md).
 
 ## Where we stopped
 
-- Latest complete regression run: **76 tests passed**, no failures or skips. This is development evidence, not participant evaluation.
+- Latest complete regression run: **83 tests passed** on 22 October, no failures or skips. Includes separate workspace access, job failure isolation, held-email handling/retry controls, partial-sync feedback and complete database/file recovery. This is development evidence, not participant evaluation or a workload-capacity benchmark.
 - Email parsing, digital PDF extraction, image/scanned-PDF OCR, billing rules, exceptions, rent confirmation, receipts and portal alerts already exist.
 - One clearly labelled rent test reached **rentara2026@gmail.com** and its exact message was verified in INBOX. Phone link opening remains unchecked.
 - Actual Gmail IMAP retrieval passed using a synthetic bill stored in **Rentara-Utility-Acceptance**. It created a test Tenant bill and portal alert; repeated sync/setup created no extra charge. This was not an actual provider email. The digital PDF used text extraction, not OCR.
@@ -62,12 +78,14 @@ Detailed setup/pause instructions: [local acceptance setup](local-acceptance-set
 ## Coding priorities after evidence gathering
 
 1. Fix observed intake, mapping, correction or notification failures first. Add a regression for each meaningful defect; preserve the existing stack and workflow.
-2. Inspect backup completeness. The current Admin backup route produces a SQLite snapshot; determine and document how associated source/document files are included in recovery. If no complete handoff exists, implement a simple consistent package or companion procedure, then restore-test it. Database-only success does not prove source-file recovery.
-3. Test how one malformed/oversized email affects later messages in the dedicated label. The current sync can stop on a thrown intake error; if reproduced as a blocking case, implement bounded per-message handling with visible failure/review records and safe retry rules. Do not silently discard bills or retry charges blindly.
+2. Complete recovery support was implemented on 22 October: Admin backups now include the SQLite snapshot and referenced source/document files, with a manifest and checked offline restore into a new directory. Automated recovery/permission tests cover it; the group still needs to copy a package privately and verify it on the intended recovery device. See [backup and recovery](backup-and-recovery.md).
+3. The oversized-message blocking case was reproduced and fixed on 22 October. Bad content is held once in the Exception Queue while later messages proceed. Managers can retry their workspace's message or close the notice with a recorded handling reason. Network/storage failures remain retryable rather than silently marked processed. Verify actual provider failures when available; do not silently discard bills or retry charges blindly.
 4. Check whether the current status screens explain actual authorization, configuration and failures clearly. Improve only misleading/missing feedback; do not build another dashboard or invent delivery/readership.
 5. After the core journey passes, fix device-specific layout/receipt issues and refresh affected PNGs if the UI changed. Avoid another full redesign by default.
 
 Optional later operations: a deliberate always-on/autostart plan if the group needs longer unattended demonstrations. No public hosting, paid subscription or 24/7 availability guarantee is currently required or configured. Do not silently change Windows sleep/firewall/service settings.
+
+For role-specific needs and remaining improvements, use the [Manager and Tenant user stories](user-stories.md). The new email/recovery support does not finish actual provider setup, Android permission/Push delivery, physical printing or participant evaluation.
 
 ## Deferred paper work
 
@@ -92,3 +110,11 @@ npm.cmd run setup:utility-intake -- --disable
 ```
 
 Do not use the separate live-send verification option just to repeat an already accepted email. Last compact local/live result files are under ignored `data/acceptance/`; the current guides summarize their outcomes without exposing secrets.
+
+## Current Staff revision handoff ? 23 October 2026
+
+Staff and Manager proposal workflow are implemented; do not recreate them from the earlier planning notes. Read [implementation and permissions](staff-implementation-plan.md) and the latest [QA evidence](qa-report.md). Restart the running demo to load the new server code.
+
+Pending manual acceptance: one-time Gmail routing filter; newly sent labelled bill through intake to the correct Unit/Tenant; two Android devices and trusted current HTTPS address; rent-only live email if authorized; Web Push delivery (deferred); rendered diagram/exported manuscript review. Existing demo data must be preserved. Group review of Staff duties and documentation wording remains necessary.
+
+Automatic job isolation/status is implemented; use [automatic workflow](automated-workflow.md). Restart the running backend before testing the new status endpoint. Next actual check: fresh Gmail-labelled bill to correct Tenant without pressing Sync. No live sending or receiving was enabled by the implementation/test run.

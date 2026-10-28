@@ -1,0 +1,73 @@
+/* Focused operational readability; existing palette and reduced-motion rules remain. */
+:root { --text-xs: .8125rem; --text-sm: .875rem; --text-base: 1rem; }
+.page .card__title { font-size: 1.125rem; line-height: 1.4; }
+.page .data-table td { font-size: .9375rem; }
+.page .money, .manager-overview__item strong { font-variant-numeric: tabular-nums; }
+.manager-overview__item strong { font-size: clamp(1.5rem, 2vw, 1.875rem); }
+.manager-content-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 1.5rem; align-items: start; }
+.manager-content-grid > * { min-width: 0; }
+.manager-property-overview .card__body { padding-top: 1rem; }
+.manager-property-overview .building-card { min-height: 0; padding: 1rem; }
+.manager-review-queue__rows { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.staff-task-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.staff-task-summary a { display: grid; gap: .5rem; color: var(--gray-700); text-decoration: none; }
+.staff-task-summary strong { font-size: 2rem; color: var(--gray-900); }
+.staff-task-link { display: grid; gap: .375rem; padding: 1rem 0; border-bottom: 1px solid var(--gray-200); color: var(--gray-800); }
+.proposal-panel { margin-bottom: 1.5rem; }
+.proposal-record { padding: 1rem 0; border-bottom: 1px solid var(--gray-200); overflow-wrap: anywhere; }
+.proposal-record:last-child { border-bottom: 0; }
+.proposal-record p { margin: .75rem 0; }
+.proposal-record .row, .exception-card__foot { flex-wrap: wrap; }
+.proposal-diff { display: grid; gap: .5rem; margin: 1rem 0; }
+.proposal-diff > div { display: grid; grid-template-columns: minmax(120px, .6fr) minmax(0, 1fr); gap: .75rem; }
+.proposal-diff dd { margin: 0; overflow-wrap: anywhere; }
+.exception-note { border-left: 2px solid var(--primary-300); padding: .5rem .75rem; margin: .75rem 0; }
+.account-filters { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.account-filters label { display: grid; gap: .5rem; min-width: 0; }
+.app-shell[data-role="staff"] [data-manager-only],
+.app-shell[data-role="staff"] [data-delete-entity],
+.app-shell[data-role="staff"] [data-assign] { display: none !important; }
+@media (max-width: 1200px) { .manager-content-grid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) {
+  .mini-list__item:has([data-workspace-members]) { flex-wrap: wrap; gap: .5rem; }
+  .mini-list__item:has([data-workspace-members]) .mini-list__body { flex: 1 1 100%; min-width: 0; overflow-wrap: anywhere; }
+  .account-filters { grid-template-columns: 1fr 1fr; }
+  .account-filters label:first-child { grid-column: 1 / -1; }
+  .staff-task-summary { grid-template-columns: 1fr; }
+  .proposal-diff > div { grid-template-columns: 1fr; gap: .125rem; }
+  .proposal-record .btn, .exception-card__foot .btn { min-height: 44px; }
+}
+
+.automation-status { margin-bottom: 1rem; }
+.automation-status > summary { display: flex; flex-wrap: wrap; gap: .5rem 1rem; cursor: pointer; }
+.automation-status > .card__body { overflow-wrap: anywhere; }
+
+.automation-status .row { justify-content: space-between; flex-wrap: wrap; gap: .75rem; }
+.automation-status .badge { white-space: normal; }
+
+/* Intake results and touch-friendly bill details, without additional motion. */
+.intake-toolbar { display:flex; align-items:end; flex-wrap:wrap; gap:1rem; padding:1rem 1.5rem; border-bottom:1px solid var(--gray-200); }
+.intake-toolbar label { display:grid; gap:.5rem; min-width:12rem; }
+.ocr-bill__main, .ocr-bill__side, .ocr-field { min-width:0; }
+.ocr-bill__ref { display:inline-block; max-width:16rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle; }
+.ocr-bill__fields { row-gap:1rem; }
+.ocr-field__value { overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.ocr-bill__reason { line-height:1.6; overflow-wrap:anywhere; }
+.ocr-bill[hidden], .exception-card[hidden] { display:none !important; }
+.staff-task-summary { margin-bottom:1.5rem; }
+.staff-task-summary small { line-height:1.5; }
+@media (max-width:720px) {
+  .intake-toolbar { padding:1rem; align-items:stretch; }
+  .intake-toolbar label { flex:1 1 100%; }
+  .ocr-bill__fields { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+  .ocr-bill__side { gap:.75rem; flex-wrap:wrap; }
+  .ocr-bill .btn, .intake-toolbar select { min-height:44px; }
+  .ocr-bill__ref { max-width:100%; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="totalDue"] .money { font-size:1.125rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .tenant-bills-page .data-table[aria-label="My bills"] td[data-column="cycle"] .cell-stack > span { font-size:.875rem; line-height:1.6; }
+  .tenant-bills-page .receipt-actions { gap:.75rem; }
+  .tenant-bills-page .receipt-reference { overflow-wrap:anywhere; }
+  .tenant-bills-page [data-view-bill], .tenant-bills-page .receipt-actions .btn { min-height:44px; }
+  .tenant-bills-page .data-table td[data-column="paymentStatus"] small { display:block; line-height:1.6; }
+  .proposal-record .row { gap:.75rem; }
+}

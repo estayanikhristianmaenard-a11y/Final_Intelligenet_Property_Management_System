@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-16T12:41:13.623Z",
+  "capturedAt": "2026-10-27T14:15:14.227Z",
   "source": "Current local code; isolated synthetic showcase; no external delivery",
   "records": [
     {
@@ -51,6 +51,12 @@
       "label": "manager /settings"
     },
     {
+      "file": "47-manager-decisions-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "manager /bills?tab=exceptions&queue=manager"
+    },
+    {
       "file": "31-manager-units.png",
       "width": 1440,
       "height": 1000,
@@ -91,6 +97,42 @@
       "width": 1440,
       "height": 1000,
       "label": "Manager-confirmed payment and original receipt reference"
+    },
+    {
+      "file": "43-staff-dashboard.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "staff /dashboard"
+    },
+    {
+      "file": "44-staff-exceptions-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "staff /bills?tab=exceptions"
+    },
+    {
+      "file": "45-staff-account-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "staff /staff/account"
+    },
+    {
+      "file": "46-staff-intake-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "staff /bills?tab=incoming"
+    },
+    {
+      "file": "48-staff-source-comparison.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "Staff Case Sheet / original beside proposed fields"
+    },
+    {
+      "file": "49-staff-source-comparison-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "Staff Case Sheet / stacked phone source review"
     },
     {
       "file": "04-tenant-dashboard.png",

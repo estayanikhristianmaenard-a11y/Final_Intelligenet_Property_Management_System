@@ -23,22 +23,25 @@ export const APP = {
 export const ROLE = {
   ADMIN: "admin",
   MANAGER: "manager",
+  STAFF: "staff",
   TENANT: "tenant",
 };
 
 export const ROLE_LABEL = {
   [ROLE.ADMIN]: "Admin",
   [ROLE.MANAGER]: "Manager",
+  [ROLE.STAFF]: "Staff",
   [ROLE.TENANT]: "Tenant",
 };
 
 export const ROLE_SCOPE = {
   [ROLE.ADMIN]: "System maintenance",
   [ROLE.MANAGER]: "Property & billing management",
+  [ROLE.STAFF]: "Daily operations and bill intake",
   [ROLE.TENANT]: "Bills & payment reporting",
 };
 
-export const ROLES = [ROLE.ADMIN, ROLE.MANAGER, ROLE.TENANT];
+export const ROLES = [ROLE.ADMIN, ROLE.MANAGER, ROLE.STAFF, ROLE.TENANT];
 
 /* --------------------------------------------------------------- payment */
 export const PAYMENT_STATUS = {

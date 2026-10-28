@@ -25,7 +25,8 @@ export async function renderTenantHome(container) {
     bind(container, tenant);
     if (refreshing) window.scrollTo(position);
   } catch (error) {
-    render(container, frame(emptyState({ iconName: "alert-triangle", title: "Your home could not be loaded", body: error.message })));
+    render(container, frame(emptyState({ iconName: "alert-triangle", title: "Your home could not be loaded", body: error.message, action:html`<button type="button" class="btn btn--secondary" data-retry-page>Try again</button>` })));
+    container.querySelector("[data-retry-page]").onclick=()=>renderTenantHome(container);
   }
 }
 

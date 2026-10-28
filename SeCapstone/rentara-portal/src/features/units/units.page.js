@@ -104,7 +104,7 @@ function frame(content, { propertyId, properties }) {
         <p>Unit register with occupancy, arrangement and rent configuration.</p>
       </div>
       <div class="page-header__actions">
-        <button class="btn btn--primary" type="button">
+        <button data-manager-only class="btn btn--primary" type="button">
           ${icon("plus", { size: 15 })} Add unit
         </button>
       </div>

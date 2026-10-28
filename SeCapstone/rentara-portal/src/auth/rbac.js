@@ -20,6 +20,11 @@ const NONE = false;
 
 /** @type {Record<string, Record<string, boolean>>} */
 export const PERMISSION_MATRIX = {
+  [ROLE.STAFF]: {
+    "dashboard:read": true, "property:read": true, "property:write": true,
+    "unit:read": true, "unit:write": true, "tenant:read": true, "tenant:write": true,
+    "billing:read": true, "exception:propose": true, "receipt:view": true, "staff:account": true,
+  },
   /* ---------------------------------------------------------------- Admin */
   [ROLE.ADMIN]: {
     "admin:dashboard": ALL,

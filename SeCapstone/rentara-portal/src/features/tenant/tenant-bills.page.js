@@ -92,10 +92,12 @@ export async function renderTenantBills(container, filters = {}) {
           iconName: "alert-triangle",
           title: "Your bills could not be loaded",
           body: error.message,
+            action: html`<button type="button" class="btn btn--secondary" data-retry-page>Try again</button>`,
         })}<button class="btn btn--secondary mt-3" type="button" data-retry-bills>Try again</button>`,
       ),
     );
     container.querySelector('[data-retry-bills]')?.addEventListener('click',()=>renderTenantBills(container,filters));
+    container.querySelector("[data-retry-page]").onclick = () => renderTenantBills(container);
   }
 }
 
@@ -166,7 +168,7 @@ function content(bills, payments, {hasBills, filtered, allBills}) {
           {
             key: "paymentStatus",
             label: "Status",
-            render: (row) => row.lines.every(l => l.category === "rent") ? paymentBadge(row.paymentStatus) : html`<span>${row.utilityTrackingStatus === "self_reported_paid" ? "Self-Reported Paid" : "Not Marked Paid"}</span><small>Provider payment not verified. ${row.utilityTrackingNeedsReview ? "Bill changed - review your previous mark." : ""}</small>`,
+            render: (row) => row.lines.every(l => l.category === "rent") ? paymentBadge(row.paymentStatus) : html`<span>${row.utilityTrackingStatus === "self_reported_paid" ? "Self-Reported Paid" : "Not Marked Paid"}</span>${row.utilityTrackingNeedsReview ? html`<small>Bill changed ? review your previous mark.</small>` : null}`,
           },
           {
             key: "receiptId",
@@ -199,7 +201,7 @@ function content(bills, payments, {hasBills, filtered, allBills}) {
                     : null,
           },
         ],
-        footer: html`<span>Manager confirms rent payments. Utilities use your personal tracker.</span>`,
+        footer: html`<span>Manager confirms rent payments. Utility marks are personal; provider payment not verified.</span>`,
       })}
 
       <details class="card disclosure-card receipt-archive">

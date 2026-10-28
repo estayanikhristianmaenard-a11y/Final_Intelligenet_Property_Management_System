@@ -65,9 +65,11 @@ export async function renderTenantNotifications(container) {
           iconName: "alert-triangle",
           title: "Notifications could not be loaded",
           body: error.message,
+            action: html`<button type="button" class="btn btn--secondary" data-retry-page>Try again</button>`,
         }),
       ),
     );
+    container.querySelector("[data-retry-page]").onclick = () => renderTenantNotifications(container);
   }
 }
 

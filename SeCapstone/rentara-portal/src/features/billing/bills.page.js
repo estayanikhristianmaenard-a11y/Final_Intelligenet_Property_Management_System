@@ -1,3 +1,6 @@
+import { intakeResult, staffQueues } from "./work-queue.js";
+import { bindProposals } from "./correction-proposals.js";
+import { mountCaseSheet } from "./case-sheet.js";
 import { html, render } from "../../utils/dom.js";
 import { icon } from "../../components/icon.js";
 import {
@@ -52,22 +55,29 @@ export async function renderBills(
   let activeTab = SEGMENTS.some((s) => s.id === query.get("tab"))
     ? query.get("tab")
     : "incoming";
+  let queue = ["staff", "manager", "returned", "resolved"].includes(query.get("queue")) ? query.get("queue") : "all";
+  let intakeFilter = "all";
+  let caseController;
   const filters = { term: query.get("q") ?? "", category: query.get("category") ?? "", status: query.get("status") ?? "" };
 
   const load = async () => {
-    const [incoming, bills, payments, exceptions] = await Promise.all([
+    const [incoming, bills, payments, exceptions, proposals, automation, units] = await Promise.all([
       api.get(endpoints.incomingBills()),
       api.get(endpoints.bills()),
       api.get(endpoints.payments()),
       api.get(endpoints.exceptions()),
+      api.get("/correction-proposals"),
+      api.get("/automation/status"),
+      api.get(endpoints.units()),
     ]);
-    paint({ incoming, bills, payments, exceptions });
+    paint({ incoming, bills, payments, exceptions, proposals, automation, units });
   };
 
   const paint = (data) => {
+    caseController?.dispose();
     render(
       container,
-      frame(segmentBar(data, activeTab), activeTab, stats(data)),
+      frame(segmentBar(data, activeTab), activeTab, activeTab === "exceptions" ? null : stats(data)),
     );
     renderBody(data);
     bindSegment(data);
@@ -86,26 +96,13 @@ export async function renderBills(
         markup = paymentsSection(data.payments, { canConfirm });
         break;
       case "exceptions":
-        markup = html`<div class="card">
-          <div class="card__header">
-            <div>
-              <h2 class="card__title">Exception Queue</h2>
-              <p class="card__subtitle">
-                Correct the flagged details, then recheck the bill.
-              </p>
-            </div>
-            <span class="badge badge--violet"
-              >${count(data.exceptions.filter((e) => e.state === "open").length)}
-              open</span
-            >
-          </div>
-          ${exceptionQueue(data.exceptions, { onChanged, canReview })}
-        </div>`;
+        markup = html`<section class="case-review" aria-labelledby="case-review-title"><header class="case-review__head"><div><h2 id="case-review-title">Bill review</h2><p>Investigate a case, compare the original and follow its next action.</p></div><label class="field__label">Work queue<select class="input select" data-responsibility-filter>${[["all","All cases"],["staff","Needs action"],["manager","With Manager"],["returned","Returned"],["resolved","Resolved"]].map(([value,label]) => html`<option value="${value}" ${queue === value ? "selected" : ""}>${label}</option>`)}</select></label></header><p class="text-sm text-secondary" data-queue-count aria-live="polite"></p><div data-case-workspace></div></section>`;
         break;
       default:
-        markup = incomingSection(data.incoming);
+        markup = html`${automationSummary(data.automation)}${incomingSection(data.incoming, data.exceptions, data.units, intakeFilter)}`;
     }
 
+    caseController?.dispose();
     render(host, markup);
     bindBody(data);
   };
@@ -113,8 +110,10 @@ export async function renderBills(
   const bindSegment = (data) => {
     container.querySelectorAll("[data-segment]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (caseController && !caseController.canLeave()) return;
         activeTab = button.getAttribute("data-segment");
         const params = new URLSearchParams({tab:activeTab});
+        if (activeTab === "exceptions" && queue !== "all") params.set("queue", queue);
         if (activeTab === "records") {
           if (filters.term) params.set("q",filters.term);
           if (filters.category) params.set("category",filters.category);
@@ -137,6 +136,30 @@ export async function renderBills(
   };
 
   const bindBody = (data) => {
+    const refreshCases = async () => { await load(); await onChanged?.(); };
+    if (activeTab !== "exceptions") bindProposals(container, refreshCases);
+    const responsibility = container.querySelector("[data-responsibility-filter]");
+    if (activeTab === "exceptions") caseController = mountCaseSheet(container.querySelector("[data-case-workspace]"), {data,queue,canReview,onRefresh:refreshCases});
+    responsibility?.addEventListener("change", () => {
+      if (caseController && !caseController.canLeave()) { responsibility.value=queue;return; }
+      queue = responsibility.value;
+      history.replaceState(null, "", `#/bills?tab=exceptions&queue=${queue}`);
+      renderBody(data);
+    });
+    const intakeSelect = container.querySelector("[data-intake-filter]");
+    const applyIntake = () => {
+      let visible = 0;
+      container.querySelectorAll("[data-intake-result]").forEach(card => {
+        card.hidden = intakeFilter !== "all" && card.dataset.intakeResult !== intakeFilter;
+        if (!card.hidden) visible++;
+      });
+      const label = container.querySelector("[data-intake-count]");
+      if (label) label.textContent = `${visible} of ${data.incoming.length} received bills`;
+      const empty = container.querySelector("[data-intake-empty]");
+      if (empty) empty.hidden = visible > 0;
+    };
+    intakeSelect?.addEventListener("change", () => { intakeFilter = intakeSelect.value; applyIntake(); });
+    applyIntake();
     const filterRows = () => {
       const rows = container.querySelectorAll('.billing-records tbody tr');
       let visible = 0;
@@ -187,7 +210,7 @@ export async function renderBills(
         finally {button.disabled=false;}
       };
     });
-    bindExceptionQueue(container, {
+    if (activeTab !== "exceptions") bindExceptionQueue(container, {
       onChanged: () => {
         load();
         onChanged?.();
@@ -277,12 +300,14 @@ export async function renderBills(
             iconName: "alert-triangle",
             title: "Billing data could not be loaded",
             body: error.message,
+            action: html`<button type="button" class="btn btn--secondary" data-retry-page>Try again</button>`,
           })}
         </div>`,
       ),
       activeTab,
       null,
     );
+    container.querySelector("[data-retry-page]").onclick = () => renderBills(container, { query, onChanged });
   }
 }
 
@@ -307,12 +332,12 @@ function frame(segmentBarMarkup, activeTab, statsMarkup, loading = false) {
         <button class="btn btn--primary" type="button" data-action="upload-source" ${loading ? "disabled" : ""}>
           ${icon("plus", { size: 15 })} Upload source
         </button>
-        <button class="btn btn--ghost" type="button" data-action="check-rent-cycles" ${loading ? "disabled" : ""} title="Rent is generated automatically. Check for any eligible cycles not yet generated.">Check rent cycles</button>
+        <button class="btn btn--ghost" type="button" data-manager-only data-action="check-rent-cycles" ${loading ? "disabled" : ""} title="Rent is generated automatically. Check for any eligible cycles not yet generated.">Check rent cycles</button>
       </div>
     </div>
 
     ${
-      loading
+      loading && activeTab !== "exceptions"
         ? html`<div class="billing-summary-row">
             ${Array.from({ length: 4 }, () => html`<div class="stat-card" style="height:118px"><div class="skeleton full-width" style="height:100%"></div></div>`)}
           </div>`
@@ -405,7 +430,7 @@ function stats(data) {
 
 /* ------------------------------------------------------- OCR intake tab -- */
 
-function incomingSection(incoming) {
+function incomingSection(incoming, exceptions = [], units = [], selected = "all") {
   if (!incoming.length) {
     return html`<div class="card">
       ${emptyState({
@@ -426,10 +451,14 @@ function incomingSection(incoming) {
       </div>
     </div>
 
+    <div class="intake-toolbar"><label class="field__label">Result<select class="input select" data-intake-filter>${[["all","All results"],["review","Needs review"],["duplicate","Duplicate"],["processed","Processed"],["processing","Processing"]].map(([value,label]) => html`<option value="${value}" ${selected === value ? "selected" : ""}>${label}</option>`)}</select></label><span class="text-sm text-secondary" data-intake-count aria-live="polite"></span></div>
+    <p class="card__body" data-intake-empty hidden>No received bills match this result. Choose another result to continue.</p>
     <div>
       ${incoming.map((bill) => {
-        const property = bill.propertyId?.slice(-1).toUpperCase();
-        return html`<article class="ocr-bill">
+        const result = intakeResult(bill);
+        const unit = units.find(u => u.id === bill.unitId);
+        const reasons = exceptions.filter(e => e.sourceId === bill.id && e.state === "open").map(e => e.reason);
+        return html`<article class="ocr-bill" data-intake-result="${result}">
           <span class="ocr-bill__thumb"
             >${icon(bill.category === "water" ? "droplet" : "bolt", { size: 20 })}</span
           >
@@ -437,8 +466,8 @@ function incomingSection(incoming) {
           <div class="ocr-bill__main">
             <div class="ocr-bill__head">
               <span class="ocr-bill__provider">${bill.provider}</span>
-              ${categoryChip(bill.category)}
-              <span class="ocr-bill__ref"
+              ${bill.category ? categoryChip(bill.category) : null}
+              <span class="ocr-bill__ref" title="${bill.accountRef ?? "No reference extracted"}"
                 >${bill.accountRef ?? "no reference extracted"}</span
               >
             </div>
@@ -475,18 +504,18 @@ function incomingSection(incoming) {
               </div>
             </div>
             <p class="ocr-bill__method">${bill.extractionMethod === "pdf_text" || bill.intakeMethod === "email_body" ? "Direct text extraction" : bill.contentType?.startsWith("image/") || bill.extractionMethod === "pdf_ocr" ? `Image OCR${Number.isFinite(bill.confidence) ? ` · ${Math.round(bill.confidence)}% recognition estimate` : ""}` : "Source text extracted"}</p>
-            ${bill.ocrStatus === "failed" ? html`<p class="ocr-bill__reason">${bill.extractionError || bill.validationResults?.filter(result => result.outcome === "failed").flatMap(result => result.reasons ?? []).join(" · ") || "Review account mapping and required bill details."}</p>` : null}
+            ${bill.ocrStatus === "failed" ? html`<p class="ocr-bill__reason">${bill.extractionError || reasons.join(" ? ") || bill.validationResults?.filter(result => result.outcome === "failed").flatMap(result => result.reasons ?? []).join(" · ") || "Review account mapping and required bill details."}</p>` : null}
           </div>
 
           <div class="ocr-bill__side">
-            ${ocrStatusBadge(bill.ocrStatus)}
+            ${ocrStatusBadge(result)}
             <span
               class="text-xs text-muted"
               title="${dateTime(bill.receivedAt)}"
               >${relative(bill.receivedAt)}</span
             >
-            <button class="btn btn--primary btn--sm" data-review-ocr="${bill.id}">Review bill</button><span class="chip"
-              >${bill.unitId ? "Mapped unit" : "Mapping unresolved"}</span
+            <button class="btn btn--primary btn--sm" data-review-ocr="${bill.id}">${result === "processed" ? "View bill" : result === "duplicate" ? "Compare bill" : "Review bill"}</button><span class="chip"
+              >${unit ? `Unit ${unit.code}` : "Mapping unresolved"}</span
             >
           </div>
         </article>`;
@@ -505,9 +534,10 @@ function incomingSection(incoming) {
 }
 
 function ocrStatusBadge(status) {
-  if (status === "validated")
-    return badge("Validated", "success", { dot: true });
-  if (status === "failed") return badge("Needs review", "warning", { dot: true });
+  if (status === "processed")
+    return badge("Processed", "success", { dot: true });
+  if (status === "duplicate") return badge("Duplicate", "warning", { dot: true });
+  if (status === "review") return badge("Needs review", "warning", { dot: true });
   return badge("Processing", "warning", { dot: true });
 }
 
@@ -751,3 +781,18 @@ function paymentsSection(payments, { canConfirm }) {
 }
 
 export default renderBills;
+
+function automationSummary(status) {
+  const names = { sessionCleanup: "Expired sessions", rentGeneration: "Rent generation", reminders: "Eligible reminders", mailbox: "Mailbox retrieval", rentEmail: "Rent email", webPush: "Web Push" };
+  const cycle = status.lastCycle;
+  return html`<details class="card automation-status" data-automation-status>
+    <summary class="card__body"><strong>Automatic processing</strong><span class="text-secondary">${status.mailboxConfigured ? "Mailbox checks every 5 minutes" : "Mailbox not configured"}</span></summary>
+    <div class="card__body stack stack-2"><p>The backend checks scheduled work every minute while running. Valid bills proceed automatically; flagged records require review.</p>
+      <p>Last mailbox attempt: ${status.lastMailboxAttemptAt ? dateTime(status.lastMailboxAttemptAt) : "Not recorded yet"}.</p>
+      <p>Last completed cycle: ${cycle?.completedAt ? dateTime(cycle.completedAt) : "Not recorded yet"}. ${status.nextMailboxCheckAt ? html`Next eligible mailbox check: ${dateTime(status.nextMailboxCheckAt)}.` : ""}</p>
+      ${Object.entries(names).map(([key, label]) => html`<div class="row row--between"><span>${label}</span>${badge((cycle?.jobs?.[key]?.state === "waiting" && cycle?.jobs?.[key]?.lastOutcome === "failed") ? "waiting; last attempt failed" : cycle?.jobs?.[key]?.state ?? "not recorded", cycle?.jobs?.[key]?.state === "failed" || cycle?.jobs?.[key]?.lastOutcome === "failed" ? "danger" : "neutral")}</div>`)}
+      ${!status.mailboxConfigured ? html`<p class="notice-strip">Ask the person maintaining this laptop to check the local IMAP settings, then restart the server. Never enter an app password in a bill or investigation note.</p>` : cycle?.jobs?.mailbox?.lastOutcome === "failed" || cycle?.jobs?.mailbox?.state === "failed" ? html`<p class="notice-strip">Mailbox retrieval failed. Check the laptop internet connection, Gmail access and configured label. The backend will retry when eligible; use Sync intake after fixing the connection.</p>` : null}
+      <p class="text-secondary">Snapshot taken ${dateTime(status.checkedAt)}. Reopen this page to see a later check. Check times are eligibility times while the backend is running.</p>
+      <p class="text-secondary">A completed job does not prove email delivery or payment. Reminders follow the existing 9 AM Philippine-time eligibility rules. External mail and Push require internet and configuration.</p>
+    </div></details>`;
+}

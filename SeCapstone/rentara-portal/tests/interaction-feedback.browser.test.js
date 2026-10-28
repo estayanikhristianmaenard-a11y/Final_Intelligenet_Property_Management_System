@@ -64,7 +64,8 @@ test("lightweight feedback protects edits, preserves failed inputs, pages old lo
       await expect(page.locator("[data-upload-progress]")).toBeVisible();
       await expect(page.locator("[data-upload]")).toBeDisabled();
       assert.equal(await page.locator('.processing-status__bar').evaluate(element=>getComputedStyle(element,"::after").animationName),"none");
-      assert.equal(requests,1);
+      // Progress feedback precedes fetch dispatch; wait for the actual request.
+      await expect.poll(()=>requests).toBe(1);
     } finally {release();}
     await expect(page.locator("[data-upload]")).toBeEnabled();
     assert.equal(await page.locator('.modal input[type="file"]').evaluate(input=>input.files.length),1);

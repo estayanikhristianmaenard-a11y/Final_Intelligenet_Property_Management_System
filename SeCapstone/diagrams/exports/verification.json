@@ -1,0 +1,26 @@
+{
+  "scope": "Diagram assertions only; not application or formal evaluation tests",
+  "figures": [
+    {
+      "file": "2.1_Architectural_Framework.drawio",
+      "vertices": 27,
+      "edges": 25,
+      "structure": "passed",
+      "workflowAssertions": "passed"
+    },
+    {
+      "file": "2.2_Process_Flowchart_SIMPLE.drawio",
+      "vertices": 35,
+      "edges": 41,
+      "structure": "passed",
+      "workflowAssertions": "passed"
+    },
+    {
+      "file": "2.3_FullBlown_DFD.drawio",
+      "vertices": 16,
+      "edges": 35,
+      "structure": "passed",
+      "workflowAssertions": "passed"
+    }
+  ]
+}

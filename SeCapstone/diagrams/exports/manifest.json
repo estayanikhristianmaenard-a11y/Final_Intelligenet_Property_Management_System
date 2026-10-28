@@ -1,0 +1,21 @@
+{
+  "renderer": "Official diagrams.net viewer / mxGraph",
+  "externalDiagramUpload": false,
+  "figures": [
+    {
+      "file": "2.1_Architectural_Framework",
+      "width": 2385,
+      "height": 2471
+    },
+    {
+      "file": "2.2_Process_Flowchart_SIMPLE",
+      "width": 2188,
+      "height": 2395
+    },
+    {
+      "file": "2.3_FullBlown_DFD",
+      "width": 1528,
+      "height": 1710
+    }
+  ]
+}

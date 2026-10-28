@@ -1,8 +1,9 @@
+import { MAILBOX_INTERVAL_MS } from "./scheduler.js";
 import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import { join } from "node:path";
 import { newId } from "./store.js";
-import { parseUtilityText, requireValue, philippineDate } from "./rules.js";
+import { parseUtilityText, requireValue, philippineDate, HttpError } from "./rules.js";
 import { RentEmail } from "./rent-email.js";
 import { systemStatus } from "./system-status.js";
 
@@ -140,10 +141,12 @@ export class Integrations {
   }
   async ingestEmail(raw, metadata = {}, extractor) {
     const { simpleParser } = await import("mailparser");
-    const mail = await simpleParser(raw, {
-      skipHtmlToText: false,
-      skipTextToHtml: true,
-    });
+    let mail;
+    try {
+      mail = await simpleParser(raw, { skipHtmlToText: false, skipTextToHtml: true });
+    } catch {
+      throw new HttpError(422, "Email could not be parsed. Upload a clear supported bill copy or retry after checking the message.");
+    }
     requireValue(
       mail.attachments.length <= 30,
       "Email exceeds attachment limit",
@@ -190,8 +193,8 @@ export class Integrations {
       socketTimeout: 30000,
     });
   }
-  async syncMailbox(user) {
-    this.service.role(user, "manager");
+  async syncMailbox(user, { retryKey } = {}) {
+    this.service.role(user, "manager", "staff");
     requireValue(
       !this.syncing,
       "Mailbox synchronization is already running",
@@ -204,6 +207,7 @@ export class Integrations {
       "Mailbox is not configured. Set the IMAP account credentials locally.",
       503,
     );
+    if (retryKey) requireValue(this.s.get("intake_messages", retryKey)?.status === "failed", "Only a held email in this workspace can be retried", 409);
     this.syncing = true;
     let client;
     try {
@@ -212,43 +216,58 @@ export class Integrations {
       const lock = await client.getMailboxLock(
         this.env.IMAP_MAILBOX || "INBOX",
       );
-      let imported = 0;
+      let imported = 0, failed = 0, examined = 0, retryFound = false;
       try {
         const uids = await client.search({ all: true }, { uid: true }),
           validity = String(client.mailbox.uidValidity);
         for (const uid of uids) {
           const key = `${this.env.IMAP_HOST}:${this.env.IMAP_USER}:${validity}:${uid}`;
-          if (this.s.get("intake_messages", key)) continue;
-          if (imported >= 100) break;
+          if (retryKey && key !== retryKey) continue;
+          if (this.s.get("intake_messages", key) && retryKey !== key) continue;
+          if (examined++ >= 100) break;
+          retryFound = retryFound || retryKey === key;
           const msg = await client.fetchOne(
             uid,
             { source: { maxLength: 35 * 1024 * 1024 }, size: true },
             { uid: true },
           );
           if (!msg?.source) continue;
-          requireValue(
-            msg.size <= 35 * 1024 * 1024,
-            "Email exceeds 35 MB intake limit",
-          );
-          await this.ingestEmail(msg.source, { mailboxUid: key });
-          this.s.save("intake_messages", {
-            id: key,
-            processedAt: new Date().toISOString(),
-          });
-          imported++;
+          try {
+            requireValue(msg.size <= 35 * 1024 * 1024, "Email exceeds 35 MB intake limit");
+            await this.ingestEmail(msg.source, { mailboxUid: key });
+            this.s.save("intake_messages", { id: key, status: "processed", processedAt: new Date().toISOString() });
+            for (const e of this.s.all("exceptions").filter(e => e.intakeMessageId === key && e.state === "open"))
+              this.s.save("exceptions", { ...e, state: "revalidated", resolvedAt: new Date().toISOString(), resolvedBy: user.id });
+            imported++;
+          } catch (error) {
+            // Content failures are held once; network/storage/system failures
+            // must remain retryable rather than masquerading as bad messages.
+            if (!(error instanceof HttpError) || ![400, 413, 422].includes(error.status)) throw error;
+            const reason = error.message;
+            this.s.save("intake_messages", { id: key, status: "failed", failedAt: new Date().toISOString(), reason });
+            const prior = this.s.all("exceptions").find(e => e.intakeMessageId === key);
+            this.s.save("exceptions", { ...prior, id: prior?.id ?? newId("exc"), sourceId: null, billId: null,
+              intakeMessageId: key, source: "email_intake", ruleId: "I01", severity: "high", title: "Email needs attention",
+              reason, detail: "This email was held so other bills can continue. Check it in the configured utility mailbox, upload a supported copy, or use Retry email. A successful retry only confirms processing; bill validation still applies.",
+              fields: [], state: "open", raisedAt: prior?.raisedAt ?? new Date().toISOString() });
+            failed++;
+          }
         }
       } finally {
         lock.release();
       }
+      requireValue(!retryKey || retryFound, "Held email is no longer available under this mailbox identity. Upload a supported copy instead.", 409);
+      const held = this.s.all("exceptions").filter(e => e.intakeMessageId && e.state === "open").length;
       this.s.save("settings", {
         ...this.s.get("settings","last-intake"),
         id: "last-intake",
         attemptedAt: Date.now(),
         successfulAt: new Date().toISOString(),
-        status: "completed",
+        status: held ? "completed_with_errors" : "completed",
+        heldMessages: held,
       });
       this.s.audit(user, "Mailbox synchronized", `${imported} messages`);
-      return { imported };
+      return failed ? { imported, failed } : { imported };
     } finally {
       if (client) await client.logout().catch(() => {});
       this.syncing = false;
@@ -341,60 +360,68 @@ export class Integrations {
     return { sent, configured: true };
   }
   async tick() {
-    if (this.ticking) return;
+    if (this.tickPromise) return this.tickPromise;
+    this.tickPromise = this.runAutomaticCycle();
+    try { return await this.tickPromise; }
+    finally { this.tickPromise = null; }
+  }
+  async runAutomaticCycle() {
     this.ticking = true;
-    try {
-      this.s.pruneExpiredSessions();
-      const date = philippineDate();
-      this.service.generateRent(date);
-      this.service.reminders(date);
-      this.s.save("settings", {
-        id: "last-schedule",
-        date,
-        at: new Date().toISOString(),
-      });
-      const intake = this.s.get("settings", "last-intake");
-      if (
-        this.env.IMAP_HOST &&
-        this.env.IMAP_USER &&
-        (this.env.IMAP_PASSWORD || this.env.IMAP_ACCESS_TOKEN) &&
-        Date.now() - Number(intake?.attemptedAt ?? 0) >= 300000
-      ) {
-        try {
-          await this.syncMailbox({
-            role: "manager",
-            id: null,
-            name: "System mailbox scheduler",
-            workspaceId: this.s.workspaceId,
-          });
-          this.s.save("settings", {
-            ...this.s.get("settings","last-intake"),
-            id: "last-intake",
-            attemptedAt: Date.now(),
-            successfulAt:new Date().toISOString(),
-            status: "completed",
-          });
-        } catch (e) {
-          this.s.save("settings", {
-            ...this.s.get("settings","last-intake"),
-            id: "last-intake",
-            attemptedAt: Date.now(),
-            status: "failed",
-            reason: e.message,
-          });
-          console.error("Mailbox intake:", e.message);
-        }
+    const prior = this.s.get("settings", "automation-cycle");
+    const cycle = { id: "automation-cycle", startedAt: new Date().toISOString(), completedAt: null, jobs: { ...prior?.jobs } };
+    const record = () => this.s.save("settings", cycle);
+    record();
+    const job = async (name, work) => {
+      const previous = cycle.jobs[name];
+      const startedAt = new Date().toISOString();
+      cycle.jobs[name] = { state: "running", startedAt, lastSuccessAt: previous?.lastSuccessAt ?? null };
+      try {
+        const result = await work();
+        const disabled = result?.configured === false;
+        cycle.jobs[name] = { ...cycle.jobs[name], state: disabled ? "disabled" : result?.requiresReview ? "needs_review" : "completed", completedAt: new Date().toISOString(),
+          lastSuccessAt: disabled ? previous?.lastSuccessAt ?? null : new Date().toISOString() };
+      } catch {
+        // Store only bounded, generic status; no provider error/credential payloads.
+        cycle.jobs[name] = { ...cycle.jobs[name], state: "failed", completedAt: new Date().toISOString() };
+        console.error("Automatic job failed:", name);
       }
-      await this.rentEmail.deliver();
-      await this.deliver();
-    } finally {
-      this.ticking = false;
-    }
+      cycle.jobs[name].lastOutcome = cycle.jobs[name].state;
+    };
+    try {
+      const date = philippineDate();
+      await job("sessionCleanup", () => this.s.pruneExpiredSessions());
+      await job("rentGeneration", () => this.service.generateRent(date));
+      await job("reminders", () => this.service.reminders(date));
+      if (cycle.jobs.rentGeneration.state === "completed" && cycle.jobs.reminders.state === "completed")
+        this.s.save("settings", { id: "last-schedule", date, at: new Date().toISOString() });
+      const intake = this.s.get("settings", "last-intake");
+      const configured = this.env.IMAP_HOST && this.env.IMAP_USER && (this.env.IMAP_PASSWORD || this.env.IMAP_ACCESS_TOKEN);
+      if (configured && !this.syncing && Date.now() - Number(intake?.attemptedAt ?? 0) >= MAILBOX_INTERVAL_MS) {
+        await job("mailbox", async () => {
+          try {
+            await this.syncMailbox({ role: "manager", id: null, name: "System mailbox scheduler", workspaceId: this.s.workspaceId });
+            return { requiresReview: this.s.get("settings", "last-intake")?.status === "completed_with_errors" };
+          } catch (error) {
+            this.s.save("settings", { ...this.s.get("settings", "last-intake"), id: "last-intake", attemptedAt: Date.now(),
+              status: "failed", reason: "Automatic retrieval failed. Check mailbox configuration and connectivity." });
+            throw error;
+          }
+        });
+      } else {
+        cycle.jobs.mailbox = { ...cycle.jobs.mailbox, state: !configured ? "disabled" : this.syncing ? "running" : "waiting" };
+      }
+      await job("rentEmail", () => this.rentEmail.deliver());
+      await job("webPush", () => this.deliver());
+      cycle.completedAt = new Date().toISOString();
+      record();
+      return cycle;
+    } finally { this.ticking = false; }
   }
   async services() {
     return systemStatus(this);
   }
   async close() {
+    await this.tickPromise;
     this.rentEmail.close();
     await this.imageQueue;
     if (this.worker) await this.worker.terminate();

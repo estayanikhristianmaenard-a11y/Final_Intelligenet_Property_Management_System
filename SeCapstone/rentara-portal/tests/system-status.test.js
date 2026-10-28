@@ -33,6 +33,15 @@ test("status uses actual attempt dates, retains historical acceptance and never 
   assert.equal(rows.find(r=>r.id==="svc-ocr").state,"available");
 });
 
+test("partially completed intake reports held messages instead of hiding them behind success", async t => {
+  const {store,runtime}=setup(t);
+  runtime.env.IMAP_HOST="imap.example.test"; runtime.env.IMAP_USER="test@example.test"; runtime.env.IMAP_PASSWORD="test-only";
+  store.save("settings", { id:"last-intake", status:"completed_with_errors", heldMessages:2, attemptedAt:Date.now(), successfulAt:new Date().toISOString() });
+  const row=(await runtime.services()).find(r=>r.id==="svc-mail");
+  assert.equal(row.state,"last_attempt_failed");
+  assert.match(row.detail,/2 email\(s\) held/);
+});
+
 test("one failed probe or workspace does not hide independent results",async t=>{
   const {store,service,runtime}=setup(t);
   runtime.pushConfig=()=>{throw new Error("private-status-secret");};

@@ -31,6 +31,10 @@ test("Manager compares protected PDF/image sources, corrects extracted values an
     await page.locator("#login-password").fill("PreviewTests!2026");
     await page.locator("[data-sign-in]").click();
     await page.waitForURL("**/#/dashboard");
+    // The fragment changes before the async page finishes; opening a dialog
+    // before routing settles lets that route replace the dialog underneath it.
+    await expect(page.locator("main h1")).toHaveText("Dashboard");
+    await expect(page.locator(".skeleton, .skeleton-line")).toHaveCount(0);
     const openSource = async id => {
       await page.evaluate(async id => { const { correctSource } = await import("/src/app/workflows.js"); await correctSource(id); }, id);
       await expect(page.locator(".source-review")).toBeVisible();

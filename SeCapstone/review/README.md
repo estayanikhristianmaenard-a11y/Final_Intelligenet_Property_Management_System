@@ -1,12 +1,15 @@
 # Capstone review records
 
-Start with [the latest paper review](FINAL_PAPER_REVIEW.md), covering the supplied 50-page export and remaining proofreading/presentation fixes. It does not claim that the stored PDF was replaced or all software features were verified. The stored manuscript snapshot is in [papers](../papers), and editable diagrams are in [diagrams](../diagrams).
+The current Chapters I?III manuscript is in [Google Docs](https://docs.google.com/document/d/11tHstktR1Z7ES9N4QRY6-w-HZd9fXzOxjbDBV2ZELs8/edit), with a checked [PDF export](MANUSCRIPT_I_III_REVISED.pdf). The 27 October cleanup uses paragraph-based discussion, retains numbered research questions and existing tables, and includes the three current diagrams. See [the alignment record](MANUSCRIPT_ALIGNMENT_2026-10-27.md) for dated changes and remaining evidence gaps. Earlier paper reviews describe their own supplied exports; they are not reviews of this new copy.
 
 | File | Purpose |
+| [MANUSCRIPT_I_III_REVISED.pdf](MANUSCRIPT_I_III_REVISED.pdf) | Current 49-page export checked for figure placement; formal evaluation remains pending |
+| [CHAPTER_III_WORKING.md](CHAPTER_III_WORKING.md) | Recorded development results and remaining evaluation work |
 | --- | --- |
+| [STAFF_REVISION_CHANGELOG.md](STAFF_REVISION_CHANGELOG.md) | Latest Staff-related Chapter I/II and diagram revisions; original PDF remains a snapshot |
 | [FINAL_PAPER_REVIEW.md](FINAL_PAPER_REVIEW.md) | Latest export review and remaining submission fixes |
 | [CHAPTER_I_REVISED.md](CHAPTER_I_REVISED.md) | Complete Chapter I draft for Google Docs, including revised intake and rent email scope |
-| [CHAPTER_II_REVISED.md](CHAPTER_II_REVISED.md) | Complete Chapter II draft with requirements, operation, tables and prospective testing procedures; retain existing figures separately |
+| [CHAPTER_II_REVISED.md](CHAPTER_II_REVISED.md) | Complete Chapter II draft with requirements, operation, tables and prospective testing procedures; includes links to the current figure exports |
 | [REFERENCES_REVISED.md](REFERENCES_REVISED.md) | Supplied reference list formatted and alphabetized with the two missing email-standard entries added; original bibliographic metadata retained |
 | [Historical manuscript checkpoints](archive/2026-10-manuscript-checkpoints/README.md) | Earlier 45-page and 49-page reviews and original rent-email amendment |
 | [WORKFLOW_DECISION_NOTES.md](WORKFLOW_DECISION_NOTES.md) | Agreed workflow rules used to align the manuscript and application |

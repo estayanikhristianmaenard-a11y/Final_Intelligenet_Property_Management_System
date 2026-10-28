@@ -1,4 +1,14 @@
-# Current interface screenshot review
+# Current interface review ? 27 October 2026
+
+The implemented gallery now contains 49 UI screenshots. The current shared presentation uses a blue sidebar, blue-gray desktop header and pale blue phone bottom navigation. Manager decisions are shown as individual pending records, Staff and Manager now share a selectable Case Sheet with extracted values, protected original access and inline correction forms, and Tenant home groups rent and personal utility tracking without another surrounding card for every section. Existing tables, record status labels and role-permitted actions remain in their respective application pages.
+
+The final polish adds next-step guidance, collapsible extracted fields and recoverable preview/page loads; the 49 screenshots were regenerated again. The 27 October Case Sheet refresh includes the Manager decision view and Staff desktop/phone correction sheets (47, 48 and 49). The regenerated screenshots were checked for horizontal page overflow and runtime errors. Manager, Tenant desktop/mobile, Staff source comparison/dashboard and Admin overview were visually inspected. Browser regression evidence and its limits are recorded in the [QA report](qa-report.md); screenshots alone do not establish actual-device acceptance, performance or user satisfaction. See [the design rules](interface-design.md) and [the current gallery](../../reports/mockups/README.md).
+
+The findings below are historical observations from 16 October, rather than instructions to reapply without checking the current screens.
+
+# Interface screenshot review ? 16 October checkpoint
+
+The gallery was refreshed to 45 UI screenshots on 23 October, including Staff. Findings below describe the 16 October checkpoint and should be rechecked against the [current gallery](../../reports/mockups/README.md) before implementation.
 
 Reviewed 16 October 2026 after regenerating all 42 portal/document screenshots, the three email previews and icon comparison from isolated synthetic data. The gallery is [here](../../reports/mockups/README.md). Screenshots demonstrate appearance; automated browser tests separately check interactions. Contact sheets were used to compare all screens, with the new Admin desktop, phone and evidence views inspected at full size.
 

@@ -14,6 +14,7 @@ Regenerate from the portal directory with `npm.cmd run previews:refresh`. This a
 | [09-manager-bill-review.png](09-manager-bill-review.png) | manager /bills?tab=incoming | 1440 × 1000 |
 | [36-manager-ocr-review-mobile.png](36-manager-ocr-review-mobile.png) | Inline OCR correction / phone | 390 × 844 |
 | [10-manager-settings.png](10-manager-settings.png) | manager /settings | 1440 × 1000 |
+| [47-manager-decisions-mobile.png](47-manager-decisions-mobile.png) | manager /bills?tab=exceptions&queue=manager | 390 × 844 |
 | [31-manager-units.png](31-manager-units.png) | manager /units | 1440 × 1000 |
 | [32-manager-tenants.png](32-manager-tenants.png) | manager /tenants | 1440 × 1000 |
 | [33-manager-reports.png](33-manager-reports.png) | manager /reports | 1440 × 1000 |
@@ -21,6 +22,12 @@ Regenerate from the portal directory with `npm.cmd run previews:refresh`. This a
 | [38-manager-processing-mobile.png](38-manager-processing-mobile.png) | Bill-processing state / response deliberately paused | 390 × 844 |
 | [15-rent-payment-review.png](15-rent-payment-review.png) | Manager reviews a reported rent payment | 1440 × 1000 |
 | [16-rent-payment-confirmed.png](16-rent-payment-confirmed.png) | Manager-confirmed payment and original receipt reference | 1440 × 1000 |
+| [43-staff-dashboard.png](43-staff-dashboard.png) | staff /dashboard | 1440 × 1000 |
+| [44-staff-exceptions-mobile.png](44-staff-exceptions-mobile.png) | staff /bills?tab=exceptions | 390 × 844 |
+| [45-staff-account-mobile.png](45-staff-account-mobile.png) | staff /staff/account | 390 × 844 |
+| [46-staff-intake-mobile.png](46-staff-intake-mobile.png) | staff /bills?tab=incoming | 390 × 844 |
+| [48-staff-source-comparison.png](48-staff-source-comparison.png) | Staff Case Sheet / original beside proposed fields | 1440 × 1000 |
+| [49-staff-source-comparison-mobile.png](49-staff-source-comparison-mobile.png) | Staff Case Sheet / stacked phone source review | 390 × 844 |
 | [04-tenant-dashboard.png](04-tenant-dashboard.png) | tenant /tenant | 1440 × 1000 |
 | [06-mobile-tenant.png](06-mobile-tenant.png) | tenant /tenant | 390 × 844 |
 | [11-tenant-bills-mobile.png](11-tenant-bills-mobile.png) | tenant /tenant/bills | 390 × 844 |

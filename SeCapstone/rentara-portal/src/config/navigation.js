@@ -20,7 +20,7 @@ export const NAV_ITEMS = [
     path: "#/dashboard",
     icon: "dashboard",
     section: "Overview",
-    roles: [ROLE.MANAGER],
+    roles: [ROLE.MANAGER, ROLE.STAFF],
     permission: "dashboard:read",
   },
   {
@@ -29,7 +29,7 @@ export const NAV_ITEMS = [
     path: "#/properties",
     icon: "building",
     section: "Portfolio",
-    roles: [ROLE.MANAGER],
+    roles: [ROLE.MANAGER, ROLE.STAFF],
     permission: "property:read",
   },
   {
@@ -38,7 +38,7 @@ export const NAV_ITEMS = [
     path: "#/units",
     icon: "door",
     section: "Portfolio",
-    roles: [ROLE.MANAGER],
+    roles: [ROLE.MANAGER, ROLE.STAFF],
     permission: "unit:read",
   },
   {
@@ -47,7 +47,7 @@ export const NAV_ITEMS = [
     path: "#/tenants",
     icon: "users",
     section: "Portfolio",
-    roles: [ROLE.MANAGER],
+    roles: [ROLE.MANAGER, ROLE.STAFF],
     permission: "tenant:read",
     badge: "tenants",
   },
@@ -57,7 +57,7 @@ export const NAV_ITEMS = [
     path: "#/bills",
     icon: "receipt",
     section: "Operations",
-    roles: [ROLE.MANAGER],
+    roles: [ROLE.MANAGER, ROLE.STAFF],
     permission: "billing:read",
     badge: "exceptions",
   },
@@ -80,6 +80,7 @@ export const NAV_ITEMS = [
     permission: "settings:billing",
   },
 
+  { id: "staff-profile", label: "Account", path: "#/staff/account", icon: "settings", section: "System", roles: [ROLE.STAFF], permission: "staff:account" },
   /* ------------------------------------------------------------ Admin --- */
   {
     id: "admin-dashboard",
@@ -152,11 +153,11 @@ export const NAV_ITEMS = [
 /** Route table consumed by the router + RBAC guard. */
 export const ROUTES = [
   { path: "/", redirectTo: "/dashboard" },
-  { path: "/dashboard", page: "dashboard", roles: [ROLE.MANAGER], permission: "dashboard:read" },
-  { path: "/properties", page: "properties", roles: [ROLE.MANAGER], permission: "property:read" },
-  { path: "/units", page: "units", roles: [ROLE.MANAGER], permission: "unit:read" },
-  { path: "/tenants", page: "tenants", roles: [ROLE.MANAGER], permission: "tenant:read" },
-  { path: "/bills", page: "bills", roles: [ROLE.MANAGER], permission: "billing:read" },
+  { path: "/dashboard", page: "dashboard", roles: [ROLE.MANAGER, ROLE.STAFF], permission: "dashboard:read" },
+  { path: "/properties", page: "properties", roles: [ROLE.MANAGER, ROLE.STAFF], permission: "property:read" },
+  { path: "/units", page: "units", roles: [ROLE.MANAGER, ROLE.STAFF], permission: "unit:read" },
+  { path: "/tenants", page: "tenants", roles: [ROLE.MANAGER, ROLE.STAFF], permission: "tenant:read" },
+  { path: "/bills", page: "bills", roles: [ROLE.MANAGER, ROLE.STAFF], permission: "billing:read" },
   { path: "/reports", page: "reports", roles: [ROLE.MANAGER], permission: "report:read" },
   { path: "/settings", page: "settings", roles: [ROLE.MANAGER], permission: "settings:billing" },
 
@@ -169,6 +170,7 @@ export const ROUTES = [
   { path: "/tenant/notifications", page: "tenantNotifications", roles: [ROLE.TENANT], permission: "tenant:notifications" },
   { path: "/tenant/settings", page: "tenantSettings", roles: [ROLE.TENANT], permission: "tenant:settings" },
 
+  { path: "/staff/account", page: "staffAccount", roles: [ROLE.STAFF], permission: "staff:account" },
   { path: "/login", page: "login", public: true },
   { path: "/403", page: "accessDenied", public: true },
 ];
@@ -177,6 +179,7 @@ export const ROUTES = [
 export const HOME_FOR_ROLE = {
   [ROLE.ADMIN]: "/admin",
   [ROLE.MANAGER]: "/dashboard",
+  [ROLE.STAFF]: "/dashboard",
   [ROLE.TENANT]: "/tenant",
 };
 

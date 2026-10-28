@@ -6,7 +6,7 @@
 
 | I want to... | Open this |
 | --- | --- |
-| Work on the application | [rentara-portal](SeCapstone/rentara-portal/) |
+| Work on the application | [Application start guide](SeCapstone/rentara-portal/README.md) |
 | Edit shared Gmail or local settings | [.env](SeCapstone/rentara-portal/.env) (team-owned configuration) |
 | Find bills for upload/OCR | [Bill sample catalog](SeCapstone/rentara-portal/docs/samples/utility-bills/README.md) |
 | Check what works and what remains | [Current QA status](SeCapstone/rentara-portal/docs/qa-report.md) |
@@ -20,6 +20,7 @@
 | Open the stored manuscript | [Stored PDF snapshot](SeCapstone/papers/FINAL_MANUSCRIPT.pdf) |
 | Find chapter drafts and paper review notes | [Research review guide](SeCapstone/review/README.md) |
 | Edit the diagrams | [Diagrams](SeCapstone/diagrams/) |
+| Find code responsibilities and current development steps | [Development guide](SeCapstone/rentara-portal/docs/development-guide.md) |
 | Find another technical guide | [Application documentation index](SeCapstone/rentara-portal/docs/README.md) |
 
 ## Start the existing local system
@@ -76,6 +77,8 @@ SeCapstone/
 `docs` explains the software; `review` supports the manuscript; `reports` holds outputs and submissions. A review draft or screenshot is not automatically the latest approved manuscript. Use each folder's README to identify its current files.
 
 ## System scope
+
+Staff handles scoped utility intake, existing descriptive records, investigation and unfinalized correction proposals. Manager authorizes proposals and retains direct operational capability. See the [implemented role workflow](SeCapstone/rentara-portal/docs/staff-implementation-plan.md).
 
 Managers manage their own workspace, property and tenant records, bill review, rent confirmation, eligible final-cycle advance, and rent receipts. Tenants view their own bills, report rent payments and maintain personal utility tracking. Utility tracking does not verify provider payment. Admin access is for system maintenance and workspace/account setup.
 

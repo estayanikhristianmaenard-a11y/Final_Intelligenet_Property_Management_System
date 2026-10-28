@@ -8,6 +8,7 @@ import { chromium, expect as baseExpect } from "@playwright/test";
 import { createShowcase } from "../server/demo-showcase.js";
 import { createApp } from "../server/index.js";
 import { rentEmailTemplate } from "../server/rent-email-template.js";
+import { submitProposal, decideProposal } from "../server/staff-workflow.js";
 import { renderRentReceipt } from "../server/receipt-view.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -22,7 +23,16 @@ try {
   await createShowcase(temp);
   const origin = "http://127.0.0.1:8113";
   app = createApp({ dataDir:temp, env:{ALLOWED_ORIGINS:origin} });
+  app.service.userWrite(app.store.get("users", "usr-admin"), { name:"Demo Operations Staff", email:"staff.preview@example.test", role:"staff", workspaceId:app.store.get("users", "usr-manager").workspaceId, password:"LocalDemo!2026" });
   const imageReview = await app.integrations.ingest(await readFile(join(root,"docs/samples/utility-bills/synthetic/electricity-002/bill-image.png")),"DEMO-clear-OCR-bill.png","image/png");
+  // Illustrate the implemented queues using disposable sources only. No approval
+  // or financial mutation is performed; the working portfolio is never opened.
+  const previewStaff = app.store.all("users").find(u => u.email === "staff.preview@example.test");
+  const blocked = app.store.all("incoming").filter(d => d.ocrStatus === "failed" && d.id !== imageReview.document.id && !app.store.all("bills").some(b => b.sourceId === d.id));
+  for (const [index, source] of blocked.slice(0,2).entries()) {
+    const proposal = submitProposal(app.service, previewStaff, source.id, { changes:{amountDue:Number(source.amountDue ?? 0)+1}, reason:"Synthetic preview: compare the proposed amount against the original source." });
+    if (index === 1) decideProposal(app.service, app.store.get("users","usr-manager"), proposal.id, {decision:"reject",reason:"Recheck the amount against the original source before resubmitting."});
+  }
   await new Promise((resolve,reject) => { app.server.once("error",reject); app.server.listen(8113, "127.0.0.1", resolve); });
   browser = await chromium.launch({headless:true, ...(process.env.BROWSER_EXECUTABLE ? {executablePath:process.env.BROWSER_EXECUTABLE} : process.platform === "win32" ? {executablePath:"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"} : {})});
   const context = await browser.newContext({viewport:{width:1440,height:1000}, reducedMotion:"reduce"});
@@ -46,9 +56,16 @@ try {
       ["03-billing-management.png","/bills",1440,1000],
       ["09-manager-bill-review.png","/bills?tab=incoming",1440,1000],
       ["10-manager-settings.png","/settings",1440,1000],
+      ["47-manager-decisions-mobile.png","/bills?tab=exceptions&queue=manager",390,844],
       ["31-manager-units.png","/units",1440,1000],
       ["32-manager-tenants.png","/tenants",1440,1000],
       ["33-manager-reports.png","/reports",1440,1000],
+    ]],
+    ["staff","staff.preview@example.test",[
+      ["43-staff-dashboard.png","/dashboard",1440,1000],
+      ["44-staff-exceptions-mobile.png","/bills?tab=exceptions",390,844],
+      ["45-staff-account-mobile.png","/staff/account",390,844],
+      ["46-staff-intake-mobile.png","/bills?tab=incoming",390,844],
     ]],
     ["tenant","maria.santos@gmail.com",[
       ["04-tenant-dashboard.png","/tenant",1440,1000],
@@ -88,6 +105,9 @@ try {
         await page.locator(".source-review__image").evaluate(image => image.decode());
       }
       if (file === "42-admin-status-evidence.png") await page.locator(".service-evidence").first().evaluate(el=>el.open=true);
+      if (file === "46-staff-intake-mobile.png" || file === "47-manager-decisions-mobile.png") {
+        await page.locator(file.startsWith("46") ? ".intake-toolbar" : ".proposal-panel").evaluate(el => window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-90,behavior:"instant"}));
+      }
       await capture(file,width,height,`${role} ${path}`);
       if (file === "09-manager-bill-review.png") {
         await page.setViewportSize({width:390,height:844});
@@ -96,6 +116,19 @@ try {
         await capture("36-manager-ocr-review-mobile.png",390,844,"Inline OCR correction / phone");
         await page.getByRole("button",{name:"Close dialog",exact:true}).click();
       }
+    }
+    if (role === "staff") {
+      // Review an actual unfinalized source in the shared case workspace.
+      const source = blocked[1] ?? imageReview.document;
+      await page.goto(origin+`/#/bills?tab=exceptions&case=${source.id}`);
+      await page.locator("[data-case-prepare]").click();
+      await expect(page.locator(".case-sheet .source-review__original")).toBeVisible();
+      await expect(page.getByRole("link",{name:"Download original",exact:true})).toBeVisible();
+      await page.setViewportSize({width:1440,height:1000});
+      await page.locator("[data-case-comparison]").evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-90,behavior:"instant"}));
+      await capture("48-staff-source-comparison.png",1440,1000,"Staff Case Sheet / original beside proposed fields");
+      await capture("49-staff-source-comparison-mobile.png",390,844,"Staff Case Sheet / stacked phone source review");
+      await page.getByRole("button",{name:"Cancel correction",exact:true}).click();
     }
     if (role === "manager") {
       await page.goto(origin+"/#/settings");

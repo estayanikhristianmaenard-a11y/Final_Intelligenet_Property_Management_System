@@ -1,0 +1,82 @@
+[
+  {
+    "file": "CHAPTER_I_REVISED.md",
+    "section": "1.2, OCR and Billing Document Extraction, paragraph 1",
+    "old": "Records that do not meet the required validation conditions are sent to the Exception Queue for Manager review.",
+    "new": "Records that do not meet the required validation conditions are sent to the Exception Queue for Staff investigation and, when required, Manager decisions.",
+    "localCount": 1,
+    "remote": true
+  },
+  {
+    "file": "CHAPTER_I_REVISED.md",
+    "section": "1.2, Rule-Based Processing and Exception Handling, paragraph 1",
+    "old": "Records that do not meet the defined conditions are sent to the Exception Queue for Manager review.",
+    "new": "Records that do not meet the defined conditions are sent to the Exception Queue for Staff investigation and, when required, Manager decisions.",
+    "localCount": 1,
+    "remote": true
+  },
+  {
+    "file": "CHAPTER_I_REVISED.md",
+    "section": "1.5, paragraph 4",
+    "old": "Incomplete, uncertain, duplicated, unmappable, or otherwise invalid records will enter the Exception Queue for Manager correction, revalidation, and reprocessing.",
+    "new": "Incomplete, uncertain, duplicated, unmappable, or otherwise invalid records will enter the Exception Queue for Staff investigation or Manager correction. Staff correction proposals will require Manager authorization, and accepted corrections will undergo system revalidation and reprocessing.",
+    "localCount": 1,
+    "remote": true
+  },
+  {
+    "file": "CHAPTER_I_REVISED.md",
+    "section": "1.5, new supporting-infrastructure paragraph before exclusions",
+    "old": "The study excludes mobile applications;",
+    "new": "Independent business workspaces will separate each management group's operational records. Managers and Staff will access only their authorized workspace, while Tenants will access their own records. Admin access will support authorized account and workspace maintenance without operational rent-confirmation authority. The Tenant calendar will display actual validated bill dates and clearly labelled estimates of upcoming configured rent dates. Estimates will not create charges, establish payment obligations, or predict utility dates. Workspace separation and calendar presentation support the included billing workflow rather than introduce new research objectives.\n\nThe study excludes mobile applications;",
+    "localCount": 1,
+    "remote": true
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "section": "2.1, intake description",
+    "old": "The Manager may also upload a clear photograph or scan of a printed provider bill.",
+    "new": "Staff or the Manager may also upload a clear photograph or scan of a printed provider bill.",
+    "localCount": 1,
+    "remote": false
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "section": "2.4.3, paragraph 1",
+    "old": "optional Manager bill uploads",
+    "new": "optional Staff or Manager bill uploads",
+    "localCount": 2,
+    "remote": false
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "section": "2.4.3, paragraph 3",
+    "old": "No completed iteration, testing result, or evaluation result is claimed in this chapter.",
+    "new": "This chapter describes the planned methodology. Recorded development activities and testing results are presented separately in Chapter III; formal evaluation is reported only when completed.",
+    "localCount": 1,
+    "remote": false
+  },
+  {
+    "file": "CHAPTER_II_REVISED.md",
+    "section": "2.4.4, participant-task and scoring paragraph",
+    "old": "No completed testing or evaluation result is claimed at the proposal stage.",
+    "new": "This section specifies the evaluation procedure rather than its results. Chapter III distinguishes the completed development checks from the formal evaluation activities that remain pending.",
+    "localCount": 1,
+    "remote": true
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "section": "3.1.1, email intake, upload, and extraction paragraph",
+    "old": "A locked PDF is not automatically replaced by a summary fallback.",
+    "new": "A password-protected attachment requires review and an available readable supported source; the system does not recover its password or infer hidden account characters.",
+    "localCount": 1,
+    "remote": true
+  },
+  {
+    "file": "CHAPTER_III_WORKING.md",
+    "section": "3.1.3, five quality-characteristic evidence paragraphs",
+    "old": "The selected ISO/IEC 25010:2023 characteristics remain Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security, as defined in Chapters I and II. Automated functional and access checks provide limited technical evidence; they do not by themselves establish scores for all five characteristics. A controlled performance study, representative extraction dataset, and participant-based interaction evaluation have not been established by the available records. No questionnaire ratings, respondent counts, OCR accuracy percentage, load capacity, or security certification are reported as completed results.",
+    "new": "The selected ISO/IEC 25010:2023 characteristics remain Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security, as defined in Chapters I and II. Each characteristic requires evidence appropriate to its purpose; a passed automated suite does not establish a score for every characteristic.\n\nFunctional Suitability is supported by recorded checks of intake, validation, allocation, correction handling, rent confirmation, receipt access, and personal utility tracking. These results apply to the exercised cases. Representative extraction accuracy still requires a declared sample set and manually checked reference values.\n\nPerformance Efficiency has not yet been established through a controlled response-time, resource-use, or concurrent-user study. The full-suite duration reported in Section 3.2.3 measures the time taken by the test suite and must not be presented as bill-processing latency or evidence of production capacity.\n\nInteraction Capability has preliminary evidence from automated browser journeys and phone-sized layout checks. These checks do not replace actual-device tasks, participant feedback, or an adviser-approved usability questionnaire. The proposed interface redesign remains separate from the implemented screens and must be checked after application.\n\nReliability is supported by the recorded duplicate, replay, restart-persistence, invalid-correction rollback, and independent-job failure scenarios. These bounded checks do not establish long-term availability or operation while the server is shut down.\n\nSecurity has evidence from selected authentication, role, record-access, and workspace-isolation checks. It has not been established through a complete penetration test or legal compliance audit. No questionnaire ratings, respondent counts, OCR accuracy percentage, load capacity, or security certification are reported as completed results.",
+    "localCount": 1,
+    "remote": true
+  }
+]

@@ -1,3 +1,7 @@
+HISTORICAL PLAN ? 12 October 2026
+Superseded by ../../development-guide.md and current scope/workspace guides.
+Statements below describe that earlier checkpoint, not the current implementation.
+
 PROPERTYPRO — FUTURE PUBLIC DEPLOYMENT
 Updated: 12 October 2026
 

@@ -2,6 +2,10 @@
 
 Checked 20 October 2026. Keep this work inside the [approved capstone boundaries](capstone-scope.md). No paid hosting, new framework, manuscript revision or Git push is part of these checks.
 
+## Local recheck - 27 October 2026
+
+The default verification was rerun after UI polish and passed real MIME/PDF extraction, checked fields, correct Tenant bill/portal alert and duplicate hold. Evidence: `data/ui-polish-email.log` and `data/acceptance/email-verification.json`. No mailbox retrieval or email send was performed in this recheck. Earlier live results below retain their original dates and limits. Use the actual-provider procedure in the [manual test guide](manual-test-guide.md) for the remaining checks.
+
 ## Results and limits
 
 | Check | Result | Evidence/limit |
@@ -16,11 +20,14 @@ Checked 20 October 2026. Keep this work inside the [approved capstone boundaries
 | Dedicated Gmail-label retrieval | Passed live with synthetic fixture | Created/reused Rentara-Utility-Acceptance; stored a labelled fixture there through IMAP and retrieved it through the actual pipeline. Tenant bill and portal alert were present, and repeat sync imported zero messages without another charge |
 | Changed mailbox UID validity | Passed with simulated IMAP client | New mailbox identity was processed while bill-level duplicate protection prevented another charge |
 | Network failure cleanup | Passed with simulated IMAP client | Lock released, logout attempted, sync flag reset and unfinished message remained retryable |
+| Oversized-message isolation | Added and checked 22 October | A held email no longer prevents a later valid bill. Repeated sync does not create duplicate notices. Manager retry is scoped to the held message/workspace and still applies duplicate validation |
 | Rent email to the agreed inbox | Passed controlled self-test | After explicit user approval, SMTP accepted one labelled synthetic rent update to rentara2026@gmail.com, and its exact Message-ID was found in INBOX. Only that test message's content was fetched; phone link opening and readership were not verified |
 | Real Android Web Push | Pending user device steps | The acceptance database had zero subscriptions at the readiness check; neither device trust nor delivery is claimed |
 | Actual provider mailbox ingestion | Still pending | Synthetic emails and simulated IMAP do not establish that Meralco/Manila Water emails arrive in the supported format |
 
 The digital PDF check exercises direct text extraction. Existing raster-image/scanned-PDF regressions separately exercise OCR. One synthetic email or multiple versions of one bill do not measure general OCR accuracy. Supported inline images are still extraction candidates; this change does not claim to distinguish every provider logo from bill content.
+
+The Exception Queue now shows **Retry email** for a held mailbox message. If it cannot be used, the Manager can upload a supported copy and **Close email notice** with a handling reason. Closing only records how the notice was handled; it does not validate the replacement bill or confirm payment. Network/storage failures still require recovery/retry and are not silently treated as bad content. The Manager sync warning and Admin status expose partial completion.
 
 ## Repeat the safe local check
 

@@ -24,6 +24,7 @@ const workspaceTables = [
   "receipts",
   "exceptions",
   "corrections",
+  "correction_proposals",
   "notifications",
   "subscriptions",
   "messages",
@@ -59,6 +60,7 @@ export class Store {
       CREATE TABLE IF NOT EXISTS payments(id TEXT PRIMARY KEY, billId TEXT NOT NULL REFERENCES bills(id), tenantId TEXT NOT NULL REFERENCES tenants(id), data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS receipts(id TEXT PRIMARY KEY, paymentId TEXT NOT NULL UNIQUE REFERENCES payments(id), billId TEXT NOT NULL REFERENCES bills(id), tenantId TEXT NOT NULL REFERENCES tenants(id), data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS exceptions(id TEXT PRIMARY KEY, sourceId TEXT REFERENCES incoming(id), billId TEXT REFERENCES bills(id), data TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS correction_proposals(id TEXT PRIMARY KEY, data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS corrections(id TEXT PRIMARY KEY, sourceId TEXT REFERENCES incoming(id), billId TEXT REFERENCES bills(id), managerId TEXT NOT NULL REFERENCES users(id), data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS notifications(id TEXT PRIMARY KEY, tenantId TEXT NOT NULL REFERENCES tenants(id), eventKey TEXT NOT NULL UNIQUE, data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS subscriptions(id TEXT PRIMARY KEY, userId TEXT NOT NULL REFERENCES users(id), data TEXT NOT NULL);
@@ -136,7 +138,13 @@ export class Store {
           status: "active",
         }),
       );
-    if (migrated) return;
+    if (migrated) {
+      const columns = this.db.prepare("PRAGMA table_info(correction_proposals)").all();
+      if (!columns.some(c => c.name === "workspaceId"))
+        this.db.exec("ALTER TABLE correction_proposals ADD COLUMN workspaceId TEXT REFERENCES workspaces(id)");
+      this.db.exec("CREATE INDEX IF NOT EXISTS correction_proposals_workspace ON correction_proposals(workspaceId)");
+      return;
+    }
     this.transaction(() => {
       for (const table of workspaceTables) {
         this.db.exec(
@@ -183,6 +191,7 @@ export class Store {
       "receipts",
       "exceptions",
       "corrections",
+      "correction_proposals",
       "notifications",
       "subscriptions",
       "messages",
