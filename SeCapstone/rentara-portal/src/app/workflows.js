@@ -88,7 +88,11 @@ ${value}</textarea>`;
           if (invalid) { input.setAttribute("aria-invalid","true"); firstInvalid ??= input; }
           else input.removeAttribute("aria-invalid");
         }
-        if (firstInvalid) { firstInvalid.focus({preventScroll:true}); return; }
+        if (firstInvalid) {
+          firstInvalid.focus({preventScroll:true});
+          firstInvalid.closest(".field").scrollIntoView({block:"center"});
+          return;
+        }
         const saveError = form.querySelector('[data-workflow-error]');
         saveError.hidden = true;
         const finish = beginAction(button);
@@ -104,6 +108,7 @@ ${value}</textarea>`;
         } catch (error) {
           saveError.textContent = error.message || "Could not save. Please try again.";
           saveError.hidden = false;
+          saveError.scrollIntoView({block:"center"});
           toastDanger("Could not save", error.message);
         } finally {
           finish();
@@ -305,17 +310,17 @@ async function entityForm(kind, id, onSaved, defaults = {}) {
         type: "email",
         required: true,
       },
-      { key: "phone", label: "Phone" },
+      { key: "phone", label: "Phone", type: "tel" },
       { key: "governmentId", label: "Government ID" },
       { key: "emergencyContactName", label: "Emergency contact" },
-      { key: "emergencyContactPhone", label: "Emergency phone" },
+      { key: "emergencyContactPhone", label: "Emergency phone", type: "tel" },
       {
         key: "unitId",
         label: "Unit",
         type: "select",
         options: units.map((u) => ({
           value: u.id,
-          label: u.code + " · " + u.arrangement,
+          label: u.code + " · " + (u.arrangement === "shared_occupancy" ? "Shared occupancy" : "Individual"),
         })),
         required: true,
       },
@@ -381,6 +386,38 @@ async function entityForm(kind, id, onSaved, defaults = {}) {
     title: (id ? "Edit " : "Add ") + kind.replace(/s$/, ""),
     fields,
     values,
+    onReady(modal, form) {
+      if (kind !== "tenants" || !form.elements.leaseStart) return;
+      const keys = ["leaseStart", "leaseEnd", "assignmentStart", "assignmentEnd"];
+      const validateDates = () => {
+        const [leaseStart, leaseEnd, assignmentStart, assignmentEnd] = keys.map(key => form.elements[key]);
+        keys.forEach(key => form.elements[key].setCustomValidity(""));
+        const start = assignmentStart.value || leaseStart.value;
+        if (leaseStart.value && leaseEnd.value && leaseEnd.value < leaseStart.value)
+          leaseEnd.setCustomValidity("Lease end must be on or after the original lease start.");
+        if (leaseStart.value && assignmentStart.value && assignmentStart.value < leaseStart.value)
+          assignmentStart.setCustomValidity("Assignment start must be on or after the original lease start.");
+        if (leaseEnd.value && start && start > leaseEnd.value)
+          assignmentStart.setCustomValidity("Assignment start must be on or before the lease end.");
+        if (assignmentEnd.value && start && assignmentEnd.value < start)
+          assignmentEnd.setCustomValidity("Assignment termination must be on or after the assignment start.");
+        else if (assignmentEnd.value && leaseEnd.value && assignmentEnd.value > leaseEnd.value)
+          assignmentEnd.setCustomValidity("Assignment termination must be on or before the lease end.");
+        // Refresh visible inline errors when a related date is corrected.
+        keys.forEach(key => {
+          const input = form.elements[key];
+          const error = form.querySelector(`[data-workflow-field-error="${key}"]`);
+          if (input.hasAttribute("aria-invalid")) {
+            error.textContent = input.validationMessage;
+            error.hidden = input.validity.valid;
+            if (input.validity.valid) input.removeAttribute("aria-invalid");
+          }
+        });
+      };
+      form.addEventListener("input", validateDates);
+      form.addEventListener("change", validateDates);
+      validateDates();
+    },
     save: (data) =>
       id
         ? api.patch(`/${kind}/${encodeURIComponent(id)}`, data)

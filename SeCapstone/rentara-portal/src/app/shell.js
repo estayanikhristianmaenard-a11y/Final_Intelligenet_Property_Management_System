@@ -4,6 +4,10 @@ import { topbar } from "../components/topbar.js";
 import { icon } from "../components/icon.js";
 import session from "../auth/session.js";
 import { confirmPageLeave } from "./form-state.js";
+import { bindTenantSearch } from "../components/tenant-search.js";
+import { api } from "../api/client.js";
+import { endpoints } from "../api/endpoints.js";
+import { openTenantPanel } from "../features/tenants/tenant-details.panel.js";
 
 /**
  * Application shell.
@@ -147,9 +151,14 @@ function bindChrome() {
       window.location.hash = home.replace("#", "");
     });
 
-  root
-    .querySelector('[data-action="global-search"]')
-    ?.addEventListener("keydown", (event) => {
+  const portalSearch = root.querySelector('[data-action="global-search"]');
+  if (portalSearch && ["manager", "staff"].includes(session.role))
+    bindTenantSearch(portalSearch, {
+      find: term => api.get(endpoints.tenants({ q: term })),
+      onSelect: tenant => openTenantPanel(tenant.id),
+    });
+  portalSearch?.addEventListener("keydown", (event) => {
+      if (event.defaultPrevented) return;
       if (event.key !== "Enter") return;
       const value = event.target.value?.trim();
       if (!value) return;

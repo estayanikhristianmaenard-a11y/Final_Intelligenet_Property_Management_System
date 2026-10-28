@@ -86,7 +86,9 @@ test("phone utility journey: PDF upload, correction, shared bills, calendar, ale
     const forbidden=await tenant.evaluate(async id=>{const {api}=await import("/src/api/client.js");try{await api.post(`/bills/${id}/utility-tracking`,{status:"self_reported_paid",revision:1});return 200;}catch(e){return e.status;}},other.id);
     assert.equal(forbidden,403);
     await tenant.goto(origin+"/#/tenant/notifications");
-    await expect(tenant.locator(".notification-feed")).toContainText(`Electricity · ${now.slice(0,7)}`);
+    // Utility cycles follow the actual due month, including near-month-end uploads.
+    assert.equal(bill.cycle,due.slice(0,7));
+    await expect(tenant.locator(".notification-feed")).toContainText(`Electricity · ${due.slice(0,7)}`);
     await tenant.locator(`[data-view-bill="${bill.id}"]`).click();
     await expect(tenant.getByRole("dialog")).toContainText("Self-Reported Paid");
     await expect(tenant.getByRole("dialog")).toContainText("Provider payment not verified");

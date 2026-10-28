@@ -1,5 +1,28 @@
 # Current QA status
 
+## Manager directory QA and fixes - 28 October 2026
+
+Reproduced the reported disappearing Billing navigation in the running showcase: the long Billing body flex-shrank the Tenant panel's tab bar until its labels were clipped. A new browser assertion failed against that layout before the fix. The tab bar now retains its height while the body scrolls. Checks switch all four tabs at 1440, 820, 390 and 320 px. The phone Tenant header now stacks identity and unit details instead of overlapping them.
+
+Added partial, case-insensitive Tenant suggestions to the directory and Manager/Staff portal search. Typing `Ali` suggests Alice Reyes; choosing a result opens that Tenant. Suggestions support pointer selection, Arrow keys, Enter and Escape, show no-match/failure guidance, respect workspace/property scope and discard obsolete requests. Directory filtering keeps its search input mounted instead of replacing it while typing. Existing Tenant/Admin global-search destinations are preserved.
+
+The Tenant form now explains invalid lease/assignment ordering beside the affected fields before submission and scrolls to the first invalid field. Server-save errors also scroll into view. Phone inputs use telephone keyboards; unit options say Shared occupancy instead of the internal enum. No backend financial rule or permission was changed.
+
+Focused checks passed for search/filtering, all four Tenant tabs, phone layout, rejected invalid-date submission without record creation, correcting errors, and cancellation. The existing broad four-role browser journey also passed. Screenshots are under ignored `test-results/manager-search-fixed.png`, `manager-billing-fixed.png` and `manager-panel-phone-fixed.png`.
+
+The initial full run had 99 passes and one existing date-sensitive test failure: the phone utility journey expected today's month in the alert although its actual bill due date, four days later, was in the next month. Corrected the assertion to check the actual due-month cycle and reran that journey successfully. No application billing-cycle rule changed. Initial evidence: `data/manager-directory-full-test.log`; final full-run evidence: `data/manager-directory-full-test-final.log`.
+
+Final fresh `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 228 seconds. `git diff --check` passed. These are isolated automated results, not actual-device/provider accuracy or formal participant evidence.
+
+Remaining improvements identified during this focused QA:
+
+- **Billing summary clarity:** Tenant Overview currently summarizes only `tenant.bills[0]`. A latest water bill can therefore show Rent as zero despite separate rent records. Clearly distinguish a single-bill summary from account balances, and show category totals with their own actual dates.
+- **Whole-unit rent versus Tenant share:** shared Tenant rows/header show the unit's configured monthly rent. Label that as whole-unit rent and distinguish the actual personal share; do not change allocation rules.
+- **Enrollment guidance:** explain original lease versus assignment dates and make the default-to-lease behavior clearer. Keep advanced date changes and history safeguards available.
+- **Acceptance:** finish actual authorized provider formats, physical phones, receipt printing and separately configured notification delivery. Browser emulation and synthetic fixtures do not complete those checks.
+
+The running showcase was checked by reading pages and opening Tenant panels. Disposable portfolios were used for automated writes. No working Tenant/bill/payment records were reset or changed, no external mail was sent/received, and no Git push was made.
+
 ## Final UI polish and documentation alignment - 27 October 2026
 
 Implemented clearer Case Sheet next steps, collapsed extracted details for pending/processed cases, one Tenant utility disclaimer in the billing footer, readable phone correction fields with decimal keyboard hints, and stacked phone correction actions. Failed source previews now expose Retry original; failed Manager dashboard, operational bills, Tenant home/bills/notifications reads expose Try again. These retries do not replay financial writes. Existing permissions and server billing rules were preserved.

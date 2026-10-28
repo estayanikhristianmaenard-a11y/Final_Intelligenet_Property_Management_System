@@ -7,6 +7,7 @@ import { openTenantPanel } from "./tenant-details.panel.js";
 import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, initials, avatarTone, date } from "../../utils/format.js";
+import { bindTenantSearch } from "../../components/tenant-search.js";
 
 /**
  * Tenants directory.
@@ -23,6 +24,13 @@ export async function renderTenants(
   let propertyFilter = query.get("property") ?? "";
   let unbind = null;
   let properties = [];
+  let allTenants = [];
+  let loadSequence = 0;
+
+  const matches = (term = keyword) => allTenants.filter(tenant =>
+    (!propertyFilter || tenant.propertyId === propertyFilter) &&
+    `${tenant.fullName} ${tenant.email} ${tenant.unitCode}`.toLowerCase().includes(term.trim().toLowerCase()),
+  );
 
   const paint = (tenants, { loading = false } = {}) => {
     unbind?.();
@@ -37,20 +45,42 @@ export async function renderTenants(
   };
 
   const load = async () => {
-    properties = await api.get(endpoints.properties());
-    const tenants = await api.get(
-      endpoints.tenants({ q: keyword, propertyId: propertyFilter }),
-    );
-    paint(tenants);
+    const request = ++loadSequence;
+    const [freshProperties, tenants] = await Promise.all([
+      api.get(endpoints.properties()), api.get(endpoints.tenants()),
+    ]);
+    if (request !== loadSequence || !container.isConnected) return;
+    properties = freshProperties;
+    allTenants = tenants;
+    paint(matches());
   };
+
+  // Replace only results. The focused search input and its suggestions stay mounted.
+  function updateResults() {
+    const tenants = matches();
+    const holder = document.createElement("div");
+    render(holder, table(tenants, { keyword, propertyFilter, properties }));
+    const card = container.querySelector(".card");
+    const toolbar = card.querySelector(".table-toolbar");
+    [...card.children].forEach(child => { if (child !== toolbar) child.remove(); });
+    card.append(...[...holder.firstElementChild.children].filter(child => !child.classList.contains("table-toolbar")));
+    toolbar.querySelector("[data-tenant-count]").textContent = `${tenants.length} tenants`;
+    toolbar.querySelectorAll("[data-property-filter]").forEach(chip =>
+      chip.classList.toggle("is-active", chip.dataset.propertyFilter === propertyFilter));
+  }
 
   function bindControls() {
     const search = container.querySelector('[data-role="tenant-search"]');
     search?.addEventListener("input", (event) => {
       keyword = event.target.value;
-      clearTimeout(bindControls._t);
-      bindControls._t = setTimeout(load, 220);
+      updateResults();
     });
+    if (search) {
+      bindTenantSearch(search, { find: matches, onSelect: tenant => openTenantPanel(tenant.id, { onChanged: load }) });
+      search.addEventListener("keydown", event => {
+        if (event.key === "Enter" && !event.defaultPrevented) { event.preventDefault(); updateResults(); }
+      });
+    }
 
     container.querySelectorAll("[data-property-filter]").forEach((chip) => {
       chip.addEventListener("click", () => {
@@ -58,7 +88,7 @@ export async function renderTenants(
           chip.getAttribute("data-property-filter") === propertyFilter
             ? ""
             : chip.getAttribute("data-property-filter");
-        load();
+        updateResults();
       });
     });
   }
@@ -128,7 +158,7 @@ function table(tenants, { loading, keyword, propertyFilter, properties = [] }) {
         </button>`,
     )}
     <span class="table-toolbar__spacer"></span>
-    <span class="text-xs text-muted"
+    <span class="text-xs text-muted" data-tenant-count
       >${loading ? "Loading…" : `${tenants.length} tenants`}</span
     >
   `;
