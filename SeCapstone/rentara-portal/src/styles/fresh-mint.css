@@ -110,7 +110,11 @@ body { background: var(--surface-canvas); color: var(--text-primary); }
 .sidebar__logout { border-radius: 12px; }
 .sidebar__role-badge { background: #c8f0da; color: #153e35; border-radius: 50%; }
 .sidebar__toggle { background: transparent; border-color: rgb(200 240 218 / 20%); }
-.app-shell[data-role="tenant"] .sidebar__scroll { background: url("../assets/mint-plant.svg") 28px calc(100% - 10px) / 125px 160px no-repeat; }
+.sidebar__garden { position: relative; isolation: isolate; display: flex; align-items: end; flex: 0 0 clamp(92px,16vh,160px); padding: 0 28px 12px; overflow: hidden; }
+.sidebar__garden img { width: auto; height: clamp(82px,15vh,148px); position: relative; z-index: 1; }
+.sidebar__garden::before { content: ""; position: absolute; width: 105px; height: 130px; left: 25px; bottom: 8px; border-radius: 80px 80px 18px 18px; background: rgb(200 240 218 / 5%); border: 1px solid rgb(200 240 218 / 9%); }
+.sidebar__garden-orbit { position: absolute; width: 135px; height: 135px; bottom: -42px; left: 72px; border: 1px solid rgb(200 240 218 / 12%); border-radius: 50%; }
+.sidebar__garden-orbit::after { content: ""; position: absolute; width: 7px; height: 7px; top: 21px; right: 8px; border-radius: 50%; background: #c5d99a; }
 @media (min-width:1101px) {
   .app-shell { grid-template-columns: var(--sidebar-width) minmax(0,1fr); }
   .app-shell > .sidebar, .app-shell > .sidebar:hover, .app-shell > .sidebar:has(:focus-visible) { width: var(--sidebar-width); box-shadow: none; }
@@ -297,8 +301,107 @@ body { background: var(--surface-canvas); color: var(--text-primary); }
   .tenant-home-page .tenant-rent-card > .card__footer { grid-template-columns: minmax(0,1fr); }
   .topbar__mobile-brand .workspace-label { max-width: 14ch; }
 }
-@media (max-height:700px) {
-  .app-shell[data-role="tenant"] .sidebar__scroll { background-image: none; }
+/* Botanical detailing is shared across roles, with navigation kept in its own scroll area. */
+.page > .page-header { position: relative; isolation: isolate; }
+.page > .page-header:not(:has(> h1)) {
+  position: relative;
+  isolation: isolate;
+  padding: 24px 26px;
+  border: 1px solid #dde8d6;
+  border-radius: 24px;
+  background: #edf4e8;
+  box-shadow: 0 3px 0 rgb(21 62 53 / 2%);
+}
+.page > .page-header::before {
+  content: "";
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  width: 105px;
+  height: 65px;
+  border: 1px solid rgb(85 133 88 / 10%);
+  border-radius: 70% 30% 60% 40%;
+  transform: rotate(-15deg);
+  pointer-events: none;
+  z-index: -1;
+}
+.page > .page-header::after { content: ""; position: absolute; width: 64px; height: 64px; top: 6px; right: 84px; border: 1px solid rgb(85 133 88 / 8%); border-radius: 50%; pointer-events: none; z-index: -1; }
+.page-header .breadcrumb { font-size: 11px; font-weight: 600; letter-spacing: .025em; }
+.page-header__title p { color: #466353; }
+.page-header__actions { position: relative; z-index: 1; }
+.page > .mint-workspace-hero { display: grid; grid-template-columns: minmax(0,1fr) 230px; gap: 16px 24px; min-height: 210px; background: #e7f1e0; padding: 26px 30px; }
+.mint-workspace-hero > .page-header__title { grid-column: 1; grid-row: 1; align-self: end; }
+.mint-workspace-hero > .page-header__actions { grid-column: 1; grid-row: 2; justify-content: start; align-self: start; flex-wrap: wrap; }
+.mint-workspace-art { grid-column: 2; grid-row: 1 / span 2; position: relative; width: 100%; min-width: 0; align-self: stretch; display: grid; align-items: end; }
+.mint-workspace-art img { position: relative; width: 100%; height: auto; z-index: 1; }
+.mint-workspace-art__sun { position: absolute; width: 154px; height: 154px; bottom: 6px; left: 28px; border-radius: 50%; background: #d7e6bf; border: 7px solid #e1eccf; }
+.mint-workspace-art__spark { position: absolute; left: 0; top: 20px; color: #77975a; font-size: 24px; }
+.tenant-home-page > .page-header:not(:has(> h1)) { background: transparent; padding: 0; border: 0; box-shadow: none; border-radius: 0; }
+.tenant-home-page > .page-header::before, .tenant-home-page > .page-header::after { display: none; }
+.tenant-property-banner { border-bottom: 1px solid #e2e9d8; padding-bottom: 18px; }
+.mint-unit-label { box-shadow: inset 0 0 0 1px rgb(35 96 76 / 5%); }
+.mint-home-illustration { filter: drop-shadow(0 5px 1px rgb(68 97 42 / 3%)); }
+.sidebar__brand { position: relative; }
+.sidebar__brand::after { content: ""; position: absolute; width: 36px; height: 4px; left: 72px; bottom: -2px; background: #9dc9a1; border-radius: 8px; }
+.sidebar .nav-item__icon { position: relative; isolation: isolate; }
+.sidebar .nav-item__icon::before { content: ""; position: absolute; inset: -5px; border-radius: 9px; z-index: -1; background: rgb(200 240 218 / 6%); }
+.sidebar .nav-item.is-active .nav-item__icon::before { background: rgb(21 62 53 / 8%); }
+.mint-account__avatar { box-shadow: 0 0 0 3px var(--surface-topbar), 0 0 0 4px #d2dec7; }
+.topbar { box-shadow: 0 2px 12px rgb(21 62 53 / 2%); }
+.page .card { box-shadow: 0 3px 12px rgb(21 62 53 / 3%); }
+.page .card__header { border-bottom-color: #e8eddf; }
+.page .card__title { font-weight: 750; }
+.page .card__header .card__title { position: relative; padding-left: 14px; }
+.page .card__header .card__title::before { content: ""; position: absolute; left: 0; top: .4em; width: 5px; height: 13px; border-radius: 4px; background: #8cb191; }
+.page .card__header .tenant-utility-card__title { padding-left: 0; }
+.page .card__header .tenant-utility-card__title::before { display: none; }
+.stat-card { position: relative; isolation: isolate; overflow: hidden; }
+.stat-card::after { content: ""; position: absolute; width: 82px; height: 82px; right: -20px; top: -24px; border: 12px solid rgb(89 137 78 / 5%); border-radius: 50%; z-index: -1; }
+.manager-overview__item strong, .staff-task-summary strong { color: #214b3b; }
+.manager-overview, .staff-task-summary a.card { box-shadow: inset 0 1px 0 #fffefb, 0 4px 12px rgb(21 62 53 / 3%); }
+.staff-task-summary a.card:nth-child(2) { background: #f3f3df; border-color: #e5e5cb; }
+.staff-task-summary a.card:nth-child(3) { background: #e5f0eb; }
+.staff-work-list { margin-top: 24px; }
+.property-card__banner { border-bottom: 1px solid #dde9d6; }
+.property-card__badge { border-radius: 8px; box-shadow: 0 2px 5px rgb(21 62 53 / 4%); }
+.table-toolbar { padding-block: 18px; background: #fbfcf6; border-bottom-color: #e1e9d8; }
+.filter-chip { font-weight: 600; background: #fffefb; }
+.filter-chip.is-active { box-shadow: inset 0 0 0 1px #b2cfb0; }
+.empty-state__icon { border: 1px solid #dbe8d1; box-shadow: 0 4px 0 #edf4e6; border-radius: 16px; }
+.empty-state { background: radial-gradient(ellipse at 50% 0, #f1f6e9, transparent 65%); border-radius: 20px; }
+.tenant-home-page .tenant-rent-card { box-shadow: inset 0 1px 0 #ecfcf0, 0 6px 14px rgb(32 88 61 / 4%); }
+.tenant-home-page .tenant-utility-row { box-shadow: 0 2px 6px rgb(21 62 53 / 3%); }
+.tenant-calendar__month { padding-bottom: 12px; border-bottom: 1px solid #e5ebdc; }
+.modal__header { border-radius: 22px 22px 0 0; background: #f0f5e9; }
+.panel-drawer__header { background: #eaf3e4; border-bottom-color: #dbe6d1; }
+@media (hover:hover) and (prefers-reduced-motion:no-preference) {
+  .property-card, .staff-task-summary a.card { transition: box-shadow 220ms ease, border-color 220ms ease; }
+  .property-card:hover, .staff-task-summary a.card:hover { box-shadow: 0 8px 22px rgb(21 62 53 / 8%); border-color: #a6c49d; }
+}
+@media (max-width:1100px) {
+  .page > .mint-workspace-hero { grid-template-columns: minmax(0,1fr) 180px; padding: 24px; }
+}
+@media (max-width:720px) {
+  .page > .page-header:not(:has(> h1)) { padding: 20px; border-radius: 20px; gap: 16px; }
+  .page > .mint-workspace-hero { grid-template-columns: minmax(0,1fr); min-height: 0; }
+  .mint-workspace-hero > .page-header__title { grid-column: 1; grid-row: 1; }
+  .mint-workspace-hero > .page-header__actions { grid-column: 1; grid-row: 2; }
+  .mint-workspace-art { display: none; }
+  .tenant-home-page > .page-header:not(:has(> h1)) { padding: 0; border: 0; }
+  .tenant-property-banner { padding-bottom: 16px; }
+  .sidebar__garden { flex-basis: 100px; }
+  .sidebar__garden img { height: 92px; }
+  .sidebar__garden::before { height: 88px; width: 82px; }
+  .table-toolbar { padding-block: 14px; }
+  .page-header__actions { max-width: 100%; }
+  .page-header__actions > .btn { white-space: normal; }
+  .page .card__header .card__title { padding-left: 12px; }
+  .page .card__header .tenant-utility-card__title { padding-left: 0; }
+}
+@media (max-height:650px) {
+  .sidebar__garden { flex-basis: 60px; padding-bottom: 4px; }
+  .sidebar__garden img { height: 58px; }
+  .sidebar__garden::before { height: 55px; width: 58px; }
 }
 @media (prefers-reduced-motion:reduce) {
   .btn, .nav-item, .mint-wave { animation: none; transition: none; }

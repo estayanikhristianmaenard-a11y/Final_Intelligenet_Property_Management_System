@@ -72,6 +72,11 @@ export function sidebar({ role, activePath, badges = {} }) {
       )}
     </div>
 
+    <div class="sidebar__garden" aria-hidden="true">
+      <img src="./src/assets/mint-plant.svg" width="140" height="180" alt="" />
+      <span class="sidebar__garden-orbit"></span>
+    </div>
+
     <div class="sidebar__footer">
       <button class="sidebar__logout" type="button" data-action="sign-out" aria-label="Log out" title="Log out">${icon("logout", { size: 20 })}<span>Log out</span></button>
       <div class="sidebar__role" title="${user.name} · ${ROLE_LABEL[role]}">

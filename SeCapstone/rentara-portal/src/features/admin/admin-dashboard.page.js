@@ -8,6 +8,7 @@ import { endpoints } from "../../api/endpoints.js";
 import { beginAction } from "../../components/action-feedback.js";
 import { toastSuccess, toastDanger } from "../../components/toast.js";
 import { relative, dateTime } from "../../utils/format.js";
+import { workspaceArt } from "../../components/workspace-art.js";
 
 /**
  * Admin Dashboard — **system maintenance only**.
@@ -63,7 +64,7 @@ export async function renderAdminDashboard(container) {
 
 function frame(content) {
   return html`<section class="page" aria-labelledby="page-title">
-    <div class="page-header">
+    <div class="page-header mint-workspace-hero">
       <div class="page-header__title">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <span>Rentara</span>${icon("chevron-right", { size: 12 })}
@@ -78,6 +79,7 @@ function frame(content) {
           ${icon("refresh", { size: 15 })} Refresh status
         </button>
       </div>
+      ${workspaceArt()}
     </div>
     ${content}
   </section>`;

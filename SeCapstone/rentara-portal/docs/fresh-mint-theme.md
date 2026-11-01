@@ -10,6 +10,8 @@ The [approved visual reference](../../reports/design-concepts/fresh-mint-approve
 - Bold sans-serif headings, rounded cards, clear primary buttons and visible desktop navigation labels. Mobile retains the existing menu drawer and Tenant bottom navigation.
 - Tenant Home follows the approved composition: friendly greeting, property/unit label, rent card, distinct personal utility cards, calendar and rent payment history. Actual amounts, due dates, status text and eligible actions come from the existing APIs.
 - Apartment and plant SVG illustrations are decorative, local assets. The existing Rentara brand mark is preserved; its favicon background follows the new palette.
+- The sidebar plant is shared by **all roles**, not restricted to Tenant accounts. It occupies a separate flexible area above the footer, keeping navigation scrollable and logout accessible on short screens. The decorative arch and orbit use the same botanical palette.
+- Manager, Staff and Admin dashboards share an illustrated workspace header. Other pages use coordinated framed headings, subtle botanical outlines, navigation icon tiles, card accents, filters and panel surfaces. Tenant Home retains its existing illustrated greeting. These details add no new business actions or records.
 - Manager, Staff and Admin screens use the same surfaces, typography, forms, panels and controls. Login uses the same identity. The topbar avatar is an identity label; account actions remain in the existing Settings/Account pages.
 
 ## Implementation
@@ -23,5 +25,7 @@ Tenant rent reporting, Manager confirmation, utility personal marks, calendar ru
 Start the intended profile normally and hard-refresh the browser (`Ctrl+Shift+R`) to reload the styles and modules. Do not recreate/reset the portfolio for a visual update.
 
 The existing page audit checks named controls, phone tap sizes, page overflow and browser errors at 1440, 820, 390 and 320 px. Its appearance assertions now expect cream topbars. The route/session test now expects readable expanded desktop navigation and still checks keyboard navigation, phone menu behavior, logout and role changes. These replace assertions tied to the superseded blue/rail presentation.
+
+The consistency pass explicitly includes Staff pages as well as Manager, Admin and Tenant. It checks that the shared plant image loads, does not overlap the navigation/footer on a 600 px tall desktop, and remains visible with logout when opening/closing the 390 × 600 phone drawer.
 
 Current screenshots are in [the preview gallery](../../reports/mockups/README.md), generated with disposable synthetic records using `npm.cmd run previews:refresh`. Verification outcomes and log paths are in [QA evidence](qa-report.md). Actual phones and external notification delivery remain separate acceptance work.

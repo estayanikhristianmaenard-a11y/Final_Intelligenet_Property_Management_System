@@ -1,5 +1,17 @@
 # Current QA status
 
+## Fresh Mint consistency and decorative detail - 1 November 2026
+
+Removed the Tenant-only sidebar background. A shared decorative plant is now rendered for every role/account, in its own flexible sidebar area above the footer. It cannot cover menu items as a background image could; the menu keeps its independent scroll region. Short displays use a smaller plant rather than removing it.
+
+Manager, Staff and Admin now share the same illustrated workspace-header component. Other pages have coordinated framed headings and botanical outlines; navigation icon tiles, avatar rings, card accents, queue surfaces, filters and panels extend the approved Fresh Mint identity. The Tenant greeting and actual bill/status/action bindings are preserved. No new financial or communication action was introduced.
+
+Expanded the existing layout audit to include Staff pages, shared-plant image loading, navigation/footer separation on a 600 px tall desktop and open/close phone-drawer checks at 390 × 600 for all roles. The initial expanded four-role page audit passed (`data/fresh-mint-detail-audit.log`); full regression evidence is in `data/fresh-mint-detail-full-test.log`.
+
+Final fresh `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 292 seconds. This includes the final all-role short-phone menu/logout checks. `git diff --check` passed.
+
+Refreshed 49 UI screenshots, three synthetic email previews and the icon comparison with isolated synthetic data (`data/fresh-mint-detail-previews.log`). Capture checks found no page overflow or runtime errors. Visually inspected Manager, Admin, Staff and Properties previews; all show the shared sidebar illustration and coordinated styling. Actual phones remain separate acceptance work. Backend code, permissions, billing rules, live configuration and working financial records were not edited.
+
 ## Approved Fresh Mint implementation - 1 November 2026
 
 Implemented the user-approved cream/mint/deep-green design across Tenant, Manager, Staff, Admin and login. A final vanilla-CSS theme layer provides the palette, bold headings, rounded cards, readable controls, light topbars and consistent forms/panels. Desktop navigation now keeps its labels visible; mobile retains its menu drawer and Tenant bottom navigation. Tenant Home follows the approved greeting, apartment artwork, rent card, grouped utility cards and calendar composition, with existing live data and actions. Local decorative SVGs and the existing brand mark require no new library or network font. See [theme notes and reference](fresh-mint-theme.md).

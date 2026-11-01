@@ -11,7 +11,9 @@ import { createApp } from "../server/index.js";
 test("all-role page audit: responsive layouts, named controls, typography and runtime errors", {timeout:180000}, async () => {
   const store = new Store(":memory:");
   const password = "LayoutAudit!2026";
-  bootstrap(new Service(store), {adminPassword:password, managerPassword:password, tenantPassword:password, demo:true});
+  const service = new Service(store);
+  bootstrap(service, {adminPassword:password, managerPassword:password, tenantPassword:password, demo:true});
+  service.userWrite(store.get("users","usr-admin"), {name:"Layout Staff", email:"staff.audit@example.test", role:"staff", workspaceId:store.get("users","usr-manager").workspaceId, password});
   const origin = "http://127.0.0.1:8109";
   const app = createApp({store, env:{ALLOWED_ORIGINS:origin}});
   await new Promise(resolve => app.server.listen(8109, "127.0.0.1", resolve));
@@ -22,6 +24,7 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
     for (const [role,email,paths] of [
       ["admin","admin@propertypro.ph",["/admin","/admin/audit","/admin/settings"]],
       ["manager","manager@propertypro.ph",["/dashboard","/properties","/units","/tenants","/bills","/bills?tab=records","/bills?tab=incoming","/bills?tab=exceptions","/bills?tab=payments","/reports","/settings"]],
+      ["staff","staff.audit@example.test",["/dashboard","/properties","/units","/tenants","/bills?tab=incoming","/bills?tab=exceptions","/staff/account"]],
       ["tenant","maria.santos@gmail.com",["/tenant","/tenant/bills","/tenant/notifications","/tenant/settings"]],
     ]) {
       const context = await browser.newContext();
@@ -55,6 +58,10 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
           assert.equal(result.topbarColor,"rgb(248, 247, 241)");
           assert.equal(result.topbarImage,"none");
           assert.equal(result.bottomNavVisible, role === "tenant" && width <= 1100);
+          if (width > 1100) {
+            await expect(page.locator('.sidebar__garden img')).toBeVisible();
+            await expect.poll(() => page.locator('.sidebar__garden img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+          }
           if (width < 720) {
             const small = result.controls.filter(c=>c.tag==="BUTTON" && c.height<44);
             if (small.length) issues.push(`${role} ${path} ${width}px small buttons: ${small.map(c=>c.name+":"+c.height).join(", ")}`);
@@ -75,6 +82,20 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
           }
         }
       }
+      await page.setViewportSize({width:1440,height:600});
+      await expect(page.locator('.sidebar__garden img')).toBeVisible();
+      assert.ok(await page.locator('.sidebar').evaluate(sidebar => {
+        const nav = sidebar.querySelector('.sidebar__scroll').getBoundingClientRect();
+        const garden = sidebar.querySelector('.sidebar__garden').getBoundingClientRect();
+        const footer = sidebar.querySelector('.sidebar__footer').getBoundingClientRect();
+        return nav.bottom <= garden.top+1 && garden.bottom <= footer.top+1;
+      }), `${role}: plant must not cover navigation or logout on a short display`);
+      await page.setViewportSize({width:390,height:600});
+      await page.locator('.topbar [data-action="toggle-nav"]').click();
+      await expect(page.locator('.sidebar__garden img')).toBeVisible();
+      await expect(page.locator('.sidebar__logout')).toBeVisible();
+      await page.locator('.sidebar__toggle').click();
+      await expect(page.locator('.app-shell')).not.toHaveClass(/is-nav-open/);
       await context.close();
     }
     if (process.env.UI_AUDIT_OUTPUT) writeFileSync(join(process.env.UI_AUDIT_OUTPUT,"inventory.json"),JSON.stringify({records,issues,errors},null,2));

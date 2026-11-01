@@ -7,6 +7,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, count, dateTime, relative } from "../../utils/format.js";
 import { toastDanger } from "../../components/toast.js";
+import { workspaceArt } from "../../components/workspace-art.js";
 
 /**
  * Manager Dashboard — the primary Phase 1 landing view.
@@ -50,7 +51,7 @@ export async function renderDashboard(container) {
 
 function pageFrame(content) {
   return html`<section class="page manager-dashboard-page" aria-labelledby="page-title">
-    <div class="page-header">
+    <div class="page-header mint-workspace-hero">
       <div class="page-header__title">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <span>Rentara</span>${icon("chevron-right", { size: 12 })}
@@ -68,6 +69,7 @@ function pageFrame(content) {
           >${icon("inbox", { size: 15 })} Open bill intake</a
         >
       </div>
+      ${workspaceArt()}
     </div>
     ${content}
   </section>`;
