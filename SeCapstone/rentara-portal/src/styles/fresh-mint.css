@@ -1,0 +1,305 @@
+/* Approved Fresh Mint theme. Presentation only: real records and existing actions. */
+:root {
+  --primary-50: #eef8f0;
+  --primary-100: #def3e5;
+  --primary-200: #c8f0da;
+  --primary-300: #a9dfc1;
+  --primary-400: #71b99a;
+  --primary-500: #40866b;
+  --primary-600: #23604c;
+  --primary-700: #194e3e;
+  --primary-800: #153e35;
+  --primary-900: #10352e;
+  --gray-25: #fffef9;
+  --gray-50: #f8f8f1;
+  --gray-100: #f0f2e9;
+  --gray-200: #e0e7da;
+  --gray-300: #c8d3c4;
+  --gray-400: #8c9d8d;
+  --gray-500: #63786a;
+  --gray-600: #4e6759;
+  --gray-700: #304f40;
+  --gray-800: #234638;
+  --gray-900: #153e35;
+  --gray-950: #102c26;
+  --surface-canvas: #f8f7f1;
+  --surface-panel: #fffefb;
+  --surface-sidebar: #153e35;
+  --surface-sidebar-gradient: linear-gradient(165deg, #153e35, #10352e);
+  --surface-sidebar-active: #c8f0da;
+  --surface-sidebar-hover: #245548;
+  --surface-topbar: #f8f7f1;
+  --surface-bottom-nav: #fffefb;
+  --text-primary: #153e35;
+  --text-secondary: #496458;
+  --text-muted: #5e7368;
+  --text-sidebar: #f5f8ef;
+  --text-sidebar-active: #153e35;
+  --border-subtle: #e3e8dc;
+  --border-default: #d2ddcd;
+  --border-strong: #b6c7b3;
+  --font-display: "Trebuchet MS", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --shadow-xs: 0 2px 4px rgb(21 62 53 / 3%);
+  --shadow-sm: 0 4px 14px rgb(21 62 53 / 5%);
+  --shadow-md: 0 8px 24px rgb(21 62 53 / 8%);
+  --shadow-lg: 0 16px 36px rgb(21 62 53 / 12%);
+  --shadow-xl: 0 24px 56px rgb(21 62 53 / 16%);
+  --shadow-panel: -12px 0 40px rgb(21 62 53 / 12%);
+  --content-max: 1440px;
+}
+
+/* A quiet canvas, strong headings, and visible navigation like the approved preview. */
+body { background: var(--surface-canvas); color: var(--text-primary); }
+.page { padding: 32px 36px 56px; }
+.page-header { margin-bottom: 28px; }
+.page-header h1, .auth-card h1, .auth-hero__copy h2, .tenant-property-banner h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.045em;
+}
+.page-header h1 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.page .card, .stat-card { border: 1px solid var(--border-subtle); border-radius: 20px; background: var(--surface-panel); box-shadow: var(--shadow-xs); }
+.card__title { font-weight: 700; }
+.card__header { background: transparent; }
+.card__footer { background: var(--gray-25); }
+.page :is(.btn,.input,.select,.textarea), .btn, .input, .select, .textarea { border-radius: 10px; }
+.btn { font-weight: 650; }
+.btn--primary { color: #fffef9; background: var(--primary-700); border-color: var(--primary-700); box-shadow: 0 3px 8px rgb(21 62 53 / 8%); }
+.btn--primary:hover { color: white; background: var(--primary-900); border-color: var(--primary-900); }
+.btn--secondary { color: var(--primary-800); background: var(--surface-panel); border-color: var(--border-default); }
+.btn--secondary:hover { color: var(--primary-900); background: var(--primary-50); border-color: var(--primary-400); }
+.btn--ghost:hover { background: var(--primary-50); }
+.input:focus, .textarea:focus, .select:focus, .field-inline input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px rgb(113 185 154 / 18%); }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid var(--primary-500); outline-offset: 3px; }
+.badge, .chip { border-radius: 8px; }
+.badge--primary, .chip--accent { color: var(--primary-800); background: var(--primary-100); border-color: var(--primary-200); }
+.badge--violet { color: #4d5574; background: #edf0f4; }
+.filter-chip, .settings-nav__item { border-radius: 10px; }
+.filter-chip.is-active, .settings-nav__item.is-active { background: var(--primary-100); color: var(--primary-800); border-color: var(--primary-300); }
+.data-table thead th { color: var(--text-secondary); background: var(--gray-50); }
+.data-table tbody tr.is-clickable:hover { background: var(--primary-50); }
+.data-table tbody tr.is-selected { background: var(--primary-100); }
+.table-toolbar { border-radius: 20px 20px 0 0; }
+.table-footer { border-radius: 0 0 20px 20px; }
+.section-title { color: var(--text-secondary); }
+.progress__bar { background: var(--primary-500); }
+.empty-state__icon, .quick-action__icon { color: var(--primary-700); background: var(--primary-100); }
+.avatar { border-radius: 12px; }
+
+.sidebar { background: var(--surface-sidebar); }
+.sidebar__brand { height: 88px; border-color: rgb(200 240 218 / 12%); gap: 10px; }
+.sidebar__logo { width: 38px; height: 42px; color: #fffef9; border: 0; background: transparent; box-shadow: none; }
+.sidebar__logo .rentara-mark { width: 36px; height: 36px; }
+.sidebar__wordmark strong { font-family: var(--font-display); font-size: 29px; letter-spacing: -.055em; text-transform: lowercase; }
+.sidebar__wordmark > span { color: #c6ddcd; font-size: 11px; letter-spacing: 0; text-transform: none; margin-top: 5px; }
+.sidebar__section-label { color: #bbd2c1; letter-spacing: .07em; font-size: 10px; }
+.sidebar .nav-item { min-height: 48px; border-radius: 12px; padding: 12px 16px; font-size: 15px; gap: 14px; }
+.sidebar .nav-item:hover { color: white; background: var(--surface-sidebar-hover); }
+.sidebar .nav-item.is-active { color: var(--text-sidebar-active); background: var(--surface-sidebar-active); box-shadow: none; font-weight: 700; }
+.sidebar .nav-item.is-active::before { display: none; }
+.sidebar .nav-item.is-active .nav-item__icon { color: var(--primary-900); }
+.sidebar .nav-item.is-active .nav-item__count:not(.nav-item__count--alert) { color: var(--primary-900); background: #b3ddc4; }
+.sidebar__nav { gap: 6px; }
+.sidebar__footer { border-color: rgb(200 240 218 / 15%); }
+.sidebar__role { background: rgb(200 240 218 / 6%); }
+.sidebar__role-meta span { color: #c1d8c8; }
+.sidebar__logout { border-radius: 12px; }
+.sidebar__role-badge { background: #c8f0da; color: #153e35; border-radius: 50%; }
+.sidebar__toggle { background: transparent; border-color: rgb(200 240 218 / 20%); }
+.app-shell[data-role="tenant"] .sidebar__scroll { background: url("../assets/mint-plant.svg") 28px calc(100% - 10px) / 125px 160px no-repeat; }
+@media (min-width:1101px) {
+  .app-shell { grid-template-columns: var(--sidebar-width) minmax(0,1fr); }
+  .app-shell > .sidebar, .app-shell > .sidebar:hover, .app-shell > .sidebar:has(:focus-visible) { width: var(--sidebar-width); box-shadow: none; }
+  .sidebar:not(:hover):not(:has(:focus-visible)) :is(.sidebar__wordmark,.sidebar__section-label,.nav-item__label,.nav-item__count,.sidebar__role-meta,.sidebar__logout > span) { opacity: 1; transform: none; visibility: visible; pointer-events: auto; }
+}
+
+.app-shell .topbar { background: var(--surface-topbar); background-image: none; color: var(--text-primary); border-color: var(--border-subtle); gap: 16px; }
+.app-shell .topbar .icon-btn, .app-shell .topbar__menu-btn { color: var(--text-primary); }
+.app-shell .topbar .icon-btn:hover, .app-shell .topbar__menu-btn:hover { background: var(--primary-100); }
+.app-shell .topbar__search input { color: var(--text-primary); border-color: var(--border-default); background: var(--surface-panel); border-radius: 12px; }
+.app-shell .topbar__search svg, .app-shell .topbar__search input::placeholder { color: var(--text-muted); }
+.app-shell .topbar :focus-visible { outline-color: var(--primary-500); }
+.mint-account { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 0 0 auto; font-size: 13px; font-weight: 600; }
+.mint-account__avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--primary-800); color: #fffef9; font-size: 12px; }
+.mint-account__name { max-width: 130px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.topbar__mobile-brand { color: var(--text-primary); }
+.topbar__mobile-brand .workspace-label { color: var(--text-muted); }
+.tenant-bottom-nav { background: var(--surface-bottom-nav); border-color: var(--border-subtle); box-shadow: 0 -4px 18px rgb(21 62 53 / 5%); }
+.tenant-bottom-nav__item { color: var(--text-secondary); }
+.tenant-bottom-nav__item.is-active .tenant-bottom-nav__icon { color: var(--primary-900); background: var(--primary-200); }
+
+/* Tenant home follows the approved composition, using the original live-data bindings. */
+.tenant-home-page.page { padding-top: 24px; }
+.tenant-home-page > .page-header { margin-bottom: 8px; }
+.tenant-home-page > .page-header h1 { font-family: var(--font-sans); font-size: 15px; letter-spacing: 0; color: var(--text-muted); font-weight: 600; }
+.tenant-home-page > .page-header p { display: none; }
+.tenant-home-grid { grid-template-columns: minmax(0,1.45fr) minmax(300px,.95fr); gap: 24px; }
+.tenant-property-banner { position: relative; gap: 16px; min-height: 170px; padding: 8px 0 4px; align-items: center; overflow: hidden; }
+.tenant-property-banner > div { position: relative; z-index: 1; min-width: 0; }
+.tenant-property-banner h2 { font-size: clamp(2rem,3.5vw,3rem); line-height: 1.16; color: var(--primary-900); }
+.tenant-property-banner p { font-size: 15px; margin-top: 10px; color: var(--text-primary); max-width: 38ch; }
+.tenant-property-banner > div > .mint-unit-label { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; padding: 8px 12px; background: var(--primary-100); color: var(--primary-800); border-radius: 10px; font-size: 12px; letter-spacing: 0; text-transform: none; font-weight: 600; }
+.mint-wave { display: inline-block; font-family: "Segoe UI Emoji", sans-serif; font-size: .85em; }
+.mint-home-illustration { width: clamp(180px,27vw,340px); height: auto; align-self: end; flex-shrink: 0; }
+.tenant-home-page .tenant-rent-card { background: #d8f2e3; border: 1px solid #cce7d4; border-radius: 22px; box-shadow: none; }
+.tenant-home-page .tenant-rent-card :is(.card__header,.card__body,.card__footer) { background: transparent; border: 0; padding-inline: 24px; }
+.tenant-home-page .tenant-rent-card > .card__header { padding-top: 22px; padding-bottom: 8px; }
+.tenant-home-page .tenant-rent-card > .card__body { position: relative; padding-top: 10px; padding-bottom: 16px; padding-right: 106px; }
+.tenant-rent-card__amount { font-family: var(--font-display); color: var(--primary-900); font-size: clamp(1.8rem,3vw,2.65rem); font-weight: 800; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.tenant-rent-card__due { color: var(--text-primary); font-size: 15px; }
+.tenant-home-page .tenant-rent-card > .card__footer { display: grid; grid-template-columns: minmax(0,1fr) auto; padding-bottom: 22px; gap: 8px 12px; align-items: center; }
+.tenant-rent-card .card__footer > .btn--primary { grid-column: 1 / -1; min-height: 46px; }
+.tenant-home-page .tenant-rent-card .card__footer > a { background: transparent; border: 0; font-size: 13px; padding: 0; min-height: 32px; }
+.mint-rent-hint { font-size: 12px; color: var(--text-secondary); }
+.mint-rent-sticker { position: absolute; right: 24px; top: 14px; display: grid; place-items: center; width: 64px; height: 74px; color: var(--primary-700); transform: rotate(8deg); }
+.mint-rent-sticker > .icon:last-child { position: absolute; top: 34px; left: 22px; }
+.tenant-home-page .tenant-utility-card { border: 1px solid #dbebdc; border-radius: 22px; background: #e8f5e9; }
+.tenant-home-page .tenant-utility-card > .card__header { padding: 20px 20px 12px; }
+.tenant-utility-card__title > span { display: inline-grid; background: transparent; width: auto; height: auto; color: var(--primary-800); }
+.tenant-home-page .tenant-utility-card > .card__body { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; padding: 0 16px; }
+.tenant-home-page .tenant-utility-card > .card__body > p { grid-column: 1 / -1; padding: 12px; }
+.tenant-home-page .tenant-utility-row { grid-template-columns: 36px minmax(0,1fr); align-items: start; gap: 10px; padding: 18px 14px; background: var(--surface-panel); border: 1px solid var(--border-subtle); border-radius: 16px; }
+.tenant-utility-row:last-child { border: 1px solid var(--border-subtle); }
+.tenant-utility-row__icon { grid-column: 1; grid-row: 1 / span 2; width: 36px; height: 40px; border-radius: 50%; }
+.tenant-utility-row__icon.is-electricity { background: #e4f1fc; color: #24739b; }
+.tenant-utility-row__icon.is-water { background: #e4f1fc; color: #24739b; }
+.tenant-utility-row__details { gap: 6px; }
+.tenant-utility-row__details > strong { font-size: 13px; color: var(--primary-900); }
+.tenant-utility-row__amount { color: var(--primary-900); font-weight: 750; font-size: 22px; letter-spacing: -.03em; overflow-wrap: anywhere; }
+.tenant-utility-row__meta { font-size: 12px; }
+.tenant-utility-row__status { grid-column: 2; grid-row: 2; text-align: left; justify-self: start; max-width: 100%; font-size: 11px; }
+.tenant-utility-row__action { grid-row: auto; min-height: 44px; background: transparent; border-color: #7ba18b; font-size: 12px; }
+.tenant-home-page .tenant-utility-card > .card__footer { padding: 12px 20px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; background: transparent; }
+.tenant-utility-card__disclaimer { display: flex; align-items: start; gap: 6px; margin: 0; font-size: 12px; }
+.tenant-utility-card__disclaimer .icon { flex-shrink: 0; margin-top: 2px; }
+.tenant-utility-card .card__footer .text-link { font-size: 12px; }
+.tenant-home-page .tenant-calendar { border: 1px solid var(--border-subtle); background: var(--surface-panel); border-radius: 22px; }
+.tenant-calendar__day { border-radius: 50%; min-height: 44px; background: transparent; }
+.tenant-calendar__day.has-bills { background: var(--primary-100); }
+.tenant-calendar__day.has-estimate { border-color: var(--primary-500); background: transparent; }
+.tenant-calendar__day.is-selected { background: var(--primary-700); color: white; }
+.tenant-calendar__day.is-today:not(.is-selected) { border-color: var(--primary-600); }
+.tenant-calendar__controls button { border-radius: 9px; background: var(--surface-panel); }
+.tenant-calendar__month { font-family: var(--font-display); font-size: 21px; color: var(--primary-900); }
+.tenant-home-page .tenant-payment-history { grid-column: 1 / -1; border: 1px solid var(--border-subtle); background: var(--surface-panel); border-radius: 20px; }
+.tenant-home-page .tenant-payment-history > .card__header { padding: 20px 24px 8px; }
+.tenant-home-page .tenant-payment-history > .card__body { padding: 0 24px 14px; }
+
+/* Apply the same materials to operational screens, forms, panels, and login. */
+.manager-dashboard-page > .page-header { padding: 24px; border: 1px solid #dbe7d6; background: #eaf3e6; border-radius: 22px; }
+.manager-overview { background: #edf5e8; border-radius: 20px; border: 1px solid #dfe9d8; padding-block: 12px; }
+.manager-overview__item { border-color: var(--border-default); }
+.manager-review-queue .card__header { background: var(--primary-50); border-radius: 20px 20px 0 0; }
+.decision-item__date { color: var(--primary-800); background: var(--primary-100); border-radius: 10px; }
+.decision-item:hover, .staff-task-link:hover, .manager-review-queue__row:hover { background: var(--primary-50); }
+.staff-task-summary a.card { border: 1px solid #dbe7d6; border-radius: 20px; background: #eaf3e6; padding: 22px; }
+.property-card__banner { min-height: 110px; background: #edf4df url("../assets/mint-apartments.svg") right -8px bottom -20px / 200px auto no-repeat; padding: 18px; border-radius: 19px 19px 0 0; }
+.property-card__banner::after { display: none; }
+.property-card__badge { position: relative; color: var(--primary-800); background: var(--surface-panel); border: 1px solid var(--border-subtle); }
+.manager-property-overview .building-card { padding: 16px; border: 1px solid var(--border-subtle); border-radius: 14px; background: var(--surface-panel); }
+.manager-property-overview .building-card__glyph { color: var(--primary-600); }
+.stat-card__icon, .summary-icon { background: var(--primary-100); color: var(--primary-700); }
+.segmented { background: #edf1e7; border-color: var(--border-subtle); border-radius: 12px; }
+.segmented__btn { border-radius: 9px; }
+.segmented__btn.is-active { background: var(--surface-panel); color: var(--primary-800); }
+.subtabs__tab.is-active { color: var(--primary-700); }
+.panel-drawer { background: var(--surface-panel); }
+.panel-drawer__header { background: var(--primary-50); }
+.panel-drawer__footer { background: var(--surface-canvas); }
+.panel-identity-row { background: var(--surface-panel); border-color: var(--primary-200); }
+.modal { border-radius: 22px; background: var(--surface-panel); }
+.modal__header { background: var(--gray-25); }
+.modal__footer { background: var(--surface-canvas); }
+.case-sheet { border-radius: 18px; border-color: var(--border-default); border-left-color: var(--primary-500); }
+.case-sheet__title { font-family: var(--font-display); font-weight: 700; }
+.case-queue .case-queue__item[aria-current="true"] { background: var(--primary-100); }
+.case-original, .source-review__original { background: var(--gray-50); }
+.case-edit__actions { background: var(--surface-panel); }
+.settings-nav { padding: 8px; }
+.settings-nav__item { margin-bottom: 4px; }
+.portal-alerts-page .notification-item { border-color: var(--border-subtle); }
+.auth-shell--blue .auth-hero { background: var(--surface-sidebar); gap: 30px; }
+.auth-shell--blue .auth-hero__brand strong { font-family: var(--font-display); font-size: 30px; text-transform: lowercase; letter-spacing: -.05em; }
+.auth-shell--blue .auth-brand-icon { color: var(--primary-900); background: var(--primary-200); }
+.auth-shell--blue .auth-hero__brand span:not(.auth-brand-icon), .auth-hero__copy p, .auth-hero__foot { color: #c8dfcf; }
+.auth-shell--blue .auth-hero__copy h2 { color: #fffef9; }
+.auth-shell--blue .auth-hero__points { margin-top: 28px; gap: 18px; }
+.auth-shell--blue .auth-hero__point i { color: #c8f0da; border-color: #46745f; background: #245548; border-radius: 12px; }
+.mint-auth-illustration { width: min(100%,380px); height: auto; max-height: 180px; align-self: center; }
+.auth-shell--blue .auth-card { border-color: var(--border-subtle); border-radius: 24px; background: var(--surface-panel); box-shadow: var(--shadow-sm); }
+.auth-shell--blue .auth-card h1 { color: var(--primary-900); }
+.auth-password__toggle, .auth-help summary { color: var(--primary-700); }
+.auth-context { background: var(--primary-50); color: var(--primary-700); }
+.auth-supported-roles { color: var(--text-muted); }
+
+@media (max-width:1100px) {
+  .page { padding: 26px 24px 48px; }
+  .app-shell .topbar { background: var(--surface-canvas); background-image: none; color: var(--text-primary); }
+  .mint-account__name { display: none; }
+  .tenant-home-grid { grid-template-columns: minmax(0,1.3fr) minmax(270px,1fr); gap: 18px; }
+  .tenant-home-page .tenant-utility-card > .card__body { grid-template-columns: minmax(0,1fr); }
+  .tenant-calendar { grid-column: 2; grid-row: 2 / span 2; }
+  .tenant-utility-card { grid-column: 1; grid-row: 3; }
+  .tenant-property-banner h2 { font-size: 2.5rem; }
+}
+@media (max-width:720px) {
+  .page { padding: 22px 16px 40px; }
+  .page-header { margin-bottom: 22px; }
+  .page-header h1 { font-size: 28px; }
+  .app-shell .topbar { padding-inline: 12px; gap: 8px; }
+  .topbar__spacer { min-width: 0; }
+  .mint-account__avatar { width: 30px; height: 30px; font-size: 11px; }
+  .mint-account { gap: 0; }
+  .topbar__mobile-brand { min-width: 0; }
+  .topbar__mobile-brand .workspace-label { max-width: 18ch; }
+  .tenant-home-page.page { padding-top: 14px; }
+  .tenant-home-grid { grid-template-columns: minmax(0,1fr); gap: 18px; }
+  .tenant-property-banner { min-height: 0; padding: 4px 0 6px; }
+  .tenant-property-banner h2 { font-size: 32px; }
+  .tenant-property-banner p { font-size: 14px; margin-top: 8px; }
+  .mint-home-illustration { display: none; }
+  .tenant-rent-card { grid-column: 1; grid-row: 2; }
+  .tenant-utility-card { grid-column: 1; grid-row: 3; }
+  .tenant-calendar { grid-column: 1; grid-row: 4; }
+  .tenant-payment-history { grid-column: 1; grid-row: 5; }
+  .tenant-home-page .tenant-rent-card :is(.card__header,.card__body,.card__footer) { padding-inline: 20px; }
+  .tenant-home-page .tenant-rent-card > .card__body { padding-right: 86px; }
+  .tenant-home-page .tenant-rent-card > .card__header { padding-top: 18px; padding-bottom: 4px; }
+  .tenant-home-page .tenant-rent-card > .card__body { padding-top: 4px; padding-bottom: 10px; }
+  .tenant-home-page .tenant-rent-card > .card__footer { padding-top: 8px; padding-bottom: 18px; }
+  .tenant-rent-card__amount { font-size: clamp(1.7rem,8vw,2.15rem); }
+  .mint-rent-sticker { right: 16px; top: 12px; transform: rotate(8deg) scale(.85); }
+  .tenant-home-page .tenant-utility-card > .card__body { grid-template-columns: minmax(0,1fr); padding-inline: 12px; }
+  .tenant-home-page .tenant-utility-row { grid-template-columns: 40px minmax(0,1fr); padding: 18px 16px; }
+  .tenant-utility-row__amount { font-size: 24px; }
+  .tenant-utility-row__details > strong { font-size: 14px; }
+  .tenant-utility-row__status { font-size: 12px; }
+  .tenant-home-page .tenant-payment-history > .card__header { padding-inline: 18px; }
+  .tenant-home-page .tenant-payment-history > .card__body { padding-inline: 18px; }
+  .tenant-home-page .tenant-calendar > .card__header { padding: 18px 16px 8px; }
+  .tenant-home-page .tenant-calendar > .card__body { padding: 12px; }
+  .tenant-calendar__grid { gap: 2px; }
+  .tenant-calendar__day { min-height: 44px; }
+  .tenant-calendar__head { flex-wrap: wrap; }
+  .manager-dashboard-page > .page-header { padding: 20px; }
+  .manager-overview { padding: 8px 0; }
+  .auth-shell--blue .auth-hero { padding: 26px 24px 48px; gap: 24px; }
+  .mint-auth-illustration { display: none; }
+  .auth-shell--blue .auth-card { padding: 26px 22px; }
+}
+@media (max-width:360px) {
+  .mint-rent-sticker { display: none; }
+  .tenant-home-page .tenant-rent-card > .card__body { padding-right: 20px; }
+  .tenant-home-page .tenant-rent-card > .card__footer { grid-template-columns: minmax(0,1fr); }
+  .topbar__mobile-brand .workspace-label { max-width: 14ch; }
+}
+@media (max-height:700px) {
+  .app-shell[data-role="tenant"] .sidebar__scroll { background-image: none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .btn, .nav-item, .mint-wave { animation: none; transition: none; }
+}

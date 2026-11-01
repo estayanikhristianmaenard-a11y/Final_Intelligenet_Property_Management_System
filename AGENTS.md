@@ -5,7 +5,7 @@
 - Seven selected skills are installed in this repository's `.agents/skills/`: Taste `redesign-existing-projects` (folder `redesign-skill`), Vercel `web-design-guidelines`, Trail of Bits `property-based-testing` and `differential-review`, Anthropic `pdf`, and Agentic Awesome Skills `systematic-debugging` and `api-security-best-practices`. UI UX Pro Max and Anthropic frontend-design are deferred alternatives. Use one design guide per task and inspect only relevant guidance. Do not install entire skill catalogs or remove unrelated/system skills.
 - Chapter 1–2 gap review is requested for later, not during skill selection. When resumed, give exact sections/paragraph numbers and whole replacement paragraphs where needed, preserving the locked workflow and citations.
 - The user chose project-local skills rather than personal-folder installation so this project has a reproducible tool set. Preserve project-specific scope and workflow instructions here.
-- Consult `SeCapstone/rentara-portal/docs/skill-shortlist-and-model-guide.md` when choosing or installing skills, recommending models, or finalizing this shortlist. The saved overall visual redesign remains deferred.
+- Consult `SeCapstone/rentara-portal/docs/skill-shortlist-and-model-guide.md` when choosing or installing skills, recommending models, or finalizing this shortlist. The user approved the Fresh Mint visual redesign on 1 November 2026; preserve its cream/mint/deep-green direction and existing functions. See `SeCapstone/rentara-portal/docs/fresh-mint-theme.md`.
 
 ## Capstone scope guard
 

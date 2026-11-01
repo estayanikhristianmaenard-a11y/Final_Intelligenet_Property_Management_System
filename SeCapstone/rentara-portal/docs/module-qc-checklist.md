@@ -75,7 +75,7 @@ Manager Dashboard → Properties → Units → Tenants → Bills & Payments → 
 ## 1. Login, navigation and sessions
 
 - [ ] L01 Each available demo role signs in and lands on its permitted home page; incorrect credentials show useful feedback.
-- [ ] L02 Navigation matches the role and shows the correct workspace. Desktop labels expand with pointer/keyboard; the phone menu opens and closes.
+- [ ] L02 Navigation matches the role and shows the correct workspace. Desktop labels stay visible beside icons; the phone menu opens and closes.
 - [ ] L03 Logout removes access; browser Back cannot expose protected data. Switching accounts does not retain the previous account's records/actions.
 - [ ] L04 Directly opening another role's protected route is denied or redirected safely.
 - [ ] L05 A permitted password change persists; the old password no longer signs in. Use a disposable account and record the change privately.

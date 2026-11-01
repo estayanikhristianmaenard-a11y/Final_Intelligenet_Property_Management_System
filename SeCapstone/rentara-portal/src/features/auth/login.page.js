@@ -24,6 +24,7 @@ export function renderLogin(container, { redirectTo = "" } = {}) {
             <span class="auth-hero__point"><i>${icon("bell", { size: 20 })}</i>Check due dates and saved alerts.</span>
           </div>
         </div>
+        <img class="mint-auth-illustration" src="./src/assets/mint-apartments.svg" width="400" height="210" alt="" aria-hidden="true" />
         <p class="auth-hero__foot">For tenants, operations staff, property managers, and system administrators.</p>
       </aside>
       <main class="auth-panel" id="main-content">

@@ -1,5 +1,7 @@
 # PropertyPro skill shortlist and model guide
 
+**Update, 1 November 2026:** the user approved implementing the Fresh Mint concept across the existing system, preserving its functions and workflow. Taste is the selected guide for this implementation. Earlier deferred-design statements below retain their historical context; the current direction and implementation are in [Fresh Mint theme](fresh-mint-theme.md).
+
 Recorded 13 October 2026 at the user's request. The user selected seven project-local skills: Trail of Bits property-based testing and differential review, Anthropic PDF, Taste redesign, Vercel web design guidelines, and Agentic Awesome Skills systematic debugging and API security. The folders are installed under `.agents/skills/`. UI UX Pro Max and Anthropic frontend-design remain deferred alternatives. Installation does not approve an immediate redesign or prove that any feature passes these skills' checks.
 
 ## Consolidated selection

@@ -49,7 +49,7 @@ export async function renderDashboard(container) {
 }
 
 function pageFrame(content) {
-  return html`<section class="page" aria-labelledby="page-title">
+  return html`<section class="page manager-dashboard-page" aria-labelledby="page-title">
     <div class="page-header">
       <div class="page-header__title">
         <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -58,6 +58,7 @@ function pageFrame(content) {
           <span>Dashboard</span>
         </nav>
         <h1 id="page-title">Dashboard</h1>
+        <p>Your properties, bills and next decisions.</p>
       </div>
       <div class="page-header__actions">
         <span class="chip"

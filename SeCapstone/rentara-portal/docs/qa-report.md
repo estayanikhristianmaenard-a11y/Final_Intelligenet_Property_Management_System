@@ -1,5 +1,15 @@
 # Current QA status
 
+## Approved Fresh Mint implementation - 1 November 2026
+
+Implemented the user-approved cream/mint/deep-green design across Tenant, Manager, Staff, Admin and login. A final vanilla-CSS theme layer provides the palette, bold headings, rounded cards, readable controls, light topbars and consistent forms/panels. Desktop navigation now keeps its labels visible; mobile retains its menu drawer and Tenant bottom navigation. Tenant Home follows the approved greeting, apartment artwork, rent card, grouped utility cards and calendar composition, with existing live data and actions. Local decorative SVGs and the existing brand mark require no new library or network font. See [theme notes and reference](fresh-mint-theme.md).
+
+Fresh full `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 240 seconds (`data/fresh-mint-full-test.log`). Targeted routing/session and page-audit tests also passed (`data/fresh-mint-targeted.log`). The appearance assertions now expect the approved cream topbar and visible desktop navigation; keyboard, logout, role, overflow and control-size checks remain. Browser coverage includes 1440, 820, 390 and 320 px. Billing, exact allocation, reports, rent confirmation/receipts, utility marks, correction proposals, reminder/channel rules, persistence and workspace isolation passed their existing checks.
+
+Refreshed 49 application screenshots, three synthetic email previews and the icon comparison with disposable data (`data/fresh-mint-previews-final.log`). Capture checks detected no page overflow or runtime errors. Visually inspected Tenant desktop/phone, Manager dashboard and login; the final phone rent card was also checked after spacing refinements. [Current gallery](../../reports/mockups/README.md).
+
+Backend source, database schema, billing calculations, permissions, integration settings and credentials were not edited. No portfolio reset, manual financial-record mutation, external mail send/receive, manuscript edit or Git push was performed. The configured local showcase was started for review; it retains its normal scheduler and external-channel safeguards. Actual-device usability and live provider/Push acceptance remain separate checks; these results do not establish representative OCR accuracy or participant evaluation.
+
 ## Manager directory QA and fixes - 28 October 2026
 
 Reproduced the reported disappearing Billing navigation in the running showcase: the long Billing body flex-shrank the Tenant panel's tab bar until its labels were clipped. A new browser assertion failed against that layout before the fix. The tab bar now retains its height while the body scrolls. Checks switch all four tabs at 1440, 820, 390 and 320 px. The phone Tenant header now stacks identity and unit details instead of overlapping them.
