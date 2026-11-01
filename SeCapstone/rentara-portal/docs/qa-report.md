@@ -1,5 +1,17 @@
 # Current QA status
 
+## Expressive Fresh Mint compositions - 1 November 2026
+
+Implemented a stronger visual revision after the user requested more design: dark forest illustrated dashboard banners; larger heading hierarchy; individual summary/queue cards; role-specific Staff bill-review and Admin house/key illustrations; varied property artwork; framed Tenant greeting; paper-style rent/billing cards; category accents; receipt archive and empty-state treatments. The plant remains shared across all roles. Added local SVG illustrations without new packages or font/network dependencies.
+
+Preview review found that an older pale-header selector initially overrode the new dark background while the heading had already changed to light text. Added a rendered heading-contrast assertion, reproduced its failure, corrected the selector precedence, and passed the expanded four-role audit (`data/fresh-mint-expressive-audit.log`). The check requires at least 4.5:1 for dashboard headings at the existing desktop/tablet/phone audit widths. This does not establish full accessibility conformance.
+
+Refreshed 49 application screenshots, three synthetic email previews and the icon comparison after the correction (`data/fresh-mint-expressive-previews-final.log`), with no capture overflow/runtime errors. Visually inspected the corrected Manager and Staff dashboards, Admin/property illustrations, Tenant Home and phone billing cards. Final regression evidence is in `data/fresh-mint-expressive-full-test.log`.
+
+Fresh full `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 227 seconds. `git diff --check` passed. Actual phone/provider acceptance remains separate from these automated checks.
+
+No backend source, dependencies, database schema, billing rules, permissions or live integration settings were changed. Automated writes and screenshot captures use disposable synthetic data; physical devices and actual provider formats remain separate acceptance work.
+
 ## Fresh Mint consistency and decorative detail - 1 November 2026
 
 Removed the Tenant-only sidebar background. A shared decorative plant is now rendered for every role/account, in its own flexible sidebar area above the footer. It cannot cover menu items as a background image could; the menu keeps its independent scroll region. Short displays use a smaller plant rather than removing it.

@@ -50,13 +50,20 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
               attributes:[...element.attributes].filter(a=>a.name.startsWith("data-")).map(a=>`${a.name}=${a.value}`).join(" "),
             }));
             const topbar = getComputedStyle(document.querySelector(".topbar"));
+            const hero = document.querySelector(".mint-workspace-hero");
+            const luminance = color => (color.match(/[\d.]+/g) ?? []).slice(0,3).map(Number)
+              .map(channel => {const value=channel/255; return value<=.04045 ? value/12.92 : ((value+.055)/1.055)**2.4;})
+              .reduce((sum,channel,index)=>sum+channel*[.2126,.7152,.0722][index],0);
+            const heroLuminance = hero ? [luminance(getComputedStyle(hero).backgroundColor),luminance(getComputedStyle(hero.querySelector("h1")).color)] : null;
+            const heroContrast = heroLuminance ? (Math.max(...heroLuminance)+.05)/(Math.min(...heroLuminance)+.05) : null;
             const bottomNav = document.querySelector(".tenant-bottom-nav");
-            return {topbarColor:topbar.backgroundColor, topbarImage:topbar.backgroundImage, bottomNavVisible:Boolean(bottomNav && visible(bottomNav)), overflow:document.documentElement.scrollWidth>innerWidth+1, heading:document.querySelector("main h1")?.textContent, headingSize:getComputedStyle(document.querySelector("main h1")).fontSize, controls,
+            return {heroContrast,topbarColor:topbar.backgroundColor, topbarImage:topbar.backgroundImage, bottomNavVisible:Boolean(bottomNav && visible(bottomNav)), overflow:document.documentElement.scrollWidth>innerWidth+1, heading:document.querySelector("main h1")?.textContent, headingSize:getComputedStyle(document.querySelector("main h1")).fontSize, controls,
               overflowElements:[...document.querySelectorAll("main *")].filter(visible).filter(e=>e.getBoundingClientRect().right>innerWidth+1 && !e.closest(".table-wrap")).slice(0,8).map(e=>`${e.tagName}.${e.className}`)};
           });
           records.push({role,path,width,...result});
           assert.equal(result.topbarColor,"rgb(248, 247, 241)");
           assert.equal(result.topbarImage,"none");
+          if (result.heroContrast !== null) assert.ok(result.heroContrast>=4.5,`${role} ${width}px: dashboard heading must remain readable against its background`);
           assert.equal(result.bottomNavVisible, role === "tenant" && width <= 1100);
           if (width > 1100) {
             await expect(page.locator('.sidebar__garden img')).toBeVisible();

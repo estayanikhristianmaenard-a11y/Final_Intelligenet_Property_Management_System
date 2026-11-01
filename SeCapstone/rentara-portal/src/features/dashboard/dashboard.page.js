@@ -105,9 +105,9 @@ function body({ stats, properties, units, activity, payments, proposals, excepti
     ${decisions.length > 6 ? html`<p class="decision-list__more">Showing the oldest 6 of ${count(decisions.length)}. Use the queues above to see all waiting work.</p>` : null}
   </section>`;
   const overviewMetrics = html`<div class="manager-overview" aria-label="Portfolio summary">
-    <a class="manager-overview__item" href="#/units"><span>Units</span><strong>${count(stats.totalUnits.value)}</strong></a>
-    <a class="manager-overview__item" href="#/tenants"><span>Active tenants</span><strong>${count(stats.totalTenants.value)}</strong></a>
-    <a class="manager-overview__item" href="#/bills?tab=payments"><span>Outstanding rent and advance</span><strong>${peso(stats.outstanding)}</strong></a>
+    <a class="manager-overview__item" href="#/units"><span class="mint-metric-icon" aria-hidden="true">${icon("door",{size:22})}</span><span>Units</span><strong>${count(stats.totalUnits.value)}</strong></a>
+    <a class="manager-overview__item" href="#/tenants"><span class="mint-metric-icon" aria-hidden="true">${icon("users",{size:22})}</span><span>Active tenants</span><strong>${count(stats.totalTenants.value)}</strong></a>
+    <a class="manager-overview__item" href="#/bills?tab=payments"><span class="mint-metric-icon" aria-hidden="true">${icon("receipt",{size:22})}</span><span>Outstanding rent and advance</span><strong>${peso(stats.outstanding)}</strong></a>
   </div>`;
 
   const overview = html`

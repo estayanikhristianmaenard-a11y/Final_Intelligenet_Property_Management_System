@@ -79,7 +79,7 @@ function frame(content) {
           ${icon("refresh", { size: 15 })} Refresh status
         </button>
       </div>
-      ${workspaceArt()}
+      ${workspaceArt("accounts")}
     </div>
     ${content}
   </section>`;

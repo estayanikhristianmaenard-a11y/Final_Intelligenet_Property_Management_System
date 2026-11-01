@@ -59,8 +59,8 @@ function grid(properties) {
 
   return html`<div class="property-grid">
     ${properties.map(
-      (property) =>
-        html`<article class="card property-card">
+      (property, index) =>
+        html`<article class="card property-card property-card--${["sage","sand","clay"][index % 3]}">
           <div
             class="property-card__banner"
             style="--banner-a:${property.accent[0]};--banner-b:${property.accent[1]}"
@@ -68,6 +68,7 @@ function grid(properties) {
             <span class="property-card__badge"
               >${property.type.replace("_", " ")}</span
             >
+            <img class="property-card__art" src="./src/assets/${["mint-apartments.svg","mint-townhouse.svg","mint-courtyard.svg"][index % 3]}" width="400" height="220" alt="" aria-hidden="true" />
           </div>
           <div class="property-card__body">
             <div class="row row-between row-wrap row-2">

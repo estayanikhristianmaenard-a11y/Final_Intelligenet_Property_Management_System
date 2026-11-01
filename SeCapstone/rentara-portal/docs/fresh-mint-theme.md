@@ -14,6 +14,14 @@ The [approved visual reference](../../reports/design-concepts/fresh-mint-approve
 - Manager, Staff and Admin dashboards share an illustrated workspace header. Other pages use coordinated framed headings, subtle botanical outlines, navigation icon tiles, card accents, filters and panel surfaces. Tenant Home retains its existing illustrated greeting. These details add no new business actions or records.
 - Manager, Staff and Admin screens use the same surfaces, typography, forms, panels and controls. Login uses the same identity. The topbar avatar is an identity label; account actions remain in the existing Settings/Account pages.
 
+## Expressive design revision
+
+The later user request for more design led to a stronger composition within Fresh Mint: dark forest dashboard banners, larger headings, separately tinted summary/queue cards, illustrated property cards and a framed Tenant greeting. Staff uses a bill-review desk illustration and Admin uses a house/key illustration; Manager retains the apartment scene. Decorative property artwork has apartment, townhouse and courtyard variants on sage, sand and clay backgrounds. These illustrations are not actual property photographs.
+
+Rent cards use paper-like dashed separators and a calendar sticker; utility cards have distinct restrained category accents. Billing history rows, receipt archives, empty states and login surfaces follow the same paper/card treatment. All real figures, dates, labels, links and data-action bindings remain in their original workflows. No new business data is inferred from the decoration.
+
+The browser audit also measures the rendered dashboard-heading contrast against its actual background (minimum 4.5:1). This guards against CSS cascade changes that could combine light text with the previous pale header. It is a focused heading check, not a claim of complete accessibility conformance.
+
 ## Implementation
 
 `src/styles/fresh-mint.css` is the final theme layer after the existing stylesheets. It overrides presentation tokens and components while keeping route, API, data attributes and event handling in their existing modules. SVGs live in `src/assets/mint-apartments.svg` and `src/assets/mint-plant.svg`. No font download, UI framework or additional package is required.
