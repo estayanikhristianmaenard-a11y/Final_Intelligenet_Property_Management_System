@@ -1,0 +1,113 @@
+/* A short, damped spring. No dependency, idle loops, scroll hijacking, or data animation. */
+:root {
+  --jelly-spring: cubic-bezier(.22,1.35,.36,1);
+  --jelly-settle: cubic-bezier(.2,.8,.2,1);
+  --jelly-fast: 240ms;
+  --jelly-base: 420ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Animate the route host once, not each API refresh/utility-mark repaint. */
+  .page { animation: none; }
+  .jelly-route-enter { animation: mint-route-in var(--jelly-base) var(--jelly-settle); }
+  .auth-card { animation: mint-dialog-in 480ms var(--jelly-settle); }
+
+  .page .btn, .btn, .icon-btn, .filter-chip, .segmented__btn, .settings-nav__item {
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease,
+      box-shadow var(--jelly-fast) ease, border-radius var(--jelly-base) var(--jelly-spring),
+      transform var(--jelly-base) var(--jelly-spring);
+  }
+  /* Press feedback leaves financial controls at their original hit-target size. */
+  .btn:not(:disabled):not([aria-busy="true"]):active {
+    transform: translateY(1px);
+    border-radius: 15px;
+    box-shadow: inset 0 2px 5px rgb(21 62 53 / 12%);
+    transition-duration: 100ms;
+  }
+  .btn > .icon, .icon-btn > .icon, .nav-item__icon, .tenant-bottom-nav__icon {
+    transition: transform var(--jelly-base) var(--jelly-spring), background-color 180ms ease;
+  }
+  .btn:not(:disabled):active > .icon, .icon-btn:not(:disabled):active > .icon {
+    transform: scale(.88,1.08);
+  }
+  .filter-chip:active, .segmented__btn:active { transform: scale(.975,.96); }
+  .nav-item { transition: background-color 180ms ease, color 180ms ease, border-radius var(--jelly-base) var(--jelly-spring); }
+  .nav-item:active .nav-item__icon { transform: scale(.88,1.08); }
+  .tenant-bottom-nav__item:active .tenant-bottom-nav__icon { transform: scale(.9,1.07); }
+
+  .property-card, .building-card, .manager-overview__item, .staff-task-summary a.card {
+    transition: transform 480ms var(--jelly-spring), box-shadow 260ms ease, border-color 200ms ease;
+  }
+  .property-card__art { transition: translate 540ms var(--jelly-spring), rotate 540ms var(--jelly-spring); }
+  .property-card:active, .building-card:active, .manager-overview__item:active,
+  .staff-task-summary a.card:active { transform: translateY(0); transition-duration: 120ms; }
+
+  .input, .textarea, .select, .field-inline input {
+    transition: border-color 200ms ease, box-shadow 280ms var(--jelly-settle), background-color 200ms ease;
+  }
+  .subtabs__tab { transition: color 200ms ease, background-color 200ms ease; }
+  .panel-drawer__body { animation: mint-content-in 220ms var(--jelly-settle); }
+  .tenant-search__suggestions { transform-origin: 50% 0; animation: mint-pop-in 260ms var(--jelly-settle); }
+  .toast { animation: mint-pop-in 360ms var(--jelly-settle); }
+  .modal-backdrop { animation: mint-scrim-in 200ms ease-out; }
+  .modal-backdrop .modal { animation: mint-dialog-in 480ms var(--jelly-settle); transform-origin: 50% 35%; }
+  .modal-backdrop.is-closing { animation: mint-scrim-out 200ms ease-in forwards; pointer-events: none; }
+  .modal-backdrop.is-closing .modal { animation: mint-dialog-out 200ms ease-in forwards; }
+  .scrim--panel { animation: mint-scrim-in 220ms ease-out; }
+  .scrim--panel.is-closing { animation: mint-scrim-out 240ms ease-in forwards; pointer-events: none; }
+  .panel-drawer { animation: mint-drawer-in 520ms var(--jelly-settle); }
+  .panel-drawer.is-closing { animation: mint-drawer-out 240ms ease-in forwards; pointer-events: none; }
+
+  @keyframes mint-route-in {
+    0% { opacity: .3; transform: translateY(10px); }
+    72% { opacity: 1; transform: translateY(-1px); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes mint-content-in {
+    from { opacity: .6; transform: translateY(3px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes mint-pop-in {
+    0% { opacity: 0; transform: translateY(5px) scale(.975,.94); }
+    72% { opacity: 1; transform: translateY(-1px) scale(1.003,1.008); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes mint-dialog-in {
+    0% { opacity: 0; transform: translateY(18px) scale(.975,.96); }
+    65% { opacity: 1; transform: translateY(-2px) scale(1.004,1.006); }
+    84% { transform: translateY(1px) scale(1,.998); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes mint-dialog-out {
+    to { opacity: 0; transform: translateY(8px) scale(.985,.975); }
+  }
+  @keyframes mint-drawer-in {
+    0% { opacity: .5; transform: translateX(100%); }
+    68% { opacity: 1; transform: translateX(-5px); }
+    85% { transform: translateX(-1px); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes mint-drawer-out { to { opacity: 0; transform: translateX(100%); } }
+  @keyframes mint-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes mint-scrim-out { to { opacity: 0; } }
+}
+
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .property-card:hover, .manager-overview .manager-overview__item:hover,
+  .manager-property-overview .building-card:hover, .staff-task-summary a.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 20px rgb(21 62 53 / 8%);
+  }
+  .property-card:hover .property-card__art { translate: 0 -3px; rotate: -1deg; }
+  .btn:not(:disabled):not([aria-busy="true"]):hover > .icon { transform: translateY(-1px) scale(1.06); }
+  .nav-item:hover .nav-item__icon { transform: translateX(1px) scale(1.08); }
+  .settings-nav__item:hover { transform: translateX(2px); }
+}
+@media (max-width:1100px) and (prefers-reduced-motion:no-preference) {
+  .app-shell > .sidebar { transition: transform 480ms var(--jelly-spring), box-shadow 260ms ease; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .jelly-route-enter, .page, .auth-card, .panel-drawer, .panel-drawer__body,
+  .tenant-search__suggestions, .toast, .modal-backdrop, .modal-backdrop .modal,
+  .scrim--panel { animation: none !important; }
+}

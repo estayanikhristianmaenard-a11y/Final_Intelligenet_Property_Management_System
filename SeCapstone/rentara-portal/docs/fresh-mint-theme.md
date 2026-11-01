@@ -22,7 +22,17 @@ Rent cards use paper-like dashed separators and a calendar sticker; utility card
 
 The browser audit also measures the rendered dashboard-heading contrast against its actual background (minimum 4.5:1). This guards against CSS cascade changes that could combine light text with the previous pale header. It is a focused heading check, not a claim of complete accessibility conformance.
 
-## Implementation
+## Jelly motion finalization
+
+`src/styles/jelly-motion.css` follows the theme and supplies short, damped spring feedback: soft card lifts, control press/rounding and icon feedback, dropdown pops, page entrances, content fades, and dialog/drawer transitions. Timings range from 100 ms press feedback to a 520 ms drawer entrance. No perpetual decorative movement, external animation runtime or scroll hijacking is used. Press feedback keeps button hit-target dimensions unchanged; amounts and form fields are not scaled.
+
+Page entrance motion belongs to the route host, not each `.page` repaint. Local refreshes such as utility marks therefore do not replay the whole-page animation. Phone menu open/close keeps its existing DOM and listeners so the native transform transition actually runs in both directions. Breakpoint, role and route changes retain the normal shell refresh; focus returns to the menu opener when closing from inside it.
+
+Panel exit cleanup follows the actual animation duration. Opening a replacement panel disposes pending old exits, timers and listeners before mounting the replacement, preventing duplicate panels during rapid navigation. Dialog dismissal retains its existing unsaved-change guard and focus restoration. Reduced-motion preferences disable the new entrances, drawer/content animation and decorative transitions; essential states and controls remain usable.
+
+Motion verification uses the existing browser feedback test with both `reduce` and `no-preference`. It checks actual menu DOM retention and a native transform transition, control dimensions during a press, retained unsaved text, dialog focus restoration, panel closure, and reduced-motion behavior. Existing route, billing and role tests remain applicable.
+
+## Theme implementation
 
 `src/styles/fresh-mint.css` is the final theme layer after the existing stylesheets. It overrides presentation tokens and components while keeping route, API, data attributes and event handling in their existing modules. SVGs live in `src/assets/mint-apartments.svg` and `src/assets/mint-plant.svg`. No font download, UI framework or additional package is required.
 

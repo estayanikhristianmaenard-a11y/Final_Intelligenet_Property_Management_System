@@ -1,5 +1,17 @@
 # Current QA status
 
+## Jelly motion finalization - 1 November 2026
+
+Added `jelly-motion.css` after the Fresh Mint layer: short damped spring transitions for clickable cards and icons, soft press/rounding feedback without shrinking buttons, route entrances, dropdown/content fades, modal pops and drawer entrances/exits. Form fields and financial values are not scaled. No animation package, external resource, decorative idle loop or scroll hijacking was introduced. Reduced-motion preferences disable the new entrances and decorative movement.
+
+Motion belongs to the route host so utility-mark/API repaints do not replay a whole-page entrance. Phone-menu-only toggles retain the same DOM/listeners, update inert/expanded state, and restore opener focus when closing from inside; breakpoint/role/route changes retain normal shell refresh behavior. A test reproduced the former menu replacement and now verifies actual native transform-transition creation. Panel exits follow their CSS duration, and replacement panels immediately clean up pending old exits/timers/listeners. The initial broad run exposed two overlapping closing/opening panels; the existing journey passes after this lifecycle fix.
+
+Focused enabled/reduced-motion and broad four-role browser journeys passed (`data/jelly-motion-interaction-final.log`). Coverage includes unchanged pressed-button dimensions, unsaved text/discard guards, modal focus restoration, panel/tab behavior, phone menu open/close, actual transition creation, reduced-motion modal behavior and existing portfolio/payment/receipt workflows. Final full evidence is in `data/jelly-motion-full-test-final.log`; the earlier failed run is retained in `data/jelly-motion-full-test.log`.
+
+Fresh full `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 257 seconds. `git diff --check` passed.
+
+Static Fresh Mint screenshots remain applicable; this pass changes interaction timing rather than their settled appearance. Backend source, dependencies, database schema, billing rules, permissions and live configuration were not edited. Automated writes use disposable test data. Actual-device motion/performance acceptance remains separate from browser checks.
+
 ## Expressive Fresh Mint compositions - 1 November 2026
 
 Implemented a stronger visual revision after the user requested more design: dark forest illustrated dashboard banners; larger heading hierarchy; individual summary/queue cards; role-specific Staff bill-review and Admin house/key illustrations; varied property artwork; framed Tenant greeting; paper-style rent/billing cards; category accents; receipt archive and empty-state treatments. The plant remains shared across all roles. Added local SVG illustrations without new packages or font/network dependencies.

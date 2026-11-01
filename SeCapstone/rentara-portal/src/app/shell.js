@@ -14,7 +14,7 @@ import { openTenantPanel } from "../features/tenants/tenant-details.panel.js";
  *
  * Owns the persistent chrome (sidebar + topbar) and exposes a single content
  * outlet the router repaints. Chrome is re-rendered whenever the active path,
- * role or drawer state changes; the outlet is left alone so page-level state
+ * role changes; drawer toggles reuse the chrome so transitions can run. The outlet is left alone so page-level state
  * (open panels, focus) survives.
  */
 
@@ -49,6 +49,20 @@ export function refreshShell(patch = {}) {
   if (!root || !session.isAuthenticated || !root.querySelector("[data-outlet]"))
     return;
   state = { ...state, ...patch };
+  const shell = root.querySelector(".app-shell");
+  const mobile = window.matchMedia("(max-width: 1100px)").matches;
+  const mode = mobile ? "drawer" : "sidebar";
+  // Keep the same menu and its listeners for open/close. Breakpoint, route,
+  // badge and account changes still rebuild chrome as before.
+  if (Object.keys(patch).length === 1 && Object.hasOwn(patch,"navOpen") && shell?.dataset.navMode === mode) {
+    const menu = shell.querySelector(".sidebar");
+    const opener = shell.querySelector('.topbar [data-action="toggle-nav"]');
+    if (!state.navOpen && menu.contains(document.activeElement)) opener?.focus({preventScroll:true});
+    shell.classList.toggle("is-nav-open",state.navOpen);
+    menu.inert = mobile && !state.navOpen;
+    opener?.setAttribute("aria-expanded",String(state.navOpen));
+    return;
+  }
   const previousOutlet = root.querySelector("[data-outlet]");
 
   const holder = document.createElement("div");
@@ -96,7 +110,7 @@ function shellMarkup() {
       </nav>`
     : null;
 
-  return html`<div class="app-shell ${state.navOpen ? "is-nav-open" : ""}" data-role="${role}">
+  return html`<div class="app-shell ${state.navOpen ? "is-nav-open" : ""}" data-role="${role}" data-nav-mode="${mobileNavigation ? "drawer" : "sidebar"}">
     <aside id="primary-sidebar" class="sidebar" aria-label="Primary navigation" ${mobileNavigation && !state.navOpen ? "inert" : ""}>
       ${sidebar({ role, activePath: state.activePath, badges: state.badges })}
     </aside>

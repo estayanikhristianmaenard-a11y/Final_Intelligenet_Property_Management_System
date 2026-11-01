@@ -198,6 +198,7 @@ async function route(root = document.getElementById("app-root")) {
   activePageRender = pageRender;
   try {
     const stage = document.createElement("div");
+    if (!refreshing) stage.classList.add("jelly-route-enter");
     if (refreshing) stage.style.minHeight = `${outlet.getBoundingClientRect().height}px`;
     outlet.replaceChildren(stage);
     await renderer(stage, { path: normalised, query, onChanged: loadBadges });
