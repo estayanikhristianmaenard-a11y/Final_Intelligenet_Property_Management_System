@@ -160,7 +160,7 @@ test(
       const unit = await ok(b.token, "/units", {
         propertyId: property.id,
         code: "B-203",
-        floor: "Ground Floor",
+        floor: "0",
         monthlyRent: 6000,
         arrangement: "individual",
       });
@@ -316,7 +316,7 @@ test(
       await denied(b.token, "/units", {
         propertyId: "prp-b",
         code: "BAD",
-        floor: "Ground",
+        floor: "0",
         monthlyRent: 100,
         arrangement: "individual",
       });
@@ -488,7 +488,7 @@ test("scheduler and independent notification transports keep workspace context a
       const unit = service.writeEntity(manager, "units", {
         propertyId: property.id,
         code: "J-1",
-        floor: "Ground",
+        floor: "0",
         monthlyRent: 100,
         arrangement: "individual",
       });

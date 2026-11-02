@@ -1,0 +1,38 @@
+/* Fresh Mint form surfaces: artwork has its own space, never covers controls. */
+.modal { border: 1px solid #d3e1ca; box-shadow: 0 24px 80px rgb(18 56 43 / 22%), 0 4px 0 rgb(188 207 171 / 30%); }
+.modal__header { position: relative; isolation: isolate; min-height: 112px; padding: 24px; align-items: center; gap: 16px; flex-shrink: 0; border-bottom: 1px solid #dce7d1; background: radial-gradient(ellipse at 75% 20%, #e0edcf, transparent 70%), #f1f6e9; }
+.modal__heading { flex: 1; min-width: 0; }
+.modal__eyebrow { display: block; margin-bottom: 7px; font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: #526d4b; }
+.modal__title { font-size: 24px; line-height: 1.15; letter-spacing: -.035em; color: #173f32; text-wrap: balance; }
+.modal__subtitle { margin-top: 8px; max-width: 40ch; line-height: 1.5; color: #496347; }
+.modal__art { flex: 0 0 100px; width: 100px; height: 90px; object-fit: contain; pointer-events: none; }
+.modal__header > [data-close] { align-self: flex-start; flex-shrink: 0; border: 1px solid #cbdcc0; border-radius: 50%; background: #ffffffb3; }
+.modal__body { padding: 24px; background: #fffef9; }
+.modal__footer { padding: 16px 24px; flex-shrink: 0; background: #f2f6eb; border-top: 1px solid #dce7d1; }
+.modal__footer .btn--primary { min-width: 116px; }
+.modal .field__label { color: #365741; line-height: 1.5; }
+.modal .input, .modal .textarea { margin-top: 5px; border-color: #bdcfb4; border-radius: 11px; background: #fff; }
+.modal .input:focus, .modal .textarea:focus { border-color: #50886b; box-shadow: 0 0 0 3px #dcefdc; }
+.modal .field__hint { color: #62745a; font-size: 12px; line-height: 1.5; }
+.modal--entity { width: min(640px,100%); }
+.modal--entity [data-workflow-form] { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px 20px; }
+.modal--entity .field { margin: 0; min-width: 0; }
+.modal--entity [data-workflow-error], .modal--entity .field:has(textarea), .modal--entity .field:has([name="propertyId"]), .modal--entity .field:has([name="unitId"]), .modal--entity .field:has([name="address"]) { grid-column: 1 / -1; }
+.modal--entity .workflow-form-error[hidden] { display: none; }
+.modal--entity .field:has([aria-invalid="true"]) .input { border-color: #b14740; background: #fffaf7; }
+.page .empty-state { position: relative; isolation: isolate; overflow: hidden; }
+@media (min-width:900px) {
+  .page > .page-header:not(.mint-workspace-hero)::before { width: 100px; height: 76px; right: 200px; top: 8px; border: 0; border-radius: 0; transform: none; background: url('../assets/mint-plant.svg') center / contain no-repeat; opacity: .25; }
+  .manager-billing-page > .page-header::before { background-image: url('../assets/mint-water-garden.svg'); }
+  .page .empty-state::after { content: ""; position: absolute; right: 22px; bottom: 10px; width: 110px; height: 110px; background: url('../assets/mint-water-garden.svg') center / contain no-repeat; opacity: .7; pointer-events: none; z-index: -1; }
+  .page:has([data-edit-entity="units"]) > .page-header::before { width: 140px; height: 90px; right: 210px; top: 0; border: 0; border-radius: 0; transform: none; background: url('../assets/mint-townhouse.svg') center / contain no-repeat; opacity: .4; }
+}
+@media (max-width:600px) {
+  .modal__header { min-height: 100px; padding: 18px; gap: 10px; }
+  .modal__art { flex-basis: 58px; width: 58px; height: 66px; }
+  .modal__title { font-size: 21px; }
+  .modal__subtitle { font-size: 12px; }
+  .modal__body { padding: 20px 18px; }
+  .modal__footer { padding: 14px 18px; }
+  .modal--entity [data-workflow-form] { grid-template-columns: minmax(0,1fr); gap: 16px; }
+}

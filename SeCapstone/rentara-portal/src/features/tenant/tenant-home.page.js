@@ -50,7 +50,7 @@ function content(tenant) {
   return html`<div class="tenant-home-grid">
       <section class="tenant-property-banner">
         <div><h2>Hey, ${tenant.fullName.split(" ")[0]} <span class="mint-wave" aria-hidden="true">👋</span></h2><p>Your home, bills and updates. All in one place.</p><span class="mint-unit-label">${icon("building", { size: 15 })}${tenant.propertyName} · ${tenant.unitCode}</span></div>
-        <img class="mint-home-illustration" src="./src/assets/mint-apartments.svg" width="400" height="210" alt="" aria-hidden="true" />
+        <img class="mint-home-illustration" src="./src/assets/mint-neighborhood.svg" width="560" height="340" alt="" aria-hidden="true" />
       </section>
 
       <section class="card tenant-rent-card">

@@ -1,5 +1,51 @@
 # Current QA status
 
+## Final frontend/backend verification - 2 November 2026
+
+Fresh full `npm.cmd test` against the current layout and validation changes: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 263 seconds (`data/final-frontend-backend-test.log`). Covers all four roles, responsive UI/spacing, forms and motion, authenticated APIs, protected originals, OCR/duplicate intake, allocation, rent reporting/confirmation/advance/receipts, personal utility tracking, notifications/calendar, persistence, workspace isolation and recovery. Syntax checks passed for **133 JavaScript files** across source, server, tests and tools. Local HTTP returned 200; `git diff --check` passed.
+
+Completed a focused differential review against `202d644`, with baseline blame and direct-call checks on authentication, profile and entity writes. No new blocking vulnerability or functional regression was confirmed, and no runtime fix was needed in this final pass. The [final review](final-frontend-backend-review-2026-11-02.md) records scope, caller counts, attack scenarios, evidence and limits. Actual phones, provider formats, physical printing and authorized live email/Push delivery remain manual acceptance work. Tests used disposable data; no working-data reset or Git push was performed.
+
+## Whitespace and alignment correction - 2 November 2026
+
+Reproduced the Incoming Bills gap: an older two-column rule placed actions below the details, while flex-sized extracted fields used only the left side of the register. Added a scoped incoming-register surface with fixed proportional fact columns and a desktop action column. At tablet/phone widths, fields switch to two columns and actions wrap below. Long filenames wrap; existing result-filter hiding, status labels and review handlers remain.
+
+The broader screenshot review also found report cards stretched to their tallest neighbor and the report period selector occupying the full toolbar width. Cards now align at their natural height, and header selects share a compact action row with their buttons. Intake result count aligns to the toolbar's right edge on wider screens. No filler data or additional artwork was added to disguise gaps.
+
+Expanded the all-role page audit with two explicit incoming-source fixtures (including a long filename), non-vacuous row-count checks, desktop action/detail alignment and cross-row field-column checks. Added a report-card stretch check. Both defects failed before repair (`data/spacing-before.log`, `data/report-spacing-before.log`). Final page/form/motion audit: **3 passed, 0 failed** (`data/spacing-audit-final.log`). The page audit covers Manager, Staff, Tenant and Admin at 1440, 820, 390 and 320 px, including overflow, named controls, phone target sizes and preserved Tenant header sizing.
+
+Refreshed 49 UI screenshots plus the standard synthetic email/icon previews (`data/spacing-previews-final.log`), with no capture overflow/runtime errors. Visually inspected the current incoming register at desktop/tablet widths (`data/incoming-spacing-desktop.png`, `data/incoming-spacing-tablet.png`), phone Staff intake, Reports, Settings and the source-review dialog. Source-review, phone utility journey and presentation checks: **6 passed, 0 failed** (`data/spacing-workflows.log`), making **9 passing targeted test cases** across both runs. `git diff --check` passed. This targeted layout pass did not rerun the entire backend suite; the prior full 105-test result is dated below. No backend, billing rules, permissions, dependencies or financial records were changed. No Git push was performed.
+
+## Botanical editorial visual pass - 2 November 2026
+
+Expanded the approved Fresh Mint theme across dashboard and inner-page covers, card/queue/section treatments, property cards, tables/filters, settings, panels, dialogs, login and short-page sign-offs. Added a detailed local neighborhood SVG and matching decorative icon tokens. Tenant Home shares the new artwork while Staff/Admin retain their existing role-specific scenes. This pass changes presentation only; previous validation fixes, role boundaries, financial workflows and motion preferences remain.
+
+Visual review found a CSS cascade collision that produced a duplicate full-size Tenant Home header. Added an audit assertion limiting the introduction height, reproduced the failure (`data/living-header-before.log`), and corrected the selector. The expanded all-role responsive audit, enabled/reduced-motion interaction checks and form-validation browser journey all pass (`data/living-design-audit-final.log`, three test cases).
+
+Refreshed 49 application screenshots, three synthetic email PNGs and the icon comparison (`data/living-design-previews-final.log`); capture checks found no page overflow or runtime errors. Visually inspected Manager, Staff and Admin dashboards, property cards, corrected Tenant Home, phone bills/Staff Account and login. The refreshed [gallery](../../reports/mockups/README.md) contains current implemented screenshots. Final full `npm.cmd test`: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 269 seconds (`data/living-design-full-test.log`). `git diff --check` passed.
+
+No backend, dependencies, schema, permissions, working records or live configuration were changed by this presentation pass. Tests and captures use disposable synthetic data; no messages were sent. Physical-device motion/visual acceptance remains manual. No Git push was performed.
+
+## Follow-up QA audit - 2 November 2026
+
+Targeted audit reproduced four backend failures: assignment start after lease end when termination is omitted; whitespace variants bypassing the per-email login attempt counter; malformed profile input causing an exception/coercion; and malformed message fields causing a server error. Fixed all four and added regression checks. Added browser validation for new-password length, required Tenant profile fields and Admin's permanent Tenant ID when the Tenant role is selected. These preserve existing role/financial rules.
+
+Before-fix evidence: `data/qa-validation-before.log`; focused repaired checks: `data/qa-validation-fixed.log`. Focused backend/form-browser run: **40 passed, 0 failed** (`data/qa-audit-targeted.log`). Final full `npm.cmd test`: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 269 seconds (`data/qa-audit-full-test.log`). `git diff --check` passed. See the [concise findings and dashboard coverage](qa-update-2026-11-02.md) for the individual changes and remaining actual-device/live-service acceptance work. Test writes use disposable data; no Git push was performed.
+
+## Numeric inputs and illustrated forms - 2 November 2026
+
+Reproduced missing floor validation with a failing service regression (`data/form-validation-before.log`). Add/Edit Unit now uses a single whole-number Floor input, with 0 for ground, rather than independent free-text and decimal floor fields. API writes validate non-negative safe integers and reject conflicting floor values. Existing historical display labels are retained on unrelated API edits; no working records were migrated. Development setup fixtures now use numeric floors.
+
+All phone and emergency-phone inputs share numeric keyboard, eleven-digit pattern/length, letter-entry and invalid-paste handling. Optional fields may remain blank. Manager/Staff tenant edits and all account profile API writes reject nonblank phones that do not contain exactly eleven ASCII digits. Tenant Settings now checks phone validity before dispatch as Manager Settings already does. No SMS workflow was added.
+
+Shared dialogs have illustrated Fresh Mint headers, clearer hierarchy, tinted surfaces and revised field spacing. Entity forms use two columns on desktop and one on phones. Local plant, townhouse and water-garden illustrations decorate relevant headers/empty states without intercepting controls. Existing motion, unsaved guards, focus handling and financial permissions remain. Corrected shared modal class handling to accept multiple styling classes.
+
+Focused service and desktop/phone browser checks pass (`data/form-garden-targeted.log` for service checks; `data/form-garden-browser-final.log` for the corrected browser run). The initial full run passed 101 checks and failed the new test because its invalid-value fill was blocked by the new typing guard. The corrected test explicitly injects invalid values to exercise submit validation separately; it passes. That earlier result is retained in `data/form-garden-full-test.log`; final regression evidence is `data/form-garden-full-test-final.log`.
+
+Final full `npm.cmd test`: **102 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 262 seconds. `git diff --check` passed. Includes all-role responsive UI audit, protected source review, Staff permissions, rent payments/receipts, utility OCR, workspace isolation and recovery.
+
+Captured and inspected `data/unit-form-desktop.png` and `data/unit-form-phone.png`; the desktop form is compact, and the phone form scrolls with Save/Cancel accessible. Automated writes use disposable databases. Actual-device keyboard/paste and visual acceptance remain manual. No dependencies, schema, live credentials, working financial records or Git pushes were changed by this task.
+
 ## Jelly motion finalization - 1 November 2026
 
 Added `jelly-motion.css` after the Fresh Mint layer: short damped spring transitions for clickable cards and icons, soft press/rounding feedback without shrinking buttons, route entrances, dropdown/content fades, modal pops and drawer entrances/exits. Form fields and financial values are not scaled. No animation package, external resource, decorative idle loop or scroll hijacking was introduced. Reduced-motion preferences disable the new entrances and decorative movement.

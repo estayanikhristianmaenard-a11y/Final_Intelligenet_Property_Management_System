@@ -14,6 +14,12 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
   const service = new Service(store);
   bootstrap(service, {adminPassword:password, managerPassword:password, tenantPassword:password, demo:true});
   service.userWrite(store.get("users","usr-admin"), {name:"Layout Staff", email:"staff.audit@example.test", role:"staff", workspaceId:store.get("users","usr-manager").workspaceId, password});
+  for (const [index,category] of ["electricity","water"].entries()) store.save("incoming", {
+    id:`spacing-source-${index}`,provider:category==="water" ? "Manila Water" : "Meralco",category,
+    accountRef:`SPACING-00${index}`,amountDue:660+index,dueDate:"2026-11-08",billingPeriod:"2026-10-01/2026-10-28",
+    filename:index ? "long-water-source-file-for-layout-and-wrapping-check.pdf" : "electricity.pdf",
+    receivedAt:"2026-11-01T00:00:00.000Z",extractionMethod:"pdf_text",ocrStatus:"failed",extractionError:"Mapping requires review.",
+  });
   const origin = "http://127.0.0.1:8109";
   const app = createApp({store, env:{ALLOWED_ORIGINS:origin}});
   await new Promise(resolve => app.server.listen(8109, "127.0.0.1", resolve));
@@ -61,6 +67,32 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
               overflowElements:[...document.querySelectorAll("main *")].filter(visible).filter(e=>e.getBoundingClientRect().right>innerWidth+1 && !e.closest(".table-wrap")).slice(0,8).map(e=>`${e.tagName}.${e.className}`)};
           });
           records.push({role,path,width,...result});
+          if (path === "/bills?tab=incoming" && width > 1100) {
+            const bills = await page.locator(".ocr-bill:visible").evaluateAll(rows => rows.map(row => {
+              const box=element=>element.getBoundingClientRect();
+              const main=box(row.querySelector(".ocr-bill__main"));
+              const side=box(row.querySelector(".ocr-bill__side"));
+              const fields=row.querySelector(".ocr-bill__fields");
+              return {sideLeft:side.left,sideTop:side.top,mainRight:main.right,rowTop:box(row).top,
+                unusedRight:box(fields).right-box(fields.lastElementChild).right,
+                columns:[...fields.children].map(field=>box(field).left)};
+            }));
+            assert.ok(bills.length>=2, "Spacing checks require multiple rendered incoming bills");
+            for (const bill of bills) {
+              assert.ok(bill.sideLeft>=bill.mainRight, `${role}: bill actions must use the right column instead of leaving it empty`);
+              assert.ok(bill.sideTop-bill.rowTop<=28, `${role}: bill actions must align with the top of the row`);
+              assert.ok(bill.unusedRight<=2, `${role}: extracted fields must use the available row width`);
+              assert.ok(bill.columns.every((left,index)=>Math.abs(left-bills[0].columns[index])<=2), `${role}: bill detail columns must align across rows`);
+            }
+          }
+          if (path === "/tenant") {
+            const intro = await page.locator(".tenant-home-page > .page-header").boundingBox();
+            assert.ok(intro.height < 90, `${width}px: Tenant home must not repeat its illustrated greeting as a second full-size header`);
+          }
+          if (path === "/reports" && width > 1100) {
+            const spacing = await page.locator(".report-grid > .card").first().evaluate(card => card.getBoundingClientRect().bottom-card.querySelector(".card__body").getBoundingClientRect().bottom);
+            assert.ok(spacing<=2, "Report cards must not stretch into empty space to match a taller neighbor");
+          }
           assert.equal(result.topbarColor,"rgb(248, 247, 241)");
           assert.equal(result.topbarImage,"none");
           if (result.heroContrast !== null) assert.ok(result.heroContrast>=4.5,`${role} ${width}px: dashboard heading must remain readable against its background`);

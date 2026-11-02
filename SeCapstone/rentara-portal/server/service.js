@@ -63,7 +63,7 @@ export class Service {
     );
   }
   login({ email, password }, ip = "local") {
-    const key = ip + ":" + String(email).toLowerCase();
+    const key = ip + ":" + String(email).trim().toLowerCase();
     let entry = this.loginAttempts.get(key);
     if (entry && Date.now() - entry.at >= 15 * 60_000) {
       this.loginAttempts.delete(key);
@@ -178,6 +178,8 @@ export class Service {
   }
   profile(user, body) {
     const u = this.must("users", user.id);
+    if (body.phone !== undefined)
+      requireValue(typeof body.phone === "string" && /^(?:[0-9]{11})?$/.test(body.phone), "Phone must contain exactly 11 digits, or be left blank");
     if (body.password) {
       requireValue(
         verifyPassword(body.currentPassword, u.passwordHash),
@@ -188,14 +190,14 @@ export class Service {
     }
     if (body.name !== undefined) {
       requireValue(
-        String(body.name).trim().length >= 2,
-        "Full name is required",
+        typeof body.name === "string" && body.name.trim().length >= 2 && body.name.trim().length <= 150,
+        "Full name must contain 2 to 150 characters",
       );
-      u.name = String(body.name).trim().slice(0, 150);
+      u.name = body.name.trim();
     }
     if (body.email !== undefined) {
       requireValue(
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email),
+        typeof body.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email.trim()),
         "Valid email is required",
       );
       u.email = body.email.trim().toLowerCase();
@@ -517,6 +519,22 @@ export class Service {
     if (kind === "units") {
       const prop = this.must("properties", p.propertyId);
       p.letter = prop.letter;
+      if (body.floorNumber !== undefined)
+        requireValue(/^[0-9]+$/.test(String(body.floorNumber)) && Number.isSafeInteger(Number(body.floorNumber)), "Floor must be a non-negative whole number");
+      if (body.floorNumber !== undefined && body.floor !== undefined && /^[0-9]+$/.test(String(body.floor)))
+        requireValue(Number(body.floorNumber) === Number(body.floor), "Floor and floor number must match");
+      // Preserve historical display labels on unrelated edits; all new floor
+      // entries use one non-negative whole number for display and grouping.
+      if (!id || (body.floor !== undefined && String(body.floor) !== String(old.floor))) {
+        requireValue(/^[0-9]+$/.test(String(body.floor ?? body.floorNumber ?? "")), "Floor must be a non-negative whole number");
+        const floor = Number(body.floor ?? body.floorNumber);
+        requireValue(Number.isSafeInteger(floor), "Floor must be a safe whole number");
+        p.floor = String(floor);
+        p.floorNumber = floor;
+      } else if (body.floorNumber !== undefined) {
+        p.floorNumber = Number(body.floorNumber);
+        if (p.floorNumber !== old.floorNumber) p.floor = String(p.floorNumber);
+      }
       requireValue(
         p.code &&
           p.floor &&
@@ -548,6 +566,9 @@ export class Service {
         );
     }
     if (kind === "tenants") {
+      for (const key of ["phone", "emergencyContactPhone"])
+        if (body[key] !== undefined)
+          requireValue(typeof body[key] === "string" && /^(?:[0-9]{11})?$/.test(body[key]), "Phone must contain exactly 11 digits, or be left blank");
       const unit = this.must("units", p.unitId);
       p.propertyId = unit.propertyId;
       requireValue(
@@ -569,6 +590,7 @@ export class Service {
       );
       requireValue(
         p.assignmentStart >= p.leaseStart &&
+          (!p.leaseEnd || p.assignmentStart <= p.leaseEnd) &&
           (!p.leaseEnd || !p.assignmentEnd || p.assignmentEnd <= p.leaseEnd),
         "Assignment must fall inside the lease",
       );

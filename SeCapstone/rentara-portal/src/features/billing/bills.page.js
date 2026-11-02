@@ -441,7 +441,7 @@ function incomingSection(incoming, exceptions = [], units = [], selected = "all"
     </div>`;
   }
 
-  return html`<div class="card">
+  return html`<div class="card incoming-bills">
     <div class="card__header">
       <div>
         <h2 class="card__title">Incoming utility bills</h2>
@@ -453,7 +453,7 @@ function incomingSection(incoming, exceptions = [], units = [], selected = "all"
 
     <div class="intake-toolbar"><label class="field__label">Result<select class="input select" data-intake-filter>${[["all","All results"],["review","Needs review"],["duplicate","Duplicate"],["processed","Processed"],["processing","Processing"]].map(([value,label]) => html`<option value="${value}" ${selected === value ? "selected" : ""}>${label}</option>`)}</select></label><span class="text-sm text-secondary" data-intake-count aria-live="polite"></span></div>
     <p class="card__body" data-intake-empty hidden>No received bills match this result. Choose another result to continue.</p>
-    <div>
+    <div class="incoming-bills__list">
       ${incoming.map((bill) => {
         const result = intakeResult(bill);
         const unit = units.find(u => u.id === bill.unitId);
@@ -497,8 +497,7 @@ function incomingSection(incoming, exceptions = [], units = [], selected = "all"
               <div class="ocr-field">
                 <span class="ocr-field__label">Source file</span>
                 <span
-                  class="ocr-field__value"
-                  style="font-weight:400;font-size:var(--text-xs)"
+                  class="ocr-field__value ocr-field__value--source"
                   >${bill.filename}</span
                 >
               </div>

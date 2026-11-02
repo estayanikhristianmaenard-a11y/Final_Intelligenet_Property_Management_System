@@ -57,7 +57,9 @@ ${value}</textarea>`;
       type="${f.type ?? "text"}"
       value="${value}"
       ${f.required ? "required" : ""}
-      ${f.type === "number" ? html`min="0" step="0.01"` : null}
+      ${f.type === "number" ? html`min="0" step="${f.step ?? "0.01"}"` : null}
+      ${f.type === "password" && f.key === "password" ? html`minlength="12" maxlength="200"` : null}
+      ${f.type === "tel" || /phone/i.test(f.key) ? html`inputmode="numeric" pattern="[0-9]{11}" minlength="11" maxlength="11" title="Enter exactly 11 digits, for example 09123456789"` : null}
     />`;
   };
   return openModal({
@@ -265,11 +267,12 @@ async function entityForm(kind, id, onSaved, defaults = {}) {
         required: true,
       },
       { key: "code", label: "Unit code", required: true },
-      { key: "floor", label: "Floor", required: true },
       {
         key: "floorNumber",
-        label: "Floor number",
+        label: "Floor",
         type: "number",
+        step: "1",
+        hint: "Whole numbers only. Use 0 for the ground floor.",
         value: 1,
         required: true,
       },
@@ -384,9 +387,18 @@ async function entityForm(kind, id, onSaved, defaults = {}) {
   }
   return dialogForm({
     title: (id ? "Edit " : "Add ") + kind.replace(/s$/, ""),
+    className: `modal--entity modal--${kind}`,
+    subtitle: {units:"Set up the unit details and its billing arrangement.", properties:"Keep your property details organized in one place.", tenants:"Add contact details and the tenant’s unit assignment."}[kind] ?? "Review the details before saving.",
     fields,
     values,
     onReady(modal, form) {
+      if (kind === "units") {
+        const floor = form.elements.floorNumber;
+        floor.inputMode = "numeric";
+        floor.addEventListener("beforeinput", event => {
+          if (event.data && /[^0-9]/.test(event.data)) event.preventDefault();
+        });
+      }
       if (kind !== "tenants" || !form.elements.leaseStart) return;
       const keys = ["leaseStart", "leaseEnd", "assignmentStart", "assignmentEnd"];
       const validateDates = () => {
@@ -418,10 +430,12 @@ async function entityForm(kind, id, onSaved, defaults = {}) {
       form.addEventListener("change", validateDates);
       validateDates();
     },
-    save: (data) =>
-      id
+    save: (data) => {
+      if (kind === "units") data.floor = data.floorNumber;
+      return id
         ? api.patch(`/${kind}/${encodeURIComponent(id)}`, data)
-        : api.post("/" + kind, data),
+        : api.post("/" + kind, data);
+    },
     onSaved,
   });
 }
@@ -564,6 +578,8 @@ async function userForm(id, onSaved, passwordOnly = false) {
         form.elements.workspaceId.closest(".field").hidden=admin;
         form.elements.workspaceId.disabled=admin;
         form.elements.tenantId.closest(".field").hidden=form.elements.role.value!=="tenant";
+        form.elements.tenantId.required=form.elements.role.value==="tenant";
+        form.elements.tenantId.disabled=form.elements.role.value!=="tenant";
       };
       form.elements.role.addEventListener("change",update);update();
     },

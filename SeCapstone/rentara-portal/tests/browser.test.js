@@ -157,7 +157,7 @@ test(
       await page.locator('[name="propertyId"]').selectOption(property.id);
       for (const [key, value] of Object.entries({
         code: "E-101",
-        floor: "Ground Floor",
+        floorNumber: "0",
         monthlyRent: "10000.01",
       }))
         await page.locator(`[name="${key}"]`).fill(value);

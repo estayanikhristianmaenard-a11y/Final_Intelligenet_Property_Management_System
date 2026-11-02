@@ -122,7 +122,7 @@ test("phone utility journey: PDF upload, correction, shared bills, calendar, ale
     assert.equal(image.billIds.length,3);
     const managerUser=service.login({email:"manager@propertypro.ph",password}).user;
     const adminUser=service.login({email:"admin@propertypro.ph",password}).user;
-    const individualUnit=service.writeEntity(managerUser,"units",{propertyId:"prp-b",code:"B-IND",floor:"Ground",floorNumber:0,type:"Studio",monthlyRent:100,arrangement:"individual"});
+    const individualUnit=service.writeEntity(managerUser,"units",{propertyId:"prp-b",code:"B-IND",floor:"0",floorNumber:0,type:"Studio",monthlyRent:100,arrangement:"individual"});
     const individualTenant=service.writeEntity(managerUser,"tenants",{fullName:"Individual Water Tenant",email:"individual@example.test",unitId:individualUnit.id,leaseStart:start,assignmentStart:start});
     service.userWrite(adminUser,{name:individualTenant.fullName,email:individualTenant.email,role:"tenant",tenantId:individualTenant.id,password});
     service.writeEntity(managerUser,"mappings",{unitId:individualUnit.id,provider:"Manila Water",account:"MW-IND-001",category:"water"});

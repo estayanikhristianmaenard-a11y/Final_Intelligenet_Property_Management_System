@@ -32,9 +32,21 @@ Panel exit cleanup follows the actual animation duration. Opening a replacement 
 
 Motion verification uses the existing browser feedback test with both `reduce` and `no-preference`. It checks actual menu DOM retention and a native transform transition, control dimensions during a press, retained unsaved text, dialog focus restoration, panel closure, and reduced-motion behavior. Existing route, billing and role tests remain applicable.
 
+## Botanical editorial detail - 2 November 2026
+
+The user's request for a more expressive, decorated interface is implemented in `living-details.css`, between the form and motion layers. It retains the approved cream/mint/forest palette and adds illustrated inner-page covers, larger hierarchy, arch-shaped section ornaments, layered paper edges, category-tinted queue cards, stronger table/filter treatments, decorated settings/panel surfaces, and an illustrated brand sign-off on short pages. Narrow screens retain small cover illustrations and stack actions; the Tenant greeting keeps a small neighborhood scene on phones.
+
+`mint-neighborhood.svg` is a local decorative scene with balconies, brick texture, greenery, awning and a small water feature. It appears in Manager/Home/login compositions and relevant page covers. Staff and Admin retain their role-specific bill-review/key illustrations with matching framing and decorative icon tokens. Neither the scene nor its caption represents actual property information, service status or new business functions.
+
+Visual review caught a CSS-specificity collision that duplicated the Tenant greeting as a large second header. The corrected Tenant-specific selector keeps its introduction compact, and the all-role browser audit now checks that introduction stays below 90 px at every audited width. See the dated QA entry for the reproduced failure, corrected checks and screenshot gallery refresh.
+
 ## Theme implementation
 
-`src/styles/fresh-mint.css` is the final theme layer after the existing stylesheets. It overrides presentation tokens and components while keeping route, API, data attributes and event handling in their existing modules. SVGs live in `src/assets/mint-apartments.svg` and `src/assets/mint-plant.svg`. No font download, UI framework or additional package is required.
+The later whitespace correction makes Incoming Bills a register with aligned fact columns and a right-side action area on desktop, switching to two-column facts and wrapped actions on smaller screens. Report cards retain natural heights, and header selectors use compact widths beside their actions. The layout audit uses actual synthetic incoming rows, including long filenames, so spacing checks cannot pass on an empty intake list.
+
+`src/styles/fresh-mint.css` supplies the theme after the existing stylesheets, followed by `form-garden.css` for illustrated dialogs, `living-details.css` for the botanical editorial detail, and `jelly-motion.css` for interaction timing. Dialog artwork is local, decorative and outside form controls. Entity dialogs use two columns on desktop and a single column on phones; their body scrolls independently of the action footer. No font download, UI framework or additional package is required.
+
+The 2 November form-validation pass replaces duplicate unit-floor controls with one non-negative whole-number input, and enforces optional-blank/exactly-eleven-digit phone values in the UI and write APIs. Existing data is not migrated; see the dated QA entry for compatibility and test evidence. This later validation change is separate from the original presentation-only theme work.
 
 Tenant rent reporting, Manager confirmation, utility personal marks, calendar rules, correction proposals, role/workspace isolation and monochrome receipts retain their existing rules. The illustration and sample figures in the approved concept do not replace working records. Backend code, database schemas, live configuration and credentials were not modified for this theme.
 
