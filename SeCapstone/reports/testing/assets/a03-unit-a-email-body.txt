@@ -1,0 +1,11 @@
+TO: rentara2026@gmail.com
+SUBJECT: Group 3 Demo - Final Test A03 - Meralco
+
+Copy the subject separately. Copy only the body below into Gmail. Do not attach this text file.
+----- EMAIL BODY -----
+Meralco
+SYNTHETIC FINAL TEST - NOT A REAL BILL
+Account: G3000101
+Amount Due: 900.00
+Due Date: 2027-01-20
+Billing Period: 2027-01-01 to 2027-01-14

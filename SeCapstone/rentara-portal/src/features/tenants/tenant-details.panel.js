@@ -199,9 +199,9 @@ function tenantHeader(tenant) {
         >${icon("layers", { size: 14 })} <b>${tenant.floor}</b></span
       >
       <span class="grow"></span>
-      <span class="panel-identity-row__unit"
+      <span class="panel-identity-row__unit panel-identity-row__rent"
         >${icon("receipt", { size: 14 })}
-        <b>${peso(tenant.monthlyRent)}</b>/mo</span
+        <span><b>${peso(tenant.monthlyRent)}</b><small>Whole-unit monthly rent</small></span></span
       >
     </div>`;
 }

@@ -28,7 +28,7 @@ Open **http://localhost:8080/**. Keep the terminal running while using the porta
 
 For an isolated demonstration, copy `.env.example` to `.env`, set `DATA_DIR=data/demo`, and run `npm.cmd run setup -- --demo`. This explicitly creates four example properties, three distinct shared occupants, one tenant account, and first-cycle bills through the real rent engine. Example accounts are `admin@propertypro.ph`, `manager@propertypro.ph`, and `maria.santos@gmail.com`; the local demonstration password is `LocalDemo!2026`. Use a separate data directory for real records. Remove an inherited `INITIAL_PASSWORD` environment variable if you want the documented demo password.
 
-The default database is `data/propertypro.sqlite`. Files, backups and OCR cache remain under the configured `DATA_DIR`, which must be a private server directory. The repository ignores this directory and `.env`.
+The default database is `data/propertypro.sqlite`. Files, backups and OCR cache remain under the configured `DATA_DIR`, which must be a private server directory. The repository ignores runtime data. The owner explicitly chose to share the team-owned `.env`; generated profile variants remain local. Do not put passwords in test workbooks or evidence.
 
 If port 8080 is already occupied, set `PORT` in `.env` and use that port's HTTP address. For the existing Apache URL on port 80, start this backend on 8080; the frontend selects the local 8080 API. Custom Apache ports or remote deployment need a matching API configuration/reverse proxy and explicit `ALLOWED_ORIGINS`.
 
@@ -48,13 +48,13 @@ The Tenant utility tracker is directly beneath rent on desktop and phones. The c
 
 ## Administrator
 
-1. Sign in with the Admin account. Role selection on the login page only fills an example email; the server determines permissions from the account.
+1. Sign in with the Admin account using ordinary email/password entry; the server determines permissions from the account.
 2. Open **Users & Roles** to add, edit, suspend or reset accounts. A Tenant account requires the permanent tenant ID created by the Manager. Usernames must use unique email addresses.
 3. Resetting a password or changing an account invalidates that account's existing sessions. A Tenant can change their own password under Settings by supplying the current password.
 4. Use **System Dashboard** to check database integrity and integration state, create a SQLite backup, restart the OCR worker, or purge temporary cache files. Purge leaves source documents, tenant documents and financial records intact.
 5. Review/export **Audit Log**. Audit records are retained in the database; they are not a cryptographically signed or independently immutable ledger.
 
-The last active Admin and the current Admin's own access cannot be removed. Admin cannot manage properties, inspect tenant bills, correct charges or confirm payments through the API.
+The last active Admin and the current Admin's own access cannot be removed. Admin may inspect approved workspace and financial records through the read-only workspace view, but cannot edit operational records, open private files, correct charges or confirm payments.
 
 ## Manager: portfolio and leases
 
@@ -71,6 +71,10 @@ The server checks rent every minute using the Philippine calendar date, includin
 Once the first payment is confirmed, advance becomes available credit. In Billing Records, the Manager selects **Apply advance** on the final applicable rent bill and confirms the application. Generation and payment confirmation alone do not apply it. The bill retains gross charge, credit, remaining balance and the original receipt reference. A fully covered bill becomes Paid using the original confirmed payment/receipt; no new cash payment or receipt is created. A remaining balance stays Unpaid and may be reported. Zero-balance bills cannot be reported and receive no unpaid reminder. Repeated application returns the existing settlement.
 
 If the final cycle is already reported/paid, or the confirmed advance exceeds its final share, A01 review preserves the credit and transaction. A pending report can be rejected with a reason and revalidated. For an incorrect unpaid rent amount, **View bill → Correct rent** recomputes the whole cycle using frozen recipients and records a reason. Confirmed payments require Manager review and an approved settlement procedure; this version never silently rewrites them or invents a refund.
+
+Tenant directory search accepts a name, unit or email. Manager and Staff can also choose a Tenant from the top search suggestions. A permitted profile edit refreshes the open directory while keeping its search text and property filter. The directory and panel header label the configured amount as whole-unit monthly rent. For shared occupancy, Overview also shows the latest billed rent share from the saved rent record. It does not recalculate a historical share using today's occupants.
+
+Overview lists the latest rent, electricity and water bill separately, each with its own amount, due date and status. No bill available means there is no matching record; it does not mean a zero balance. Advance rent and applied advance are identified where recorded. Utility marks remain personal tracking, and provider payment is not verified.
 
 ## Manager: utility intake and review
 
@@ -149,7 +153,7 @@ SMTP_FROM=your-authorized-sender@example.com
 PORTAL_URL=http://localhost:8080/
 ```
 
-Use credentials authorized for SMTP sending by your mail provider. The example above contains placeholders. For port 587 the sender requires STARTTLS; port 465 uses TLS from connection start. Certificate validation remains enabled. Keep these settings in the ignored `.env` file. `PORTAL_URL` must be an address the recipient can actually reach; localhost links open only on the same computer. Use the computer's LAN address for a same-network phone demo, or the HTTPS site address for deployment. Incoming IMAP credentials and outgoing SMTP credentials are separate settings.
+Use credentials authorized for SMTP sending by your mail provider. The example above contains placeholders. For port 587 the sender requires STARTTLS; port 465 uses TLS from connection start. Certificate validation remains enabled. Keep these settings in backend configuration; this project owner chose to share the team-owned `.env` with the group. `PORTAL_URL` must be an address the recipient can actually reach; localhost links open only on the same computer. Use the computer's LAN address for a same-network phone demo, or the HTTPS site address for deployment. Incoming IMAP credentials and outgoing SMTP credentials are separate settings.
 
 The running scheduler checks every minute. Tenant Settings includes **Rent email notifications**; the billing, reminder, and payment category preferences also apply. Reminders retain the approved 9 AM Philippine-time, three-days-before-due rule. Pending reports, Paid rent, old reminder dates, and stale bill revisions are excluded. No email permission is required in the browser.
 
@@ -159,7 +163,7 @@ Each eligible saved event records its independent email status and up to three s
 
 Open **Review** / **Correct source** from Bills or the Exception Queue. The dialog displays the original PDF or clear bill image beside the extracted provider, account/reference, amount, due date, and period dates. Select the field to correct; its current extracted value fills automatically. Enter the corrected value and a reason, then save. The backend preserves correction history and reruns validation; saving does not guarantee finalization when other problems remain.
 
-Original files require Manager authentication. Email sources without an inline preview offer a download and escaped extracted text. Missing files do not prevent reviewing or correcting the extracted fields. Phones stack the original source and correction form vertically.
+Original utility files require an authorized Staff or Manager account in the assigned workspace; Admin inspection does not permit opening them. Email sources without an inline preview offer a download and escaped extracted text. Missing files do not prevent reviewing or correcting the extracted fields. Phones stack the original source and correction form vertically.
 
 ## Backup, recovery and deployment
 
@@ -260,3 +264,12 @@ Staff selects **Prepare correction**, opens the original bill and enters only co
 **Retry original** reloads only the protected source preview after a failed request and keeps entered corrections. **Try again** on a failed home, dashboard, bills or notifications page repeats its read request. These recovery controls do not repeat payment or billing writes. If a save reports an uncertain connection result, check the saved queue before submitting again. Use **Reload saved case** when saving succeeded but refreshing failed.
 
 On phones, the original and correction form stack. Fields remain readable when focused, action buttons use the available width, and the page scrolls normally. The group walkthrough and actual email/device checks are in the [manual test guide](manual-test-guide.md).
+
+
+## Admin workspace inspection
+
+Open Admin Dashboard > Inspect workspaces (or Workspaces in navigation). Select a business; the header shows its name and Admin · Read-only. Overview provides counts; Properties, Units, Tenants and Bills reuse the application's existing presentation components. Property/unit filters and Tenant search keep context in the URL. A Tenant's View Tenant link in Users & Roles opens the same inspection context directly. Admin remains Admin and does not sign in as Manager.
+
+Open a Tenant to read contact/unit details, permitted bills and system-held rent receipts. Open a bill to read its charge breakdown, selected extracted source values and structured correction history. Personal utility status is labelled Tenant-recorded, not verified. Admin cannot change it. View rent receipt renders the original system-generated snapshot; private uploaded files, original utility bills and raw extraction cannot be opened. File metadata may show an unrecorded date for older documents.
+
+Operational and financial actions stay with the existing roles. Admin can still manage accounts/roles/status through Users & Roles, but this inspection view has no contact, occupancy, billing, confirmation, correction or allocation editing. Use browser Back to return with the same workspace/filter context. Reload to see a Manager/Staff update to the shared record. Log out before another user takes over the browser. The same permission policy applies in Demo and Operational; no new profile or account-transfer flow was introduced.

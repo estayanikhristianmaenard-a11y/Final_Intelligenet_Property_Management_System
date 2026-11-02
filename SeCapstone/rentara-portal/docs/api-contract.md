@@ -30,7 +30,7 @@ Status codes: 200 success, 400 malformed request, 401 missing/expired/invalid cr
 {"message":"Access denied","code":null}
 ```
 
-Admin has system maintenance permissions only. Manager owns business administration and confirmation. Tenant accesses only the linked tenant record. A caller cannot choose a role through the login request.
+Admin has account/system maintenance and a separate explicit read-only workspace-inspection capability. Manager owns business administration and confirmation. Tenant accesses only the linked tenant record. A caller cannot choose a role through the login request.
 
 ## Persistent database
 
@@ -203,3 +203,19 @@ The `correction_proposals` SQLite table uses the existing JSON-record/workspace 
 `GET /api/v1/automation/status` is read-only for authenticated Staff/Manager in their own workspace. Returns checkedAt, scheduleIntervalMs (60000), mailboxIntervalMs (300000), mailboxConfigured, nextMailboxCheckAt, and lastCycle (nullable). The latest cycle contains startedAt/completedAt and fixed per-job states/times; it contains no configuration credentials or raw provider errors. Access does not trigger processing. Tenant/Admin receive 403; another business cannot select the current workspace with request fields.
 
 Runtime startup invokes `createApp().startAutomation()`, which starts immediately and then every minute with no overlap. Calling it twice on the same app returns the existing controller. Closing the application stops/waits for scheduled work. `automation-cycle` is a bounded record in existing workspace settings, not a new database table or unbounded audit stream. Job completion is not a delivery/payment guarantee. See [automatic workflow](automated-workflow.md).
+
+
+## Admin read-only workspace inspection - 1 November 2026
+
+`GET /api/v1/admin/workspace-view?workspaceId=ID` requires Admin. Optional `propertyId`, `unitId` and `q` filter the Tenant/bill list; foreign related IDs return 404. The response contains selected property/unit/Tenant records, safe bill projections and workspace counts, not Manager action queues or complete storage records.
+
+`GET /admin/workspace-view/tenants/:id`, `/bills/:id` and `/receipts/:id` derive the workspace from the record if no `workspaceId` is supplied. If supplied, it must match or the response is 404. Only Admin may use these routes; Manager, Staff and Tenant remain scoped by authenticated membership on their existing APIs. Body/query IDs do not grant another role this capability. All new routes reject writes with 405; extra read-filter keys are rejected.
+
+Tenant details expose approved contact/unit fields, account status, selected bills/receipt records and file type/date/status metadata. Government ID, passwords/hashes, original filenames, storage identifiers/paths, document hashes, full account references, raw email/OCR text, private document bytes and arbitrary nested properties are not projected. Bill details expose selected extracted provider/amount/dates and proposal history without free-text investigation notes or account-reference changes. Inspection of unfinalized raw sources is not added. Utility marks are Tenant-recorded, not verified, and Admin cannot change them.
+
+`GET /admin/workspace-view/receipts/:id?format=html` renders the existing system-generated rent receipt snapshot. It does not open an uploaded file, create a receipt or imply utility settlement. Original private-file, financial-action and Manager export endpoints remain denied. Specific Tenant/bill/receipt inspections are logged under the actual Admin identity and inspected workspace. Lists are not logged per row. Responses inherit protected no-store headers. Existing global audit and local recovery/backup administration are unchanged; web permissions do not sandbox filesystem operators.
+
+
+### Public account response projection - 1 November 2026
+
+Account lists and authenticated identity/profile responses reuse an explicit public-user projection: id, name, email, role, status, tenantId, workspaceId, phone, lastSeen and createdAt where present. Workspace display names are separately resolved from membership. Only billing/reminder/payment/emailRent boolean preferences are projected. Password hashes and unrecognized stored fields, including reset/token/configuration fields, are excluded. A new stored property is not automatically a new API field; review the allowlist and tests before exposing it. This is response hardening only, not a password migration or changed role model.

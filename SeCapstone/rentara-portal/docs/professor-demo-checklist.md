@@ -10,7 +10,7 @@ Prepared 22 October 2026. This guide uses the existing portfolios; it does not r
 - At the final readiness check, showcase port 8080 returned HTTP 200; acceptance port 8443 was not running. Start acceptance explicitly if you plan to demonstrate its sample-file intake. Reachability is a point-in-time check, not a guarantee that a server remains running.
 - Use `npm.cmd start` from `SeCapstone/rentara-portal` for the configured showcase at **http://localhost:8080/**.
 - Use the separate [acceptance startup](local-acceptance-setup.md) for **https://CURRENT_LAPTOP_IP:8443/**. Phone access requires the current laptop address, a reachable local network and trusted HTTPS for Push. Do not assume the previously configured IP is unchanged.
-- Keep the [demo ZIP](../../reports/demo-files/rentara-demo-bill-files.zip) extracted locally before presenting. Its 11 input/metadata entries were checked against current source hashes. EML is not an accepted browser bill upload.
+- Use the retained [canonical sample catalog](samples/utility-bills/README.md) for these earlier showcase/acceptance cases, or the [fresh final-testing kit](../../reports/testing/README.md) for the current Group 3 walkthrough. The redundant ZIP was removed; its inputs remain in the catalog. EML is not an accepted browser bill upload.
 - Start with the same laptop/browser/network you plan to use. Close unrelated tabs; use separate browser profiles or clearly sign out before changing roles. Do not assume a phone has granted notification permission.
 
 ## Accounts checked without changing records

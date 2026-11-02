@@ -4,12 +4,18 @@ import { parseEnv } from "node:util";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { groupDemoOrigins } from "../server/group-demo-config.js";
+import { groupDemoOrigins, groupDemoDelivery, groupDemoRecipients, groupDemoPortal } from "../server/group-demo-config.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const db = new DatabaseSync(join(root, "data/group-demo/propertypro.sqlite"), { readOnly: true });
 db.close();
 const base = parseEnv(readFileSync(join(root, ".env"), "utf8"));
+const delivery = groupDemoDelivery(process.argv.slice(2), {
+  ...base,
+  // setup:https keeps this laptop's stable Push keys in .env.acceptance.
+  ...Object.fromEntries(['VAPID_PUBLIC_KEY','VAPID_PRIVATE_KEY','VAPID_SUBJECT'].map(key=>[key,process.env[key] || base[key] || ''])),
+});
+const portalUrl = groupDemoPortal(process.env.PORTAL_URL || undefined);
 if (!process.env.TLS_CERT_FILE || !process.env.TLS_KEY_FILE)
   throw new Error("Local HTTPS must be configured first: npm run setup:https -- --ip YOUR_LAPTOP_IP");
 const receive = process.argv.includes("--receive");
@@ -43,12 +49,19 @@ if (receive) {
     try { await client.logout(); } catch { client.close(); }
   }
 }
-console.log("Group 3 demo: HTTPS port 8444; rent email sending OFF.");
+console.log(`Group 3 demo: HTTPS port 8444; ${delivery.DEMO_LIVE_DELIVERY === 'true' ? 'LIVE DELIVERY ON for new session events only' : 'outgoing email and Push OFF'}.`);
+console.log('Demo notification links: ' + portalUrl);
+if (delivery.DEMO_LIVE_DELIVERY === 'true') {
+  console.log('Approved recipients: ' + groupDemoRecipients.join(', '));
+  console.log('On each test phone, sign in and enable/re-register Push after this startup. Existing Manager Push and Tenant preferences still apply.');
+  if (!(delivery.VAPID_PUBLIC_KEY && delivery.VAPID_PRIVATE_KEY && delivery.VAPID_SUBJECT)) console.log('Push is not configured; live demo can test rent email only until VAPID keys are prepared.');
+}
 console.log(receive ? "Receiving only Gmail label Rentara-Group3-Demo. Apply this label to received demo emails in Gmail." : "Mailbox retrieval OFF. Add --receive when ready to receive demo bills.");
 const result = spawnSync(process.execPath, ["server/index.js"], {
   cwd: root, stdio: "inherit", windowsHide: true,
   env: { ...process.env, DATA_DIR: "data/group-demo", WORKSPACE_CONFIG_FILE: "",
-    HOST: "0.0.0.0", PORT: "8444", RENT_EMAIL_ENABLED: "false",
+    RENTARA_PROFILE: "demo", UTILITY_INTAKE_ENABLED: receive ? "true" : "false",
+    HOST: "0.0.0.0", PORT: "8444", PORTAL_URL: portalUrl, ...delivery,
     ALLOWED_ORIGINS: groupDemoOrigins(process.env.ALLOWED_ORIGINS),
     IMAP_HOST: receive ? base.IMAP_HOST : "", IMAP_USER: receive ? base.IMAP_USER : "",
     IMAP_PASSWORD: receive ? base.IMAP_PASSWORD || "" : "",

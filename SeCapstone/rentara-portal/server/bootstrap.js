@@ -2,7 +2,11 @@ import { passwordHash } from "./service.js";
 import { philippineDate } from "./rules.js";
 export function bootstrap(
   service,
-  { adminPassword, managerPassword, tenantPassword, demo = false, demoStart } = {},
+  {
+    adminPassword, managerPassword, tenantPassword, demo = false, demoStart,
+    adminName = "System Administrator", adminEmail = "admin@propertypro.ph",
+    managerName = "Karla Dizon", managerEmail = "manager@propertypro.ph",
+  } = {},
 ) {
   const s = service.s;
   if (s.all("users").length)
@@ -23,8 +27,8 @@ export function bootstrap(
     });
     s.save("users", {
       id: "usr-admin",
-      name: "System Administrator",
-      email: "admin@propertypro.ph",
+      name: adminName,
+      email: adminEmail,
       role: "admin",
       status: "active",
       tenantId: null,
@@ -32,8 +36,8 @@ export function bootstrap(
     });
     s.save("users", {
       id: "usr-manager",
-      name: "Karla Dizon",
-      email: "manager@propertypro.ph",
+      name: managerName,
+      email: managerEmail,
       role: "manager",
       status: "active",
       tenantId: null,

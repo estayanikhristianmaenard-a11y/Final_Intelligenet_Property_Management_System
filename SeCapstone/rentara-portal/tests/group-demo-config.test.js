@@ -2,7 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { Store } from "../server/store.js";
 import { createApp } from "../server/index.js";
-import { groupDemoOrigins } from "../server/group-demo-config.js";
+import { groupDemoOrigins, groupDemoPortal } from "../server/group-demo-config.js";
+
+test('Group 3 notification links use the configured HTTPS laptop host and demo port, never the acceptance portfolio',()=>{
+  assert.equal(groupDemoPortal('https://192.168.1.71:8443/'),'https://192.168.1.71:8444/');
+  assert.equal(groupDemoPortal(),'https://localhost:8444/');
+  for (const invalid of ['http://localhost:8080/','https://user:secret@example.test/','https://example.test/path','https://example.test/?secret=x']) assert.throws(()=>groupDemoPortal(invalid));
+});
 
 test("Group 3 origins include its HTTPS port and the explicitly configured LAN host", () => {
   const origins = new Set(groupDemoOrigins("https://192.168.1.71:8443,http://localhost:8080").split(","));

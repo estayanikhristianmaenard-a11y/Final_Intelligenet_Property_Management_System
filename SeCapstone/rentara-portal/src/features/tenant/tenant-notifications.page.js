@@ -176,10 +176,12 @@ function bind(container, items) {
       .then(async (registration) => {
         const subscription = await registration?.pushManager?.getSubscription();
         if (subscription) {
-          status.textContent = "Browser subscription registered. Delivery depends on this device and connection.";
+          status.textContent = "Browser subscription found. Refresh registration to reconnect this device to your account.";
           const button = container.querySelector('[data-action="enable-push"]');
-          if (button) button.hidden = true;
-          container.querySelector(".push-device-disclosure")?.removeAttribute("open");
+          if (button) {
+            button.hidden = false;
+            button.textContent = "Refresh device registration";
+          }
         }
       })
       .catch(() => {

@@ -41,7 +41,11 @@ export function verifyPassword(password, hash) {
   );
 }
 export const publicUser = (u) => {
-  const { passwordHash: ignored, ...safe } = u;
+  const fields = ['id','name','email','role','status','tenantId','workspaceId','phone','lastSeen','createdAt'];
+  const safe = Object.fromEntries(fields.filter(key => Object.hasOwn(u,key)).map(key => [key,u[key]]));
+  if (u.preferences) safe.preferences = Object.fromEntries(
+    ['billing','reminder','payment','emailRent'].filter(key => typeof u.preferences[key] === 'boolean').map(key => [key,u.preferences[key]]),
+  );
   return safe;
 };
 export class Service {

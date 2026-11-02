@@ -4,7 +4,7 @@ Implemented 15 October 2026. Rentara retains Node.js, SQLite and the existing HT
 
 ## Operating model
 
-One workspace represents one independent property business and may contain several properties and Managers. A Manager or Tenant account belongs to one workspace. System Admin accounts maintain accounts, workspaces, audits and backups; their role does not authorize property billing operations. There is no separate Owner role in this version: an owner uses a Manager account.
+One workspace represents one independent property business and may contain several properties and Managers. A Manager or Tenant account belongs to one workspace. System Admin accounts maintain accounts, workspaces, audits and backups, and may inspect approved business records through the explicit read-only workspace view. Their role does not authorize operational/financial mutations or private-file access. There is no separate Owner role in this version: an owner uses a Manager account.
 
 The Admin opens **Users & Roles**, selects **Create workspace**, enters the business name, then uses **Add user** to assign a Manager to it. Manager-created properties, units, tenant records and mappings inherit the authenticated workspace. When creating a Tenant login, Admin selects the same workspace as that permanent Tenant record. The sidebar and mobile header show the signed-in workspace. Admin can rename a workspace without moving its records.
 
@@ -76,3 +76,14 @@ On 22 October 2026 the workspace-focused suite checkpoint passed 77 tests, and t
 These checks establish local behavior for the tested routes; they are not a penetration-test certification, load benchmark or live-provider acceptance. Pilot deployment still needs HTTPS, protected persistent storage, tested restore procedures, monitoring and live per-owner integration checks. SQLite remains the current database; larger workloads and multi-server operation require separate capacity planning.
 
 The manuscript's future revision should explicitly state independent owner workspaces, membership/access boundaries and per-workspace intake/notification configuration. Chapters and diagrams are not automatically rewritten by this implementation.
+
+
+## Profile and mailbox safeguards ? 1 November 2026
+
+Demo and Operational use the same business rules with separate database/source directories. Startup validates all enabled workspace mailbox configurations before connecting. Two readers in the same profile cannot use the same trimmed, case-insensitive account plus label; the same label under different accounts is allowed. Existing records are not rewritten or removed to resolve a conflict. Edit the actual integration configuration and restart. There is no separate mailbox-label editor in the portal. Separate running processes do not share a configuration registry: check their printed account/label pairs when setting up multiple instances.
+
+Gmail filters remain essential. A wrongly labelled message stays in the receiving workspace: an unknown provider/account mapping is held for review, while a valid matching mapping can produce bills there. The collision check does not establish intended ownership. Managers must verify mapping ownership and operators must test routing with the intended filters.
+
+New IMAP history identities include host, account, exact folder name, UIDVALIDITY and UID. Exact message hashes, scoped to the account and workspace, prevent repeated source processing after relabelling or a UIDVALIDITY reset. Different messages sharing a numeric UID in another folder still get examined. The existing document/provider/account/period validation remains the financial duplicate backstop for changed email copies. Message-ID alone is not trusted.
+
+Old history is retained. Old processed identities lack the folder, so they are re-examined once under the new identity; billing validation blocks duplicate bills and alerts. Old held messages remain explicitly retryable, and their original review links are retained. A label/UIDVALIDITY change can require downloading messages again; it does not promise zero rescanning. A copied bill can appear as a duplicate review item, but must not create another charge or alert. Restart after configuration changes.

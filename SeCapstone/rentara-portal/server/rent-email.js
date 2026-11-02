@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { philippineDate, addDays } from "./rules.js";
 import { rentEmailTemplate } from "./rent-email-template.js";
+import { deliveryAllowed, recipientAllowed } from "./profile-policy.js";
 
 const TYPES = new Set(["rent-update", "rent-reminder", "rent-confirmed"]);
 const TERMINAL = new Set(["accepted", "skipped", "unconfigured", "unknown", "exhausted"]);
@@ -15,9 +16,10 @@ export class RentEmail {
     this.sending = false;
   }
   configured() {
-    return this.env.RENT_EMAIL_ENABLED === "true" && Boolean(this.env.SMTP_HOST && this.env.SMTP_FROM && this.env.SMTP_USER && this.env.SMTP_PASSWORD);
+    return deliveryAllowed(this.env) && this.env.RENT_EMAIL_ENABLED === "true" && Boolean(this.env.SMTP_HOST && this.env.SMTP_FROM && this.env.SMTP_USER && this.env.SMTP_PASSWORD);
   }
   async deliver(now = new Date()) {
+    if (!deliveryAllowed(this.env)) return { accepted: 0, configured: false };
     if (this.sending) return { accepted: 0, busy: true };
     this.sending = true;
     let accepted = 0;
@@ -26,11 +28,13 @@ export class RentEmail {
       for (const notification of this.s.all("notifications").filter(n => TYPES.has(n.emailType) && !TERMINAL.has(n.emailDelivery))) {
         const n = this.s.get("notifications", notification.id);
         const save = (patch) => this.s.save("notifications", { ...this.s.get("notifications", n.id), ...patch });
+        const user = this.s.all("users").find(u => u.role === "tenant" && u.tenantId === n.tenantId && u.status === "active");
+        // Excluded demo records remain unchanged; they may belong to another session.
+        if (!recipientAllowed(this.env, user, n)) continue;
         // A restart during SMTP submission leaves an uncertain outcome. Do not send twice.
         if (n.emailDelivery === "sending") { save({ emailDelivery: "unknown", emailFailure: "Interrupted submission; acceptance is unknown" }); continue; }
         if (!this.configured()) { save({ emailDelivery: "unconfigured" }); continue; }
         const bill = this.s.get("bills", n.emailBillId);
-        const user = this.s.all("users").find(u => u.role === "tenant" && u.tenantId === n.tenantId && u.status === "active");
         const preference = n.emailType === "rent-reminder" ? "reminder" : n.emailType === "rent-confirmed" ? "payment" : "billing";
         const today = philippineDate(now);
         const firstReminderAttemptMissed = n.emailType === "rent-reminder" && !(n.emailAttempts > 0) &&
@@ -65,10 +69,13 @@ export class RentEmail {
         submitted++;
         save({ emailDelivery: "sending", emailAttempts: attempts, emailLastAttempt: now.toISOString() });
         try {
+          if (!recipientAllowed(this.env, user, n)) return { accepted, configured: false };
+          const message = rentEmailTemplate({ type: n.emailType, name: user.name, portalUrl: portal.href, bill });
           const info = await this.transport.sendMail({
             from: this.env.SMTP_FROM,
             to: { address: user.email, name: user.name },
-            ...rentEmailTemplate({ type: n.emailType, name: user.name, portalUrl: portal.href, bill }),
+            ...message,
+            subject: this.env.RENTARA_PROFILE === 'demo' ? `[DEMO] ${message.subject}` : message.subject,
             messageId: `<${n.id}@propertypro.local>`,
           });
           if (!(info.accepted ?? []).some(address => String(address).toLowerCase() === user.email.toLowerCase())) throw Object.assign(new Error(), { code: "EENVELOPE" });

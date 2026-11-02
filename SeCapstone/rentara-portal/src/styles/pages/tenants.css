@@ -77,12 +77,17 @@
   font-weight: var(--weight-semibold);
 }
 
+.panel-identity-row__rent { white-space: normal; min-width: 0; }
+.panel-identity-row__rent small { display: block; color: var(--text-muted); font-size: var(--text-2xs); }
+
 @media (max-width: 720px) {
   .panel-drawer__head-row { display: grid; grid-template-columns: minmax(0, 1fr) 44px; }
   .panel-drawer__head-row > .panel-drawer__identity { grid-column: 1; grid-row: 1; }
   .panel-drawer__head-row > [data-close] { grid-column: 2; grid-row: 1; }
   .panel-drawer__head-row > .panel-identity-row { grid-column: 1 / -1; grid-row: 2; margin-top: 0; }
   .panel-drawer__identity p { overflow-wrap: anywhere; }
+  .panel-drawer .mini-list__item { flex-wrap: wrap; }
+  .panel-drawer .mini-list__end { flex: 1 1 100%; text-align: left; overflow-wrap: anywhere; }
 }
 
 /* ------------------------------------------------------------ Sub tabs -- */

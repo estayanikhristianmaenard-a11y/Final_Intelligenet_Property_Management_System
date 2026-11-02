@@ -1,0 +1,23 @@
+TO: rentara2026@gmail.com
+SUBJECT: Group 3 Demo - Unit B - Manila Water Invoice for the Month of November 2026
+
+COPY THE BODY BELOW INTO GMAIL. Do not attach this text file.
+----- EMAIL BODY -----
+SYNTHETIC GROUP 3 DEMO - Not an actual provider bill.
+
+Dear Katubig,
+
+We are pleased to share your Manila Water demo invoice for November 2026.
+Below is a summary of your monthly billing for your reference.
+
+Billing Date: 22 Nov 2026
+Billing Period: 23 Oct 2026 to 22 Nov 2026
+Contract Account Number (CAN): G3W0102
+Invoice Number: DEMO-G3-B-WATER-202611
+Consumption (cu.m.): 4
+Total Amount Due: PHP 280.00
+Due Date: 30 Nov 2026
+
+This summary uses fictional details for the Rentara Group 3 demonstration. No payment is requested. It is based on a provider-email format but is sent by a group member, not Manila Water.
+
+This demo tests email-body parsing. No PDF is attached; no private account details, password instructions, tracking links or payment links are included.

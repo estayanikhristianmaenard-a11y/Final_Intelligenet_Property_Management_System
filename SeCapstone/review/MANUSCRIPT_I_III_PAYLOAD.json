@@ -50,7 +50,7 @@
     },
     {
       "type": "p",
-      "text": "After billing information is extracted, it still needs to be validated, classified, and processed according to defined billing conditions. Rule-based processing uses predefined conditions and logical rules to support structured operational decisions and information handling. Baralis et al. (2022) discuss business-rule engines that represent and execute operational decisions in a structured way. In relation to process automation, Geyer-Klingeberg et al. (2024) present a rule-based method that analyzes decision logic and classifies business processes according to their suitability for robotic process automation. These ideas are relevant to a billing workflow in which validation, classification, calculation, and exception-handling conditions are defined in advance. The reviewed literature provides a basis for combining OCR, rule-based processing, and notification technologies in a billing workflow for smaller residential property-management settings.",
+      "text": "After billing information is extracted, it still needs to be validated, classified, and processed according to defined billing conditions. Rule-based processing uses predefined conditions and logical rules to support structured operational decisions and information handling. Jiménez and Corchuelo (2022) discuss business-rule engines that represent and execute operational decisions in a structured way. In relation to process automation, Bédard et al. (2024) present a rule-based method that analyzes decision logic and classifies business processes according to their suitability for robotic process automation. These ideas are relevant to a billing workflow in which validation, classification, calculation, and exception-handling conditions are defined in advance. The reviewed literature provides a basis for combining OCR, rule-based processing, and notification technologies in a billing workflow for smaller residential property-management settings.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -98,7 +98,7 @@
     },
     {
       "type": "p",
-      "text": "Once billing information has been extracted, it must be checked and processed according to defined conditions. Rule-based processing uses explicit conditions and decision rules to classify, validate, and route information. Wu et al. (2022) demonstrate the use of rule-based information extraction to organize domain-specific information, while Baralis et al. (2022) discuss business-rule engines for representing and executing operational decisions in a structured manner. Extending this idea to process automation, Geyer-Klingeberg et al. (2024) present a rule-based method that analyzes decision logic and classifies business processes according to their suitability for robotic process automation, while Kim et al. (2011) examine proactive exception handling in business processes. These studies support the use of predefined and traceable conditions to determine whether a record proceeds through normal processing or requires additional review. Applying these principles, the proposed system uses defined rules for billing validation, provider and account/reference mapping, duplicate detection, and identifying individual or shared billing arrangements. Records that do not meet the defined conditions are sent to the Exception Queue for Staff investigation and, when required, Manager decisions. These rules, together with the separation between Tenant-reported rent and Manager-confirmed rent status, are system requirements rather than findings established by the cited studies. Digital rent receipts are created only after Manager confirmation. Personal utility tracking remains separate and does not establish provider settlement.",
+      "text": "Once billing information has been extracted, it must be checked and processed according to defined conditions. Rule-based processing uses explicit conditions and decision rules to classify, validate, and route information. Wu et al. (2022) demonstrate the use of rule-based information extraction to organize domain-specific information, while Jiménez and Corchuelo (2022) discuss business-rule engines for representing and executing operational decisions in a structured manner. Extending this idea to process automation, Bédard et al. (2024) present a rule-based method that analyzes decision logic and classifies business processes according to their suitability for robotic process automation, while Kim et al. (2011) examine proactive exception handling in business processes. These studies support the use of predefined and traceable conditions to determine whether a record proceeds through normal processing or requires additional review. Applying these principles, the proposed system uses defined rules for billing validation, provider and account/reference mapping, duplicate detection, and identifying individual or shared billing arrangements. Records that do not meet the defined conditions are sent to the Exception Queue for Staff investigation and, when required, Manager decisions. These rules, together with the separation between Tenant-reported rent and Manager-confirmed rent status, are system requirements rather than findings established by the cited studies. Digital rent receipts are created only after Manager confirmation. Personal utility tracking remains separate and does not establish provider settlement.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -122,7 +122,7 @@
     },
     {
       "type": "p",
-      "text": "After a billing record is finalized, tenants need to be informed that their billing information is available. The World Wide Web Consortium (2024a) describes the Push API, including push services and user subscriptions. The World Wide Web Consortium (2024b) also explains the role of service workers in handling web events in the background when they are included in the system implementation. Because Web Push involves browser subscriptions and authorization, security must also be considered. Carboneri et al. (2023) examine Web Push implementations in the wild and identify security concerns involving push subscriptions and authorization. In the proposed system, Web Push Notifications serve as billing alerts that direct tenants to the authenticated web portal, where complete billing information is available. However, Web Push does not confirm payment, prove that payment occurred, or show whether the tenant read the notification. Tenant payment reporting therefore remains separate from Manager confirmation.",
+      "text": "After a billing record is finalized, tenants need to be informed that their billing information is available. The World Wide Web Consortium (2024) describes the Push API, including push services and user subscriptions. The World Wide Web Consortium (2022) also explains the role of service workers in handling web events in the background when they are included in the system implementation. Because Web Push involves browser subscriptions and authorization, security must also be considered. Carboneri et al. (2023) examine Web Push implementations in the wild and identify security concerns involving push subscriptions and authorization. In the proposed system, Web Push Notifications serve as billing alerts that direct tenants to the authenticated web portal, where complete billing information is available. However, Web Push does not confirm payment, prove that payment occurred, or show whether the tenant read the notification. Tenant payment reporting therefore remains separate from Manager confirmation.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -140,7 +140,7 @@
     },
     {
       "type": "p",
-      "text": "Because the proposed system contains several connected functions, its development requires an organized and adaptable process. Iterative software development divides development into repeated cycles of building, reviewing, receiving feedback, and improving. Larman and Basili (2003) explain the development of iterative and incremental approaches, in which software is developed progressively through repeated cycles. Inayat et al. (2015) emphasize stakeholder involvement, communication, and requirements refinement in iterative requirements engineering, while Ramesh et al. (2021) identify challenges involving changing requirements, stakeholder participation, documentation, and communication in Agile software development. These studies support the use of Iterative Software Development Methodology in the present study. Although the literature supports this approach, the actual quality and performance of the proposed system will be determined through implementation, testing, user feedback, and evaluation.",
+      "text": "Because the proposed system contains several connected functions, its development requires an organized and adaptable process. Iterative software development divides development into repeated cycles of building, reviewing, receiving feedback, and improving. Larman and Basili (2003) explain the development of iterative and incremental approaches, in which software is developed progressively through repeated cycles. Inayat et al. (2015) emphasize stakeholder involvement, communication, and requirements refinement in iterative requirements engineering, while Rasheed et al. (2021) identify challenges involving changing requirements, stakeholder participation, documentation, and communication in Agile software development. These studies support the use of Iterative Software Development Methodology in the present study. Although the literature supports this approach, the actual quality and performance of the proposed system will be determined through implementation, testing, user feedback, and evaluation.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -152,7 +152,7 @@
     },
     {
       "type": "p",
-      "text": "To evaluate the proposed system systematically, the study requires defined software-quality criteria. ISO/IEC 25010:2023 provides a product-quality model for systems and software quality requirements and evaluation (International Organization for Standardization, 2023). Guided by this model, the study will evaluate five quality characteristics: Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security. These characteristics provide a basis for examining whether the system performs its intended functions, performs efficiently, supports user interaction, operates consistently, and protects information. Security is particularly important because the system handles tenant and billing information. Republic Act No. 10173, or the Data Privacy Act of 2012, requires organizations that process personal information to use reasonable and appropriate measures to protect it (Republic of the Philippines, 2012). The National Privacy Commission (2016) further discusses safeguards for the confidentiality, integrity, and availability of personal data, while Zafar et al. (2022) review authorization and access-control strategies that restrict system functions and information according to user permissions. In the proposed system, role-based access separates Admin maintenance, Staff operations, Manager authorization, and Tenant-own functions. Rent email notifications will use authorized recipient records, protected sending credentials, and limited message content that directs tenants to the authenticated portal. These sources guide the study’s quality and security evaluation, but they do not prove that the system already meets the selected quality characteristics or privacy requirements. The Security evaluation is limited to the defined system functions, access controls, and security-related criteria included in the study’s evaluation procedures. It does not constitute a legal audit, certification, or claim of complete compliance with the Philippine Data Privacy Act.",
+      "text": "To evaluate the proposed system systematically, the study requires defined software-quality criteria. ISO/IEC 25010:2023 provides a product-quality model for systems and software quality requirements and evaluation (International Organization for Standardization, 2023). Guided by this model, the study will evaluate five quality characteristics: Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security. These characteristics provide a basis for examining whether the system performs its intended functions, performs efficiently, supports user interaction, operates consistently, and protects information. Security is particularly important because the system handles tenant and billing information. Republic Act No. 10173, or the Data Privacy Act of 2012, requires organizations that process personal information to use reasonable and appropriate measures to protect it (Republic of the Philippines, 2012). The National Privacy Commission (2016) further discusses safeguards for the confidentiality, integrity, and availability of personal data, while Mohamed et al. (2022) review authorization and access-control strategies that restrict system functions and information according to user permissions. In the proposed system, role-based access separates Admin maintenance and read-only oversight, Staff operations, Manager authorization, and Tenant-own functions. Rent email notifications will use authorized recipient records, protected sending credentials, and limited message content that directs tenants to the authenticated portal. These sources guide the study’s quality and security evaluation, but they do not prove that the system already meets the selected quality characteristics or privacy requirements. The Security evaluation is limited to the defined system functions, access controls, and security-related criteria included in the study’s evaluation procedures. It does not constitute a legal audit, certification, or claim of complete compliance with the Philippine Data Privacy Act.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -278,13 +278,13 @@
     },
     {
       "type": "p",
-      "text": "Admin access will be limited to account and system maintenance, including authorized role and workspace assignments. The Manager will establish properties, billing-linked units and occupancy, verified utility mappings, rent settings, and individual or shared arrangements; handle sensitive corrections; confirm or reject rent payments; authorize eligible final-cycle advance application; and access confirmed rent receipts. The Manager may also perform operational tasks. Staff will work only within the assigned business workspace, update permitted descriptive details on existing records, upload utility bills, monitor intake, investigate exceptions, and record notes or escalations. Staff may submit one pending correction proposal per unfinalized incoming utility bill, with proposed values and a reason. The proposal will not alter live billing until the Manager authorizes it and the system confirms that the source and relevant billing context remain current and pass revalidation. Rejection, stale proposals, and failed validation will retain reasons and leave the proposed billing change unapplied. Previous values and the preparing and authorizing actors will be retained. Staff will not create billing-linked occupancy, modify login identity or financial settings, confirm rent, apply advance, or change Tenant utility tracking. Routine valid bills will continue automatically without Staff or Manager approval. Tenants will view their permitted records, report rent payments, maintain their own utility tracking marks, and receive permitted alerts. Authentication and role restrictions will protect centralized records. Evaluation will cover Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security under the selected ISO/IEC 25010:2023 characteristics. It will not establish long-term changes in revenue, profitability, payment compliance, or Tenant behavior.",
+      "text": "Admin will manage accounts and system maintenance, including authorized role and workspace assignments. Admin may also inspect permitted profile, contact, unit, bill, allocation, rent-status and system-generated rent receipt records across workspaces through a read-only view. This view will exclude private uploaded files, original utility sources, raw extraction, full utility account references and authentication details. Admin will not edit operational or financial records, confirm rent, decide correction proposals or change Tenant utility marks. Any visible personal utility mark will be labelled Tenant-recorded and not verified. The Manager will establish properties, billing-linked units and occupancy, verified utility mappings, rent settings, and individual or shared arrangements; handle sensitive corrections; confirm or reject rent payments; authorize eligible final-cycle advance application; and access confirmed rent receipts. The Manager may also perform operational tasks. Staff will work only within the assigned business workspace, update permitted descriptive details on existing records, upload utility bills, monitor intake, investigate exceptions, and record notes or escalations. Staff may submit one pending correction proposal per unfinalized incoming utility bill, with proposed values and a reason. The proposal will not alter live billing until the Manager authorizes it and the system confirms that the source and relevant billing context remain current and pass revalidation. Rejection, stale proposals, and failed validation will retain reasons and leave the proposed billing change unapplied. Previous values and the preparing and authorizing actors will be retained. Staff will not create billing-linked occupancy, modify login identity or financial settings, confirm rent, apply advance, or change Tenant utility tracking. Routine valid bills will continue automatically without Staff or Manager approval. Tenants will view their permitted records, report rent payments, maintain their own utility tracking marks, and receive permitted alerts. Authentication and role restrictions will protect centralized records. Evaluation will cover Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security under the selected ISO/IEC 25010:2023 characteristics. It will not establish long-term changes in revenue, profitability, payment compliance, or Tenant behavior.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Independent business workspaces will separate each management group's operational records. Managers and Staff will access only their authorized workspace, while Tenants will access their own records. Admin access will support authorized account and workspace maintenance without operational rent-confirmation authority. The Tenant calendar will display actual validated bill dates and clearly labelled estimates of upcoming configured rent dates. Estimates will not create charges, establish payment obligations, or predict utility dates. Workspace separation and calendar presentation support the included billing workflow rather than introduce new research objectives.",
+      "text": "Independent business workspaces will separate each management group's operational records. Managers and Staff will access only their authorized workspace, while Tenants will access their own records. Admin access will support authorized account and workspace maintenance and read-only inspection across workspaces, without operational editing or rent-confirmation authority. The Tenant calendar will display actual validated bill dates and clearly labelled estimates of upcoming configured rent dates. Estimates will not create charges, establish payment obligations, or predict utility dates. Workspace separation and calendar presentation support the included billing workflow rather than introduce new research objectives.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -368,7 +368,7 @@
     },
     {
       "type": "p",
-      "text": "The centralized database shall retain property, unit, Tenant, mapping, rent, billing, rent-payment, utility-tracking, exception, correction, receipt, and applicable notification records. Rent bills shall use Unpaid, Tenant Reported Paid, and Paid. Tenant reports shall remain unconfirmed until Manager confirmation; the Manager may also record and confirm an actual rent payment without a prior report after external checking. Receipts shall be issued only for confirmed rent payments. Utilities shall use separate Not Marked Paid and Self-Reported Paid tracking labels, with the notice “Provider payment not verified.” Each utility mark shall belong to the reporting Tenant and the corresponding bill or allocated share, without authorizing a system-issued receipt or changing other tenants' marks. Tenants shall access their bills, stored portal notifications, history, rent statuses, personal utility tracking, and confirmed rent receipts through the authenticated portal. Eligible reminders shall be scheduled at 9 AM Philippine time, three calendar days before the actual due date. Routine valid billing records shall proceed automatically, while exceptions shall require Manager intervention. Web Push shall provide permitted rent and utility alerts. Supplementary email notifications shall cover rent billing updates, eligible rent reminders, and Manager-confirmed rent payment notices only. Outgoing rent email shall be separate from utility-email intake. The system shall use the Tenant's registered email address and retain queued events, channel-specific attempts, and available acceptance or failure results. Limited retries and duplicate controls shall prevent repeated sends during normal processing. Sending failure shall not change payment status or prevent portal access. SMS, GSM, and utility email notifications shall not be used.",
+      "text": "The centralized database shall retain property, unit, Tenant, mapping, rent, billing, rent-payment, utility-tracking, exception, correction, receipt, and applicable notification records. Rent bills shall use Unpaid, Tenant Reported Paid, and Paid. Tenant reports shall remain unconfirmed until Manager confirmation; the Manager may also record and confirm an actual rent payment without a prior report after external checking. Receipts shall be issued only for confirmed rent payments. Utilities shall use separate Not Marked Paid and Self-Reported Paid tracking labels, with the notice “Provider payment not verified.” Each utility mark shall belong to the reporting Tenant and the corresponding bill or allocated share, without authorizing a system-issued receipt or changing other tenants' marks. Tenants shall access their bills, stored portal notifications, history, rent statuses, personal utility tracking, and confirmed rent receipts through the authenticated portal. Eligible reminders shall be scheduled at 9 AM Philippine time, three calendar days before the actual due date. Routine valid billing records shall proceed automatically, while records requiring review shall enter the Exception Queue for Staff investigation and Manager decisions where required. Web Push shall provide permitted rent and utility alerts. Supplementary email notifications shall cover rent billing updates, eligible rent reminders, and Manager-confirmed rent payment notices only. Outgoing rent email shall be separate from utility-email intake. The system shall use the Tenant's registered email address and retain queued events, channel-specific attempts, and available acceptance or failure results. Limited retries and duplicate controls shall prevent repeated sends during normal processing. Sending failure shall not change payment status or prevent portal access. SMS, GSM, and utility email notifications shall not be used.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -380,7 +380,7 @@
     },
     {
       "type": "p",
-      "text": "The Admin shall manage authorized login accounts, roles, workspace membership and system maintenance without rent-confirmation authority. The Manager shall establish billing-linked property, unit and Tenant occupancy records, verified utility mappings and rent settings, and retain authority over sensitive billing corrections, rent confirmation and eligible final-cycle advance application. The Manager may also perform Staff operations. Staff shall access only their assigned workspace, update permitted descriptive details on existing records, upload utility bills, monitor email intake, inspect original sources and extraction results, and record investigation notes or escalations. Staff shall not directly change billing amounts, due dates, periods, mappings, allocation membership, rent settings, occupancy dates or login credentials of other users. Staff may prepare a single pending correction proposal containing the necessary changes and a reason for an unfinalized incoming utility bill. Manager authorization shall check current authority, proposal freshness and applicable validation rules before atomic application; rejection, stale data or failed validation shall leave proposed billing changes unapplied and retain the handling reason. Manager direct corrections shall use existing safeguards and preserve history without requiring another Manager signature. Finalized billing corrections shall remain Manager-controlled, and no authorization shall override duplicate protection. Valid bills shall proceed automatically without routine human approval.",
+      "text": "The Admin shall manage authorized login accounts, roles, workspace membership and system maintenance. Admin shall also inspect permitted profile, contact, unit, bill, allocation, rent-status and system-generated rent receipt records across workspaces through a read-only view. The server shall limit returned fields and deny private uploaded files, original utility sources, raw extraction, full utility account references and authentication details. Admin shall not edit operational records, confirm rent, prepare or decide corrections, or change personal utility marks. Visible utility marks shall remain labelled Tenant-recorded and not verified. The Manager shall establish billing-linked property, unit and Tenant occupancy records, verified utility mappings and rent settings, and retain authority over sensitive billing corrections, rent confirmation and eligible final-cycle advance application. The Manager may also perform Staff operations. Staff shall access only their assigned workspace, update permitted descriptive details on existing records, upload utility bills, monitor email intake, inspect original sources and extraction results, and record investigation notes or escalations. Staff shall not directly change billing amounts, due dates, periods, mappings, allocation membership, rent settings, occupancy dates or login credentials of other users. Staff may prepare a single pending correction proposal containing the necessary changes and a reason for an unfinalized incoming utility bill. Manager authorization shall check current authority, proposal freshness and applicable validation rules before atomic application; rejection, stale data or failed validation shall leave proposed billing changes unapplied and retain the handling reason. Manager direct corrections shall use existing safeguards and preserve history without requiring another Manager signature. Finalized billing corrections shall remain Manager-controlled, and no authorization shall override duplicate protection. Valid bills shall proceed automatically without routine human approval.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -416,7 +416,7 @@
     },
     {
       "type": "p",
-      "text": "The framework connects property and unit records, tenant records, utility-account mappings, and rent settings with utility intake, text extraction or OCR, validation, classification, and billing computation. It also includes exception handling, rent confirmation, advance-credit application, confirmed rent receipts, personal utility tracking, and permitted notifications. These functions use one centralized database. Admin maintains accounts and authorized workspace assignments. Staff handles permitted daily operations and investigates exceptions, while the Manager controls financial settings and decisions. Tenants access their own records, and utility providers supply billing information through supported sources.",
+      "text": "The framework connects property and unit records, tenant records, utility-account mappings, and rent settings with utility intake, text extraction or OCR, validation, classification, and billing computation. It also includes exception handling, rent confirmation, advance-credit application, confirmed rent receipts, personal utility tracking, and permitted notifications. These functions use one centralized database. Admin maintains accounts and authorized workspace assignments and inspects permitted records across workspaces through a read-only view. Staff handles permitted daily operations and investigates exceptions, while the Manager controls financial settings and decisions. Tenants access their own records, and utility providers supply billing information through supported sources.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -593,7 +593,7 @@
     },
     {
       "type": "p",
-      "text": "The Admin performs account and system maintenance. The Manager controls billing setup, verified mappings, sensitive corrections, rent confirmation and eligible advance application while retaining operational access. Staff performs permitted descriptive updates, bill intake monitoring, source inspection, investigation and correction preparation in the assigned workspace. The shared Exception Queue retains responsibility, notes and proposal decisions on related records; it does not duplicate bills between Staff and Manager queues. Valid bills continue automatically. The Tenant views own records, reports rent and maintains personal utility tracking. The Utility Provider supplies supported electronic summaries or documents through the designated property-management mailbox, or printed bills submitted as clear images by Staff or Manager. Provider settlement and shared-bill contribution collection remain outside independent system verification.",
+      "text": "The Admin performs account and system maintenance and read-only inspection of permitted workspace records. Inspection does not grant operational editing, rent confirmation, correction authority or private-file access. The Manager controls billing setup, verified mappings, sensitive corrections, rent confirmation and eligible advance application while retaining operational access. Staff performs permitted descriptive updates, bill intake monitoring, source inspection, investigation and correction preparation in the assigned workspace. The shared Exception Queue retains responsibility, notes and proposal decisions on related records; it does not duplicate bills between Staff and Manager queues. Valid bills continue automatically. The Tenant views own records, reports rent and maintains personal utility tracking. The Utility Provider supplies supported electronic summaries or documents through the designated property-management mailbox, or printed bills submitted as clear images by Staff or Manager. Provider settlement and shared-bill contribution collection remain outside independent system verification.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -661,7 +661,7 @@
     },
     {
       "type": "p",
-      "text": "The DFD illustrates how billing-related information moves among Admin, Staff, Manager, Tenant, Utility Provider, system processes and Centralized Database. Supporting process 7.0 handles Admin account and workspace maintenance separately from operational billing authority. The repeated D1 symbols represent the same logical database and do not introduce separate databases. Staff supplies permitted descriptive updates, uploads, investigation notes and correction proposals. The Manager supplies authorized correction decisions and financial/setup instructions; related decision details and exception records return to the authorized users. It shows the flow of configuration data, utility-bill information, billing records, payment information, receipt information, and tenant notification information through the system processes. The outgoing email service will receive permitted rent alert information from the notification process, and available sending results will return to the system for recording. Utility-email intake and outgoing rent alerts will remain separate data flows. External entities interact with the system through the appropriate processes, while the Centralized Database stores and provides the records required by the system.",
+      "text": "The DFD illustrates how billing-related information moves among Admin, Staff, Manager, Tenant, Utility Provider, system processes and Centralized Database. Supporting process 7.0 handles Admin account and workspace maintenance and provides permitted read-only workspace records. Its account and audit writes remain separate from operational billing changes; private source files and raw extraction are not returned through inspection. The repeated D1 symbols represent the same logical database and do not introduce separate databases. Staff supplies permitted descriptive updates, uploads, investigation notes and correction proposals. The Manager supplies authorized correction decisions and financial/setup instructions; related decision details and exception records return to the authorized users. It shows the flow of configuration data, utility-bill information, billing records, payment information, receipt information, and tenant notification information through the system processes. The outgoing email service will receive permitted rent alert information from the notification process, and available sending results will return to the system for recording. Utility-email intake and outgoing rent alerts will remain separate data flows. External entities interact with the system through the appropriate processes, while the Centralized Database stores and provides the records required by the system.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -673,7 +673,7 @@
     },
     {
       "type": "p",
-      "text": "The mockups present the Admin, Staff, Manager and Tenant interfaces through one sign-in form with access determined after authentication. Shared operational pages expose role-permitted actions rather than separate application copies. Staff views emphasize intake and investigation; Manager views emphasize decisions while preserving operational access; Admin views cover account search, business membership and maintenance. Tenant views retain rent first, the personal utility tracker below rent, bill history, confirmed rent receipts and permitted notifications. Correction views show original and proposed values, evidence, preparer, decision and handling reasons. These designs guide development and do not establish improved usability or completed evaluation results.",
+      "text": "The mockups present the Admin, Staff, Manager and Tenant interfaces through one sign-in form with access determined after authentication. Shared operational pages expose role-permitted actions rather than separate application copies. Staff views emphasize intake and investigation; Manager views emphasize decisions while preserving operational access; Admin views cover account search, business membership, maintenance and read-only workspace inspection with a persistent workspace label. Tenant views retain rent first, the personal utility tracker below rent, bill history, confirmed rent receipts and permitted notifications. Correction views show original and proposed values, evidence, preparer, decision and handling reasons. These designs guide development and do not establish improved usability or completed evaluation results.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -715,7 +715,7 @@
     },
     {
       "type": "p",
-      "text": "Throughout the iterations, development and testing will preserve the system’s exception-based workflow, allowing valid records to proceed while records requiring review enter the Exception Queue for Manager intervention.",
+      "text": "Throughout the iterations, development and testing will preserve the system’s exception-based workflow. Valid records will proceed automatically, while records requiring review will enter the shared Exception Queue for Staff investigation and Manager decisions where required.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -763,7 +763,7 @@
         [
           "Iteration 4",
           "Rule-Based Validation and Exception Handling",
-          "Required-field checking, mapping, billing-period checking, duplicate checking, billing classification, Exception Queue, Manager correction, and revalidation"
+          "Required-field checking, mapping, billing-period checking, duplicate checking, billing classification, shared Exception Queue, Staff investigation and correction proposals, Manager correction decisions, and revalidation"
         ],
         [
           "Iteration 5",
@@ -844,7 +844,7 @@
     },
     {
       "type": "p",
-      "text": "Role tests will verify Staff read/write boundaries across direct API calls and interface actions, one pending proposal per source, stale-context and preparer-access changes, rejected or invalid corrections, repeated decision attempts and retained history. A Manager decision shall not bypass the original validation and financial-history safeguards. Account, bill and source access shall be tested across workspaces, with authorized Admin maintenance access distinguished from operational billing authority. Synthetic fixtures, actual-provider samples, automated checks and real-device results shall be reported separately.",
+      "text": "Role tests will verify Staff read/write boundaries across direct API calls and interface actions, one pending proposal per source, stale-context and preparer-access changes, rejected or invalid corrections, repeated decision attempts and retained history. A Manager decision shall not bypass the original validation and financial-history safeguards. Account, bill and source access shall be tested across workspaces, with authorized Admin maintenance and read-only inspection distinguished from operational billing authority. Direct requests shall verify that Admin cannot change operational records, confirm rent, decide proposals or open private source files; inspection shall return only permitted fields and fail without returning record data if its required audit write fails. Synthetic fixtures, actual-provider samples, automated checks and real-device results shall be reported separately.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -862,7 +862,7 @@
     },
     {
       "type": "p",
-      "text": "This chapter presents the system’s capabilities, development stages, and testing results. The discussion follows the research questions in Chapter I and the iterative development process in Chapter II. The results cover the recorded development tests and the controlled email-intake test. Formal user evaluation remains pending.",
+      "text": "This chapter presents the system’s capabilities, development stages, and recorded testing results. Sections 3.1.1 to 3.1.4 answer the four research questions in Chapter I in the same order. Section 3.2 reports the test environment, procedures, results, identified issues, and recommendations. The discussion uses verified development evidence and distinguishes it from formal participant evaluation, which has not yet been conducted.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -880,13 +880,13 @@
     },
     {
       "type": "p",
-      "text": "The system was developed through repeated planning, design, development, testing, and review. Related functions were added gradually and checked with the existing functions. The seven development areas follow the iteration plan in Chapter II.",
+      "text": "To answer the first research question, the system was developed through repeated planning, design, development, testing, and review. Related functions were added gradually and checked with the existing functions. The seven development areas below follow the iteration plan in Chapter II.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Development began with the billing scope, user responsibilities, record relationships, authentication, and workspace access. The system includes Admin, Staff, Manager, and Tenant roles. Staff handles permitted daily operations and investigation, while the Manager retains financial authority. Admin maintains accounts without confirming rent or acting as another user.",
+      "text": "Development began with the billing scope, user responsibilities, record relationships, authentication, and workspace access. The system includes Admin, Staff, Manager, and Tenant roles. Staff handles permitted daily operations and investigation, while the Manager retains financial authority. Admin maintains accounts and inspects permitted workspace records through a read-only view, without confirming rent, changing operational records or opening private source files. Shared pages use the same records, while server permissions determine the information and actions available to each role. This does not create a second login identity or allow Admin impersonation.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -934,7 +934,7 @@
     },
     {
       "type": "p",
-      "text": "The implemented workflow connects utility-email retrieval or upload to source storage, direct extraction or OCR, validation, classification, allocation, finalization, and Tenant access. An unresolved source enters the review process without silently generating valid charges. Staff investigation and Manager decisions retain reasons and history. Repeated intake and repeated decisions must not create duplicate financial records.",
+      "text": "To answer the second research question, the implemented workflow connects utility-email retrieval or upload to source storage, direct extraction or OCR, validation, classification, allocation, finalization, and Tenant access. An unresolved source enters the review process without silently generating valid charges. Staff investigation and Manager decisions retain reasons and history. Repeated intake and repeated decisions must not create duplicate financial records.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -964,19 +964,19 @@
     },
     {
       "type": "p",
-      "text": "The evaluation follows the five selected ISO/IEC 25010:2023 characteristics in Chapters I and II: Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security. Development tests provide preliminary evidence, while formal evaluation remains pending.",
+      "text": "The third research question concerns the five selected ISO/IEC 25010:2023 characteristics in Chapters I and II: Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security. Requirement tests, measured processing observations, browser tasks, recovery checks, and access-control checks provide development-level evidence. No participant ratings or overall ISO quality score are reported because the adviser-reviewed user evaluation has not yet been conducted.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Functional Suitability is supported by recorded checks of intake, validation, allocation, correction handling, rent confirmation, receipt access, and personal utility tracking. These results apply to the exercised cases. Representative extraction accuracy still requires a declared sample set and manually checked reference values.",
+      "text": "Functional Suitability is supported by checks of intake, validation, allocation, correction handling, rent confirmation, receipt access, and personal utility tracking. The existing document catalog was also checked against its recorded field expectations. These results describe the exercised cases and support consistency checking; they do not establish extraction accuracy for a representative collection of provider bills.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Performance Efficiency still requires controlled measurements of response time, resource use, and concurrent access. The suite duration in Section 3.2.3 is the time taken to execute the tests, rather than the time taken to process one bill.",
+      "text": "Performance Efficiency was examined through local API response measurements and observed extraction times under the environment described in Section 3.2.1. Request timing included reading the complete response body, and sampled Node process memory was recorded. Section 3.2.3 states the small dataset and measurement limits. These observations do not establish production capacity, phone response time, or the number of concurrent users the system can support.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1006,7 +1006,7 @@
     },
     {
       "type": "p",
-      "text": "Setup instructions, demonstration procedures, sample bill files, a manual test guide, and a user manual have been prepared. These explain account access, property and billing setup, utility intake, correction handling, rent confirmation, personal utility tracking, and receipt access. The guides have been updated for the shared Case Sheet and include a three-person walkthrough. Local HTTPS instructions support the controlled demonstration. Actual-device and provider-email results must still be recorded.",
+      "text": "To answer the fourth research question, setup instructions, demonstration procedures, sample bill files, a manual test guide, and a user manual have been prepared. They explain account access, property and billing setup, utility intake, correction handling, rent confirmation, personal utility tracking, and receipt access. The guides cover the shared Case Sheet, recovery controls, and a three-person Staff, Manager, and Tenant walkthrough. Local HTTPS instructions support the controlled demonstration. Preparing these guides does not establish that users have completed the tasks successfully.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1024,13 +1024,25 @@
     },
     {
       "type": "p",
-      "text": "The development tests used a Node.js backend, SQLite storage, and an HTML, CSS, and JavaScript frontend. The project configuration requires Node.js 24 or later. The extraction and communication tools include Tesseract.js, PDF.js, MailParser, ImapFlow, Nodemailer, and web-push. Browser tests use Playwright, and the development records include Windows PowerShell commands. The retained test records do not include the exact CPU, RAM, operating-system build, browser build, or installed dependency versions for the reported run. This limits reproduction of the same test environment.",
+      "text": "The current development verification was conducted on 28 October 2026 using an Acer TravelMate P215-53 laptop with an Intel Core i5-1135G7 processor at 2.40 GHz, four physical cores, eight logical processors, and approximately 7.78 GiB of system-reported physical memory. The operating system was Windows 11 Pro, 64-bit, version 10.0.26200, build 26200. These specifications describe the current run and are not assumed to describe earlier test runs.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "The full automated run used local disposable portfolios and synthetic documents. Mailbox transport was simulated within relevant automated cases, while actual supported document parsing and OCR were exercised. The separate live Gmail test used a controlled self-addressed synthetic bill and the configured demonstration label. No actual participant payments or representative field dataset were used in these checks.",
+      "text": "The software environment used Node.js 24.21.0, SQLite 3.53.4, and the existing HTML, CSS, and JavaScript frontend. Automated browser tasks used Playwright 1.64.0 with headless Microsoft Edge 156.0.4314.50. Extraction used PDF.js 6.2.108 and Tesseract.js 6.0.1. The installed communication packages were MailParser 3.9.38, ImapFlow 1.7.8, Nodemailer 10.1.0, and web-push 3.6.7. Installed versions, source hashes, fixture hashes, individual observations, and procedures are retained in the dated development-evidence file.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "The full suite ran one test file at a time. Measurements were collected separately after other automated test jobs finished, and the suite was then rerun after correcting a date-dependent test expectation. Scheduled production processing and external mail or Push delivery were not enabled for the measurements. Normal operating-system background activity was not fully controlled.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "The automated runs used disposable portfolios, synthetic test data, and the existing anonymized document fixture where applicable. Mailbox transport was simulated in the relevant automated cases, while supported parsing and OCR were exercised through the actual libraries. The separate fixture comparison contained five bill cases represented by nine files: four synthetic cases and one anonymized actual-layout Meralco case. The earlier controlled Gmail test used a self-addressed synthetic bill and its configured demonstration label. No participant payments or representative field dataset were used.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1060,7 +1072,13 @@
     },
     {
       "type": "p",
-      "text": "The retained automated test log dated 23 October 2026 records 99 tests, with 99 passes and no failures, cancellations, skips, or pending tests. The run took approximately 328 seconds. Its pass rate was 100 percent for the executed tests. This result does not measure OCR accuracy, overall system completion, or participant acceptance.",
+      "text": "The complete automated run on 28 October 2026 executed 99 tests, with 99 passes and no failures, cancellations, or skips. It took approximately 327 seconds, giving a pass rate of 100 percent for the executed tests. These are development regression results rather than a measure of overall system completion, representative OCR accuracy, or participant acceptance. The dated log is retained with the development evidence.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "On 1 November 2026, we completed an additional development security check after adding the Admin read-only workspace view. The final full run passed all 144 tests, with no failures, cancellations, or skips, in about 712 seconds. We checked harmful text in displayed values, quoted input fields, application links, and generated receipts. We also checked that a failed audit write returned no record data, and that parallel requests from two Managers did not duplicate a receipt or apply a correction twice. Four selected tests passed in unchanged source copies and failed when deliberate control bypasses were added to those copies. The working source files were unchanged by these negative checks. These results are separate from the 28 October measurements below. They cover selected development scenarios on one backend, not complete security, distributed operation, actual phone delivery, or participant evaluation. The harmful-input case used controlled OCR output and does not measure OCR accuracy.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1123,6 +1141,30 @@
     },
     {
       "type": "p",
+      "text": "Local response measurements used the authenticated reports-summary endpoint and a disposable file-backed SQLite database containing 4 properties, 4 units, 3 tenants, and 30 bills, with no payments or receipts. After five warm-up requests excluded from the measurements, 50 requests were sent sequentially. A second group used five concurrent request loops, each sending ten requests to the already warmed server. Timing started before each request and ended after the complete response body was read. The 95th percentile used the nearest-rank method.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "For the sequential group, the mean response time was 5.23 milliseconds, the median was 4.67 milliseconds, and the 95th percentile was 8.50 milliseconds. For the five-loop group, the corresponding values were 23.29, 23.19, and 32.78 milliseconds. All 100 measured requests returned successful HTTP responses with readable JSON. The maximum sampled memory reading across both groups was approximately 181.90 MiB for the Node evidence process and its in-process server. Memory was sampled every 25 milliseconds and at the start and end of each group; short peaks could have been missed. These results exclude browser and operating-system memory, network travel to a phone, real user interaction, and production-sized data. No performance acceptance threshold or five-user capacity claim is inferred.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "The document comparison checked provider, account reference, amount due, due date, billing-period start, and billing-period end. These are six stored values representing the five target field types because the billing period has two boundaries. Six direct-text representations, consisting of four digital PDFs and two email files, matched all 36 expected values. Three OCR representations, consisting of two scanned PDFs and one PNG, matched all 18 expected values. Thus, all 54 compared values matched the fixture records in this pass. File versions of the same bill were not counted as independent samples. The fixture expectations are development references, not an independently collected and manually verified evaluation set.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "Observed extraction times ranged from 3.10 milliseconds to 1.74 seconds for direct PDF text extraction and from 0.34 to 15.69 seconds for image or scanned-PDF OCR in this single sequential pass. The first PDF and OCR operations included loading costs, and later OCR inputs reused a worker. Email handling used a different boundary that also included parsing and source processing, so its times were not combined with standalone PDF extraction. These observations explain why scanned documents can require more processing than readable text; they do not establish typical bill-processing time or representative OCR accuracy. Field extraction success also does not establish valid account mapping or billing finalization.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
       "text": "A separate controlled Gmail test on 23 October 2026 used a self-addressed synthetic scanned bill. The message entered the configured demonstration label and was retrieved by the scheduler. OCR and validation produced two charges of PHP 450.00 from a PHP 900.00 source, due on 29 October 2026. Both assigned Tenant accounts could access their bill and linked portal alert. Repeated synchronization did not create another charge. This result covers one controlled email-intake path. Rent-email sending and Web Push delivery were disabled during that test.",
       "style": "NORMAL_TEXT",
       "newPage": false
@@ -1147,7 +1189,25 @@
     },
     {
       "type": "p",
-      "text": "Remaining work includes actual-device acceptance, confirmation of notification delivery to the intended recipients, Web Push checks, and formal user evaluation. The interface redesign is implemented, with further changes to be guided by observed user difficulties. Encrypted or insufficient bill sources remain processing limitations that require review and an available supported source.",
+      "text": "An initial run on 28 October 2026 passed 98 of 99 tests. The remaining browser test assumed that a utility alert would use the current month, although its generated due date had crossed into the following month. The application displayed the due month correctly. The test expectation was corrected to use the fixture’s due month, and an assertion was added for the billing cycle. The targeted journey and the subsequent complete 99-test run passed. This was a test-script correction, not a change to billing behavior. An older timing-record date was also replaced with a current timestamp; its header-only timing was not used for the complete-response measurements reported here.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "During the additional account-response check, we found that the older response helper removed the password hash but returned other stored fields without an explicit list. A private synthetic test value appeared in the account listing. We changed the helper to return only the supported public account details and notification preferences, and the relevant checks passed. This finding does not establish that actual credentials were exposed. Account creation, password resets, role permissions, and stored records were preserved. The security checks also clarified a test that previously assumed every list response was an array; it now checks for either a safe denial or records from the correct workspace.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "These role restrictions apply to requests made through the active account. A trusted Admin who can create accounts or reset passwords could use another account, and a person controlling the server files or backups is outside this application-role boundary. Password resets revoke sessions and are audited; later actions are recorded under the account used. Our selected tests do not establish protection from every action by a trusted server operator.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "The remaining evaluation gaps are actual-device acceptance, intended-recipient notification delivery, supported provider-email testing, representative extraction measurements, and the adviser-approved user evaluation. The interface redesign is implemented. Encrypted or insufficient sources remain processing limitations that require review and an available supported copy; their presence must not be silently treated as a valid bill.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1177,7 +1237,7 @@
     },
     {
       "type": "p",
-      "text": "The recorded results show that the system passed the included development tests and completed one controlled Gmail-to-Tenant intake test. The shared interface and recovery controls have also been implemented. These results support a controlled demonstration under the documented setup. Actual-device checks, intended-recipient notification delivery, representative extraction testing, and formal user evaluation remain necessary before an overall release assessment.",
+      "text": "The recorded development results support a controlled demonstration of the included workflow. They cover automated regression checks, the known-fixture comparison, bounded local response measurements, and the earlier controlled Gmail-to-Tenant intake path. They do not complete the formal evaluation planned in Chapter II. The system can proceed to the prepared user walkthrough and adviser-reviewed evaluation, with actual-device, provider-format, delivery, and representative extraction results recorded before a final release or study-wide quality conclusion.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1195,13 +1255,13 @@
     },
     {
       "type": "p",
-      "text": "Baralis, E., Cagliero, L., Garza, P., & Marchetti, M. (2022). On the design of an advanced business rule engine. Software: Practice and Experience. https://doi.org/10.1002/spe.3115",
+      "text": "Bédard, M., Leshob, A., Benzarti, I., Mili, H., Rab, R., & Hussain, O. (2024). A rule-based method to effectively adopt robotic process automation. Journal of Software: Evolution and Process, 36(11), Article e2709. https://doi.org/10.1002/smr.2709",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Cammarata, A. (2023). A records and information management lens on workplace transformation: How to minimise risk and reap the rewards during real estate changes. Corporate Real Estate Journal, 13(2), 130–139. https://doi.org/10.69554/BFTX9533",
+      "text": "Cammarata, A. (2023). A records and information management lens on workplace transformation: How to minimise risk and reap the rewards during real estate changes. Corporate Real Estate Journal, 13(2), 130–138. https://doi.org/10.69554/BFTX9533",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1219,12 +1279,6 @@
     },
     {
       "type": "p",
-      "text": "Geyer-Klingeberg, J., Nakladal, J., Baldauf, M., & Veit, F. (2024). A rule-based method to effectively adopt robotic process automation. Journal of Software: Evolution and Process. https://doi.org/10.1002/smr.2709",
-      "style": "NORMAL_TEXT",
-      "newPage": false
-    },
-    {
-      "type": "p",
       "text": "Inayat, I., Salim, S. S., Marczak, S., Daneva, M., & Shamshirband, S. (2015). A systematic literature review on agile requirements engineering practices and challenges. Computers in Human Behavior, 51, 915–929. https://doi.org/10.1016/j.chb.2014.10.046",
       "style": "NORMAL_TEXT",
       "newPage": false
@@ -1237,7 +1291,13 @@
     },
     {
       "type": "p",
-      "text": "Kim, K., Choi, I., & Park, C. (2011). A rule-based approach to proactive exception handling in business processes. Expert Systems with Applications, 38(9), 11259–11268. https://doi.org/10.1016/j.eswa.2011.02.175",
+      "text": "Jiménez, P., & Corchuelo, R. (2022). On the design of an advanced business rule engine. Software: Practice and Experience, 52(10), 2097–2126. https://doi.org/10.1002/spe.3115",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "Kim, K., Choi, I., & Park, C. (2011). A rule-based approach to proactive exception handling in business processes. Expert Systems with Applications, 38(1), 394–409. https://doi.org/10.1016/j.eswa.2010.06.078",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1261,13 +1321,19 @@
     },
     {
       "type": "p",
-      "text": "Levinson, A., & Niemann, S. (2004). Energy use by apartment tenants when landlords pay for utilities. Resource and Energy Economics, 26(1), 51–75. https://doi.org/10.1016/j.reseneeco.2003.10.003",
+      "text": "Levinson, A., & Niemann, S. (2004). Energy use by apartment tenants when landlords pay for utilities. Resource and Energy Economics, 26(1), 51–75. https://doi.org/10.1016/S0928-7655(03)00047-2",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Mayr, H., & Souza, M. (2025). The tragedy of the common heating bill (CESifo Working Paper No. 12185). CESifo.",
+      "text": "Mayr, H., & Souza, M. (2025). The tragedy of the common heating bill (CESifo Working Paper No. 12185). CESifo. https://doi.org/10.2139/ssrn.5613770",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "Mohamed, A., Auer, D., Hofer, D., & Küng, J. (2022). A systematic literature review for authorization and access control: Definitions, strategies and models. International Journal of Web Information Systems, 18(2–3), 156–180. https://doi.org/10.1108/IJWIS-04-2022-0077",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1297,7 +1363,7 @@
     },
     {
       "type": "p",
-      "text": "Ramesh, G., Ramesh, J., & Nair, R. K. (2021). Requirement engineering challenges in agile software development: A systematic literature review. Security and Communication Networks, 2021, Article 6696695. https://doi.org/10.1155/2021/6696695",
+      "text": "Rasheed, A., Zafar, B., Shehryar, T., Aslam, N. A., Sajid, M., Ali, N., Dar, S. H., & Khalid, S. (2021). Requirement engineering challenges in agile software development. Mathematical Problems in Engineering, 2021, Article 6696695. https://doi.org/10.1155/2021/6696695",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1315,7 +1381,7 @@
     },
     {
       "type": "p",
-      "text": "Saputra, P., Prabowo, H., Ramadhan, A., & Madyatmadja, E. D. (2023). Trends of digital transformation in the property management industry: A systematic literature review. In 2023 IEEE International Conference on Smart Information Systems and Technologies (SIST). https://doi.org/10.1109/SIST58284.2023.10223582",
+      "text": "Saputra, P. C., Prabowo, H., Ramadhan, A., & Madyatmadja, E. D. (2023). Trends of digital transformation in the property management industry: A systematic literature review. In 2023 IEEE International Conference on Smart Information Systems and Technologies (SIST). IEEE. https://doi.org/10.1109/SIST58284.2023.10223582",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1333,25 +1399,19 @@
     },
     {
       "type": "p",
-      "text": "World Wide Web Consortium. (2024a). Push API. https://www.w3.org/TR/push-api/",
+      "text": "World Wide Web Consortium. (2022, July 12). Service Workers (W3C Candidate Recommendation Draft). https://www.w3.org/TR/2022/CRD-service-workers-20220712/",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "World Wide Web Consortium. (2024b). Service workers. https://www.w3.org/TR/service-workers/",
+      "text": "World Wide Web Consortium. (2024, September 3). Push API (W3C Working Draft). https://www.w3.org/TR/2024/WD-push-api-20240903/",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
       "text": "Wu, L.-T., Lin, J.-R., Leng, S., Li, J.-L., & Hu, Z.-Z. (2022). Rule-based information extraction for mechanical-electrical-plumbing-specific semantic web. Automation in Construction, 135, Article 104108. https://doi.org/10.1016/j.autcon.2021.104108",
-      "style": "NORMAL_TEXT",
-      "newPage": false
-    },
-    {
-      "type": "p",
-      "text": "Zafar, N. A., Khan, M. A., & Khan, S. A. (2022). A systematic literature review for authorization and access control definitions, strategies and models. International Journal of Web Information Systems, 18(2), 156–180. https://doi.org/10.1108/IJWIS-04-2022-0077",
       "style": "NORMAL_TEXT",
       "newPage": false
     }

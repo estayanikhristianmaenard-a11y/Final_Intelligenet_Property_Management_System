@@ -1,6 +1,6 @@
 # Editable manuscript figures
 
-**Content review finalized: 27 October 2026, for the current approved workflow.** The three draw.io files are the reviewed baseline. Source hashes and final checks are recorded in `exports/verification.json`. Reopen the content only when an approved workflow changes or a specific error is found. Manuscript figure placement and final print-scale readability still require document-level review.
+**Content review updated: 1 November 2026, for the current approved workflow.** The three draw.io files are the reviewed baseline. Source hashes and final checks are recorded in `exports/verification.json`. Reopen the content only when an approved workflow changes or a specific error is found. Manuscript figure placement and final print-scale readability still require document-level review.
 
 | File | Use |
 | --- | --- |
@@ -11,7 +11,7 @@
 
 The three draw.io files above are the current editable diagrams. Supporting artwork is in `assets/`, shareable figures in `exports/`, the export tool in `tools/`, and older versions and one-time revision records in `archive/`.
 
-## Updated exports — 27 October 2026
+## Updated exports - 1 November 2026
 
 Open the [figure gallery](exports/index.html) for all three updated figures. Each has a full SVG, PNG and figure-only PDF, plus a four-page landscape detail PDF with overlapping quadrants for readable labels on paper. The full figures are dense: do not shrink the overview into a small portrait text column and assume the labels remain readable. Use the vector original and enlarged detail views when preparing the manuscript.
 
@@ -42,3 +42,7 @@ The later straightening pass also removed unnecessary grid-snap stair steps and 
 Architecture-specific adjustment: Setup Records now runs vertically just right of Bill Processing. The embedded intake SVG's bill-details and source-storage connections are anchored to its visible output/border, and provider email connects to the visible Receive Billing Emails box. Short access links connect the permission summary to Property Setup and Utility Bill Intake.
 
 `route-connectors.py` and `place-connector-labels.py` are optional repair tools using the last rendered geometry. They are not part of normal export and should not be run over later manual layout edits without reviewing the result. Normal export preserves the routes saved in draw.io.
+
+## Admin oversight alignment - 1 November 2026
+
+Architecture and DFD now include permitted Admin read-only workspace inspection while retaining account/system maintenance. DFD process 7.0 returns approved records and writes account/audit records; it does not grant financial edits or private-source access. Existing routes were preserved, with two labels compacted to avoid shapes. All three figures were rendered and passed structure and geometry checks: no diagonal segments, label collisions or connectors through unrelated shapes. One shared straight run in the unchanged process flow is permitted. Updated architecture and DFD images were inserted into the existing Google Doc with explicit user permission; the 59-page manuscript PDF was exported and visually reviewed. Full diagrams remain dense at portrait size; use the existing enlarged detail PDFs for close paper inspection. This is documentation alignment, not adviser approval or participant evaluation.

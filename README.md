@@ -6,6 +6,9 @@
 
 | I want to... | Open this |
 | --- | --- |
+| Review the paper, roles and complete workflow | [Group reviewer guide](SeCapstone/reports/testing/reviewer-guide.docx) |
+| Record final manual tests and feedback | [Guided Excel workbook](SeCapstone/reports/testing/final-test-workbook.xlsx) and [numbered assets](SeCapstone/reports/testing/assets/README.md) |
+| Read the current Chapters I-IV | [Checked manuscript](SeCapstone/review/MANUSCRIPT_I_IV_REVISED.pdf) |
 | Work on the application | [Application start guide](SeCapstone/rentara-portal/README.md) |
 | Edit shared Gmail or local settings | [.env](SeCapstone/rentara-portal/.env) (team-owned configuration) |
 | Find bills for upload/OCR | [Bill sample catalog](SeCapstone/rentara-portal/docs/samples/utility-bills/README.md) |
@@ -24,6 +27,8 @@
 | Find another technical guide | [Application documentation index](SeCapstone/rentara-portal/docs/README.md) |
 
 ## Start the existing local system
+
+For the current Group 3 final walkthrough, use `npm.cmd run demo:group` from the portal directory and the printed HTTPS address on port 8444. Follow [the testing kit](SeCapstone/reports/testing/README.md). The general configured local startup below is separate.
 
 From the repository root:
 
@@ -80,7 +85,7 @@ SeCapstone/
 
 Staff handles scoped utility intake, existing descriptive records, investigation and unfinalized correction proposals. Manager authorizes proposals and retains direct operational capability. See the [implemented role workflow](SeCapstone/rentara-portal/docs/staff-implementation-plan.md).
 
-Managers manage their own workspace, property and tenant records, bill review, rent confirmation, eligible final-cycle advance, and rent receipts. Tenants view their own bills, report rent payments and maintain personal utility tracking. Utility tracking does not verify provider payment. Admin access is for system maintenance and workspace/account setup.
+Managers manage their own workspace, property and tenant records, bill review, rent confirmation, eligible final-cycle advance, and rent receipts. Tenants view their own bills, report rent payments and maintain personal utility tracking. Utility tracking does not verify provider payment. Admin maintains accounts/workspaces and may inspect approved records across workspaces through read-only views. Admin cannot make operational/financial changes or open private source files.
 
 Supported email summaries and documents use direct text extraction or OCR, followed by explicit validation, mapping, duplicate checks and billing rules. Alerts use the portal, Web Push support and supplementary rent-only email. Provider-app access, payment gateways, tenant SMS, predicted utility due dates and autonomous AI billing decisions are excluded.
 

@@ -1,0 +1,158 @@
+{
+  "preparedDate": "2026-11-02",
+  "scope": "Synthetic controlled fixtures; actual libraries and disposable portfolio only; no Gmail, no working database changes; not representative accuracy",
+  "cases": [
+    {
+      "id": "A01",
+      "file": "a01-unit-a-electricity-scan.pdf",
+      "provider": "Meralco",
+      "account": "G3000101",
+      "unit": "G3-A",
+      "amount": 1000.01,
+      "start": "2026-12-01",
+      "end": "2026-12-14",
+      "due": "2026-12-20",
+      "mode": "scan",
+      "shares": [
+        500,
+        500.01
+      ]
+    },
+    {
+      "id": "A02",
+      "file": "a02-unit-b-water-digital.pdf",
+      "provider": "Manila Water",
+      "account": "G3W0102",
+      "unit": "G3-B",
+      "amount": 321.45,
+      "start": "2026-12-01",
+      "end": "2026-12-14",
+      "due": "2026-12-20",
+      "mode": "digital",
+      "shares": [
+        321.45
+      ]
+    },
+    {
+      "id": "A03",
+      "file": "a03-unit-a-email-body.txt",
+      "provider": "Meralco",
+      "account": "G3000101",
+      "unit": "G3-A",
+      "amount": 900,
+      "start": "2027-01-01",
+      "end": "2027-01-14",
+      "due": "2027-01-20",
+      "mode": "email",
+      "shares": [
+        450,
+        450
+      ]
+    },
+    {
+      "id": "A04",
+      "file": "a04-unit-b-email-body.txt",
+      "provider": "Manila Water",
+      "account": "G3W0102",
+      "unit": "G3-B",
+      "amount": 280,
+      "start": "2027-01-01",
+      "end": "2027-01-14",
+      "due": "2027-01-20",
+      "mode": "email",
+      "shares": [
+        280
+      ]
+    },
+    {
+      "id": "A05",
+      "file": "a05-unmapped-account.pdf",
+      "provider": "Meralco",
+      "account": "DEMO-NOT-MAPPED-20261102",
+      "unit": "Unmatched",
+      "amount": 700,
+      "start": "2027-02-01",
+      "end": "2027-02-14",
+      "due": "2027-02-20",
+      "mode": "held",
+      "shares": []
+    },
+    {
+      "id": "A06",
+      "file": "a06-masked-account.pdf",
+      "provider": "Meralco",
+      "account": "G30001XX",
+      "unit": "Unmatched",
+      "amount": 800,
+      "start": "2027-03-01",
+      "end": "2027-03-14",
+      "due": "2027-03-20",
+      "mode": "held",
+      "shares": []
+    }
+  ],
+  "verification": {
+    "checkedAt": "2026-11-02T05:20:34.491Z",
+    "results": [
+      {
+        "id": "A01",
+        "status": "validated",
+        "method": "pdf_ocr",
+        "shares": [
+          500,
+          500.01
+        ]
+      },
+      {
+        "id": "A02",
+        "status": "validated",
+        "method": "pdf_text",
+        "shares": [
+          321.45
+        ]
+      },
+      {
+        "id": "A03",
+        "status": "validated",
+        "method": null,
+        "shares": [
+          450,
+          450
+        ]
+      },
+      {
+        "id": "A04",
+        "status": "validated",
+        "method": null,
+        "shares": [
+          280
+        ]
+      },
+      {
+        "id": "A05",
+        "status": "failed",
+        "method": "pdf_text",
+        "shares": []
+      },
+      {
+        "id": "A06",
+        "status": "failed",
+        "method": "pdf_text",
+        "shares": []
+      }
+    ],
+    "duplicatePrevention": true
+  },
+  "otherAssets": [
+    {
+      "id": "A07",
+      "file": "a07-not-a-bill.txt",
+      "purpose": "Unsupported upload; no charge expected"
+    },
+    {
+      "id": "A08",
+      "file": null,
+      "purpose": "Existing Bayan staged correction source; original due date 2026-12-20; amount 600; expected shares 300 each after authorization"
+    }
+  ]
+}

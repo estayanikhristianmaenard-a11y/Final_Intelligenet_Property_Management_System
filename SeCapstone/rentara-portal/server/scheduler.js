@@ -1,3 +1,4 @@
+import { mailboxEnabled } from './profile-policy.js';
 // Shared by normal and demo startup. No environment-specific billing rules.
 export const SCHEDULE_INTERVAL_MS = 60_000;
 export const MAILBOX_INTERVAL_MS = 300_000;
@@ -18,7 +19,7 @@ export function startScheduler(integrations, { intervalMs = SCHEDULE_INTERVAL_MS
 
 export function automationStatus(runtime) {
   const intake = runtime.s.get("settings", "last-intake");
-  const mailboxConfigured = Boolean(runtime.env.IMAP_HOST && runtime.env.IMAP_USER && (runtime.env.IMAP_PASSWORD || runtime.env.IMAP_ACCESS_TOKEN));
+  const mailboxConfigured = Boolean(mailboxEnabled(runtime.env));
   return {
     checkedAt: new Date().toISOString(),
     scheduleIntervalMs: SCHEDULE_INTERVAL_MS,

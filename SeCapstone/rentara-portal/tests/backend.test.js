@@ -1091,7 +1091,8 @@ test("HTTP portfolio mutations, file ownership, receipt downloads, backups and r
       "test-results/performance.json",
       JSON.stringify(
         {
-          date: "2026-10-11",
+          measuredAt: new Date().toISOString(),
+          measurement: "Local sequential API requests to response headers; excludes response-body reading and is not page-load time",
           requests: 50,
           bills: f.s.all("bills").length,
           meanMs: durations.reduce((s, v) => s + v, 0) / durations.length,

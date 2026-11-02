@@ -6,7 +6,7 @@ Updated 23 October 2026. Implemented following the user's authorization. This do
 
 | Role | Daily work | Authority boundary |
 | --- | --- | --- |
-| Admin | Create/manage accounts, roles and business workspaces; search/filter all accounts; maintenance | No impersonation or rent confirmation |
+| Admin | Create/manage accounts, roles and business workspaces; maintenance; explicit read-only inspection across workspaces | No operational/financial mutations, private-file opening, impersonation or rent confirmation |
 | Staff | Workspace intake/upload/sync, operational records, investigate exceptions, add notes/escalate, prepare source corrections | Existing descriptive fields only; no billing setup, enrollment, mapping, rent confirmation, final-cycle credit or proposal authorization |
 | Manager | All workspace operations, setup, occupancy, financial decisions, direct correction and proposal decisions | Own workspace only; confirms rent, never provider settlement |
 | Tenant | Own bills, rent reports/receipts, utility personal tracking, permitted notifications/calendar | No operational intake access or other Tenant records |

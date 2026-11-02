@@ -1,5 +1,23 @@
 # Next-session checklist
 
+## Group final-testing kit - 2 November 2026
+
+Use the [Docs-ready reviewer guide, 74-case Excel workbook and numbered assets](../../reports/testing/README.md). Read the guide together, fill session/device details, complete Core cases, register phones before Live events, and record actual results, evidence and feedback. Setup-dependent cases remain Blocked until their prerequisites exist. The fresh assets were checked only in a disposable portfolio; manual workbook results are blank.
+
+## Current handoff - 1 November 2026
+
+The Admin read-only revision and five-step security verification are complete for the recorded development cases: 144 tests passed, and four isolated control-bypass checks were detected. Chapters I-III and the architecture/DFD now describe the same role boundaries. Chapter IV now has a development-based Conclusions and Recommendations draft following the supplied guide; its evaluation conclusion must be updated after actual evaluation. Preserve the prepared portfolios; do not reset bills or reuse previously processed sources merely to force a new result.
+
+Use the [two-workspace walkthrough](manual-test-guide.md#two-workspace-final-walkthrough) with the existing Group 3 profile. Start with `npm.cmd run demo:group` for local tasks. Use `npm.cmd run demo:group -- --receive --live-delivery` only for the agreed labelled intake and approved-recipient delivery exercise. The live mode still requires valid local configuration and preferences; it is not a general Operational deployment. On phones, use the printed laptop LAN HTTPS address and port 8444, and refresh notification registration after starting live delivery. Bayan remains local-only.
+
+Record the device, tester, date, expected and actual results for Staff correction preparation, Manager authorization and rent confirmation, Tenant views and personal utility marks, and Admin inspection of both workspaces. Also check automatic Gmail labelling, supported real-provider input, duplicate retrieval, actual rent email and Web Push receipt, network interruption and separate-directory restore. Physical phone checks, new live delivery and adviser-approved participant evaluation remain pending. Existing automated results must not be copied into those result cells.
+
+The two demo workspaces each contain one property, two units, three Tenants and nine bills at this handoff. A read-only database check found no foreign-key violations. These fixture counts describe demonstration readiness, not actual participants or representative accuracy.
+
+## Two-workspace testing checkpoint - 1 November 2026
+
+Group 3 now has two seeded independent businesses, each with its own Manager, Staff and three Tenants in two units. Use the [two-workspace walkthrough](manual-test-guide.md#two-workspace-final-walkthrough) before actual acceptance. The second business is a local-only fixture; the original approved group retains its Gmail/live-delivery path. Preserve the prepared cases and receipts rather than resetting them. Freeze the included functions and align manuscript descriptions now; final testing-results claims remain dependent on the actual evaluation. See [current QA evidence](qa-report.md). Older checkpoints below retain their original dates and counts.
+
 ## Latest verification - 23 October 2026
 
 After reverting the unapproved locked-PDF summary fallback, all 99 tests passed in a fresh full run. The five existing journeys were checked, including a new file-backed restart/replay/receipt test. Only tests and documentation changed during this verification. See [QA evidence](qa-report.md).

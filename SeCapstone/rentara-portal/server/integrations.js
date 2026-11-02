@@ -6,6 +6,7 @@ import { newId } from "./store.js";
 import { parseUtilityText, requireValue, philippineDate, HttpError } from "./rules.js";
 import { RentEmail } from "./rent-email.js";
 import { systemStatus } from "./system-status.js";
+import { deliveryAllowed, mailboxEnabled, recipientAllowed } from "./profile-policy.js";
 
 export class Integrations {
   constructor(service, dataDir, env = process.env) {
@@ -201,9 +202,7 @@ export class Integrations {
       409,
     );
     requireValue(
-      this.env.IMAP_HOST &&
-        this.env.IMAP_USER &&
-        (this.env.IMAP_PASSWORD || this.env.IMAP_ACCESS_TOKEN),
+      mailboxEnabled(this.env),
       "Mailbox is not configured. Set the IMAP account credentials locally.",
       503,
     );
@@ -221,11 +220,17 @@ export class Integrations {
         const uids = await client.search({ all: true }, { uid: true }),
           validity = String(client.mailbox.uidValidity);
         for (const uid of uids) {
-          const key = `${this.env.IMAP_HOST}:${this.env.IMAP_USER}:${validity}:${uid}`;
-          if (retryKey && key !== retryKey) continue;
+          const legacyKey = `${this.env.IMAP_HOST}:${this.env.IMAP_USER}:${validity}:${uid}`;
+          const mailbox = this.env.IMAP_MAILBOX || 'INBOX';
+          const identity = [this.env.IMAP_HOST.trim().toLowerCase(), this.env.IMAP_USER.trim().toLowerCase(), mailbox, validity, String(uid)];
+          const key = 'imap-v2:' + createHash('sha256').update(JSON.stringify(identity)).digest('hex');
+          // Old failed rows remain explicitly retryable. Old processed rows are
+          // re-examined once: their missing label must not hide new messages.
+          const historyKey = retryKey === legacyKey ? legacyKey : key;
+          if (retryKey && historyKey !== retryKey) continue;
           if (this.s.get("intake_messages", key) && retryKey !== key) continue;
           if (examined++ >= 100) break;
-          retryFound = retryFound || retryKey === key;
+          retryFound = retryFound || retryKey === historyKey;
           const msg = await client.fetchOne(
             uid,
             { source: { maxLength: 35 * 1024 * 1024 }, size: true },
@@ -234,9 +239,13 @@ export class Integrations {
           if (!msg?.source) continue;
           try {
             requireValue(msg.size <= 35 * 1024 * 1024, "Email exceeds 35 MB intake limit");
-            await this.ingestEmail(msg.source, { mailboxUid: key });
-            this.s.save("intake_messages", { id: key, status: "processed", processedAt: new Date().toISOString() });
-            for (const e of this.s.all("exceptions").filter(e => e.intakeMessageId === key && e.state === "open"))
+            const messageHash = createHash('sha256').update(msg.source).digest('hex');
+            const account = this.env.IMAP_USER.trim().toLowerCase();
+            const replay = this.s.all('intake_messages').some(m => m.status === 'processed' && m.account === account && m.messageHash === messageHash);
+            if (!replay) await this.ingestEmail(msg.source, { mailboxUid: historyKey });
+            this.s.save("intake_messages", { id: historyKey, status: "processed", account, mailbox, messageHash, processedAt: new Date().toISOString() });
+            if (historyKey !== key) this.s.save('intake_messages', {...this.s.get('intake_messages',historyKey),id:key});
+            for (const e of this.s.all("exceptions").filter(e => e.intakeMessageId === historyKey && e.state === "open"))
               this.s.save("exceptions", { ...e, state: "revalidated", resolvedAt: new Date().toISOString(), resolvedBy: user.id });
             imported++;
           } catch (error) {
@@ -244,10 +253,10 @@ export class Integrations {
             // must remain retryable rather than masquerading as bad messages.
             if (!(error instanceof HttpError) || ![400, 413, 422].includes(error.status)) throw error;
             const reason = error.message;
-            this.s.save("intake_messages", { id: key, status: "failed", failedAt: new Date().toISOString(), reason });
-            const prior = this.s.all("exceptions").find(e => e.intakeMessageId === key);
+            this.s.save("intake_messages", { id: historyKey, status: "failed", failedAt: new Date().toISOString(), reason });
+            const prior = this.s.all("exceptions").find(e => e.intakeMessageId === historyKey);
             this.s.save("exceptions", { ...prior, id: prior?.id ?? newId("exc"), sourceId: null, billId: null,
-              intakeMessageId: key, source: "email_intake", ruleId: "I01", severity: "high", title: "Email needs attention",
+              intakeMessageId: historyKey, source: "email_intake", ruleId: "I01", severity: "high", title: "Email needs attention",
               reason, detail: "This email was held so other bills can continue. Check it in the configured utility mailbox, upload a supported copy, or use Retry email. A successful retry only confirms processing; bill validation still applies.",
               fields: [], state: "open", raisedAt: prior?.raisedAt ?? new Date().toISOString() });
             failed++;
@@ -276,7 +285,7 @@ export class Integrations {
   async pushConfig() {
     return {
       publicKey: this.env.VAPID_PUBLIC_KEY ?? null,
-      configured: Boolean(
+      configured: deliveryAllowed(this.env) && Boolean(
         this.env.VAPID_PUBLIC_KEY &&
         this.env.VAPID_PRIVATE_KEY &&
         this.env.VAPID_SUBJECT,
@@ -284,6 +293,7 @@ export class Integrations {
     };
   }
   async deliver() {
+    if (!deliveryAllowed(this.env)) return { sent: 0, configured: false };
     if (!this.service.config().pushEnabled)
       return { sent: 0, configured: false };
     const config = await this.pushConfig();
@@ -305,6 +315,7 @@ export class Integrations {
         .all("users")
         .find((u) => u.tenantId === n.tenantId && u.status === "active");
       if (!user) continue;
+      if (!recipientAllowed(this.env, user, n)) continue;
       const preference =
         n.kind === "reminder"
           ? "reminder"
@@ -317,7 +328,7 @@ export class Integrations {
       }
       let subscriptions = this.s
         .all("subscriptions")
-        .filter((s) => s.userId === user.id);
+        .filter((s) => s.userId === user.id && recipientAllowed(this.env, user, n, s));
       if (!subscriptions.length) continue;
       const delivered = new Set(n.deliveredSubscriptions ?? []);
       let acceptedThisAttempt = false;
@@ -325,10 +336,11 @@ export class Integrations {
       for (const sub of subscriptions) {
         if (delivered.has(sub.id)) continue;
         try {
+          if (!recipientAllowed(this.env, user, n, sub)) return { sent, configured: false };
           await webpush.sendNotification(
             sub.subscription,
             JSON.stringify({
-              title: n.title,
+              title: this.env.RENTARA_PROFILE === 'demo' ? `[DEMO] ${n.title}` : n.title,
               body: "Sign in to Rentara to view your billing update.",
               id: n.id,
               url:
@@ -395,7 +407,7 @@ export class Integrations {
       if (cycle.jobs.rentGeneration.state === "completed" && cycle.jobs.reminders.state === "completed")
         this.s.save("settings", { id: "last-schedule", date, at: new Date().toISOString() });
       const intake = this.s.get("settings", "last-intake");
-      const configured = this.env.IMAP_HOST && this.env.IMAP_USER && (this.env.IMAP_PASSWORD || this.env.IMAP_ACCESS_TOKEN);
+      const configured = mailboxEnabled(this.env);
       if (configured && !this.syncing && Date.now() - Number(intake?.attemptedAt ?? 0) >= MAILBOX_INTERVAL_MS) {
         await job("mailbox", async () => {
           try {

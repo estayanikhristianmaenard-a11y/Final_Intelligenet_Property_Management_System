@@ -10,12 +10,10 @@ import { toastSuccess, toastDanger } from "../../components/toast.js";
 import { relative, dateTime } from "../../utils/format.js";
 
 /**
- * Admin Dashboard — **system maintenance only**.
+ * Admin Dashboard — maintenance landing with explicit read-only workspace entry.
  *
- * Deliberately contains no property, billing, payment-confirmation or
- * exception-review data: the study limits the Admin role to system-level
- * maintenance (paper §1.5). Everything here is component status, accounts and
- * audit visibility.
+ * Business inspection uses its own scoped read capability. Financial actions
+ * and private files remain unavailable to Admin.
  *
  * @param {HTMLElement} container
  */
@@ -74,6 +72,7 @@ function frame(content) {
         <p>System status and maintenance.</p>
       </div>
       <div class="page-header__actions">
+        <a class="btn btn--secondary" href="#/admin/workspace">Inspect workspaces</a>
         <button class="btn btn--secondary" type="button" data-refresh-status>
           ${icon("refresh", { size: 15 })} Refresh status
         </button>

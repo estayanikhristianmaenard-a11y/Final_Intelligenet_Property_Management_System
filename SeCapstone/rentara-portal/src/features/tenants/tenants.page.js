@@ -8,6 +8,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, initials, avatarTone, date } from "../../utils/format.js";
 import { bindTenantSearch } from "../../components/tenant-search.js";
+import { toastDanger } from "../../components/toast.js";
 
 /**
  * Tenants directory.
@@ -39,12 +40,12 @@ export async function renderTenants(
       frame(table(tenants, { loading, keyword, propertyFilter, properties })),
     );
     unbind = bindRowClicks(container, (id) =>
-      openTenantPanel(id, { onChanged: load }),
+      openTenantPanel(id),
     );
     bindControls();
   };
 
-  const load = async () => {
+  const load = async ({ keepControls = false } = {}) => {
     const request = ++loadSequence;
     const [freshProperties, tenants] = await Promise.all([
       api.get(endpoints.properties()), api.get(endpoints.tenants()),
@@ -52,8 +53,18 @@ export async function renderTenants(
     if (request !== loadSequence || !container.isConnected) return;
     properties = freshProperties;
     allTenants = tenants;
-    paint(matches());
+    if (keepControls && container.querySelector(".table-toolbar")) {
+      const search = container.querySelector('[data-role="tenant-search"]');
+      if (document.activeElement === search) search.dispatchEvent(new Event("input"));
+      else updateResults();
+    } else paint(matches());
   };
+
+  container.addEventListener("page:data-changed", () => {
+    load({ keepControls: true }).catch(error => {
+      if (container.isConnected) toastDanger("Directory could not refresh", error.message);
+    });
+  });
 
   // Replace only results. The focused search input and its suggestions stay mounted.
   function updateResults() {
@@ -76,7 +87,7 @@ export async function renderTenants(
       updateResults();
     });
     if (search) {
-      bindTenantSearch(search, { find: matches, onSelect: tenant => openTenantPanel(tenant.id, { onChanged: load }) });
+      bindTenantSearch(search, { find: matches, onSelect: tenant => openTenantPanel(tenant.id) });
       search.addEventListener("keydown", event => {
         if (event.key === "Enter" && !event.defaultPrevented) { event.preventDefault(); updateResults(); }
       });
@@ -213,7 +224,7 @@ function table(tenants, { loading, keyword, propertyFilter, properties = [] }) {
       },
       {
         key: "monthlyRent",
-        label: "Monthly rent",
+        label: "Whole-unit rent / month",
         render: (row) =>
           html`<span class="money">${peso(row.monthlyRent)}</span>`,
       },

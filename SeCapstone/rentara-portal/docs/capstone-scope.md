@@ -19,7 +19,7 @@ Receive supported utility bills, extract their details using text extraction or 
 | Notifications | Stored portal alerts, rent/utility Web Push, and supplementary rent email | Email only for rent updates, eligible rent reminders and confirmed rent payment notices. No Tenant SMS or utility email |
 | Reminders | Approved 9 AM Philippine-time schedule three days before actual due date, eligibility checks and duplicate prevention | No retrospective missed reminders; pending rent reports and currently self-marked utilities are excluded |
 | Calendar | Actual bill dates and clearly identified future rent estimates | No estimated future utility dates; estimates do not create bills or receipts |
-| Roles | Admin accounts/maintenance, Staff daily operations, Manager operations/financial authority and Tenant-own records | Admin does not become a rent approver; no separate Owner role or public onboarding marketplace |
+| Roles | Admin accounts/maintenance and explicit read-only inspection across workspaces; Staff daily operations; Manager operations/financial authority; Tenant-own records | Admin cannot change operational/financial records or open private files; no impersonation, separate Owner role or public onboarding marketplace |
 
 ## Supporting features, not additional research modules
 
@@ -58,3 +58,10 @@ Sources: [Chapter I, Section 1.5](../../review/CHAPTER_I_REVISED.md), [accepted 
 ## Staff revision ? 23 October 2026
 
 The user authorized Staff implementation and the related manuscript/diagram wording. Staff handles existing descriptive records, utility intake, investigation and proposals for unfinalized sources. Manager authorizes proposals or corrects directly. Staff cannot create billing-linked enrollment, change financial configuration, confirm rent or approve their own corrections. This is an implementation decision, not a claim of adviser approval. See [implementation handoff](staff-implementation-plan.md).
+
+
+## Admin inspection revision - 1 November 2026
+
+The user authorized cross-workspace Admin visibility after clarifying the role hierarchy. This deliberately supersedes maintenance-only wording for read access; it is not a claim of separate adviser confirmation. Admin may inspect profile/contact/unit information, properties, bills, allocations, rent status, system-generated rent receipts and Tenant-recorded utility status. Account/system maintenance stays as implemented. Contact/occupancy edits, rent confirmation, financial corrections, Staff proposals/authorization and changing a personal utility mark remain outside Admin authority.
+
+Private uploaded documents, original utility/email sources, raw extraction, account references and private storage paths remain unavailable through the new inspection API. Admin sees selected extracted bill values and limited file metadata only; missing historical dates remain unrecorded rather than invented. Global audit and existing backup powers are retained. Application-role restrictions do not restrict a trusted laptop/server operator's filesystem access or imply encrypted isolation from recovery administrators. No account-transfer feature or new profile is added. Shared components consume the same records; page reload shows authorized updates. Actual participation/evaluation claims remain separate from development tests.

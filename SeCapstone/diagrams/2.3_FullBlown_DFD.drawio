@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='utf-8'?>
 <mxfile host="app.diagrams.net" agent="Rentara manuscript alignment 2026-10-27">
   <diagram id="fig21v2" name="Figure 2.3 - Data Flow Diagram">
     <mxGraphModel dx="2836" dy="1350" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1600" pageHeight="1550" background="#ffffff" math="0" shadow="0">
@@ -379,33 +378,33 @@
         <mxCell id="admin-entity" vertex="1" parent="1" value="Admin" style="rounded=0;html=0;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;spacing=8;">
           <mxGeometry as="geometry" x="650" y="20" width="140" height="60" />
         </mxCell>
-        <mxCell id="admin-process" vertex="1" parent="1" value="7.0&#10;Manage Accounts&#10;and Workspaces" style="rounded=0;html=0;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;spacing=8;ellipse;aspect=fixed;">
+        <mxCell id="admin-process" vertex="1" parent="1" value="7.0&#10;Accounts and&#10;Read-only&#10;Oversight" style="rounded=0;html=0;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;spacing=8;ellipse;aspect=fixed;">
           <mxGeometry as="geometry" x="900" y="-30" width="190" height="160" />
         </mxCell>
-        <mxCell id="admin-store" vertex="1" parent="1" value="D1. System Database&#10;Accounts / memberships" style="rounded=0;html=0;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;spacing=8;shape=cylinder3;size=15;">
+        <mxCell id="admin-store" vertex="1" parent="1" value="D1. System Database&#10;Accounts / permitted records" style="rounded=0;html=0;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=18;strokeWidth=2;spacing=8;shape=cylinder3;size=15;">
           <mxGeometry as="geometry" x="1250" y="0" width="220" height="110" />
         </mxCell>
-        <mxCell id="admin-in" edge="1" parent="1" source="admin-entity" target="admin-process" value="Account / role&#10;assignments" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=17;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1.0;exitY=0.3733333333333333;entryX=0.01492874992733397;entryY=0.3787321874818335;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=135;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;exitX=1.0;exitY=0.1766191666182227;exitPerimeter=0;">
+        <mxCell id="admin-in" edge="1" parent="1" source="admin-entity" target="admin-process" value="Account setup /&#10;view request" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=16;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1.0;exitY=0.3733333333333333;entryX=0.01492874992733397;entryY=0.3787321874818335;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=100;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;exitX=1.0;exitY=0.1766191666182227;exitPerimeter=0;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint as="offset" x="-8.1" y="-41.5" />
+            <mxPoint as="offset" x="0" y="-41.5" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="admin-out" edge="1" parent="1" source="admin-process" target="admin-entity" value="Account details" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=17;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.01492874992733397;exitY=0.6212678125181664;entryX=1.0;entryY=0.6266666666666666;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=143;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;exitX=0.0022613637660823;exitY=0.5475;exitPerimeter=0;">
+        <mxCell id="admin-out" edge="1" parent="1" source="admin-process" target="admin-entity" value="Account /&#10;view records" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=16;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.01492874992733397;exitY=0.6212678125181664;entryX=1.0;entryY=0.6266666666666666;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=100;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;exitX=0.0022613637660823;exitY=0.5475;exitPerimeter=0;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint as="offset" x="-45.12" y="40.6" />
+            <mxPoint as="offset" x="0" y="40.6" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="admin-write" edge="1" parent="1" source="admin-process" target="admin-store" value="Account records" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=17;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.9850712500726654;exitY=0.6212678125181664;entryX=0.0;entryY=0.6266666666666667;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=143;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;exitX=0.9858005273193409;exitY=0.6183125;exitPerimeter=0;">
+        <mxCell id="admin-write" edge="1" parent="1" source="admin-process" target="admin-store" value="Accounts / audit" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=17;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.9850712500726654;exitY=0.6212678125181664;entryX=0.0;entryY=0.6266666666666667;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=143;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;exitX=0.9858005273193409;exitY=0.6183125;exitPerimeter=0;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint as="offset" x="1.12" y="21.0" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="admin-read" edge="1" parent="1" source="admin-store" target="admin-process" value="Stored accounts" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=17;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.3733333333333333;entryX=0.9850712500726654;entryY=0.3787321874818335;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=143;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;entryX=0.9968728598835815;entryY=0.44416666666666665;entryPerimeter=0;">
+        <mxCell id="admin-read" edge="1" parent="1" source="admin-store" target="admin-process" value="Accounts /&#10;permitted records" style="edgeStyle=none;rounded=0;html=0;endArrow=block;endFill=0;strokeColor=#000000;fontColor=#000000;fontFamily=Arial;fontSize=17;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.3733333333333333;entryX=0.9850712500726654;entryY=0.3787321874818335;exitDx=0;exitDy=0;entryDx=0;entryDy=0;curved=0;whiteSpace=wrap;align=center;verticalAlign=middle;labelWidth=143;jumpStyle=none;exitPerimeter=0;entryPerimeter=0;entryX=0.9968728598835815;entryY=0.44416666666666665;entryPerimeter=0;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint as="offset" x="-4.07" y="-21.0" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="dfd-boundary-note" vertex="1" parent="1" value="D1 is repeated for legibility; both symbols denote the same workspace-scoped database.&#10;Admin maintains accounts only. Staff proposes; Manager authorizes and confirms rent.&#10;Portal / Web Push: rent and utilities. Outgoing email: rent only. Utility marks are unverified." style="text;html=0;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#000000;fontFamily=Arial;fontSize=17;align=left;verticalAlign=middle;">
+        <mxCell id="dfd-boundary-note" vertex="1" parent="1" value="D1 is repeated for legibility; both symbols denote the same workspace-scoped database.&#10;Admin maintains accounts and inspects permitted records; no financial edits or private source access.&#10;Staff proposes; Manager authorizes and confirms rent. Utility marks are unverified.&#10;Portal / Web Push: rent and utilities. Outgoing email: rent only." style="text;html=0;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#000000;fontFamily=Arial;fontSize=17;align=left;verticalAlign=middle;">
           <mxGeometry as="geometry" x="420" y="1520" width="1080" height="110" />
         </mxCell>
       </root>

@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Integrations } from "./integrations.js";
 import { DEFAULT_WORKSPACE } from "./store.js";
+import { restrictProfile, validateMailboxes, mailboxEnabled } from "./profile-policy.js";
 
 // Credentials stay in a private server file/environment, never workspace API responses.
 export function workspaceIntegrations(service, dataDir, env, provided) {
@@ -28,9 +29,9 @@ export function workspaceIntegrations(service, dataDir, env, provided) {
     "VAPID_SUBJECT",
     "PORTAL_URL",
     "OCR_LANG_PATH",
+    "UTILITY_INTAKE_ENABLED",
   ];
-  const runtime = (id) => {
-    if (runtimes.has(id)) return runtimes.get(id);
+  const configuration = (id) => {
     if (!/^[a-zA-Z0-9_-]+$/.test(id))
       throw new Error("Invalid workspace reference");
     const workspace = s.getGlobal("workspaces", id);
@@ -39,7 +40,7 @@ export function workspaceIntegrations(service, dataDir, env, provided) {
     const config =
       id === DEFAULT_WORKSPACE
         ? { ...env }
-        : { PORTAL_URL: env.PORTAL_URL, OCR_LANG_PATH: env.OCR_LANG_PATH };
+        : { PORTAL_URL: env.PORTAL_URL, OCR_LANG_PATH: env.OCR_LANG_PATH, RENTARA_PROFILE: env.RENTARA_PROFILE, DEMO_LIVE_DELIVERY: env.DEMO_LIVE_DELIVERY, DEMO_LIVE_SINCE: env.DEMO_LIVE_SINCE };
     for (const key of keys)
       if (configs[id]?.[key] !== undefined) config[key] = configs[id][key];
     const demo = s.withWorkspace(id, () => s.get("settings", "demo-showcase"));
@@ -52,6 +53,18 @@ export function workspaceIntegrations(service, dataDir, env, provided) {
         VAPID_PRIVATE_KEY: "",
         VAPID_SUBJECT: "",
       });
+    return restrictProfile(config);
+  };
+  const validate = () => validateMailboxes(s.allGlobal('workspaces').filter(w => w.status === 'active').map(w => [w.id,configuration(w.id)]));
+  // Check every configured reader before constructing or contacting any client.
+  validate();
+  const runtime = (id) => {
+    validate();
+    if (runtimes.has(id)) return runtimes.get(id);
+    const config = configuration(id);
+    if (env.RENTARA_PROFILE) {
+      console.log(`Workspace ${id}: profile ${env.RENTARA_PROFILE}; mailbox ${mailboxEnabled(config) ? `${config.IMAP_USER} / ${config.IMAP_MAILBOX || 'INBOX'}` : 'OFF'}; rent email ${config.RENT_EMAIL_ENABLED === 'true' ? 'enabled' : 'OFF'}; Push ${config.VAPID_PUBLIC_KEY ? 'configured' : 'OFF'}.`);
+    }
     const result =
       (id === DEFAULT_WORKSPACE && provided) ||
       new Integrations(

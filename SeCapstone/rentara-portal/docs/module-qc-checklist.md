@@ -29,14 +29,19 @@ npm.cmd ci
 
 Choose ONE profile for your walkthrough. The profiles use different databases; actions in one do not appear in another.
 
+- [ ] PROFILE01 Before signing in, confirm the terminal's profile, URL and database directory. Normal Demo must show rent email/Push OFF; only explicit `--live-delivery` permits restricted test delivery. Operational must use its separate utility label.
+- [ ] PROFILE02 For an authorized live intake check, confirm each receiving workspace's printed account/label against its Gmail filter and verified mappings. Use a fresh agreed synthetic bill; do not relabel real bills for testing.
+- [ ] PROFILE03 After restart, confirm the same records and accounts remain. Any mailbox collision must be resolved in the integration configuration before intake; do not delete history or billing records to clear it.
+
 | Profile | Startup command from the application directory | Laptop address | Use |
 | --- | --- | --- | --- |
 | Configured default, normally showcase | `npm.cmd start` | Normally `http://localhost:8080/`; follow terminal output | General module tour; uses the current `.env` data directory |
+| Separate operational portfolio | `npm.cmd run start:operational` | Normally `http://localhost:8081/`; follow terminal output | Clean records and chosen account identities after the one-time `setup:operational` command; see the [profile guide](development-guide.md#separate-operational-profile) |
 | Existing Group 3, retrieval off | `npm.cmd run demo:group` | `https://localhost:8444/` | Inspect existing Group 3 records and Staff workflow without mailbox retrieval |
 | Existing Group 3, retrieval on | `npm.cmd run demo:group -- --receive` | `https://localhost:8444/` | Deliberate Gmail demonstration; retrieves only `Rentara-Group3-Demo`; rent email remains off |
 | Separate acceptance portfolio | `npm.cmd run start:acceptance` | Normally `https://localhost:8443/`; follow terminal output | Dedicated acceptance records; see the local acceptance guide for prerequisites |
 
-Group 3 needs its existing prepared database and local HTTPS configuration. Acceptance needs its existing acceptance configuration. This checkout lacked `.env.acceptance` and the Group 3 database when checked in this chat, so use the showcase for now. If these are missing on a fresh clone, use the setup guides instead of copying another person's private database or rerunning generators against working records.
+Group 3 needs its prepared database and local HTTPS configuration. Acceptance needs its own local configuration. These runtime files are laptop-specific; a fresh clone does not include the working database or generated `.env.acceptance`. If they are missing, follow the setup guides instead of copying another person's private database or rerunning generators against working records. Use the showcase for a general walkthrough when the other profiles have not been prepared.
 
 Keep the terminal open and laptop awake. Stop with Ctrl+C. Do not double-click `index.html`; the Node API and SQLite database are required. XAMPP Apache/MySQL do not need to run for this path. If the port is occupied, reuse the intended server or stop its own terminal before restarting.
 
@@ -62,7 +67,7 @@ Log out before switching roles, or use separate browser profiles. Login uses ord
 
 ## Progress at this checkpoint
 
-- The latest saved full regression on 27 October reports **99 passed, 0 failed, 0 skipped, 0 cancelled**. This walkthrough did not rerun it or perform a fresh browser acceptance test.
+- The 27 October checkpoint reports **99 passed, 0 failed, 0 skipped, 0 cancelled**. Later dated runs and their scope are recorded in [current QA evidence](qa-report.md); keep each count attached to its tested revision. This checklist does not itself establish a fresh browser or actual-device acceptance result.
 - Four-role access, portfolio records, intake/extraction, validation, correction proposals, allocation, rent payments/receipts, personal utility tracking, calendar, alerts, reports and recovery have implementation and automated evidence.
 - The latest UI work includes the shared Case Sheet, phone correction forms, clearer next steps and safe retries of failed reads.
 - A self-addressed synthetic Group 3 scanned utility email passed automatic Gmail-label retrieval, OCR and allocation on 23 October: PHP 900 split into two PHP 450 charges. Preserve that existing fixture. This is not actual provider-origin evidence.
@@ -267,6 +272,8 @@ Do not resend the already accepted Group 3 fixture for another first-time-succes
 - [ ] E22 Documents: preview and download each file type; download content matches the original and access is audited.
 - [ ] E23 Documents: cancel file selection; no empty document row is created.
 - [ ] E24 FIXTURE — Submit an unsupported or over-limit document using the implementation's accepted-type/size limits: clear rejection and no stored document row. Record the exact size/type tested.
+- [ ] E25 Edit a permitted Tenant field after opening that Tenant through the top search: the saved name/details appear in the directory and its suggestions without losing the keyword or property filter.
+- [ ] E26 Overview: compare separate latest rent, electricity and water records and their actual due dates. Missing records say No bill available. Whole-unit rent and the Tenant's recorded rent share are distinguished; advance and utility tracking wording remain correct.
 
 ## 21. Incoming source and Case Sheet controls: individual checks
 
@@ -386,13 +393,13 @@ For each row test the visible controls, direct protected route and, with a techn
 | Action | Admin | Manager | Staff | Tenant |
 | --- | --- | --- | --- | --- |
 | Manage users/workspaces and system maintenance | Allow | Deny | Deny | Deny |
-| Read workspace portfolio and operational intake | Deny | Own workspace | Own workspace | Deny |
+| Read workspace portfolio and operational intake | Selected portfolio records read-only; intake denied | Own workspace | Own workspace | Deny |
 | Create/delete portfolio enrollment; change rent/lease/mappings | Deny | Own workspace | Deny | Deny |
 | Edit existing permitted descriptive/contact fields | Deny | Own workspace | Allowed field subset | Own allowed profile only |
 | Submit utility correction proposal | Deny | Manager direct correction/decision workflow | Own workspace, eligible source | Deny |
 | Authorize proposal / confirm rent / apply advance | Deny | Own workspace | Deny | Deny |
 | Submit own rent report / own utility mark | Deny | No Tenant impersonation | Deny | Own eligible bill |
-| Retrieve Tenant bill/receipt/source | No operational billing authority | Authorized own workspace | Permitted own-workspace operational access | Own permitted records only; no operational source endpoint |
+| Retrieve Tenant bill/receipt/source | Approved bill/generated rent receipt read-only; original sources denied | Authorized own workspace | Permitted own-workspace operational access | Own permitted records only; no operational source endpoint |
 | Reports / billing settings | Deny | Own workspace | Deny | Deny |
 
 - [ ] SEC01 Execute each applicable Allow cell with the intended account and synthetic record; allowed actions succeed.
@@ -434,3 +441,11 @@ Screenshot / exact error:
 Prioritize wrong-account access, wrong amounts, lost history and duplicate charges/receipts before cosmetic issues. Do not include passwords, keys or full private provider account numbers in shared reports. Synthetic test outcomes are not participant responses or representative provider-accuracy measurements.
 
 References: [current QA evidence](qa-report.md), [manual test guide](manual-test-guide.md), [Group 3 demonstration](../../reports/demo-files/group-3/README.md), [Staff responsibilities](staff-implementation-plan.md), [scope](capstone-scope.md), [backup and recovery](backup-and-recovery.md).
+
+
+### Controlled live-demo delivery checks
+
+- [ ] LIVEDEMO01 Start with `--live-delivery` and confirm only the three approved group recipients are printed. Use a fresh event; old queues remain unchanged.
+- [ ] LIVEDEMO02 Refresh registration on each approved test phone after this startup, enable the existing Manager setting and Tenant preference, then confirm a fresh utility portal/Push alert. No utility email or utility receipt should result.
+- [ ] LIVEDEMO03 Report and confirm an agreed unpaid demo rent payment. Verify its `[DEMO]` email arrives once, opens the correct port-8444 Tenant page, and the original confirmed receipt is preserved on retry.
+- [ ] LIVEDEMO04 Stop and restart normally. New demo events must remain portal-only. Record actual inbox/device outcomes separately from automated test results.

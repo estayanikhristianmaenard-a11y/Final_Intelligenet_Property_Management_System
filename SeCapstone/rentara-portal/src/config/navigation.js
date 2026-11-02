@@ -100,6 +100,7 @@ export const NAV_ITEMS = [
     roles: [ROLE.ADMIN],
     permission: "admin:audit",
   },
+  {id:"admin-workspace",label:"Workspaces",path:"#/admin/workspace",icon:"building",section:"System",roles:[ROLE.ADMIN],permission:"admin:workspace:read"},
   {
     id: "admin-settings",
     label: "Settings",
@@ -164,6 +165,7 @@ export const ROUTES = [
   { path: "/admin", page: "adminDashboard", roles: [ROLE.ADMIN], permission: "admin:dashboard" },
   { path: "/admin/audit", page: "adminAudit", roles: [ROLE.ADMIN], permission: "admin:audit" },
   { path: "/admin/settings", page: "adminSettings", roles: [ROLE.ADMIN], permission: "admin:settings" },
+  { path: "/admin/workspace", page: "adminWorkspace", roles: [ROLE.ADMIN], permission: "admin:workspace:read" },
 
   { path: "/tenant", page: "tenantHome", roles: [ROLE.TENANT], permission: "tenant:home" },
   { path: "/tenant/bills", page: "tenantBills", roles: [ROLE.TENANT], permission: "tenant:billing" },

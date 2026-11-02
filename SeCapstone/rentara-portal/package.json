@@ -8,8 +8,11 @@
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
+    "setup:operational": "node tools/operational-profile.mjs setup",
+    "start:operational": "node tools/operational-profile.mjs start",
     "setup:acceptance": "node server/acceptance-setup.js",
     "demo:group:prepare": "node tools/prepare-group-demo.mjs",
+    "demo:workspaces:prepare": "node tools/prepare-workspace-demo.mjs",
     "demo:group": "node --env-file-if-exists=.env --env-file=.env.acceptance tools/start-group-demo.mjs",
     "setup:https": "node tools/setup-local-https.mjs",
     "verify:email-billing": "node --env-file-if-exists=.env tools/verify-email-billing.mjs",

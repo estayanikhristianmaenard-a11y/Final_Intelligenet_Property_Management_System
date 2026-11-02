@@ -59,6 +59,7 @@ test("phone utility journey: PDF upload, correction, shared bills, calendar, ale
     assert.match(dto.utilityProvider,/meralco/i);
     assert.equal(store.get("bills",dto.id).utilityProvider,undefined,"provider is read from the protected source, not duplicated in storage");
     assert.equal(bills.length,3);
+    assert.ok(bills.every(b=>b.cycle===due.slice(0,7)), "the utility cycle follows its actual due month, including a month boundary");
     assert.equal(bills.reduce((sum,b)=>sum+Math.round(b.totalDue*100),0),10001);
     assert.equal(store.get("incoming",source.id).ocrStatus,"validated");
     assert.ok(store.all("corrections").some(c=>c.sourceId===source.id));

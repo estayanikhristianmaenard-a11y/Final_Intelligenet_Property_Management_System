@@ -1,10 +1,12 @@
 # Demo bill files
 
+For the current guided final testing, use [the reviewer kit and workbook](../testing/README.md) and its fresh numbered synthetic assets. The packs below remain available for their original demonstrations; already processed bills should exercise duplicates rather than be treated as fresh cases.
+
 For the anonymized actual-layout Meralco scan in the **same Group 3 portal**, use [the Unit A Meralco guide](group-3-meralco/README.md). This preserves the source dates and maps its dummy CAN to the two Unit A demo Tenants.
 
 For a quick practice with just one Tenant, use [the single-Tenant scanned water bill and guide](single-tenant-practice/README.md). It routes PHP 275.50 to Jullian in G3-B only, independently of the two electricity cases.
 
-For the current two-unit, three-member phone/email demonstration, use the separate [Group 3 bill pack and steps](group-3/README.md), or transfer [the phone ZIP](group-3-phone-bills.zip). It has new account references and a separate portfolio on HTTPS port 8444. The older generic sample bundle below is not the Group 3 portfolio.
+For the current two-unit, three-member phone/email demonstration, use the separate [Group 3 bill pack and steps](group-3/README.md). It has new account references and a separate portfolio on HTTPS port 8444. The older generic sample bundle below is not the Group 3 portfolio.
 
 All files are test copies. No original private bill or credentials are included. An anonymized bill remains a test representation, not a payment document.
 

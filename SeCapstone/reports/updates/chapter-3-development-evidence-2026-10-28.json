@@ -1,0 +1,1082 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T13:41:11.580Z",
+  "timezone": "Asia/Manila",
+  "purpose": "Reproducible development evidence using disposable synthetic records and the existing fixture catalog",
+  "isolation": {
+    "workingPortfolioOpened": false,
+    "envFileRead": false,
+    "externalMailOrPushUsed": false,
+    "externalNetworkRequired": false,
+    "disposableDataRemoved": true
+  },
+  "environment": {
+    "checkedAt": "2026-10-28T13:41:12.810Z",
+    "platform": "win32",
+    "architecture": "x64",
+    "osRelease": "10.0.26200",
+    "cpuModel": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+    "logicalCpuCount": 8,
+    "totalPhysicalMemoryBytes": 8358518784,
+    "nodeVersion": "v24.21.0",
+    "browser": {
+      "browserEngine": "Chromium",
+      "version": "156.0.4314.50",
+      "executableName": "msedge.exe",
+      "headless": true
+    },
+    "packages": {
+      "@playwright/test": {
+        "version": "1.64.0",
+        "source": "installed package.json"
+      },
+      "pdfjs-dist": {
+        "version": "6.2.108",
+        "source": "installed package.json"
+      },
+      "tesseract.js": {
+        "version": "6.0.1",
+        "source": "installed package.json"
+      },
+      "@tesseract.js-data/eng": {
+        "version": "1.0.0",
+        "source": "installed package.json"
+      },
+      "@napi-rs/canvas": {
+        "version": "1.0.11",
+        "source": "installed package.json"
+      },
+      "mailparser": {
+        "version": "3.9.38",
+        "source": "installed package.json"
+      },
+      "imapflow": {
+        "version": "1.7.8",
+        "source": "installed package.json"
+      },
+      "nodemailer": {
+        "version": "10.1.0",
+        "source": "installed package.json"
+      },
+      "web-push": {
+        "version": "3.6.7",
+        "source": "installed package.json"
+      }
+    },
+    "sourceSha256": {
+      "package-lock.json": "6e01118d16bcfb5b578001c9a7e1c980565d6cf913b6bcdfbf9eb0411ade450b",
+      "server/integrations.js": "ae2972d588af557854c7db51be783b4258be2f10b262dcf7a99740d1c71a1aa8",
+      "server/rules.js": "f76ad47a95993376fdb965b3fec92b356730473b523774d860e043156918ee57",
+      "server/service.js": "8547e7c94eecc183c8f3d30f2cba642c516dc6103c4b433737afaac906523114",
+      "server/index.js": "78699a736987af81b437b41cc501393b9771ec87fae1005a9b575b9d416c2017"
+    },
+    "noHostOrAccountNamesCollected": true,
+    "windowsHardwareCapture": {
+      "collectedAt": "2026-10-28T13:32:46.3841636Z",
+      "timezone": "Asia/Manila",
+      "operatingSystem": "Microsoft Windows 11 Pro",
+      "osVersion": "10.0.26200",
+      "osBuild": "26200",
+      "architecture": "64-bit",
+      "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+      "physicalCores": 4,
+      "logicalProcessors": 8,
+      "installedRamBytes": 8358518784,
+      "manufacturer": "Acer",
+      "model": "TravelMate P215-53"
+    },
+    "windowsHardwareCaptureNote": "Current hardware metadata supplied by the local Windows inventory; does not establish the environment of historical runs.",
+    "sqliteVersion": "3.53.4"
+  },
+  "apiTiming": {
+    "measuredAt": "2026-10-28T13:41:14.003Z",
+    "endpoint": "GET /api/v1/reports/summary?range=all",
+    "transport": "HTTP loopback, authenticated Manager",
+    "timingBoundary": "Immediately before fetch through complete body read; login and warmups excluded",
+    "database": "Fresh disposable file-backed SQLite, synthetic bootstrap demo; no scheduler started",
+    "datasetCounts": {
+      "properties": 4,
+      "units": 4,
+      "tenants": 3,
+      "bills": 30,
+      "payments": 0,
+      "receipts": 0
+    },
+    "groups": [
+      {
+        "startedAt": "2026-10-28T13:41:13.500Z",
+        "completedAt": "2026-10-28T13:41:13.764Z",
+        "concurrentRequestLoops": 1,
+        "requestsPerLoop": 50,
+        "warmupRequestsExcluded": 5,
+        "sharesPreviouslyWarmedServer": true,
+        "count": 50,
+        "meanMs": 5.228,
+        "p50Ms": 4.674,
+        "p95Ms": 8.501,
+        "minMs": 2.98,
+        "maxMs": 14.778,
+        "percentileMethod": "Nearest rank: ceil(p*n), with one-based rank",
+        "elapsedWallMs": 264.13,
+        "statusCounts": {
+          "200": 50
+        },
+        "jsonResponses": 50,
+        "responseBytes": [
+          720
+        ],
+        "successfulResponses": 50,
+        "sampledNodeRss": {
+          "sampleIntervalMs": 25,
+          "samples": 12,
+          "startBytes": 154832896,
+          "endBytes": 173355008,
+          "minBytes": 152838144,
+          "maxBytes": 173355008,
+          "scope": "Node evidence collector and in-process HTTP server; excludes Edge, OS-wide usage and short spikes between samples"
+        },
+        "requestDurationsMs": [
+          5.917,
+          8.501,
+          8.19,
+          8.898,
+          5.885,
+          7.295,
+          5.632,
+          5.069,
+          4.423,
+          3.867,
+          3.078,
+          3.383,
+          4.064,
+          6.464,
+          5.152,
+          4.888,
+          4.026,
+          5.2,
+          4.534,
+          8.036,
+          5.99,
+          3.644,
+          6.332,
+          3.865,
+          4.33,
+          6.512,
+          3.86,
+          3.454,
+          4.812,
+          5.602,
+          3.293,
+          3.91,
+          4.53,
+          4.468,
+          3.999,
+          14.778,
+          3.756,
+          4.976,
+          6.059,
+          4.832,
+          3.685,
+          3.527,
+          4.418,
+          2.98,
+          3.697,
+          3.522,
+          5.962,
+          6.023,
+          4.674,
+          7.43
+        ]
+      },
+      {
+        "startedAt": "2026-10-28T13:41:13.765Z",
+        "completedAt": "2026-10-28T13:41:14.003Z",
+        "concurrentRequestLoops": 5,
+        "requestsPerLoop": 10,
+        "warmupRequestsExcluded": 0,
+        "sharesPreviouslyWarmedServer": true,
+        "count": 50,
+        "meanMs": 23.294,
+        "p50Ms": 23.19,
+        "p95Ms": 32.78,
+        "minMs": 12.459,
+        "maxMs": 34.475,
+        "percentileMethod": "Nearest rank: ceil(p*n), with one-based rank",
+        "elapsedWallMs": 238.397,
+        "statusCounts": {
+          "200": 50
+        },
+        "jsonResponses": 50,
+        "responseBytes": [
+          720
+        ],
+        "successfulResponses": 50,
+        "sampledNodeRss": {
+          "sampleIntervalMs": 25,
+          "samples": 9,
+          "startBytes": 173359104,
+          "endBytes": 190734336,
+          "minBytes": 173359104,
+          "maxBytes": 190734336,
+          "scope": "Node evidence collector and in-process HTTP server; excludes Edge, OS-wide usage and short spikes between samples"
+        },
+        "requestDurationsMs": [
+          31.562,
+          32.581,
+          32.78,
+          33.587,
+          34.475,
+          12.459,
+          25.409,
+          32.038,
+          31.474,
+          30.853,
+          23.093,
+          13.261,
+          23.385,
+          23.19,
+          23.101,
+          23.109,
+          26.253,
+          24.233,
+          24.273,
+          24.326,
+          24.316,
+          20.696,
+          17.907,
+          18.073,
+          18.351,
+          18.499,
+          18.501,
+          23.996,
+          23.865,
+          23.625,
+          23.431,
+          26.701,
+          24.081,
+          25.025,
+          25.628,
+          25.716,
+          24.691,
+          22.83,
+          22.03,
+          21.332,
+          21.262,
+          19.443,
+          20.993,
+          21.639,
+          21.902,
+          22.513,
+          21.869,
+          14.219,
+          13.262,
+          12.871
+        ]
+      }
+    ]
+  },
+  "extraction": {
+    "measuredAt": "2026-10-28T13:41:33.194Z",
+    "procedure": "Every current case.json input was read unchanged. PDF/images use real Integrations.extract plus parseUtilityText; EML files use real ingestEmail. Six normalized values are compared exactly with case.json, without guessing or manual correction.",
+    "fixtureInterpretation": "An unmet business mapping or duplicate hold is distinct from a field-extraction mismatch. This extraction audit does not configure every catalog account/occupancy for finalization; end-to-end validation and isolation are covered by the separate automated suite.",
+    "timingLimits": "One sequential pass, no document timing warmups; first PDF/OCR may include module and worker initialization. Later OCR inputs reuse the local worker. This is not a stable throughput benchmark.",
+    "cases": [
+      {
+        "id": "meralco-001",
+        "origin": "anonymized_actual_layout",
+        "independentActualBill": true,
+        "metadataSha256": "796e577a44e2bdff8bbb33cc27506751fcedfb374af05b13be887c2ca587d613",
+        "inputRepresentations": 2
+      },
+      {
+        "id": "electricity-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "metadataSha256": "1f7d5297e599a4ffbde75292d6082514eef12d61a959b090db4de94d084178e2",
+        "inputRepresentations": 3
+      },
+      {
+        "id": "electricity-002",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "metadataSha256": "921d523bcb16ba45e2ef3bbbd4e4dc7864ea50cc02fbdb09c061b0261f89575b",
+        "inputRepresentations": 2
+      },
+      {
+        "id": "unmapped-account-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "metadataSha256": "3dc5c2389f78ef7bc764043820432028d7f72068d761e4d63b1dcfb1779281df",
+        "inputRepresentations": 1
+      },
+      {
+        "id": "water-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "metadataSha256": "a19bbca525553e12bfec1f9663dcbe9113ccf2e3ded5cf71c1c091797e8f71d2",
+        "inputRepresentations": 1
+      }
+    ],
+    "distinctCases": 5,
+    "independentActualLayoutBills": 1,
+    "inputRepresentations": 9,
+    "normalizedFieldKeys": [
+      "provider",
+      "accountRef",
+      "amountDue",
+      "dueDate",
+      "periodStart",
+      "periodEnd"
+    ],
+    "groups": {
+      "directText": {
+        "inputRepresentations": 6,
+        "distinctCaseIds": [
+          "meralco-001",
+          "electricity-001",
+          "unmapped-account-001",
+          "water-001"
+        ],
+        "comparedFieldValues": 36,
+        "matchingFieldValues": 36,
+        "representationsWithAllFieldsMatching": 6,
+        "extractionErrors": 0
+      },
+      "ocr": {
+        "inputRepresentations": 3,
+        "distinctCaseIds": [
+          "meralco-001",
+          "electricity-002"
+        ],
+        "comparedFieldValues": 18,
+        "matchingFieldValues": 18,
+        "representationsWithAllFieldsMatching": 3,
+        "extractionErrors": 0
+      }
+    },
+    "records": [
+      {
+        "caseId": "meralco-001",
+        "origin": "anonymized_actual_layout",
+        "independentActualBill": true,
+        "input": "anonymized/meralco-001/bill-digital.pdf",
+        "bytes": 1089116,
+        "sha256": "af4a88438df4efccd2495c981e4e030ee524137f44782acb7b15104649b64d91",
+        "catalogMethod": "pdf_text",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "9990000001",
+          "amountDue": 1567.17,
+          "dueDate": "2026-10-08",
+          "periodStart": "2026-08-27",
+          "periodEnd": "2026-09-26"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:14.360Z",
+        "method": "pdf_text",
+        "scannedPages": 0,
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "9990000001",
+          "amountDue": 1567.17,
+          "dueDate": "2026-10-08",
+          "periodStart": "2026-08-27",
+          "periodEnd": "2026-09-26"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "9990000001",
+            "actual": "9990000001",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 1567.17,
+            "actual": 1567.17,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-08",
+            "actual": "2026-10-08",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-08-27",
+            "actual": "2026-08-27",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-09-26",
+            "actual": "2026-09-26",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 1737.289,
+        "completedAt": "2026-10-28T13:41:16.097Z"
+      },
+      {
+        "caseId": "meralco-001",
+        "origin": "anonymized_actual_layout",
+        "independentActualBill": true,
+        "input": "anonymized/meralco-001/bill-scanned.pdf",
+        "bytes": 765172,
+        "sha256": "9a4a8a84eb12da7b3e392336dbfd8f21228bacc50e17def802c6d35f0ab1d324",
+        "catalogMethod": "pdf_ocr",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "9990000001",
+          "amountDue": 1567.17,
+          "dueDate": "2026-10-08",
+          "periodStart": "2026-08-27",
+          "periodEnd": "2026-09-26"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:16.120Z",
+        "method": "pdf_ocr",
+        "scannedPages": 2,
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "9990000001",
+          "amountDue": 1567.17,
+          "dueDate": "2026-10-08",
+          "periodStart": "2026-08-27",
+          "periodEnd": "2026-09-26"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "9990000001",
+            "actual": "9990000001",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 1567.17,
+            "actual": 1567.17,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-08",
+            "actual": "2026-10-08",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-08-27",
+            "actual": "2026-08-27",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-09-26",
+            "actual": "2026-09-26",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 15685.179,
+        "completedAt": "2026-10-28T13:41:31.805Z"
+      },
+      {
+        "caseId": "electricity-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/electricity-001/bill-digital.pdf",
+        "bytes": 810,
+        "sha256": "0c339b9faf66cd36a578b49873967e3bc33604fbd89d51d1dd8f73a67b8eed98",
+        "catalogMethod": "pdf_text",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-MERALCO-001",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:31.821Z",
+        "method": "pdf_text",
+        "scannedPages": 0,
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-MERALCO-001",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "TEST-MERALCO-001",
+            "actual": "TEST-MERALCO-001",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 100.01,
+            "actual": 100.01,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-18",
+            "actual": "2026-10-18",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-10-01",
+            "actual": "2026-10-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-10-14",
+            "actual": "2026-10-14",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 6.799,
+        "completedAt": "2026-10-28T13:41:31.828Z"
+      },
+      {
+        "caseId": "electricity-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/electricity-001/email-attachment.eml",
+        "bytes": 1492,
+        "sha256": "0d36434c25bdb08481e144f7d22c3b24cb586e4c28ad5966d312e3c46781157e",
+        "catalogMethod": "email_attachment",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-MERALCO-001",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:31.841Z",
+        "method": "email_attachment",
+        "underlyingExtractionMethod": "pdf_text",
+        "businessProcessingOutcome": "exception",
+        "validationFailures": [
+          {
+            "rule": "V03",
+            "reason": "Provider/account mapping unresolved or ambiguous"
+          }
+        ],
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-MERALCO-001",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "TEST-MERALCO-001",
+            "actual": "TEST-MERALCO-001",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 100.01,
+            "actual": 100.01,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-18",
+            "actual": "2026-10-18",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-10-01",
+            "actual": "2026-10-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-10-14",
+            "actual": "2026-10-14",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 195.482,
+        "completedAt": "2026-10-28T13:41:32.037Z"
+      },
+      {
+        "caseId": "electricity-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/electricity-001/email-summary.eml",
+        "bytes": 340,
+        "sha256": "7bf80d2d10baa389fb1ced8780d830f29a1c4adbd5c0f8c1730b9a034c1d3231",
+        "catalogMethod": "email_text",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-MERALCO-001",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:32.038Z",
+        "method": "email_text",
+        "underlyingExtractionMethod": "direct_email_text",
+        "businessProcessingOutcome": "exception",
+        "validationFailures": [
+          {
+            "rule": "V03",
+            "reason": "Provider/account mapping unresolved or ambiguous"
+          },
+          {
+            "rule": "V04",
+            "reason": "Duplicate document or provider/account billing period"
+          }
+        ],
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-MERALCO-001",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "TEST-MERALCO-001",
+            "actual": "TEST-MERALCO-001",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 100.01,
+            "actual": 100.01,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-18",
+            "actual": "2026-10-18",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-10-01",
+            "actual": "2026-10-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-10-14",
+            "actual": "2026-10-14",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 5.658,
+        "completedAt": "2026-10-28T13:41:32.044Z"
+      },
+      {
+        "caseId": "electricity-002",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/electricity-002/bill-image.png",
+        "bytes": 49048,
+        "sha256": "25ef43e3f037ad858489e575a24d3bddf3694370c0d65a68484bef4c2439dbd3",
+        "catalogMethod": "image_ocr",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "MER-12345",
+          "amountDue": 100,
+          "dueDate": "2026-03-05",
+          "periodStart": "2026-02-01",
+          "periodEnd": "2026-02-28"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:32.064Z",
+        "method": "image_ocr",
+        "scannedPages": 0,
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "MER-12345",
+          "amountDue": 100,
+          "dueDate": "2026-03-05",
+          "periodStart": "2026-02-01",
+          "periodEnd": "2026-02-28"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "MER-12345",
+            "actual": "MER-12345",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 100,
+            "actual": 100,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-03-05",
+            "actual": "2026-03-05",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-02-01",
+            "actual": "2026-02-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-02-28",
+            "actual": "2026-02-28",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 338.633,
+        "completedAt": "2026-10-28T13:41:32.403Z"
+      },
+      {
+        "caseId": "electricity-002",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/electricity-002/bill-scanned.pdf",
+        "bytes": 46968,
+        "sha256": "f2de95d39454bf0d1e983d83211d392caf920a38a5ab269f682a600b804c6269",
+        "catalogMethod": "pdf_ocr",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "MER-12345",
+          "amountDue": 100,
+          "dueDate": "2026-03-05",
+          "periodStart": "2026-02-01",
+          "periodEnd": "2026-02-28"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:32.491Z",
+        "method": "pdf_ocr",
+        "scannedPages": 1,
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "MER-12345",
+          "amountDue": 100,
+          "dueDate": "2026-03-05",
+          "periodStart": "2026-02-01",
+          "periodEnd": "2026-02-28"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "MER-12345",
+            "actual": "MER-12345",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 100,
+            "actual": 100,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-03-05",
+            "actual": "2026-03-05",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-02-01",
+            "actual": "2026-02-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-02-28",
+            "actual": "2026-02-28",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 688.031,
+        "completedAt": "2026-10-28T13:41:33.179Z"
+      },
+      {
+        "caseId": "unmapped-account-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/unmapped-account-001/bill-digital.pdf",
+        "bytes": 811,
+        "sha256": "16ef7b8ec9125e7b8c444531fe8e1a50b1eb0d6ca2fea9dc2a6f1995a65fc99c",
+        "catalogMethod": "pdf_text",
+        "expectedFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-UNMAPPED-999",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "expectedBusinessOutcome": "exception_until_account_mapping_is_configured",
+        "startedAt": "2026-10-28T13:41:33.182Z",
+        "method": "pdf_text",
+        "scannedPages": 0,
+        "actualFields": {
+          "provider": "Meralco",
+          "accountRef": "TEST-UNMAPPED-999",
+          "amountDue": 100.01,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Meralco",
+            "actual": "Meralco",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "TEST-UNMAPPED-999",
+            "actual": "TEST-UNMAPPED-999",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 100.01,
+            "actual": 100.01,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-18",
+            "actual": "2026-10-18",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-10-01",
+            "actual": "2026-10-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-10-14",
+            "actual": "2026-10-14",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 3.101,
+        "completedAt": "2026-10-28T13:41:33.185Z"
+      },
+      {
+        "caseId": "water-001",
+        "origin": "synthetic",
+        "independentActualBill": false,
+        "input": "synthetic/water-001/bill-digital.pdf",
+        "bytes": 813,
+        "sha256": "a97aba4417e8f7aef188be3a047ddccb3e29292ca4885eb80b1c0a5e72b9820d",
+        "catalogMethod": "pdf_text",
+        "expectedFields": {
+          "provider": "Manila Water",
+          "accountRef": "TEST-WATER-001",
+          "amountDue": 220,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "expectedBusinessOutcome": "valid_with_verified_mapping_and_occupancy",
+        "startedAt": "2026-10-28T13:41:33.189Z",
+        "method": "pdf_text",
+        "scannedPages": 0,
+        "actualFields": {
+          "provider": "Manila Water",
+          "accountRef": "TEST-WATER-001",
+          "amountDue": 220,
+          "dueDate": "2026-10-18",
+          "periodStart": "2026-10-01",
+          "periodEnd": "2026-10-14"
+        },
+        "fieldComparisons": [
+          {
+            "field": "provider",
+            "expected": "Manila Water",
+            "actual": "Manila Water",
+            "exactMatch": true
+          },
+          {
+            "field": "accountRef",
+            "expected": "TEST-WATER-001",
+            "actual": "TEST-WATER-001",
+            "exactMatch": true
+          },
+          {
+            "field": "amountDue",
+            "expected": 220,
+            "actual": 220,
+            "exactMatch": true
+          },
+          {
+            "field": "dueDate",
+            "expected": "2026-10-18",
+            "actual": "2026-10-18",
+            "exactMatch": true
+          },
+          {
+            "field": "periodStart",
+            "expected": "2026-10-01",
+            "actual": "2026-10-01",
+            "exactMatch": true
+          },
+          {
+            "field": "periodEnd",
+            "expected": "2026-10-14",
+            "actual": "2026-10-14",
+            "exactMatch": true
+          }
+        ],
+        "matchedFields": 6,
+        "comparedFields": 6,
+        "allFieldsMatch": true,
+        "extractionError": null,
+        "elapsedMs": 4.772,
+        "completedAt": "2026-10-28T13:41:33.193Z"
+      }
+    ]
+  },
+  "limitations": [
+    "Development fixtures are not actual participants or a representative provider-document sample.",
+    "Different representations of one case are not independent bills. Only one catalog case comes from an anonymized actual-layout source.",
+    "Field exact-match checks are not character-level OCR accuracy or general extraction accuracy.",
+    "Loopback API requests are not page-load times, physical-phone/hotspot results, live provider delivery or a production load test.",
+    "Five concurrent request loops are technical clients, not five observed human users.",
+    "No formal ISO questionnaire, participant acceptance, comprehensive penetration test or long-term uptime is established.",
+    "A mean or percentile is reported as an observation; no unapproved performance acceptance threshold is invented."
+  ],
+  "completedAt": "2026-10-28T13:41:33.194Z",
+  "status": "passed_for_recorded_development_checks",
+  "regressionVerification": {
+    "date": "2026-10-28",
+    "timezone": "Asia/Manila",
+    "initial": {
+      "tests": 99,
+      "pass": 98,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 359075.7525,
+      "path": "chapter-3-test-results-initial-2026-10-28.txt",
+      "sha256": "a53786a4511d420aba5157fd104e32765e614bc9a3384b64ae7cc5f09f3a9a8e"
+    },
+    "final": {
+      "tests": 99,
+      "pass": 99,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 326777.958,
+      "path": "chapter-3-test-results-2026-10-28.txt",
+      "sha256": "289c96bef3fe9ea5f6255ed337a3a467139fb0faa90bdb92ed7c61e667db0f8a"
+    },
+    "initialFailureCause": "A browser test expected the current month although its utility fixture due date crossed into the following month; expected alert cycle corrected to due month. Application billing behavior was unchanged.",
+    "applicationBehaviorChanged": false
+  },
+  "manuscriptVerification": {
+    "nonemptyParagraphsAndCells": 290,
+    "localOnlineTextParity": true,
+    "nativeTables": 3,
+    "embeddedImages": 3,
+    "nativeBulletItems": 0,
+    "pdfPages": 52,
+    "checkedBodyFormatting": "Arial 12, justified, lineSpacing 200; headings and figure layout retained",
+    "formalParticipantEvaluationCompleted": false
+  }
+}

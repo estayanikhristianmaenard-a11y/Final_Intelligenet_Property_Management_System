@@ -154,7 +154,8 @@ function bindChrome() {
   const portalSearch = root.querySelector('[data-action="global-search"]');
   if (portalSearch && ["manager", "staff"].includes(session.role))
     bindTenantSearch(portalSearch, {
-      find: term => api.get(endpoints.tenants({ q: term })),
+      debounceMs: 250,
+      find: (term, options) => api.get(endpoints.tenants({ q: term }), options),
       onSelect: tenant => openTenantPanel(tenant.id),
     });
   portalSearch?.addEventListener("keydown", (event) => {

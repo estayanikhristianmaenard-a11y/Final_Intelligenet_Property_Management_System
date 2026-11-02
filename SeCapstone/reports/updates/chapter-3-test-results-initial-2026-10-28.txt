@@ -1,0 +1,746 @@
+﻿
+
+> rentara-portal@2.0.0 test
+
+> node --test --test-concurrency=1 tests/*.test.js
+
+
+
+✔ normal acceptance blocks inherited mail delivery, retrieval and workspace overrides (45.2727ms)
+
+✔ explicit utility intake restores only the agreed IMAP account and dedicated label while rent email stays off (1.0154ms)
+
+✔ utility intake cannot silently target a general inbox or another account (1.1775ms)
+
+✔ audit paging retains older rows, filters before paging, uses Philippine dates and restricts access (1320.356ms)
+
+Automatic job failed: rentGeneration
+
+Automatic job failed: reminders
+
+✔ automatic startup retrieves MIME/PDF, validates, allocates and alerts without manual Sync; repeated cycles preserve one source charge (8882.6097ms)
+
+Automatic job failed: rentEmail
+
+Automatic job failed: rentGeneration
+
+Automatic job failed: reminders
+
+Automatic job failed: mailbox
+
+Automatic job failed: rentEmail
+
+Automatic job failed: rentGeneration
+
+Automatic job failed: reminders
+
+Automatic job failed: rentEmail
+
+✔ rent, reminder and channel failures do not prevent independent mailbox or delivery jobs; state stays bounded and retries wait (363.1015ms)
+
+✔ scheduler serializes slow work and stop waits for the active cycle (58.425ms)
+
+✔ automation status is read-only, workspace scoped and denied to Tenant/Admin (889.8019ms)
+
+✔ restart preserves automatic bills, alerts, confirmed rent receipts and mailbox replay protection while new mail still processes (727.842ms)
+
+✔ whole-centavo allocation and original day survive short months (25.9726ms)
+
+✔ rent is generated once per cycle, with first advance and lease end cutoff (427.0752ms)
+
+✔ shared rent has actual eligible tenants and frozen whole-centavo shares (576.4509ms)
+
+✔ report, rejection, resubmission and confirmation are consistent and idempotent (368.1347ms)
+
+✔ confirmed advance credit applies once to the final applicable cycle (334.4658ms)
+
+✔ partial final advance leaves only the remaining balance to report (339.2541ms)
+
+✔ utility validation, correction, duplicate hold and protected financial history (439.7727ms)
+
+✔ unresolved corrections remain in the queue, no false finalization (316.7717ms)
+
+✔ reminders use Philippine calendar date and deduplicate only unpaid bills (323.8293ms)
+
+✔ stored sessions and records survive reopening, logout invalidates token (475.1144ms)
+
+✔ actual HTTP API enforces roles, tenant ownership, files and persisted settings (851.367ms)
+
+Warning: Indexing all PDF objects
+
+✔ real digital PDF extraction finalizes bills; malformed and duplicate documents enter queue (1129.686ms)
+
+✔ malformed OCR dates and amounts cannot finalize utility bills (470.3412ms)
+
+✔ MIME email attachment runs through real extraction and shared finalization (881.4957ms)
+
+✔ email-body summaries validate like uploads; attachment copies are held and unrelated mail is ignored (986.7432ms)
+
+✔ labelled provider templates parse Meralco summaries and hold masked or conflicting identifiers (2.9393ms)
+
+✔ real scanned PDF uses image OCR, preserves duplicate checks, and rejects oversized pages (7167.9332ms)
+
+✔ real clear-image OCR extracts values using the bundled English model offline (1623.8168ms)
+
+✔ conflicting extraction is held and requires a correction to each conflicting field (454.5957ms)
+
+✔ late confirmation waits for Manager credit application and preserves revisions (490.354ms)
+
+✔ shared utility correction freezes recipients and retains prior financial revision (525.4547ms)
+
+✔ account reset, suspension, last Admin protection and expired sessions enforce access (595.9912ms)
+
+✔ R01 keys separate consecutive individual leases in the same month (363.0391ms)
+
+✔ V02 accepts zero amount and a valid due date before period end; rejects negative amount (526.8466ms)
+
+✔ a later duplicate attachment does not prevent correcting the original source (393.849ms)
+
+✔ rent correction reconciles frozen shared recipients and protects confirmed transactions (494.2004ms)
+
+✔ Web Push uses real encrypted request generation; delivery retries and events deduplicate with a test transport (726.504ms)
+
+✔ HTTP portfolio mutations, file ownership, receipt downloads, backups and range exports persist (964.4296ms)
+
+✔ minute scheduler handles new assignments after its earlier same-day run without duplicate charges (377.0631ms)
+
+✔ utility tracker ownership and Manager direct rent recording are enforced (407.697ms)
+
+✔ reminder cutoff excludes late arrivals, corrected dates and personal marks (408.0261ms)
+
+✔ missing active rent recipients enter exceptions and resolve after assignment repair (603.2167ms)
+
+✔ reports separate utility tracking and exclude legacy utility collections (496.3036ms)
+
+✔ compact OCR storage is lossless and expired sessions are pruned safely (418.8237ms)
+
+✔ identical source uploads share a file while duplicate intake history remains (947.4467ms)
+
+✔ real browser: roles, portfolio CRUD, corrections, inbox, payments, receipts, settings and session recovery (67021.3747ms)
+
+✔ two showcase Tenant logins preserve bills on reuse and isolate personal tracking and receipts (1769.004ms)
+
+✔ oversized email is held once for review while a later valid bill continues and can be explicitly retried (1819.73ms)
+
+✔ held-email retry API rejects Tenants and another workspace's Manager, then reprocesses only the assigned message (766.5269ms)
+
+✔ a non-bill attachment does not hide a supported email summary or manufacture a bill from ordinary email (229.827ms)
+
+✔ mailbox sync uses UID validity, skips processed messages and preserves one charge across retries (228.0853ms)
+
+✔ mailbox network failure releases the sync lock and leaves the message eligible for retry (216.1487ms)
+
+✔ Manager sees a held-email explanation and retries through the real review button without dead source controls (7437.3755ms)
+
+✔ Group 3 origins include its HTTPS port and the explicitly configured LAN host (11.007ms)
+
+✔ Group 3 module requests load with their browser Origin while unrelated origins remain forbidden (188.1008ms)
+
+✔ integration preflight separates missing, disabled, showcase and configured states without leaking values (3.4771ms)
+
+✔ lightweight feedback protects edits, preserves failed inputs, pages old logs and honors reduced motion (10462.1152ms)
+
+✔ acceptance setup maps the anonymized bill, suppresses seed delivery and preserves edits on rerun (2318.109ms)
+
+✔ acceptance setup refuses another portfolio without replacing its users (241.2703ms)
+
+✔ invalid or incomplete TLS fails before creating a database instead of downgrading to HTTP (2.1519ms)
+
+✔ anonymized actual-layout Meralco PDF and raster scan extract all five fields, allocate and hold cross-format duplicates (35747.3971ms)
+
+✔ printed Meralco parsing holds conflicting dates, periods and masked CAN without substituting SIN (4.3485ms)
+
+✔ portal alerts: Manager events, Tenant ownership, unread badges and restart persistence without external delivery (20782.8079ms)
+
+✔ calendar rent estimates preserve anniversary, lease cutoff and actual utility dates without inventing bills (10.9203ms)
+
+✔ bill urgency uses Philippine midnight and excludes settled or pending records (3.364ms)
+
+✔ system status distinguishes missing configuration, unverified setup and failed attempts (276.9686ms)
+
+✔ Admin maintenance summary filters before limiting and preserves the full protected audit (400.8962ms)
+
+✔ receipt rendering preserves the payment snapshot and escapes untrusted fields (58.9601ms)
+
+✔ recovery package restores rent, receipts, distinct workspace files and deduplicated sources without secrets or sessions (1339.0654ms)
+
+✔ recovery rejects missing sources, corrupt packages, traversal and existing destinations (197.6058ms)
+
+✔ rent updates and confirmed payments send once; utilities and unrelated messages never email (243.3658ms)
+
+✔ rent templates escape recipient text and reject unsafe portal links (1.345ms)
+
+✔ unconfigured SMTP and Tenant opt-out keep portal records and suppress email (190.3818ms)
+
+✔ SMTP retries are delayed and bounded; uncertain submissions are never repeated (189.5944ms)
+
+✔ rent reminders expire after payment reports or a missed day (290.5893ms)
+
+✔ eligible rent reminder is accepted once and stale rent revisions are skipped (556.6208ms)
+
+✔ logout and cross-role login discard old shell listeners and forbidden destinations (16188.9909ms)
+
+✔ Manager compares protected PDF/image sources, corrects extracted values and uses the review on phones (11323.088ms)
+
+✔ browser: clean login, Staff proposal, Manager decision, Tenant isolation and Admin filters (16644.9309ms)
+
+✔ Staff proposal leaves live values unchanged; Manager applies once with exact shares and attribution (340.8804ms)
+
+✔ invalid approval rolls back all source/billing changes and returns the proposal (272.1025ms)
+
+✔ changed source/context or disabled preparer makes a pending proposal stale; rejection retains reason (267.4118ms)
+
+✔ Staff descriptive edits work while billing creation, direct corrections and decisions stay forbidden (271.9028ms)
+
+✔ HTTP Staff permissions cover real login, operational reads, cross-role writes and proposal API (550.561ms)
+
+✔ existing databases acquire a scoped proposal table without losing records (85.51ms)
+
+✔ Admin status refresh stays single-request, exposes evidence and isolates failed sections (3904.9672ms)
+
+✔ status uses actual attempt dates, retains historical acceptance and never sends or processes (196.0921ms)
+
+✔ partially completed intake reports held messages instead of hiding them behind success (156.1931ms)
+
+✔ one failed probe or workspace does not hide independent results (160.0178ms)
+
+✔ status refresh is Admin-only, audited and retains the legacy route (317.007ms)
+
+✔ same-page route events preserve unsaved Tenant profile details and save the entered phone (7253.6892ms)
+
+✔ all-role page audit: responsive layouts, named controls, typography and runtime errors (23714.5707ms)
+
+✖ phone utility journey: PDF upload, correction, shared bills, calendar, alerts, personal marks, email duplicate and real image OCR (37977.7476ms)
+
+✔ intake presentation distinguishes finalized bills, duplicate holds and uncertain extraction (2.2955ms)
+
+✔ work queues are disjoint and latest proposal determines returned work (28.9757ms)
+
+✔ Admin creates a workspace and assigns a Manager; separate browser sessions see only their portfolio (11862.3255ms)
+
+✔ independent mailbox settings and a failed workspace job cannot spill into another workspace (360.2261ms)
+
+✔ two independent workspaces isolate HTTP reads, writes, files, payments, exports and concurrent requests (2188.6664ms)
+
+✔ workspace migration backs up legacy SQLite once and preserves records and credentials (319.301ms)
+
+✔ scheduler and independent notification transports keep workspace context across async work (735.491ms)
+
+ℹ tests 99
+
+ℹ suites 0
+
+ℹ pass 98
+
+ℹ fail 1
+
+ℹ cancelled 0
+
+ℹ skipped 0
+
+ℹ todo 0
+
+ℹ duration_ms 359075.7525
+
+
+
+✖ failing tests:
+
+
+
+test at tests\utility-journey.browser.test.js:15:1
+
+✖ phone utility journey: PDF upload, correction, shared bills, calendar, alerts, personal marks, email duplicate and real image OCR (37977.7476ms)
+
+  Error: expect(locator).toContainText(expected) failed
+
+  
+
+  Locator: locator('.notification-feed')
+
+  Timeout: 30000ms
+
+  - Expected substring  -   1
+
+  + Received string     + 113
+
+  
+
+  - Electricity · 2026-10
+
+  +
+
+  +         
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Electricity · 2026-11: ₱33.34 due Nov 01, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     2 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-09: ₱7250.00 due Sep 30, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-08: ₱7250.00 due Aug 31, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-07: ₱7250.00 due Jul 31, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-06: ₱7250.00 due Jun 30, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-05: ₱7250.00 due May 31, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-04: ₱7250.00 due Apr 30, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-03: ₱7250.00 due Mar 31, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-02: ₱7250.00 due Feb 28, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +                     
+
+  +                     
+
+  +                       
+
+  +                         New bill available
+
+  +                         New
+
+  +                       
+
+  +                       Rent · 2026-01: ₱14500.00 due Jan 31, 2026
+
+  +                       View bill
+
+  +                     
+
+  +                     7 seconds ago
+
+  +                   
+
+  +       
+
+  
+
+  Call log:
+
+    - Expect "toContainText" locator('.notification-feed') with timeout 30000ms
+
+    - waiting for locator('.notification-feed')
+
+      62 × locator resolved to <div class="notification-feed">…</div>
+
+         - unexpected value "
+
+          
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Electricity · 2026-11: ₱33.34 due Nov 01, 2026
+
+                        View bill
+
+                      
+
+                      2 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-09: ₱7250.00 due Sep 30, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-08: ₱7250.00 due Aug 31, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-07: ₱7250.00 due Jul 31, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-06: ₱7250.00 due Jun 30, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-05: ₱7250.00 due May 31, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-04: ₱7250.00 due Apr 30, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-03: ₱7250.00 due Mar 31, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-02: ₱7250.00 due Feb 28, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+                      
+
+                      
+
+                        
+
+                          New bill available
+
+                          New
+
+                        
+
+                        Rent · 2026-01: ₱14500.00 due Jan 31, 2026
+
+                        View bill
+
+                      
+
+                      7 seconds ago
+
+                    
+
+        "
+
+  
+
+      at captureRawStack (D:\Systems\Final_Intelligenet_Property_Management_System\SeCapstone\rentara-portal\node_modules\playwright-core\lib\coreBundle.js:9282:17)
+
+      at callMatcherAsStep (D:\Systems\Final_Intelligenet_Property_Management_System\SeCapstone\rentara-portal\node_modules\playwright\lib\matchers\expect.js:13316:57)
+
+      at Object.toContainText (D:\Systems\Final_Intelligenet_Property_Management_System\SeCapstone\rentara-portal\node_modules\playwright\lib\matchers\expect.js:13308:23)
+
+      at TestContext.<anonymous> (D:\Systems\Final_Intelligenet_Property_Management_System\SeCapstone\rentara-portal\tests\utility-journey.browser.test.js:89:56) {
+
+    matcherResult: { name: 'toContainText', expected: 'Electricity · 2026-10', message: `expect(locator).toContainText(expected) failed\n\nLocator: locator('.notification-feed')\nTimeout: 30000ms\n- Expected substring  -   1\n+ Received string     + 113\n\n- Electricity · 2026-10\n+\n+         \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Electricity · 2026-11: ₱33.34 due Nov 01, 2026\n+                       View bill\n+                     \n+                     2 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-09: ₱7250.00 due Sep 30, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-08: ₱7250.00 due Aug 31, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-07: ₱7250.00 due Jul 31, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-06: ₱7250.00 due Jun 30, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-05: ₱7250.00 due May 31, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-04: ₱7250.00 due Apr 30, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-03: ₱7250.00 due Mar 31, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-02: ₱7250.00 due Feb 28, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+                     \n+                     \n+                       \n+                         New bill available\n+                         New\n+                       \n+                       Rent · 2026-01: ₱14500.00 due Jan 31, 2026\n+                       View bill\n+                     \n+                     7 seconds ago\n+                   \n+       \n\nCall log:\n  - Expect "toContainText" locator('.notification-feed') with timeout 30000ms\n  - waiting for locator('.notification-feed')\n    62 × locator resolved to <div class="notification-feed">…</div>\n       - unexpected value "\n        \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Electricity · 2026-11: ₱33.34 due Nov 01, 2026\n                      View bill\n                    \n                    2 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-09: ₱7250.00 due Sep 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-08: ₱7250.00 due Aug 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-07: ₱7250.00 due Jul 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-06: ₱7250.00 due Jun 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-05: ₱7250.00 due May 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-04: ₱7250.00 due Apr 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-03: ₱7250.00 due Mar 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-02: ₱7250.00 due Feb 28, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-01: ₱14500.00 due Jan 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n      "\n`, pass: false, actual: '\n        \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Electricity · 2026-11: ₱33.34 due Nov 01, 2026\n                      View bill\n                    \n                    2 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-09: ₱7250.00 due Sep 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-08: ₱7250.00 due Aug 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-07: ₱7250.00 due Jul 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-06: ₱7250.00 due Jun 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-05: ₱7250.00 due May 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-04: ₱7250.00 due Apr 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-03: ₱7250.00 due Mar 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-02: ₱7250.00 due Feb 28, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-01: ₱14500.00 due Jan 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n      ', log: [ `  - Expect "toContainText" locator('.notification-feed') with timeout 30000ms`, "  - waiting for locator('.notification-feed')", '    62 × locator resolved to <div class="notification-feed">…</div>', '       - unexpected value "\n        \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Electricity · 2026-11: ₱33.34 due Nov 01, 2026\n                      View bill\n                    \n                    2 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-09: ₱7250.00 due Sep 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-08: ₱7250.00 due Aug 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-07: ₱7250.00 due Jul 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-06: ₱7250.00 due Jun 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-05: ₱7250.00 due May 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-04: ₱7250.00 due Apr 30, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-03: ₱7250.00 due Mar 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-02: ₱7250.00 due Feb 28, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n                    \n                    \n                      \n                        New bill available\n                        New\n                      \n                      Rent · 2026-01: ₱14500.00 due Jan 31, 2026\n                      View bill\n                    \n                    7 seconds ago\n                  \n      "' ], timeout: 30000, ariaSnapshot: '- article:\n  - strong: New bill available New\n  - paragraph: "Electricity · 2026-11: ₱33.34 due Nov 01, 2026"\n  - button "View bill"\n  - text: 2 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-09: ₱7250.00 due Sep 30, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-08: ₱7250.00 due Aug 31, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-07: ₱7250.00 due Jul 31, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-06: ₱7250.00 due Jun 30, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-05: ₱7250.00 due May 31, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-04: ₱7250.00 due Apr 30, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-03: ₱7250.00 due Mar 31, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-02: ₱7250.00 due Feb 28, 2026"\n  - button "View bill"\n  - text: 7 seconds ago\n- article:\n  - strong: New bill available New\n  - paragraph: "Rent · 2026-01: ₱14500.00 due Jan 31, 2026"\n  - button "View bill"\n  - text: 7 seconds ago' }
+
+  }
+

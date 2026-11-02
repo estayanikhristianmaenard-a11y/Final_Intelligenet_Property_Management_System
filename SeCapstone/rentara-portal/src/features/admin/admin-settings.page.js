@@ -99,7 +99,7 @@ function frame(content) {
 }
 
 function workspacesSection(workspaces,users) {
-  return html`<section class="card"><div class="card__header"><h2 class="card__title">Workspaces</h2></div><div class="card__body"><p class="text-sm text-muted mb-3">Create one workspace per property business, then assign its Manager account. Admin accounts maintain the system.</p><div class="mini-list">${workspaces.map(workspace=>html`<div class="mini-list__item"><span class="mini-list__body"><strong>${workspace.name}</strong><span>${users.filter(user=>user.workspaceId===workspace.id && user.role==="manager").length} Managers</span></span><button type="button" class="btn btn--secondary btn--sm" data-workspace-members="${workspace.id}">View members</button><button type="button" class="btn btn--secondary btn--sm" data-rename-workspace="${workspace.id}">Rename<span class="sr-only"> ${workspace.name}</span></button></div>`)}</div></div></section>`;
+  return html`<section class="card"><div class="card__header"><h2 class="card__title">Workspaces</h2></div><div class="card__body"><p class="text-sm text-muted mb-3">Create one workspace per property business, then assign its Manager account. Admin accounts maintain the system.</p><div class="mini-list">${workspaces.map(workspace=>html`<div class="mini-list__item"><span class="mini-list__body"><strong>${workspace.name}</strong><span>${users.filter(user=>user.workspaceId===workspace.id && user.role==="manager").length} Managers</span></span><a class="btn btn--secondary btn--sm" href="#/admin/workspace?workspaceId=${workspace.id}">Inspect records</a><button type="button" class="btn btn--secondary btn--sm" data-workspace-members="${workspace.id}">View members</button><button type="button" class="btn btn--secondary btn--sm" data-rename-workspace="${workspace.id}">Rename<span class="sr-only"> ${workspace.name}</span></button></div>`)}</div></div></section>`;
 }
 function usersSection(users,workspaces) {
   return dataTable({
@@ -169,6 +169,7 @@ function usersSection(users,workspaces) {
         className: "cell-actions",
         render: (row) =>
           html`<span class="row row-2" style="justify-content:flex-end">
+            ${row.role === "tenant" && row.tenantId ? html`<a class="btn btn--ghost btn--sm" href="#/admin/workspace?workspaceId=${row.workspaceId}&amp;view=tenants&amp;tenantId=${row.tenantId}">View Tenant</a>` : null}
             <button
               class="btn btn--ghost btn--sm"
               type="button"

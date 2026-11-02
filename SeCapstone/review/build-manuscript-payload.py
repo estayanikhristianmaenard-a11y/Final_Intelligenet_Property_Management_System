@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import re
+import sys
 
 root = Path(__file__).resolve().parent
 title = 'Intelligent Property Management Workflow with OCR-Enabled Automated Billing Classification and Tenant Notification'
@@ -10,7 +11,12 @@ changes=[]
 def clean(text):
     return text.replace('**','').replace('*','').strip()
 
-for name in ['CHAPTER_I_REVISED.md','CHAPTER_II_REVISED.md','CHAPTER_III_WORKING.md','REFERENCES_REVISED.md']:
+include_iv = '--chapter-iv' in sys.argv
+sources = ['CHAPTER_I_REVISED.md','CHAPTER_II_REVISED.md','CHAPTER_III_WORKING.md']
+if include_iv:
+    sources.append('CHAPTER_IV_WORKING.md')
+sources.append('REFERENCES_REVISED.md')
+for name in sources:
     content=(root/name).read_text(encoding='utf-8-sig')
     if name=='CHAPTER_II_REVISED.md':
         old='The Manager may also upload a clear photograph or scan of a printed provider bill.'
@@ -48,10 +54,11 @@ for name in ['CHAPTER_I_REVISED.md','CHAPTER_II_REVISED.md','CHAPTER_III_WORKING
         else:
             text=clean(line)
             style='HEADING_2' if line.startswith('**') and line.endswith('**') and not text.startswith('Table ') else 'NORMAL_TEXT'
-        blocks.append({'type':'p','text':text,'style':style,'newPage':text in ['CHAPTER I','CHAPTER II','CHAPTER III','REFERENCES']})
+        blocks.append({'type':'p','text':text,'style':style,'newPage':text in ['CHAPTER I','CHAPTER II','CHAPTER III','CHAPTER IV','REFERENCES']})
         i+=1
 
 payload={'title':title,'blocks':blocks,'changes':changes}
-(root/'MANUSCRIPT_I_III_PAYLOAD.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
+output = 'MANUSCRIPT_I_IV_PAYLOAD.json' if include_iv else 'MANUSCRIPT_I_III_PAYLOAD.json'
+(root/output).write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
 # The detailed alignment review is maintained separately; do not overwrite it.
 print(json.dumps(payload,ensure_ascii=False))

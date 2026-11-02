@@ -1,10 +1,41 @@
 # Rentara manual test guide
 
+For the three-person final walkthrough, start with the [guided workbook, reviewer guide and fresh asset index](../../reports/testing/README.md). Its blank actual-result, evidence and feedback fields are the record to fill; older checks below remain procedure/reference material, not pre-filled manual passes.
+
 Start with **Tenant on your phone**. First verify that someone can understand their bill and complete an action without help. Then check the Manager side of the same action.
 
 For the current email-to-bill work, see [verified results and remaining two-phone steps](email-billing-acceptance.md). The default local check uses disposable synthetic records and does not send email. Gmail sending/retrieval remains a separate explicit acceptance step; Android Push still needs actual device permission and delivery checks.
 
 For held emails, verify **Retry email** and **Close email notice** on the Manager's Exception Queue. A bad message must not block a later valid bill, and closing requires a handling reason without marking a bill/payment valid. For maintenance, copy the whole [recovery package](backup-and-recovery.md), restore to a new directory, and check source viewing and original receipts. Use the [role user stories](user-stories.md) to guide the walkthrough; actual provider/device checks remain separate from automated results.
+
+## Two-workspace final walkthrough
+
+The current Group 3 profile contains two independent businesses in the same application. Restart the server after setup, then use the same port-8444 address. On another laptop/fresh checkout, prepare the existing Group 3 portfolio and run `npm.cmd run demo:workspaces:prepare` once. This adds fixtures after a backup; reruns preserve all existing cases, accounts and passwords. It is not a reset command.
+
+| Workspace | Manager | Staff | Tenants / units |
+| --- | --- | --- | --- |
+| Group 3 Demonstration | `manager@propertypro.ph` | `staff.group3@example.test` | Your original three members; G3-A and G3-B |
+| Bayan Demo Rentals | `manager.b.group3@example.test` | `staff.b.group3@example.test` | `tenant.b1.group3@example.test`, `tenant.b2.group3@example.test` in B-101; `tenant.b3.group3@example.test` in B-102 |
+
+New synthetic accounts initially use `LocalDemo!2026`. Existing passwords, including any already changed, are not reset. Accounts ending in `.test` are local logins, not real inboxes. Use the existing Admin login for account/workspace maintenance and read-only inspection across both businesses; it still cannot perform rent confirmation or financial correction authorization.
+
+Bayan has a PHP 7,000 shared unit (PHP 3,500 regular monthly rent per Tenant) and PHP 4,500 individual unit. First-cycle advance is separate. It includes a PHP 450 electricity fixture allocated as PHP 225 each, a PHP 180 water fixture for B-102, and an explicitly staged unreadable-due-date electricity case. The staged original PDF shows 20 December 2026; its PHP 600 total should become PHP 300 each only after Staff proposal and Manager authorization. This is a prepared development scenario, not an observed OCR failure or provider-accuracy result.
+
+| Check | Action | Expected |
+| --- | --- | --- |
+| WSDEMO01 | Open both Manager logins in separate browser sessions | Same application shell; correct workspace label and only that business's properties, units, Tenants and bills |
+| WSDEMO02 | Open both Staff accounts | Own workspace's permitted operations; no rent confirmation or authorization controls |
+| WSDEMO03 | Bayan Staff opens Bills & Payments > Exceptions, views the staged original and proposes due date 2026-12-20 with evidence | No live charge added before authorization; proposal appears With Manager |
+| WSDEMO04 | Bayan Manager reviews and authorizes | Existing validation runs; PHP 300 allocated to each B-101 Tenant; another workspace cannot open/authorize the case |
+| WSDEMO05 | Bayan Tenant One checks bills; Tenant Three checks separately | Own charges only; electricity PHP 225 each in B-101, water PHP 180 in B-102; utility marks remain personal |
+| WSDEMO06 | Report an unpaid Bayan rent payment, then confirm as Bayan Manager | Staff/other Manager cannot confirm; one confirmed rent receipt is retained on retry |
+| WSDEMO07 | Admin opens accounts/workspaces | Both businesses and assigned accounts visible, without Admin financial authority |
+| WSDEMO08 | Stop/restart and log in again | Existing records, case decisions, receipts and passwords persist; no extra fixture bills |
+| WSDEMO09 | Run the existing authorized live email/Push journey in the original Group 3 workspace | Group 3 routing and approved-recipient restrictions still apply; fictional Bayan accounts receive no external delivery |
+
+Bayan is deliberately marked as a local-only demo workspace: it has no Gmail connection or external email/Push even when the parent Group 3 process uses live delivery. Use its existing sources and permitted uploads to test isolation; do not apply real bills to it. Do not reuse an already finalized case to manufacture a new outcome. Record Pass / Fail / Blocked / Not tested, workspace, role, reference and screenshot for each check.
+
+Before the paper is finalized, align the role descriptions, shared application architecture, workspace boundaries and included workflows with the implemented version. Keep Chapter III development evidence separate from actual-phone/participant findings. Final participant results and readiness conclusions must follow the actual evaluation; this fixture setup does not complete that evidence.
 
 ## Latest UI review checks
 
@@ -237,3 +268,18 @@ Use the dedicated demo label and one consented supported provider email whose fu
 Check that Gmail applies the configured label automatically; let the running backend reach its next eligible retrieval. Compare the incoming record against the original. A complete valid source should reach the correct Tenant; missing, ambiguous or unreadable details must remain in review. Repeat retrieval and confirm there is no second charge. Check a second mapped unit independently. A supported clear email summary and PDF/image attachment should each be exercised, including a held unsupported/encrypted attachment case according to the current intake behavior.
 
 For rent email, check only an agreed test recipient with clearly labelled test data; confirm inbox presence and the link on the phone. Keep utility email notifications excluded. Browser Push needs its separate permission/trust/delivery check. Record Message-ID or source reference and outcome privately, without app passwords or raw personal bill details in the report. Actual provider delivery, physical-phone results and formal user evaluation remain pending until someone performs and records these steps.
+
+
+## Admin read-only hierarchy checks
+
+| Check | Action | Expected |
+| --- | --- | --- |
+| ADMINREAD01 | Admin selects each workspace and opens Properties, Units, Tenants and Bills | Correct workspace name and Admin ? Read-only; selected business records only |
+| ADMINREAD02 | Open Tenant through Users & Roles, reload after a permitted Manager/Staff contact update | Same shared record shows the new value, with no Admin contact-edit action |
+| ADMINREAD03 | Open a utility bill and rent receipt | Read-only values and original generated receipt; marks labelled Tenant-recorded, not verified |
+| ADMINREAD04 | Try financial writes, original document/source links and raw extraction using the Admin token | Server denies them even without UI controls; no business record changes |
+| ADMINREAD05 | Manager/Staff requests another workspace or the Admin inspection API | Still denied/scoped; supplied workspace cannot override their membership |
+| ADMINREAD06 | Switch workspace, use Back, refresh a direct link, then log out and use Back | Context preserved while authorized; no private view remains after logout |
+| ADMINREAD07 | Inspect phone/tablet layout and keyboard navigation | Workspace selector, search, record links and read-only receipt view usable |
+
+Record these as actual checks only after executing them. Do not convert an automated fixture pass into participant or provider/device evaluation evidence. The approved Admin visibility expansion must be reconciled in manuscript role descriptions and figure annotations before exporting the next final paper version.

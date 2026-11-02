@@ -12,6 +12,7 @@ import { workspaceIntegrations } from "./workspace-integrations.js";
 import { renderRentReceipt } from "./receipt-view.js";
 import { HttpError, requireValue, philippineDate } from "./rules.js";
 import { createRecoveryBackup } from "./recovery.js";
+import { adminWorkspaceRead } from "./admin-visibility.js";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 // Admin home is a maintenance summary; the authorized full audit remains intact.
@@ -206,6 +207,16 @@ export function createApp({
       }
       const token = req.headers.authorization?.match(/^Bearer (.+)$/)?.[1],
         user = service.authenticate(token);
+      if (p === '/admin/workspace-view' || p.startsWith('/admin/workspace-view/')) {
+        service.role(user,'admin');
+        requireValue(verb === 'GET','Read-only endpoint',405);
+        const match=p.match(/^\/admin\/workspace-view(?:\/(tenants|bills|receipts)\/([a-zA-Z0-9_-]+))?$/);
+        requireValue(match,'Not found',404);
+        const result=adminWorkspaceRead(service,user,match[1]||'overview',match[2],query);
+        if(query.format==='html')respond(renderRentReceipt(result.receipt),200,'text/html');
+        else respond(result);
+        return;
+      }
       const inScope =
         user.role === "admin"
           ? (fn) => s.withGlobal(fn)

@@ -1,8 +1,9 @@
+import { tenantPersonalInformation } from "../tenant-personal-info.js";
 import { html } from "../../../utils/dom.js";
 import { icon } from "../../../components/icon.js";
-import { paymentBadge, categoryChip } from "../../../components/badge.js";
-import { peso, date, relative } from "../../../utils/format.js";
-import { BILLING_CATEGORY, ARRANGEMENT_LABEL } from "../../../config/constants.js";
+import { badge, paymentBadge, categoryChip } from "../../../components/badge.js";
+import { peso, date, relative, monthLabel } from "../../../utils/format.js";
+import { ARRANGEMENT_LABEL } from "../../../config/constants.js";
 
 /**
  * Tenant Details → Overview tab.
@@ -13,21 +14,13 @@ import { BILLING_CATEGORY, ARRANGEMENT_LABEL } from "../../../config/constants.j
  * @param {object} tenant  detail payload from `GET /tenants/:id`
  */
 export function overviewTab(tenant) {
-  const currentBill = tenant.bills?.[0] ?? null;
+  const bills = tenant.bills ?? [];
+  const rent = latestCategoryBill(bills, "rent");
+  const rentShare = rent ? sumLines(rent.lines.filter(line => line.category === "rent" && !line.isAdvance), line => line.grossAmount ?? line.amount) : null;
   const recentPayments = (tenant.payments ?? []).slice(0, 3);
 
   return html`
-    <section class="panel-section">
-      <h3 class="section-title">Personal Information</h3>
-      <div class="desc-grid">
-        ${desc("Full name", tenant.fullName)}
-        ${desc("E-mail", tenant.email)}
-        ${desc("Mobile", tenant.phone)}
-        ${desc("Government ID", tenant.governmentId)}
-        ${desc("Emergency contact", tenant.emergencyContactName)}
-        ${desc("Emergency number", tenant.emergencyContactPhone)}
-      </div>
-    </section>
+    ${tenantPersonalInformation(tenant)}
 
     <section class="panel-section">
       <h3 class="section-title">Unit Information</h3>
@@ -38,7 +31,8 @@ export function overviewTab(tenant) {
           "Billing arrangement",
           ARRANGEMENT_LABEL[tenant.arrangement] ?? tenant.arrangement,
         )}
-        ${desc("Monthly rent", peso(tenant.monthlyRent))}
+        ${desc("Whole-unit monthly rent", peso(tenant.monthlyRent))}
+        ${tenant.arrangement === "shared_occupancy" ? desc("Latest billed rent share", rentShare === null ? "No rent bill available" : `${peso(rentShare)} · due ${date(rent.dueDate)}`) : null}
         ${desc("Lease start", date(tenant.leaseStart))}
         ${desc("Rent generated on", `${tenant.leaseAnniversary} of each month`)}
       </div>
@@ -50,8 +44,12 @@ export function overviewTab(tenant) {
     </section>
 
     <section class="panel-section">
-      <h3 class="section-title">Current Billing</h3>
-      ${currentBill ? billingSummary(currentBill) : emptyNote("No billing record for this cycle.")}
+      <h3 class="section-title">Latest bills by category</h3>
+      <p class="text-xs text-muted mb-3">Billed amounts and their own due dates; each status is shown separately.</p>
+      <div class="billing-summary">
+        ${[["rent", "Rent", "home"], ["electricity", "Electricity", "bolt"], ["water", "Water", "droplet"]].map(([category, label, symbol]) => billingSummary(latestCategoryBill(bills, category), category, label, symbol))}
+      </div>
+      ${bills.some(bill => bill.lines?.some(line => line.category === "electricity" || line.category === "water")) ? html`<p class="text-xs text-muted mt-3">Utility marks are personal; provider payment is not verified.</p>` : null}
     </section>
 
     <section class="panel-section">
@@ -65,55 +63,35 @@ export function overviewTab(tenant) {
   `;
 }
 
-function billingSummary(bill) {
-  const lines = bill.lines ?? [];
-  const byCategory = (category, advanceOnly = false) =>
-    lines
-      .filter(
-        (line) =>
-          line.category === category && Boolean(line.isAdvance) === advanceOnly,
-      )
-      .reduce((sum, line) => sum + line.amount, 0);
+function latestCategoryBill(bills, category) {
+  return bills.filter(bill => bill.lines?.some(line => line.category === category))
+    .sort((a, b) => String(b.dueDate ?? "").localeCompare(String(a.dueDate ?? "")) || String(b.createdAt ?? "").localeCompare(String(a.createdAt ?? "")))[0] ?? null;
+}
 
-  return html`
-    <div class="billing-summary">
-      <div class="billing-tile">
-        <span class="billing-tile__label">${icon("home", { size: 11 })} Rent</span>
-        <div class="billing-tile__value">${peso(byCategory("rent"))}</div>
-        <div class="billing-tile__hint">${bill.cycle}</div>
-      </div>
-      <div class="billing-tile">
-        <span class="billing-tile__label">${icon("bolt", { size: 11 })} Electricity</span>
-        <div class="billing-tile__value">${peso(byCategory("electricity"))}</div>
-        <div class="billing-tile__hint">allocated share</div>
-      </div>
-      <div class="billing-tile">
-        <span class="billing-tile__label">${icon("droplet", { size: 11 })} Water</span>
-        <div class="billing-tile__value">${peso(byCategory("water"))}</div>
-        <div class="billing-tile__hint">allocated share</div>
-      </div>
-      <div class="billing-tile billing-tile--due">
-        <span class="billing-tile__label">Total due</span>
-        <div class="billing-tile__value">${peso(bill.totalDue)}</div>
-        <div class="billing-tile__hint">due ${date(bill.dueDate)}</div>
-      </div>
-    </div>
+// Presentation of stored lines only; never recalculate shares from current occupants.
+function sumLines(lines, read = line => line.amount) {
+  return lines.reduce((sum, line) => sum + Math.round(Number(read(line) ?? 0) * 100), 0) / 100;
+}
 
-    <div class="row row-between row-wrap mt-3">
-      ${paymentBadge(bill.paymentStatus)}
-      <span class="text-xs text-muted">${bill.id} · ${ARRANGEMENT_LABEL[bill.arrangement]}</span>
-    </div>
-
-    ${bill.paymentStatus === "tenant_reported_paid"
-      ? html`<div class="notice-strip notice-strip--warning mt-3">
-          <span class="notice-strip__icon">${icon("clock", { size: 14 })}</span>
-          <span>
-            The tenant reported this payment. It is <strong>not confirmed</strong> — only the
-            Manager can change the status to <em>Paid</em> and generate a receipt.
-          </span>
-        </div>`
-      : null}
-  `;
+function billingSummary(bill, category, label, symbol) {
+  const lines = (bill?.lines ?? []).filter(line => line.category === category);
+  const advance = sumLines(lines.filter(line => line.isAdvance));
+  const credit = sumLines(lines, line => line.credit);
+  const utility = category !== "rent";
+  const status = utility
+    ? bill?.utilityTrackingStatus ?? (["not_marked_paid", "self_reported_paid"].includes(bill?.paymentStatus) ? bill.paymentStatus : "not_marked_paid")
+    : bill?.paymentStatus;
+  return html`<div class="billing-tile" data-billing-category="${category}">
+    <span class="billing-tile__label">${icon(symbol, { size: 12 })} ${label}</span>
+    <div class="billing-tile__value">${bill ? peso(sumLines(lines)) : "—"}</div>
+    ${bill ? html`
+      <div class="billing-tile__hint">${monthLabel(bill.cycle)}</div>
+      <div class="billing-tile__hint">Due ${date(bill.dueDate)}</div>
+      <div class="mt-2">${utility && bill.utilityTrackingNeedsReview ? badge("Review updated bill", "warning") : paymentBadge(status)}</div>
+      ${advance ? html`<div class="billing-tile__hint">Includes advance rent: ${peso(advance)}</div>` : null}
+      ${credit ? html`<div class="billing-tile__hint">Advance applied: ${peso(credit)}</div>` : null}
+    ` : html`<div class="billing-tile__hint">No bill available</div>`}
+  </div>`;
 }
 
 function paymentRow(payment) {

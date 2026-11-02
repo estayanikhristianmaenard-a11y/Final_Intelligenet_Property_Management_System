@@ -46,3 +46,35 @@ If the page was previously blank on port 8444, restart after updating the startu
 ## Completed live self-test - 23 October 2026
 
 The user created the Group 3 subject/recipient filter. One fresh synthetic Unit A scan reached the demo label without manual labelling, passed actual automatic IMAP/OCR processing and created PHP 450.00 for each of the two G3-A members, due 29 October. The source and portal alerts remain in Group 3. Resending this exact bill should enter duplicate handling rather than make another charge. Restart/open the normal demo to inspect it; use a separately agreed new case for a future fresh-bill rehearsal. This self-addressed fixture is not an actual Meralco-origin email or evidence of representative extraction accuracy.
+
+
+## Optional actual email and phone Push test
+
+Normal demo startup still leaves outgoing email/Push off. Stop it first, then from `rentara-portal` run `npm.cmd run demo:group -- --receive --live-delivery`. This explicitly permits real delivery for new events to the three approved Group 3 Tenant emails printed at startup. Old notification queues are not replayed. It does not reset demo data, weaken billing rules or enable utility emails. Outgoing messages carry `[DEMO]` in the email subject/Push title.
+
+On each test phone, log in through the current laptop HTTPS address on port 8444 and use Notifications > Browser notification settings > Enable Web Push / Refresh device registration after this startup. Existing saved subscriptions must be refreshed each live-demo session. The Manager's Settings > Enable Web Push delivery and Tenant preferences still apply. A fresh utility bill can demonstrate portal/Push alerts; a fresh rent update or new rent confirmation demonstrates rent email. Check the actual inbox and phone; a stored transport acceptance is not proof of display. Restarting without `--live-delivery` turns outgoing demo delivery off again. See the [current startup guide](../../../rentara-portal/docs/development-guide.md#controlled-live-demo-delivery).
+
+
+## Provider-format email-body demo - 1 November 2026
+
+Two readable copy-and-paste files are available: `unit-a-meralco-email.txt` and `unit-b-manila-water-email.txt`. They follow the supplied provider emails' greeting and billing labels, using fictional November details and existing demo account mappings. Original emails and their private attachments are not copied into this shareable pack. Tracking/payment links, actual references and password instructions are excluded.
+
+Open the text file on a phone, copy its SUBJECT into Gmail's subject field, and copy only the text after EMAIL BODY into the message body. Send from your group member account to the listed property Gmail. Do not attach the `.txt` or original `.eml` as the bill; these examples specifically test body parsing, with no PDF attachment.
+
+| Copy-and-paste file | Provider/account mapping | Expected result |
+| --- | --- | --- |
+| `unit-a-meralco-email.txt` | Meralco / G3000101 / G3-A | PHP 900 total, PHP 450 for each of two Tenants |
+| `unit-b-manila-water-email.txt` | Manila Water / G3W0102 / G3-B | PHP 280 for the single Tenant |
+
+Both dates are 30 November 2026. The existing live Group 3 database was inspected read-only and already contains these mappings; preparation does not add or change them in live data. If using another regenerated portfolio, Manager must verify the Manila Water mapping before the demo. Do not rerun database setup or guess account numbers to force allocation.
+
+The supplied actual Meralco summary contains a masked CAN and must remain in review unless a complete supported reference is obtained. The water email contains a readable HTML summary and a password-protected attachment. These demo copies do not decrypt that attachment or demonstrate OCR. Both text copies passed the actual email-body ingestion/validation/allocation pipeline in a disposable Group 3 database, including repeated-input checks with no duplicate bill or alert. The water mapping was explicitly prepared in that disposable fixture. No email was sent and no live billing record was added. Provider-format synthetic copies are not actual provider-origin samples or independent OCR accuracy evidence.
+
+
+## Second business for isolation testing
+
+Run `npm.cmd run demo:workspaces:prepare` after the existing Group 3 preparation. The same demo profile then has **Group 3 Demonstration** and **Bayan Demo Rentals**. Each has one Manager, one Staff, two units and three Tenants. A pre-change SQLite backup is created before the additive setup; reruns preserve existing data and changed passwords. No second server/profile/database is required.
+
+Bayan Manager: `manager.b.group3@example.test`; Staff: `staff.b.group3@example.test`; Tenant logins: `tenant.b1.group3@example.test`, `tenant.b2.group3@example.test`, `tenant.b3.group3@example.test`. New synthetic accounts initially use `LocalDemo!2026`. The first two Tenants share B-101; the third occupies B-102. These are fictional accounts and do not receive real email. The business is marked local-only, with external integrations off even during the original Group 3 live delivery demo.
+
+Bayan has sample rent, PHP 450 electricity (PHP 225 each), PHP 180 water, and a staged due-date correction case with a retained synthetic PDF. These are seeded development records, not actual participants/payments or independent OCR samples. Existing Group 3 accounts, units, bills and Gmail routing remain unchanged. Follow the [two-workspace walkthrough](../../../rentara-portal/docs/manual-test-guide.md#two-workspace-final-walkthrough) for expected outcomes and evidence to collect. Do not rerun preparation to reset a case; decisions and confirmed receipts are intentionally preserved.

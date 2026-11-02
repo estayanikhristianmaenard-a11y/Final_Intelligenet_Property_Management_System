@@ -1,0 +1,7 @@
+# Preserve document bytes, including ASCII-only PDFs with byte-offset tables.
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.zip binary
+# Saved test transcripts retain their original diagnostic whitespace.
+SeCapstone/reports/updates/chapter-3-test-results*.txt -whitespace

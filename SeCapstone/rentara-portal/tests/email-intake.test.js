@@ -138,7 +138,7 @@ test("mailbox sync uses UID validity, skips processed messages and preserves one
     assert.deepEqual(await f.integration.syncMailbox(f.manager), { imported: 1 });
     assert.equal(f.s.all("bills").length, count);
     assert.equal(f.s.all("intake_messages").length, 2);
-    assert.ok(f.s.all("exceptions").some(e => e.ruleId === "V04"));
+    assert.equal(f.s.all('incoming').length,1,'An exact email replay needs no duplicate source/exception');
     assert.equal(released, 3); assert.equal(loggedOut, 3);
     await assert.rejects(f.integration.syncMailbox({ role: "tenant" }), /permission|role|access|forbidden/i);
   } finally { await f.close(); }

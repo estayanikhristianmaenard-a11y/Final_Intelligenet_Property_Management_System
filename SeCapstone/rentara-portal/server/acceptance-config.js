@@ -2,7 +2,7 @@ export const utilityMailbox = "Rentara-Utility-Acceptance";
 
 export function acceptanceEnvironment(env, intake = {}, base = {}) {
   const result = {
-    ...env, DATA_DIR: "data/acceptance", WORKSPACE_CONFIG_FILE: "",
+    ...env, RENTARA_PROFILE: 'acceptance', UTILITY_INTAKE_ENABLED: intake.enabled === true ? 'true' : 'false', DATA_DIR: "data/acceptance", WORKSPACE_CONFIG_FILE: "",
     RENT_EMAIL_ENABLED: "false", IMAP_HOST: "", IMAP_USER: "", IMAP_ACCESS_TOKEN: "",
   };
   if (intake.enabled === true) {

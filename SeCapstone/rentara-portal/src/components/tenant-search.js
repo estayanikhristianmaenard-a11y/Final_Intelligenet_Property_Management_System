@@ -4,7 +4,7 @@ import session from "../auth/session.js";
 let nextId = 0;
 
 /** Accessible, workspace-scoped Tenant suggestions. Keep the input mounted while typing. */
-export function bindTenantSearch(input, { find, onSelect }) {
+export function bindTenantSearch(input, { find, onSelect, debounceMs = 0 }) {
   const host = input.parentElement;
   host.classList.add("tenant-search");
   const list = document.createElement("div");
@@ -20,9 +20,14 @@ export function bindTenantSearch(input, { find, onSelect }) {
   input.setAttribute("aria-expanded", "false");
   input.setAttribute("autocomplete", "off");
   const token = session.token;
-  let sequence = 0, rows = [], active = -1;
+  let sequence = 0, rows = [], active = -1, timer = null, controller = null;
   const close = () => {
     sequence++;
+    clearTimeout(timer);
+    timer = null;
+    controller?.abort();
+    controller = null;
+    rows = [];
     list.hidden = true;
     input.setAttribute("aria-expanded", "false");
     input.removeAttribute("aria-activedescendant");
@@ -31,6 +36,10 @@ export function bindTenantSearch(input, { find, onSelect }) {
   const eligible = () => input.isConnected && session.token === token && document.activeElement === input;
   const search = async () => {
     const term = input.value.trim(), request = ++sequence;
+    clearTimeout(timer);
+    timer = null;
+    controller?.abort();
+    controller = null;
     if (!term) { close(); return; }
     rows = [];
     active = -1;
@@ -38,22 +47,32 @@ export function bindTenantSearch(input, { find, onSelect }) {
     // Hide the preceding query's matches while an async request is pending.
     list.hidden = true;
     input.setAttribute("aria-expanded", "false");
-    let message = "No matching tenants";
-    try {
-      const matches = await find(term);
+    const run = async () => {
+      timer = null;
       if (request !== sequence || !eligible()) return;
-      rows = matches.slice(0, 8);
-    } catch {
-      if (request !== sequence || !eligible()) return;
-      message = "Suggestions unavailable. Press Enter to search.";
-    }
-    render(list, rows.length ? html`${rows.map((row, index) => html`
+      const current = new AbortController();
+      controller = current;
+      let message = "No matching tenants";
+      try {
+        const matches = await find(term, { signal: current.signal });
+        if (request !== sequence || !eligible()) return;
+        rows = matches.slice(0, 8);
+      } catch {
+        if (request !== sequence || !eligible()) return;
+        message = "Suggestions unavailable. Press Enter to search.";
+      } finally {
+        if (controller === current) controller = null;
+      }
+      render(list, rows.length ? html`${rows.map((row, index) => html`
       <div class="tenant-search__option" role="option" aria-selected="false"
         id="${list.id}-${index}" data-tenant-option="${index}">
         <strong>${row.fullName}</strong><span>${row.unitCode} · ${row.email}</span>
       </div>`)}` : html`<div class="tenant-search__empty" role="status">${message}</div>`);
-    list.hidden = false;
-    input.setAttribute("aria-expanded", "true");
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    };
+    if (debounceMs > 0) timer = setTimeout(run, debounceMs);
+    else await run();
   };
   const choose = index => {
     const row = rows[index];
@@ -71,7 +90,7 @@ export function bindTenantSearch(input, { find, onSelect }) {
     if (option) choose(Number(option.dataset.tenantOption));
   });
   input.addEventListener("keydown", event => {
-    if (event.key === "Escape" && !list.hidden) {
+    if (event.key === "Escape" && (!list.hidden || timer !== null || controller)) {
       event.preventDefault(); event.stopPropagation(); close();
     } else if (["ArrowDown", "ArrowUp"].includes(event.key) && !list.hidden && rows.length) {
       event.preventDefault();
@@ -84,6 +103,6 @@ export function bindTenantSearch(input, { find, onSelect }) {
       input.setAttribute("aria-activedescendant", `${list.id}-${active}`);
     } else if (event.key === "Enter" && !list.hidden && active >= 0) {
       event.preventDefault(); event.stopImmediatePropagation(); choose(active);
-    }
+    } else if (event.key === "Enter") close();
   });
 }

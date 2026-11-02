@@ -61,13 +61,29 @@ test("Manager directory: partial search, stable Tenant tabs and inline date vali
     await page.getByRole("button", { name: "Building A", exact: true }).click();
     await search.fill("");
     const globalSearch = page.getByRole("combobox", { name: "Search the portal" });
-    await globalSearch.fill("mAR");
+    let suggestionReads = 0;
+    const countSuggestions = request => {
+      const url = new URL(request.url());
+      if (url.pathname === "/api/v1/tenants" && url.searchParams.has("q")) suggestionReads++;
+    };
+    page.on("request", countSuggestions);
+    await globalSearch.fill("cancelled search");
+    await globalSearch.press("Escape");
+    await expect(globalSearch).toHaveAttribute("aria-expanded", "false");
+    await globalSearch.fill("");
+    await globalSearch.pressSequentially("mAR", { delay: 20 });
     await page.getByRole("option", { name: /Maria Santos/ }).click();
+    assert.equal(suggestionReads, 1, "A typing burst should send one suggestion read");
+    page.off("request", countSuggestions);
     await expect(page.locator(".panel-drawer h2")).toHaveText("Maria Santos");
     await page.getByRole("button", { name: "Close panel" }).click();
     await expect(page.locator(".panel-drawer")).toHaveCount(0);
     await page.locator('[data-row-id="tnt-001"]').click();
     await expect(page.locator(".panel-drawer h2")).toHaveText("Maria Santos");
+    await expect(page.locator(".panel-identity-row__rent")).toContainText("Whole-unit monthly rent");
+    await expect(page.locator(".panel-identity-row__rent")).toContainText("21,750.00");
+    await expect(page.locator(".desc-item").filter({ hasText: "Latest billed rent share" })).toContainText("7,250.00");
+    await expect(page.locator('[data-billing-category="rent"]')).toContainText("7,250.00");
     for (const tab of ["overview", "payments", "documents", "billing", "overview", "billing"]) {
       await page.locator(`.panel-drawer [data-tab="${tab}"]`).click();
       await expect(page.locator(".panel-drawer")).toBeVisible();
@@ -92,6 +108,15 @@ test("Manager directory: partial search, stable Tenant tabs and inline date vali
         assert.ok(await page.locator(".panel-drawer .subtabs").evaluate(el => el.clientHeight >= 40));
         await expect(page.getByRole("button", { name: "Close panel" })).toBeVisible();
       }
+      await page.locator('.panel-drawer [data-tab="overview"]').click();
+      const overviewLayout = await page.locator(".panel-drawer [data-body]").evaluate(el => {
+        const box = el.getBoundingClientRect();
+        return { width: el.clientWidth, scrollWidth: el.scrollWidth, outside: [...el.querySelectorAll("*")].filter(child => child.getBoundingClientRect().right > box.right + 1).map(child => ({ tag: child.tagName, className: child.className?.baseVal ?? child.className, text: child.textContent?.trim().slice(0, 100) })).slice(0, 10) };
+      });
+      if (overviewLayout.scrollWidth > overviewLayout.width + 1) console.log(JSON.stringify({ viewportWidth: width, overviewLayout }));
+      assert.ok(overviewLayout.scrollWidth <= overviewLayout.width + 1, "Overview amounts and labels must fit the drawer");
+      assert.ok(await page.locator(".panel-drawer__header").evaluate(el => el.scrollWidth <= el.clientWidth + 1), "Whole-unit rent label must fit the header");
+      if (width === 390) await page.screenshot({ path: "test-results/tenant-overview-phone.png" });
     }
     await page.locator('.panel-drawer [data-tab="billing"]').click();
     await page.screenshot({ path: "test-results/manager-billing-phone-fixed.png" });
@@ -127,6 +152,54 @@ test("Manager directory: partial search, stable Tenant tabs and inline date vali
     await browser?.close();
     if (app) await app.close();
     else store?.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("Tenant edits opened through top search refresh directory data without replacing its filters", { timeout: 90000 }, async () => {
+  const dir = mkdtempSync(join(tmpdir(), "rentara-directory-refresh-"));
+  let app, browser;
+  try {
+    await createShowcase(dir);
+    const store = new Store(join(dir, "propertypro.sqlite"));
+    const origin = "http://127.0.0.1:8117";
+    app = createApp({ store, dataDir: dir, env: { ALLOWED_ORIGINS: origin } });
+    await new Promise((resolve, reject) => { app.server.once("error", reject); app.server.listen(8117, "127.0.0.1", resolve); });
+    browser = await chromium.launch({ headless: true, ...(process.platform === "win32" ? {
+      executablePath: process.env.BROWSER_EXECUTABLE || "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    } : {}) });
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    await page.goto(origin);
+    await page.locator("#login-email").fill("manager@propertypro.ph");
+    await page.locator("#login-password").fill("LocalDemo!2026");
+    await page.locator("[data-sign-in]").click();
+    await expect(page.locator("h1")).toHaveText("Dashboard");
+    await page.goto(origin + "/#/tenants");
+    const local = page.getByRole("combobox", { name: "Search tenants" });
+    await local.fill("Maria");
+    const input = await local.elementHandle();
+    await page.getByRole("button", { name: "Building B", exact: true }).click();
+    await expect(page.locator('[data-row-id="tnt-001"]')).toContainText("Maria Santos");
+    await page.getByRole("combobox", { name: "Search the portal" }).fill("Maria");
+    await page.getByRole("option", { name: /Maria Santos/ }).click();
+    await expect(page.locator(".panel-drawer h2")).toHaveText("Maria Santos");
+    await page.locator('.panel-drawer [data-action="view-profile"]').click();
+    await page.locator('[name="fullName"]').fill("Maria Directory Updated");
+    await page.locator("[data-workflow-save]").click();
+    await expect(page.locator(".modal")).toHaveCount(0);
+    await expect(page.locator(".panel-drawer h2")).toHaveText("Maria Directory Updated");
+    await page.getByRole("button", { name: "Close panel" }).click();
+    await expect(page.locator('[data-row-id="tnt-001"]')).toContainText("Maria Directory Updated");
+    assert.equal(await input.evaluate(el => el.isConnected), true, "Keep the directory search DOM mounted");
+    await expect(local).toHaveValue("Maria");
+    await expect(page.getByRole("button", { name: "Building B", exact: true })).toHaveClass(/is-active/);
+    await local.fill("Maria Directory Updated");
+    await expect(page.locator("tbody tr")).toHaveCount(1);
+    await expect(page.getByRole("option", { name: /Maria Directory Updated/ })).toBeVisible();
+    assert.equal(store.getGlobal("tenants", "tnt-001").fullName, "Maria Directory Updated");
+  } finally {
+    await browser?.close();
+    await app?.close();
     rmSync(dir, { recursive: true, force: true });
   }
 });

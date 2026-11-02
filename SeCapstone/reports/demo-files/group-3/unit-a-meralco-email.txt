@@ -1,0 +1,21 @@
+TO: rentara2026@gmail.com
+SUBJECT: Group 3 Demo - Unit A - Meralco Bill for November 2026
+
+COPY THE BODY BELOW INTO GMAIL. Do not attach this text file.
+----- EMAIL BODY -----
+SYNTHETIC GROUP 3 DEMO - Not an actual provider bill.
+
+Welcome to Meralco Online
+
+Dear Valued Customer,
+
+Your Meralco bill for November 2026 is now available. Below is the summary of your monthly billing.
+
+Customer Account Number (CAN): G3000101
+SIN: XXXXX0000000
+Billing Period: 27 October 2026 to 26 November 2026
+kWh Consumption: 60
+Current Amount Due: PHP 900.00
+Due Date: 30 November 2026
+
+This summary uses fictional details for the Rentara Group 3 demonstration. No payment is requested. It is based on a provider-email format but is sent by a group member, not Meralco.

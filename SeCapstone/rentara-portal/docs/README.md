@@ -4,6 +4,8 @@ Start with the guide that matches your task. Use the current code and latest ver
 
 | Task | Current guide |
 | --- | --- |
+| Learn Chapters I-IV, roles and the demonstration flow | [Group reviewer guide](../../reports/testing/reviewer-guide.docx) |
+| Run guided final manual tests and record feedback | [Excel workbook and fresh assets](../../reports/testing/README.md) |
 | Understand the implemented Staff revision | [Permissions, proposals, demo and remaining acceptance work](staff-implementation-plan.md) |
 | Coordinate turn-taking on main and shared laptop testing | [Taglish team workflow and handoff](team-branch-workflow.md) |
 | Resume the next development session | [Prioritized pending tests and integrations](next-session-checklist.md) |

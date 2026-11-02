@@ -34,6 +34,7 @@ import { renderSettings } from "../features/settings/settings.page.js";
 import { renderAdminDashboard } from "../features/admin/admin-dashboard.page.js";
 import { renderAdminAudit } from "../features/admin/admin-audit.page.js";
 import { renderAdminSettings } from "../features/admin/admin-settings.page.js";
+import { renderAdminWorkspace } from "../features/admin/admin-workspace.page.js";
 
 import { renderTenantHome } from "../features/tenant/tenant-home.page.js";
 import { renderTenantBills } from "../features/tenant/tenant-bills.page.js";
@@ -69,6 +70,7 @@ const PAGES = {
   adminDashboard: renderAdminDashboard,
   adminAudit: renderAdminAudit,
   adminSettings: renderAdminSettings,
+  adminWorkspace: renderAdminWorkspace,
 
   tenantHome: renderTenantHome,
   tenantBills: renderTenantBills,
@@ -93,7 +95,11 @@ export async function bootstrap(root) {
   await session.restore();
 
   onRouteChange(() => route());
-  window.addEventListener("app:data-changed", () => loadBadges());
+  window.addEventListener("app:data-changed", () => {
+    loadBadges();
+    // Notify only the mounted page; listeners leave with its DOM on navigation.
+    outletElement()?.firstElementChild?.dispatchEvent(new Event("page:data-changed"));
+  });
   window.addEventListener("app:role-changed", async () => {
     await loadBadges();
     const home = session.homePath;

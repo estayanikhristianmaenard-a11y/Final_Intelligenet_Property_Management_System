@@ -4,8 +4,8 @@ import { ROLE } from "../config/constants.js";
  * Role-Based Access Control matrix.
  *
  * Mirrors the study's security requirements:
- *  - Admin  → system maintenance only (explicitly NO billing, payment
- *             confirmation or exception-review functions).
+ *  - Admin  → system maintenance and explicit read-only workspace inspection;
+ *             no financial mutations or private-file access.
  *  - Manager → properties, units, tenants, billing rules, exceptions,
  *             payment confirmation, receipts.
  *  - Tenant → own bills, payment status, payment reporting, receipts,
@@ -32,8 +32,9 @@ export const PERMISSION_MATRIX = {
     "admin:settings": ALL,
     "user:manage": ALL,
     "system:maintain": ALL,
+    "admin:workspace:read": ALL,
 
-    /* Explicitly withheld — see paper §1.5 Scope and Limitations. */
+    /* Operational actions/routes remain withheld; inspection uses its own read capability. */
     "dashboard:read": NONE,
     "property:read": NONE,
     "property:write": NONE,
@@ -159,6 +160,7 @@ export function permissionsFor(role) {
 
 /** The capability rows rendered in Settings → Roles & Permissions. */
 export const CAPABILITY_ROWS = [
+  { label: "Inspect workspaces (read-only)", permission: "admin:workspace:read" },
   {
     label: "System maintenance & user accounts",
     permission: "system:maintain",
