@@ -9,11 +9,11 @@ import { setupGroupDemo } from "../server/group-demo-setup.js";
 import { Store } from "../server/store.js";
 import { Service } from "../server/service.js";
 import { Integrations } from "../server/integrations.js";
+import { loadGroupMembers } from "./setup-group-laptop.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = resolve(root, "../reports/demo-files/group-3");
-const membersPath = join(root, "data/group-demo-members.json");
-const members = JSON.parse(await readFile(membersPath, "utf8"));
+const members = loadGroupMembers(root);
 await mkdir(output, { recursive: true });
 const cases = [
   { unit: "A", account: "G3000101", amount: 900, filename: "unit-a-meralco-scan.pdf", scanned: true },

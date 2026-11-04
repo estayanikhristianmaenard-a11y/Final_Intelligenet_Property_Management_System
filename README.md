@@ -50,12 +50,12 @@ For a fresh clone, use Node.js 24+ and run:
 ```powershell
 Set-Location SeCapstone/rentara-portal
 npm.cmd ci
-if (!(Test-Path -LiteralPath '.env')) { Copy-Item -LiteralPath '.env.example' -Destination '.env' }
-npm.cmd run demo:showcase
-npm.cmd start
+npm.cmd run demo:group
 ```
 
-This recreates the populated local showcase instead of sharing a live database with sessions, uploads, and real records. Find the demo accounts in the [workspace guide](SeCapstone/rentara-portal/docs/workspaces.md). The owner has explicitly chosen to include the team-owned `.env` and shared Gmail credentials in Git; include that file in the manual commit if teammates need those settings. Anyone with repository access will then receive the app password. The showcase keeps external messages blocked. Dependencies are installed from the shared lockfile. To distribute an actual database snapshot later, use a deliberate private handoff that includes its required source documents.
+`demo:group` detects the local network address, prepares missing Group 3 workspaces/accounts and local HTTPS, and starts the server. It refreshes the certificate/profile when the IP changes and reuses a valid configuration otherwise. On Windows x64 it downloads the official pinned mkcert tool if absent and verifies its checksum. Existing demo data, passwords and CA are preserved. Use the printed phone link on the same Wi-Fi; the laptop can use `https://localhost:8444/`. Restart the command after changing Wi-Fi. If multiple networks cannot be resolved automatically, choose the address with `npm.cmd run demo:group -- --ip YOUR_LAPTOP_IPV4`. See the [application guide](SeCapstone/rentara-portal/README.md) for device certificate trust and optional email intake. Each hosting laptop has a separate database. Git pull shares source and templates, not live bills or sessions.
+
+The owner has explicitly chosen to share the team-owned `.env` and Gmail settings through Git. The setup uses `.env.example` only if `.env` is absent and does not print its secrets. External delivery and email intake stay off at ordinary demo startup. Dependencies are installed from the shared lockfile. To distribute an actual database snapshot later, use a deliberate private handoff that includes its required source documents. For the separate general showcase, `npm.cmd run demo:showcase` and `npm.cmd start` remain available.
 
 ## Where files belong
 

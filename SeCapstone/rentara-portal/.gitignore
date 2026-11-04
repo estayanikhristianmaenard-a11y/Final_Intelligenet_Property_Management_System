@@ -8,7 +8,8 @@ node_modules/
 # Share named profile templates, while keeping generated laptop profiles local.
 !.env.*.example
 # Runtime databases, sessions, uploaded originals and private integration settings.
-# Teammates can recreate the populated synthetic demo using npm run demo:showcase.
+# npm run demo:group detects the IP and recreates missing local Group 3 setup.
+# Its shared member template is in tools/; private keys and live sessions stay local.
 data/
 # Generated test output; tests and fixture source files are shared.
 coverage/

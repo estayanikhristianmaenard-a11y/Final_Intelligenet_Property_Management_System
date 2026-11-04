@@ -11,7 +11,9 @@ Run these commands from `SeCapstone/rentara-portal`:
 | `npm.cmd run start:operational` | Run the prepared operational database on port 8081 by default; shares allowlisted connection values only; separate data, label and enable switches |
 | `node tools/prepare-meralco-group-demo.mjs` | Verify the anonymized SOA scan in a cloned Group 3 portfolio, back up and align Unit A's synthetic historical occupancy/mapping; add `--unit-b` to create/test a clearly labelled Unit B derivative. Does not import the presentation bill or send mail |
 | `node tools/prepare-single-tenant-demo.mjs` | Generate/verify one scanned water bill for G3-B and prepare its mapping; no bill is pre-imported and no email is sent |
-| `npm.cmd run demo:group:prepare` | Generate and verify two Group 3 phone attachments, then prepare a separate two-unit/three-Tenant portfolio from local `data/group-demo-members.json`; no utility bill is pre-imported |
+| `npm.cmd run setup:group -- --ip YOUR_LAPTOP_IPV4` | Prepare a fresh laptop: pinned official mkcert download on Windows x64, HTTPS/IP configuration, missing member input and two test workspaces; preserve existing records/passwords; no mailbox access or external delivery |
+| `npm.cmd run demo:group` | Detect local IP, prepare missing Group 3 setup, refresh HTTPS only when needed, and start port 8444; `-- --ip ADDRESS` is the manual fallback; receiving/sending still require explicit switches |
+| `npm.cmd run demo:group:prepare` | Generate and verify two Group 3 phone attachments, then prepare a separate two-unit/three-Tenant portfolio; missing member input comes from the shared example or existing demo marker; no utility bill is pre-imported |
 | `npm.cmd run demo:group -- --receive` | Prepare/check Gmail label `Rentara-Group3-Demo`, start Group 3 on local HTTPS port 8444 and receive only that label; rent email sending stays off |
 | `node tools/generate-utility-samples.mjs` | Generate synthetic utility-bill fixtures for development checks |
 | `npm.cmd run previews:refresh` | Refresh UI and email previews using disposable synthetic data |

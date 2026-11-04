@@ -2,6 +2,14 @@
 
 The interface adapts to phone, tablet and desktop widths. Tenants use their browser; no desktop or installed mobile app is required.
 
+## Current Group 3 HTTPS setup
+
+On a new hosting laptop, from `SeCapstone/rentara-portal`, run `npm.cmd ci`, then `npm.cmd run demo:group`. The launcher detects the local IPv4, prepares missing setup files and starts HTTPS without resetting existing demo records. If network selection is ambiguous, use `npm.cmd run demo:group -- --ip YOUR_LAPTOP_IPV4`. See the [application guide](../README.md) for the complete setup and the [certificate guide](local-acceptance-setup.md#trust-the-certificate-on-android) for device trust.
+
+Phones on the same Wi-Fi open the printed `https://YOUR_LAPTOP_IPV4:8444/` link; the laptop can open `https://localhost:8444/`. When Wi-Fi changes, stop and restart `demo:group`; it refreshes HTTPS for the new address while preserving the local CA. Pulling code does not transfer another laptop's database, and phones do not run Node.js. The instructions below describe the separate plain-HTTP showcase on port 8080.
+
+## General HTTP showcase
+
 1. Connect the host computer and test phones to the same trusted Wi-Fi.
 2. Run `ipconfig` in PowerShell and find the Wi-Fi adapter IPv4 address, for example `192.168.1.20`.
 3. Initialize accounts/database once using the root README instructions.

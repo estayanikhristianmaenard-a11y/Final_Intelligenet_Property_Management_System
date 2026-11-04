@@ -1,5 +1,9 @@
 # Next-session checklist
 
+## Local startup handoff - 5 November 2026
+
+New laptop: run `npm.cmd ci` once, then `npm.cmd run demo:group`. The command now detects the current IP, prepares missing Group 3/HTTPS configuration, and starts port 8444 while preserving existing data. Restart after changing Wi-Fi. Use `-- --ip YOUR_LAPTOP_IPV4` only if automatic selection is ambiguous. Device CA trust and same-network connectivity remain required; email retrieval/live delivery remain explicit options. See the application README and latest QA entry. These setup changes are local and uncommitted at this handoff; share the new launcher, setup helper, member template and test files along with the modified package/docs when committing. The previous integration was pushed as staging commit `18c4510`.
+
 ## Pending user-requested changes
 
 Admin home: prioritize Workspaces and Users; retain System Status under Settings/Maintenance. The user explicitly deferred this rearrangement. The shorter Section 1.5 has now been applied to the canonical chapters, existing Google Doc and checked 60-page PDF, with access conditions aligned across Chapters I-IV. Sidebar collapse and sliding active highlight have been restored; check them after a hard refresh. Keep future implementation changes within the manuscript's approved workflow and record actual evaluation results separately.

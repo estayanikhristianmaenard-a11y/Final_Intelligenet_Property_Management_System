@@ -13,7 +13,7 @@ if (!process.argv.includes("--ip") || isIP(address) !== 4)
 const tlsDir = join(root, "data/local-tls");
 const caDir = join(tlsDir, "ca");
 const mkcert = process.env.MKCERT_PATH || join(root, "data/tools", process.platform === "win32" ? "mkcert.exe" : "mkcert");
-if (!existsSync(mkcert)) throw new Error("Install the official mkcert executable in data/tools, or set MKCERT_PATH. See docs/local-acceptance-setup.md.");
+if (!existsSync(mkcert)) throw new Error("mkcert is missing. On a Group 3 laptop run npm.cmd run setup:group -- --ip YOUR_LAPTOP_IPV4 to prepare the tool and demo, or install the official mkcert executable in data/tools/set MKCERT_PATH. See docs/local-acceptance-setup.md.");
 mkdirSync(caDir, { recursive: true });
 const result = spawnSync(mkcert, [
   "-cert-file", join(tlsDir, "portal-cert.pem"),
