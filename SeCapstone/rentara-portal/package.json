@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
+    "start:phone": "node --env-file-if-exists=.env tools/start-phone.mjs",
     "setup:operational": "node tools/operational-profile.mjs setup",
     "start:operational": "node tools/operational-profile.mjs start",
     "setup:acceptance": "node server/acceptance-setup.js",

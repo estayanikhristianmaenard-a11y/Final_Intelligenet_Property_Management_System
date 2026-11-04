@@ -9,6 +9,7 @@ import { api } from "../api/client.js";
 import { endpoints } from "../api/endpoints.js";
 import { openTenantPanel } from "../features/tenants/tenant-details.panel.js";
 import { mountSidebarMotion, sidebarPosition } from "../components/sidebar-motion.js";
+import { navForRole } from "../config/navigation.js";
 
 /**
  * Application shell.
@@ -68,6 +69,7 @@ export function refreshShell(patch = {}) {
     const label = state.navOpen ? "Close sidebar" : "Expand sidebar";
     opener?.setAttribute("aria-label",label);
     opener?.setAttribute("title",label);
+    shell.querySelector('.mobile-bottom-nav [data-action="toggle-nav"]')?.setAttribute("aria-expanded",String(state.navOpen));
     return;
   }
   if (!mobile && Object.keys(patch).length === 1 && Object.hasOwn(patch,"sidebarCollapsed")) {
@@ -109,21 +111,25 @@ export function setBadges(badges) {
 function shellMarkup() {
   const role = session.role;
   const mobileNavigation = window.matchMedia("(max-width: 1100px)").matches;
-  const tenantMobileNav = role === "tenant" && mobileNavigation
-    ? html`<nav class="tenant-bottom-nav" aria-label="Tenant navigation">
-        ${[
-          ["/tenant", "home", "Home"],
-          ["/tenant/bills", "receipt", "Bills"],
-          ["/tenant/notifications", "bell", "Alerts"],
-          ["/tenant/settings", "settings", "Settings"],
-        ].map(([path, iconName, label]) => {
-          const active = state.activePath === path || (path === "/tenant/bills" && state.activePath.startsWith("/tenant/bills"));
-          const count = label === "Alerts" ? state.badges?.unreadNotifications ?? 0 : 0;
-          return html`<a href="#${path}" class="tenant-bottom-nav__item ${active ? "is-active" : ""}" aria-current="${active ? "page" : "false"}">
-            <span class="tenant-bottom-nav__icon">${icon(iconName, { size: 20 })}${count ? html`<span class="tenant-bottom-nav__count">${count > 9 ? "9+" : count}</span>` : null}</span>
+  const items = navForRole(role);
+  const hasMore = items.length > 4;
+  const primaryItems = hasMore ? items.filter(item => ["dashboard", "properties", "bills"].includes(item.id)) : items;
+  const currentPath = state.activePath.split("?")[0];
+  const shortLabels = {"tenant-home":"Home", "tenant-bills":"Bills", "tenant-notifications":"Alerts", "bills":"Bills", "admin-audit":"Audit"};
+  const mobileNav = mobileNavigation
+    ? html`<nav class="tenant-bottom-nav mobile-bottom-nav" aria-label="${role} navigation">
+        ${primaryItems.map(item => {
+          const active = currentPath === item.path.slice(1);
+          const label = shortLabels[item.id] ?? item.label;
+          const count = item.id === "tenant-notifications" ? state.badges?.unreadNotifications ?? 0 : state.badges?.[item.badge ?? item.id] ?? 0;
+          return html`<a href="${item.path}" class="tenant-bottom-nav__item ${active ? "is-active" : ""}" aria-label="${item.label}" aria-current="${active ? "page" : "false"}">
+            <span class="tenant-bottom-nav__icon">${icon(item.icon, { size: 20 })}${count ? html`<span class="tenant-bottom-nav__count">${count > 9 ? "9+" : count}</span>` : null}</span>
             <span>${label}</span>
           </a>`;
         })}
+        ${hasMore ? html`<button type="button" class="tenant-bottom-nav__item ${primaryItems.some(item => item.path.slice(1) === currentPath) ? "" : "is-active"}" data-action="toggle-nav" aria-label="More navigation" aria-controls="primary-sidebar" aria-expanded="${state.navOpen}">
+          <span class="tenant-bottom-nav__icon">${icon("menu", {size:20})}</span><span>More</span>
+        </button>` : null}
       </nav>`
     : null;
 
@@ -143,7 +149,7 @@ function shellMarkup() {
         tabindex="-1"
       ></main>
     </div>
-    ${tenantMobileNav}
+    ${mobileNav}
   </div>`;
 }
 

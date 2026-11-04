@@ -41,7 +41,7 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
       await page.locator("#login-password").fill(password);
       await page.locator("[data-sign-in]").click();
       await expect(page.locator(".app-shell")).toBeVisible();
-      for (const width of [1440,820,390,320]) {
+      for (const width of [2560,1920,1440,1280,820,390,320]) {
         await page.setViewportSize({width,height:900});
         for (const path of paths) {
           await page.goto(origin+"/#"+path);
@@ -56,6 +56,10 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
               attributes:[...element.attributes].filter(a=>a.name.startsWith("data-")).map(a=>`${a.name}=${a.value}`).join(" "),
             }));
             const topbar = getComputedStyle(document.querySelector(".topbar"));
+            const sidebarColor = getComputedStyle(document.querySelector(".sidebar")).backgroundColor;
+            const primaryColors = [...document.querySelectorAll("main .btn--primary")].filter(visible).map(button=>({
+              name:button.textContent.trim(),background:getComputedStyle(button).backgroundColor,
+            }));
             const hero = document.querySelector(".mint-workspace-hero");
             const luminance = color => (color.match(/[\d.]+/g) ?? []).slice(0,3).map(Number)
               .map(channel => {const value=channel/255; return value<=.04045 ? value/12.92 : ((value+.055)/1.055)**2.4;})
@@ -63,10 +67,18 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
             const heroLuminance = hero ? [luminance(getComputedStyle(hero).backgroundColor),luminance(getComputedStyle(hero.querySelector("h1")).color)] : null;
             const heroContrast = heroLuminance ? (Math.max(...heroLuminance)+.05)/(Math.min(...heroLuminance)+.05) : null;
             const bottomNav = document.querySelector(".tenant-bottom-nav");
-            return {heroContrast,topbarColor:topbar.backgroundColor, topbarImage:topbar.backgroundImage, bottomNavVisible:Boolean(bottomNav && visible(bottomNav)), overflow:document.documentElement.scrollWidth>innerWidth+1, heading:document.querySelector("main h1")?.textContent, headingSize:getComputedStyle(document.querySelector("main h1")).fontSize, controls,
+            const hostBox = document.querySelector(".page-host").getBoundingClientRect();
+            const pageElement = document.querySelector("main .page");
+            const pageBox = pageElement.getBoundingClientRect();
+            const pageStyle = getComputedStyle(pageElement);
+            const gutters = {left:pageBox.left-hostBox.left+parseFloat(pageStyle.paddingLeft),right:hostBox.right-pageBox.right+parseFloat(pageStyle.paddingRight)};
+            return {gutters,sidebarColor,primaryColors,heroContrast,topbarColor:topbar.backgroundColor, topbarImage:topbar.backgroundImage, bottomNavVisible:Boolean(bottomNav && visible(bottomNav)), overflow:document.documentElement.scrollWidth>innerWidth+1, heading:document.querySelector("main h1")?.textContent, headingSize:getComputedStyle(document.querySelector("main h1")).fontSize, controls,
               overflowElements:[...document.querySelectorAll("main *")].filter(visible).filter(e=>e.getBoundingClientRect().right>innerWidth+1 && !e.closest(".table-wrap")).slice(0,8).map(e=>`${e.tagName}.${e.className}`)};
           });
           records.push({role,path,width,...result});
+          assert.ok(result.gutters.left >= 15 && result.gutters.right >= 15, `${role} ${path} ${width}px: retain readable edge spacing`);
+          assert.ok(result.gutters.left <= 37 && result.gutters.right <= 37, `${role} ${path} ${width}px: use the workspace width without oversized side gutters`);
+          assert.ok(Math.abs(result.gutters.left-result.gutters.right)<=1, `${role} ${path} ${width}px: align both page edges consistently`);
           if (path === "/bills?tab=incoming" && width > 1100) {
             const bills = await page.locator(".ocr-bill:visible").evaluateAll(rows => rows.map(row => {
               const box=element=>element.getBoundingClientRect();
@@ -94,9 +106,21 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
             assert.ok(spacing<=2, "Report cards must not stretch into empty space to match a taller neighbor");
           }
           assert.equal(result.topbarColor,"rgb(248, 247, 241)");
+          assert.equal(result.sidebarColor,"rgb(21, 62, 53)", `${role} ${path}: shared forest navigation theme`);
+          for (const button of result.primaryColors) {
+            const [red,green,blue]=(button.background.match(/[\d.]+/g) ?? []).slice(0,3).map(Number);
+            assert.ok(green>red && green>=blue, `${role} ${path}: ${button.name} must use the approved green/mint action palette`);
+          }
           assert.equal(result.topbarImage,"none");
           if (result.heroContrast !== null) assert.ok(result.heroContrast>=4.5,`${role} ${width}px: dashboard heading must remain readable against its background`);
-          assert.equal(result.bottomNavVisible, role === "tenant" && width <= 1100);
+          assert.equal(result.bottomNavVisible, width <= 1100, `${role}: show bottom navigation on phones/tablets`);
+          if (width <= 1100) {
+            const nav = page.locator('.mobile-bottom-nav');
+            assert.equal(await nav.locator('a,button').count(),4, `${role}: keep four usable bottom destinations`);
+            const layout = await nav.evaluate(element => ({bottom:element.getBoundingClientRect().bottom,height:element.getBoundingClientRect().height,viewport:innerHeight,padding:parseFloat(getComputedStyle(document.querySelector('main .page')).paddingBottom)}));
+            assert.ok(Math.abs(layout.bottom-layout.viewport)<=1, `${role}: pin navigation to the viewport bottom`);
+            assert.ok(layout.padding>=layout.height+16, `${role}: leave content clear of bottom navigation`);
+          }
           if (width > 1100) {
             await expect(page.locator('.sidebar__garden img')).toBeVisible();
             await expect.poll(() => page.locator('.sidebar__garden img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -130,11 +154,14 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
         return nav.bottom <= garden.top+1 && garden.bottom <= footer.top+1;
       }), `${role}: plant must not cover navigation or logout on a short display`);
       await page.setViewportSize({width:390,height:600});
-      await page.locator('.topbar [data-action="toggle-nav"]').click();
+      const more = page.locator('.mobile-bottom-nav [data-action="toggle-nav"]');
+      await (await more.count() ? more : page.locator('.topbar [data-action="toggle-nav"]')).click();
+      if (await more.count()) await expect(more).toHaveAttribute('aria-expanded','true');
       await expect(page.locator('.sidebar__garden img')).toBeVisible();
       await expect(page.locator('.sidebar__logout')).toBeVisible();
       await page.locator('.sidebar__toggle').click();
       await expect(page.locator('.app-shell')).not.toHaveClass(/is-nav-open/);
+      if (await more.count()) await expect(more).toHaveAttribute('aria-expanded','false');
       await context.close();
     }
     if (process.env.UI_AUDIT_OUTPUT) writeFileSync(join(process.env.UI_AUDIT_OUTPUT,"inventory.json"),JSON.stringify({records,issues,errors},null,2));

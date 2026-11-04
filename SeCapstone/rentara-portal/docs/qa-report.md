@@ -1,5 +1,11 @@
 # Current QA status
 
+## Latest staging merged with local responsive UI - 5 November 2026
+
+Fetched and fast-forwarded local main from `18c4510` to staging `79f79c0`, then restored all saved local changes. Retained backup stash `552f999806ebbec4a71b45ae09b25aa80babe14b` and ignored patch `data/pre-staging-local-2026-11-05.patch`. Only this report conflicted; both histories were retained. Responsive width, all-role bottom navigation and their audit are identical to the saved versions. Both old start:phone and new automatic demo:group scripts are present. Changes remain local/unstaged; no push performed.
+
+Fresh targeted combined regression: **31 passed, zero failures/skips/cancellations**, about 107 seconds, covering the new laptop setup/start, Group 3 origins/workspaces, Admin boundaries, all-role responsive UI, cross-role routing and interaction feedback. All **157 JS/MJS syntax checks** and git whitespace checks passed. No working Demo initialization, mail retrieval or delivery was run; the selected existing-Demo data was not replaced. See [5 November integration review](staging-integration-review-2026-11-05.md) for scope, preservation details and limits.
+
 ## Automatic local-IP Group 3 startup - 5 November 2026
 
 `npm.cmd run demo:group` now detects a usable local IPv4, prepares missing demo/HTTPS files, then launches the existing restricted demo process. Windows physical default-route information is used when available, with Wi-Fi/unambiguous-adapter fallback; common virtual/VPN, loopback and self-assigned addresses are excluded. Ambiguous selection stops with a manual `--ip` instruction. Receiving and live delivery still require their existing explicit switches. There is no internet connectivity probe, automatic firewall modification or automatic installation of device trust.
@@ -15,6 +21,37 @@ Fixed a reproducibility gap: `demo:group:prepare` previously required an unshare
 Focused verification: 21 tests passed, zero failures/skips/cancellations, in 17.104 seconds across `group-laptop-setup`, `group-demo-config`, `group-demo-workspaces` and `admin-visibility`. Six new tests cover fresh setup, all four roles/two workspaces, rerun preservation of account changes and financial-record counts, member-input recovery/preservation, invalid IP/tool/certificate failures, executable reuse and rejected failed/corrupt downloads. An additional isolated setup used the actual downloaded executable and certificate generator; both the initial IP and a changed IP were covered, the CA was preserved and the demo was reused. It did not access Gmail, send notifications, install a system-trusted CA or alter the working portfolios. This is setup/development evidence, not actual groupmate-phone acceptance or a rerun of the earlier 155-test full suite.
 
 The root/application READMEs, tool guide, Group 3 bill guide and network guide now distinguish the current HTTPS Group 3 startup on port 8444 from the plain-HTTP showcase on port 8080. Generated databases, sessions and private certificate keys remain local; source, member template, setup code and tests are shareable. Each hosting laptop retains a separate database. Device certificate trust and appropriate network/firewall access remain required for the local phone demonstration.
+## Mobile bottom navigation for every role - 4 November 2026
+
+The existing bottom bar was Tenant-only, so other roles had no bottom destinations on phones. The shell now derives mobile destinations from the same role-filtered navigation registry as the sidebar. Manager/Staff have Dashboard, Properties, Bills and More (opens the existing full drawer); Admin has its four permitted destinations; Tenant retains Home, Bills, Alerts and Settings. Active states, badge counts, drawer expanded state, safe-area padding and desktop hiding are retained. No permissions or backend behavior changed.
+
+All 182 role/route/width audit combinations passed, including four bottom controls at mobile/tablet widths, viewport-bottom positioning, page clearance and existing palette/overflow checks. A separate 390px touch viewport smoke check passed Manager Properties navigation/active state, visibility after scrolling, More opening, Units selection and drawer closing. The routing/cross-role logout and interaction/reduced-motion browser tests also passed (2/2). Desktop remains sidebar-based. Screenshot: ignored `data/mobile-bottom-nav-manager-390.png`.
+
+## Fluid workspace width - 4 November 2026
+
+Replaced Fresh Mint's 1440px page cap with the available workspace width and fluid desktop edge padding (24-36px); existing tablet/phone spacing and text-length limits remain. This removes the large centered side gutters on wide screens without changing backend logic or business workflows. Existing grids reflow within the wider canvas.
+
+Expanded the all-role browser audit to 320, 390, 820, 1280, 1440, 1920 and 2560 CSS pixels. All 182 role/route/width combinations passed, including symmetric page gutters (15-37px), no document overflow, navigation, controls and existing theme checks. Chromium/Edge automation passed in about 43 seconds. Captured and inspected Manager dashboard/Properties previews at desktop and phone sizes; physical Brave, Opera GX and Chrome comparison remains a manual check. Browser zoom, operating-system scaling and sidebars can change the available CSS viewport. No Git push performed.
+
+## Dedicated Demo HTTPS setup - 4 November 2026
+
+Ran the requested `setup:https -- --ip 192.168.100.207` sequence. The first attempt identified a missing local mkcert tool; downloaded official v1.4.4 from the project's GitHub release into ignored `data/tools`, checked release asset size/version, then reran successfully. Created the local HTTPS certificate/public CA export and `.env.acceptance`; checked certificate coverage for localhost and the current IP. Existing VAPID keys were retained and the shared `.env` was backed up before the command. No system certificate trust was installed automatically.
+
+The elevated firewall helper successfully created the separate Private/LocalSubnet Node rule for TCP 8444. Actual `npm.cmd run demo:group` startup was attempted and stopped with `ERR_SQLITE_ERROR: unable to open database file` because `data/group-demo/propertypro.sqlite` is absent. The user selected an existing Demo, so no replacement portfolio, member list or synthetic accounts were generated. HTTPS/network preparation is ready; the dedicated Demo is **not running** pending the existing Demo database and source files from its prepared folder/PC. No mailbox retrieval or live delivery was enabled.
+
+## Phone LAN access setup - 4 November 2026
+
+Added `npm.cmd run start:phone`, which uses the normal `.env` profile/data and detects a current laptop IPv4 address (or requires explicit `--ip` when several exist). It sets process-local LAN binding, portal URL and allowed origins, preserving the shared `.env`. Current URL: `http://192.168.100.207:8080/`; current profile remains Showcase. No TLS/Push configuration, profile initialization, reset or external delivery was enabled.
+
+Windows required administrator privileges to add the inbound rule. After the prepared helper was launched through Windows elevation, creation succeeded and its result reported ready: `Rentara-Phone-LAN-8080`, Node executable only, TCP 8080, Private network and LocalSubnet. The persistent helper is `tools/enable-phone-firewall.ps1`. A later separate inspection from the ordinary process was denied by Windows; readiness is based on the elevated helper's successful creation result. Laptop-side checks: LAN page HTTP 200, phone-origin preflight 204, Maria Tenant login 200 and authenticated session 200, followed by logout. JavaScript/PowerShell syntax and whitespace checks passed. Physical-phone access remains to be confirmed on the same network. See [phone instructions](phone-access.md). No financial records were edited and no Git push was performed.
+
+## Latest staging merged into local main - 4 November 2026
+
+Advanced local `main` from `1e04069` to latest `origin/staging` commit `18c4510`, importing two commits. Staging already included the existing Fresh Mint history. Preserved the two uncommitted local QA files in stash `7ad2b243b9e117c3d7cbb3eef35621fa1fd0c185` and an ignored backup patch before merging. Restoring them required one QA-report conflict resolution; both histories were retained, and the theme checks applied cleanly to the expanded audit. No application source conflict or runtime fix was needed.
+
+Fresh combined `npm.cmd test`: **155 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 374 seconds (`data/staging-integration-2026-11-04.log`). Syntax: **152 JS/MJS files, zero failures** (`data/staging-syntax-2026-11-04.json`). The suite covers the new Admin read-only inspection/private-file restrictions, profile/delivery safeguards, input validation, sidebar motion, existing billing and role workflows, and restored local theme/spacing guards. `git diff --check` passed. Final fetch reconfirmed local main matches latest remote staging; it is two commits ahead of `origin/main`.
+
+See [integration review](staging-integration-review-2026-11-04.md) for reviewed boundaries, caller scope and backup details. Working databases, credentials, original bills and live settings were preserved; no profile setup or live delivery was run. No commit or push was performed. Actual phones, live authorized intake/email/Push, printing and adviser/manuscript acceptance remain separate checks.
 
 ## Sidebar motion follow-up - 4 November 2026
 
@@ -31,6 +68,22 @@ Reproduced five common-input gaps in isolated tests, then added strict text type
 Fresh complete regression: **155 passed, 0 failed, 0 cancelled, 0 skipped; 354,942.2249 ms** (`data/integrated-final-test-2026-11-04.log`). Syntax: **151 JS/MJS files, 0 failures**. Nine focused validation/Admin/form checks also passed. Refreshed **51 UI screenshots**, three email previews and the icon comparison using disposable data; inspected the new desktop/phone Admin read-only views. Added the Admin workspace route to the responsive audit. This is not actual-phone or live-delivery acceptance.
 
 Testing kit: 19 simplified checks and 77 detailed cases, including a common-invalid-input exercise, with prior result fields preserved. Fresh synthetic SOA assets remain available. The working database and external accounts were not changed. Use the current integration review for remaining device, provider and formal evaluation limits.
+
+## Role/module theme and function confirmation - 3 November 2026
+
+Verified `main` at `1e04069`. The page audit covers **25 role-specific views at four widths (1440, 820, 390 and 320 px): 100 page/viewport combinations**, plus Manager Settings subsections. Admin covers Dashboard/Audit/Settings; Manager covers Dashboard/Properties/Units/Tenants/billing tabs/Reports/Settings; Staff covers Dashboard/Properties/Units/Tenants/intake/exceptions/Account; Tenant covers Home/Bills/Notifications/Settings.
+
+Added rendered-style regression checks for the shared forest sidebar and green/mint primary-action palette on every audited page, alongside existing cream topbar, heading contrast, plant loading/navigation separation, phone controls, overflow, incoming-column alignment and report-spacing checks. Focused theme audit passed (`data/role-module-theme-audit.log`). Reviewed the retained current dashboard screenshots for all four roles against the approved Fresh Mint direction. Consistency means the shared visual system; role-specific content, illustrations and permitted actions remain distinct.
+
+Fresh full `npm.cmd test`: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 292 seconds (`data/role-module-consistency-test.log`), including the strengthened theme audit. Functions covered include portfolio/search/validation, Tenant detail tabs, OCR/intake/duplicates, correction proposals and decisions, exact allocation, rent reports/confirmation/advance/receipts, personal utility marks, calendar/notifications, permissions, sessions, persistence, workspaces and recovery. No new application bug was confirmed, and no production UI/backend change was needed; only test guards and this report were updated locally. No push was performed. Actual-device motion/keyboard behavior, actual provider formats, physical printing and authorized live email/Web Push delivery remain separate acceptance work.
+
+## Post-merge QA on main - 2 November 2026
+
+Verified active branch `main` at `1e04069`, synchronized with `origin/main` after fetch. Fresh full `npm.cmd test`: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 299 seconds (`data/main-branch-qa-test.log`). This includes the final incoming-row/report spacing guards, validation, all-role UI at 1440/820/390/320 px, Staff/Manager/Tenant/Admin permissions, protected source review, rent/utility workflows, OCR/duplicate handling, sessions, workspace isolation, persistence and recovery.
+
+Additionally exercised the running `http://localhost:8080/` with four existing demo accounts: Manager, Admin, Maria and Alice (three distinct roles; Staff is covered by the isolated suite). **34 page/viewport combinations passed** at 1440 and 390 px, with no captured page errors, load-error states or horizontal overflow (`data/main-live-smoke.json`, summary `data/main-live-smoke.log`). These live checks performed navigation and normal sign-in/sign-out only, with no financial writes or setup/reset operations.
+
+Read-only checks on the configured local SQLite database passed `PRAGMA quick_check`, with **0 foreign-key violations** (`data/main-database-check.json`). Local HTTP returned 200. No new bug was confirmed in these checked paths, and no application code fix was needed. Only this local QA report was updated; no commit or push was performed. Actual-device keyboard/motion, physical printing, real provider formats and authorized live email/Web Push delivery remain separate acceptance checks. Test transports and showcase navigation do not establish live external delivery or complete security coverage.
 
 ## Final frontend/backend verification - 2 November 2026
 

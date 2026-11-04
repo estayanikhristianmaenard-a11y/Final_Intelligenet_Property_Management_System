@@ -49,12 +49,13 @@
   --shadow-lg: 0 16px 36px rgb(21 62 53 / 12%);
   --shadow-xl: 0 24px 56px rgb(21 62 53 / 16%);
   --shadow-panel: -12px 0 40px rgb(21 62 53 / 12%);
-  --content-max: 1440px;
+  /* Let each workspace use its available width, including wide/zoomed-out displays. */
+  --content-max: 100%;
 }
 
 /* A quiet canvas, strong headings, and visible navigation like the approved preview. */
 body { background: var(--surface-canvas); color: var(--text-primary); }
-.page { padding: 32px 36px 56px; }
+.page { padding: 32px clamp(24px, 1.7vw, 36px) 56px; }
 .page-header { margin-bottom: 28px; }
 .page-header h1, .auth-card h1, .auth-hero__copy h2, .tenant-property-banner h2 {
   font-family: var(--font-display);
@@ -134,6 +135,7 @@ body { background: var(--surface-canvas); color: var(--text-primary); }
 .topbar__mobile-brand .workspace-label { color: var(--text-muted); }
 .tenant-bottom-nav { background: var(--surface-bottom-nav); border-color: var(--border-subtle); box-shadow: 0 -4px 18px rgb(21 62 53 / 5%); }
 .tenant-bottom-nav__item { color: var(--text-secondary); }
+.mobile-bottom-nav button.tenant-bottom-nav__item { border: 0; background: transparent; font-family: inherit; cursor: pointer; padding: 0; }
 .tenant-bottom-nav__item.is-active .tenant-bottom-nav__icon { color: var(--primary-900); background: var(--primary-200); }
 
 /* Tenant home follows the approved composition, using the original live-data bindings. */
