@@ -30,7 +30,7 @@ To answer the second research question, the implemented workflow connects utilit
 
 Rent management follows its own reporting and confirmation path. A pending Tenant report is not a confirmed payment. Confirmed rent receipts retain the recorded transaction details. Personal utility tracking remains separate and does not produce utility receipts. Notification processing supports access to these records but does not change payment status or establish delivery to a human reader.
 
-Scheduled processing requires a running backend. Live mailbox retrieval and external notifications also require internet access. Supported local processing can continue when its required files and components are available.
+The local setup requires a running backend, and users on other devices need a connection to the server's network and the configured portal address. Local access does not by itself establish access from other networks. Remote access requires a separately configured, reachable HTTPS address. Live mailbox retrieval and external notifications require internet access. Supported local processing can continue when the server, required files and components are available.
 
 ### 3.1.3 Testing Process and Evaluation Basis
 
@@ -42,7 +42,7 @@ Functional Suitability is supported by checks of intake, validation, allocation,
 
 Performance Efficiency was examined through local API response measurements and observed extraction times under the environment described in Section 3.2.1. Request timing included reading the complete response body, and sampled Node process memory was recorded. Section 3.2.3 states the small dataset and measurement limits. These observations do not establish production capacity, phone response time, or the number of concurrent users the system can support.
 
-Interaction Capability was checked through automated browser tasks and phone-sized layouts. The interface now uses a shared Staff and Manager Case Sheet, clearer next actions, protected original-bill previews, and a rent-first Tenant home. Actual-device tasks and participant feedback remain pending.
+Interaction Capability was checked through automated browser tasks and phone-sized layouts. The interface now uses a shared Staff and Manager Case Sheet, clearer next actions, protected original-bill previews, and a rent-first Tenant home. The updated screens use a consistent cream, mint and dark-green interface with clear navigation labels, illustrated headings and support for reduced motion. Actual-device tasks and participant feedback remain pending.
 
 Reliability checks covered duplicate prevention, repeated intake, retained records after restart, rollback of invalid corrections, and continued processing when an independent job failed. These tests cover the recorded scenarios rather than long-term availability.
 
@@ -76,6 +76,8 @@ The complete automated run on 28 October 2026 executed 99 tests, with 99 passes 
 
 On 1 November 2026, we completed an additional development security check after adding the Admin read-only workspace view. The final full run passed all 144 tests, with no failures, cancellations, or skips, in about 712 seconds. We checked harmful text in displayed values, quoted input fields, application links, and generated receipts. We also checked that a failed audit write returned no record data, and that parallel requests from two Managers did not duplicate a receipt or apply a correction twice. Four selected tests passed in unchanged source copies and failed when deliberate control bypasses were added to those copies. The working source files were unchanged by these negative checks. These results are separate from the 28 October measurements below. They cover selected development scenarios on one backend, not complete security, distributed operation, actual phone delivery, or participant evaluation. The harmful-input case used controlled OCR output and does not measure OCR accuracy.
 
+On 4 November 2026, we tested the combined interface and system updates. The full automated run passed all 155 tests, with no failures, cancellations or skips, in about 355 seconds. We also checked the syntax of 151 JavaScript files without a failure and refreshed 51 interface screenshots using disposable demonstration records. The run covered the retained Admin read-only view, profile restrictions, both demonstration workspaces, input validation and the existing billing workflow. These are development results for this revision, not actual-phone acceptance, live notification delivery or participant evaluation.
+
 **Table 3.1: Summary of Recorded Automated Development Tests**
 
 | Test area | Executed scenarios | Recorded result |
@@ -88,7 +90,7 @@ On 1 November 2026, we completed an additional development security check after 
 | Persistence and access | Application/database close and reopen, retained sources and records, old-message replay, role restrictions, and workspace separation | Passed in the recorded full suite |
 | Interface regression | Recorded role journeys, phone-sized layouts, and page-error checks | Passed in the recorded full suite; actual-device acceptance remains separate |
 
-Table 3.1 groups the scenarios covered by the recorded run. The categories describe test coverage and are not additional tests beyond the reported total of 99.
+Table 3.1 groups the scenarios covered by the 28 October 2026 run of 99 tests. The categories describe coverage rather than additional tests. The later runs of 144 and 155 tests are separate revision checkpoints and are not added to the earlier total.
 
 Local response measurements used the authenticated reports-summary endpoint and a disposable file-backed SQLite database containing 4 properties, 4 units, 3 tenants, and 30 bills, with no payments or receipts. After five warm-up requests excluded from the measurements, 50 requests were sent sequentially. A second group used five concurrent request loops, each sending ten requests to the already warmed server. Timing started before each request and ended after the complete response body was read. The 95th percentile used the nearest-rank method.
 
@@ -109,6 +111,8 @@ Other application corrections addressed an empty category label on unmapped sour
 An initial run on 28 October 2026 passed 98 of 99 tests. The remaining browser test assumed that a utility alert would use the current month, although its generated due date had crossed into the following month. The application displayed the due month correctly. The test expectation was corrected to use the fixture’s due month, and an assertion was added for the billing cycle. The targeted journey and the subsequent complete 99-test run passed. This was a test-script correction, not a change to billing behavior. An older timing-record date was also replaced with a current timestamp; its header-only timing was not used for the complete-response measurements reported here.
 
 During the additional account-response check, we found that the older response helper removed the password hash but returned other stored fields without an explicit list. A private synthetic test value appeared in the account listing. We changed the helper to return only the supported public account details and notification preferences, and the relevant checks passed. This finding does not establish that actual credentials were exposed. Account creation, password resets, role permissions, and stored records were preserved. The security checks also clarified a test that previously assumed every list response was an array; it now checks for either a safe denial or records from the correct workspace.
+
+The interface integration also revealed a mismatch between a demonstration setup that used a text floor label and the updated numeric-floor requirement. We corrected the setup without changing existing records. We added checks for text types and lengths, email format and duplicate account emails, payment references, decimal amounts and notification preferences. A partial preference update now preserves an existing opt-out for settings that were not changed. These checks prevent invalid writes; they do not verify a bank payment or a utility provider settlement.
 
 These role restrictions apply to requests made through the active account. A trusted Admin who can create accounts or reset passwords could use another account, and a person controlling the server files or backups is outside this application-role boundary. Password resets revoke sessions and are audited; later actions are recorded under the account used. Our selected tests do not establish protection from every action by a trusted server operator.
 

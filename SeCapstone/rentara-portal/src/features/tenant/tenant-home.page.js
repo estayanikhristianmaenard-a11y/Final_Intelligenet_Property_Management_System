@@ -49,20 +49,20 @@ function content(tenant) {
 
   return html`<div class="tenant-home-grid">
       <section class="tenant-property-banner">
-        <div><h2>Hello, ${tenant.fullName.split(" ")[0]}.</h2><p>${tenant.propertyName} · Unit ${tenant.unitCode}</p></div>
-        <span class="tenant-property-banner__mark" aria-hidden="true">${icon("building", { size: 34 })}</span>
+        <div><h2>Hey, ${tenant.fullName.split(" ")[0]} <span class="mint-wave" aria-hidden="true">👋</span></h2><p>Your home, bills and updates. All in one place.</p><span class="mint-unit-label">${icon("building", { size: 15 })}${tenant.propertyName} · ${tenant.unitCode}</span></div>
+        <img class="mint-home-illustration" src="./src/assets/mint-neighborhood.svg" width="560" height="340" alt="" aria-hidden="true" />
       </section>
 
       <section class="card tenant-rent-card">
         <div class="card__header"><div><h2 class="card__title">Rent bill</h2><p class="card__subtitle">${rent ? monthLabel(rent.cycle) : "Current rent bill"}</p></div>${rent ? paymentBadge(rent.paymentStatus) : null}</div>
-        <div class="card__body">${rent ? html`<p class="tenant-rent-card__amount">${peso(rent.totalDue)}</p><p class="tenant-rent-card__due">Due ${date(rent.dueDate)} ${billTiming(rent) ? html`<span class="bill-urgency">${billTiming(rent)}</span>` : null}</p>${rent.paymentStatus === "tenant_reported_paid" ? html`<div class="notice-strip notice-strip--warning mt-3">Your report is waiting for Manager confirmation.</div>` : null}` : emptyState({iconName:"receipt",title:"No rent bill available yet"})}</div>
-        <div class="card__footer row row-wrap">${rent?.paymentStatus === "unpaid" ? html`<button class="btn btn--primary" type="button" data-action="report-payment">Report rent payment</button>` : null}${receiptNumber ? html`<button class="btn btn--primary" type="button" data-view-receipt="${receiptNumber}">View receipt</button><button class="btn btn--secondary" type="button" data-receipt="${receiptNumber}">Download rent receipt</button>` : null}<a class="btn btn--secondary" href="#/tenant/bills">Bills and history</a></div>
+        <div class="card__body">${rent ? html`<span class="mint-rent-sticker" aria-hidden="true">${icon("calendar", { size: 58 })}${icon("home", { size: 21 })}</span><p class="tenant-rent-card__amount">${peso(rent.totalDue)}</p><p class="tenant-rent-card__due">Due ${date(rent.dueDate)} ${billTiming(rent) ? html`<span class="bill-urgency">${billTiming(rent)}</span>` : null}</p>${rent.paymentStatus === "tenant_reported_paid" ? html`<div class="notice-strip notice-strip--warning mt-3">Your report is waiting for Manager confirmation.</div>` : null}` : emptyState({iconName:"receipt",title:"No rent bill available yet"})}</div>
+        <div class="card__footer row row-wrap">${rent?.paymentStatus === "unpaid" ? html`<button class="btn btn--primary" type="button" data-action="report-payment">Report rent payment</button><p class="mint-rent-hint">Manager confirmation required.</p>` : null}${receiptNumber ? html`<button class="btn btn--primary" type="button" data-view-receipt="${receiptNumber}">View receipt</button><button class="btn btn--secondary" type="button" data-receipt="${receiptNumber}">Download rent receipt</button>` : null}<a class="btn btn--secondary" href="#/tenant/bills">Bills and history</a></div>
       </section>
 
       <section class="card tenant-utility-card">
-        <div class="card__header"><div><h2 class="card__title tenant-utility-card__title"><span>${icon("receipt", { size: 18 })}</span>Personal utility tracker</h2><p class="tenant-utility-card__disclaimer">Provider payment not verified.</p></div></div>
+        <div class="card__header"><div><h2 class="card__title tenant-utility-card__title"><span>${icon("zap", { size: 18 })}</span>Personal utility tracker</h2></div></div>
         <div class="card__body">${utilities.length ? utilities.map(utilityRow) : html`<p class="text-secondary">Your electricity and water bills will appear here once received and validated.</p>`}</div>
-        <div class="card__footer"><a class="text-link" href="#/tenant/bills">Utility history ${icon("arrow-right",{size:14})}</a></div>
+        <div class="card__footer"><p class="tenant-utility-card__disclaimer">${icon("info", { size: 15 })}Personal tracking only. Provider payment not verified.</p><a class="text-link" href="#/tenant/bills">Utility history ${icon("arrow-right",{size:14})}</a></div>
       </section>
 
       <section class="card tenant-payment-history">

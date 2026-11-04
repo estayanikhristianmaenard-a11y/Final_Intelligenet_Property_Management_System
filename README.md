@@ -7,7 +7,7 @@
 | I want to... | Open this |
 | --- | --- |
 | Review the paper, roles and complete workflow | [Group reviewer guide](SeCapstone/reports/testing/reviewer-guide.docx) |
-| Record final manual tests and feedback | [Guided Excel workbook](SeCapstone/reports/testing/final-test-workbook.xlsx) and [numbered assets](SeCapstone/reports/testing/assets/README.md) |
+| Record final manual tests and feedback | [Simple Excel checklist](SeCapstone/reports/testing/simple-test-checklist.xlsx) and [numbered assets](SeCapstone/reports/testing/assets/README.md) |
 | Read the current Chapters I-IV | [Checked manuscript](SeCapstone/review/MANUSCRIPT_I_IV_REVISED.pdf) |
 | Work on the application | [Application start guide](SeCapstone/rentara-portal/README.md) |
 | Edit shared Gmail or local settings | [.env](SeCapstone/rentara-portal/.env) (team-owned configuration) |

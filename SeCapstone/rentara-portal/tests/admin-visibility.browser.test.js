@@ -85,7 +85,12 @@ test('malicious Tenant, email and OCR text stays inert in text, quoted attribute
     let sourceId,receiptId;
     await store.withWorkspace(seed.testWorkspaceId,async()=>{
       const manager=store.get('users',seed.managerId),tenant=store.get('users',seed.tenants[0].userId);
-      app.service.writeEntity(manager,'tenants',{fullName:payload,phone:`\" autofocus onfocus=\"window.__securityAttack=2`,emergencyContactName:payload},tenant.tenantId);
+      const hostilePhone=`\" autofocus onfocus=\"window.__securityAttack=2`;
+      assert.throws(()=>app.service.writeEntity(manager,'tenants',{phone:hostilePhone},tenant.tenantId),error=>error.status===422);
+      app.service.writeEntity(manager,'tenants',{fullName:payload,phone:'09123456789',emergencyContactName:payload},tenant.tenantId);
+      // Keep testing rendering of contaminated historical data independently
+      // from the new write-time phone validator.
+      store.save('tenants',{...store.get('tenants',tenant.tenantId),phone:hostilePhone});
       integration=new Integrations(app.service,join(dir,'workspaces',seed.testWorkspaceId),{});
       const summary=['Meralco','Account: G3B-E001','Amount Due: 100.01','Due Date: 2027-01-20','Billing Period: 2026-12-15 to 2027-01-14',payload].join('\n');
       const [email]=await integration.ingestEmail(Buffer.from(`From: fixture@example.test\r\nSubject: ${payload.replace(/[\r\n]/g,'')}\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n${summary}`));

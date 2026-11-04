@@ -83,6 +83,8 @@ try {
       ["42-admin-status-evidence.png","/admin",1440,1000],
       ["34-admin-audit.png","/admin/audit",1440,1000],
       ["35-admin-workspaces-accounts.png","/admin/settings",1440,1000],
+      ["50-admin-workspace-inspection.png","/admin/workspace?workspaceId="+app.store.get("users","usr-manager").workspaceId,1440,1000],
+      ["51-admin-workspace-inspection-mobile.png","/admin/workspace?workspaceId="+app.store.get("users","usr-manager").workspaceId,390,844],
       ["40-admin-audit-older-records.png","/admin/audit?page=2",1440,1000],
     ]],
   ]) {

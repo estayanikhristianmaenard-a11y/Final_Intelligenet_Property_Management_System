@@ -2,6 +2,8 @@
 
 Prepared 2 November 2026. This is our study and demonstration guide, not a new manuscript chapter or a completed evaluation report. The companion Word file can be uploaded to Google Docs. Use the Excel workbook to record what actually happens during testing.
 
+The 4 November integration combines the Fresh Mint interface with Admin read-only inspection, separate profiles and both demonstration workspaces. Form checks reject invalid names, emails, phone numbers, dates, floors and amounts. Existing account, billing and notification rules still apply. Use the current screenshots and record your own test results rather than copying automated passes.
+
 ## 1. What our project is about
 
 Our research title is Intelligent Property Management Workflow with OCR-Enabled Automated Billing Classification and Tenant Notification. Rentara is the name of our application. We focus on billing for selected boarding houses and residential apartments in Pasig City, covering rent, electricity and water.
@@ -145,6 +147,8 @@ Feedback and Suggested improvement are separate fields on every case. A correct 
 Link each defect to its test ID in Issues & Retests. Keep the original failure, the correction and the retest result; do not replace the failure with a pass and lose the history. Later role-rotation runs also go there as new runs. The workbook summary is a count of recorded manual statuses, not a percentage of system completion. Our three-person group walkthrough is not automatically formal participant evaluation.
 
 ## 7. Using the fresh test assets
+
+For the SOA-layout demonstration, use S01 and S02. They are new, visibly synthetic derivatives of our already-anonymized first-page Meralco layout, with different periods and amounts. S01 routes PHP 2,400.50 to Unit A as PHP 1,200.25 each for February 2027, due 8 March 2027. S02 routes PHP 1,875.75 to Unit B for March 2027, due 8 April 2027. The invented CANs are 9990000001 and 9990000002, using the existing verified demo mappings. Their summary charge lines reconcile to their new totals; consumption graphics are illustrative, not recalculated provider tariffs. The older original-layout copies and private original are preserved.
 
 The assets beside the workbook are synthetic and labelled as test bills. A01 is a scanned shared electricity bill for December 2026; A02 is an individual digital water bill for December. A03 and A04 are email-body-only examples for January 2027. These future periods distinguish the controlled cases from older prepared bills; they are not predicted provider bills. They require the verified mappings and occupancy shown in the asset index. If a case has already been consumed, keep its outcome and use a deliberately prepared new case for another first-intake test.
 

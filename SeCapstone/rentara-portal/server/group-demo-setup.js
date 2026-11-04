@@ -37,7 +37,7 @@ export function setupGroupDemo(dataDir, members, password = "LocalDemo!2026") {
     const units = {};
     for (const code of ["A", "B"]) {
       units[code] = service.writeEntity(manager, "units", {
-        propertyId: property.id, code: `G3-${code}`, floor: "Ground Floor",
+        propertyId: property.id, code: `G3-${code}`, floor: "0",
         monthlyRent: code === "A" ? 6000 : 5000,
         arrangement: code === "A" ? "shared_occupancy" : "individual",
       });

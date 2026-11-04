@@ -1,0 +1,63 @@
+{
+  "preparedDate": "2026-11-02",
+  "source": "Already anonymized first-page SOA; original private SOA never read",
+  "sourceSha256": "af4a88438df4efccd2495c981e4e030ee524137f44782acb7b15104649b64d91",
+  "scope": "Two synthetic derivatives of one layout, not independent provider bills or representative OCR accuracy; disposable portfolio only",
+  "cases": [
+    {
+      "id": "S01",
+      "unit": "A",
+      "account": "9990000001",
+      "amount": 2400.5,
+      "start": "2027-02-01",
+      "end": "2027-02-28",
+      "due": "2027-03-08",
+      "periodLabel": "01 Feb 2027 to 28 Feb 2027",
+      "billLabel": "28 Feb 2027",
+      "nextLabel": "31 Mar 2027",
+      "dueLabel": "08 Mar 2027",
+      "file": "s01-unit-a-soa-layout-scan.pdf",
+      "shares": [
+        1200.25,
+        1200.25
+      ]
+    },
+    {
+      "id": "S02",
+      "unit": "B",
+      "account": "9990000002",
+      "amount": 1875.75,
+      "start": "2027-03-01",
+      "end": "2027-03-31",
+      "due": "2027-04-08",
+      "periodLabel": "01 Mar 2027 to 31 Mar 2027",
+      "billLabel": "31 Mar 2027",
+      "nextLabel": "30 Apr 2027",
+      "dueLabel": "08 Apr 2027",
+      "file": "s02-unit-b-soa-layout-scan.pdf",
+      "shares": [
+        1875.75
+      ]
+    }
+  ],
+  "results": [
+    {
+      "id": "S01",
+      "extraction": "pdf_ocr",
+      "fields": "passed",
+      "allocation": "passed",
+      "ownTenantVisibility": "passed",
+      "duplicates": "passed"
+    },
+    {
+      "id": "S02",
+      "extraction": "pdf_ocr",
+      "fields": "passed",
+      "allocation": "passed",
+      "ownTenantVisibility": "passed",
+      "duplicates": "passed"
+    }
+  ],
+  "externalMessagesSent": 0,
+  "workingDatabaseChanged": false
+}

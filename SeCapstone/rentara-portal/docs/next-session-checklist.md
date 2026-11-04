@@ -1,5 +1,13 @@
 # Next-session checklist
 
+## Pending user-requested changes
+
+Admin home: prioritize Workspaces and Users; retain System Status under Settings/Maintenance. The user explicitly deferred this rearrangement. The shorter Section 1.5 has now been applied to the canonical chapters, existing Google Doc and checked 60-page PDF, with access conditions aligned across Chapters I-IV. Sidebar collapse and sliding active highlight have been restored; check them after a hard refresh. Keep future implementation changes within the manuscript's approved workflow and record actual evaluation results separately.
+
+## Current handoff - 4 November 2026
+
+The Fresh Mint/main and staging changes are combined locally, with 155 passing regression tests and 151 syntax checks. Review the pending merge and local follow-up changes before committing; nothing was pushed. Use the [simple testing checklist](../../reports/testing/simple-test-checklist.xlsx) for actual-device acceptance and retain the [detailed workbook](../../reports/testing/final-test-workbook.xlsx) for extended checks. The paper records development evidence only; actual phones, authorized live provider/delivery checks and formal evaluation remain pending. No additional business module is needed for the next review.
+
 ## Group final-testing kit - 2 November 2026
 
 Use the [Docs-ready reviewer guide, 74-case Excel workbook and numbered assets](../../reports/testing/README.md). Read the guide together, fill session/device details, complete Core cases, register phones before Live events, and record actual results, evidence and feedback. Setup-dependent cases remain Blocked until their prerequisites exist. The fresh assets were checked only in a disposable portfolio; manual workbook results are blank.

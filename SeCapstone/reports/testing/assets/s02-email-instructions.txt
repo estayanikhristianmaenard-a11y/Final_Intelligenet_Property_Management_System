@@ -1,0 +1,8 @@
+TO: rentara2026@gmail.com
+SUBJECT: Group 3 Demo - SOA S02 - Unit B
+ATTACH: s02-unit-b-soa-layout-scan.pdf
+
+EMAIL BODY:
+Synthetic SOA-layout demonstration S02. Please process the attached test bill. No actual payment requested.
+
+Do not attach this TXT. Do not paste A03/A04 summary values into this different bill's email.

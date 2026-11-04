@@ -21,6 +21,21 @@ import {
 } from "./rules.js";
 
 const hashToken = (token) => createHash("sha256").update(token).digest("hex");
+function textValue(value, label, min, max) {
+  requireValue(typeof value === "string", `${label} must be text`);
+  const text = value.trim();
+  requireValue(text.length >= min && text.length <= max, `${label} must contain ${min} to ${max} characters`);
+  return text;
+}
+function emailValue(value) {
+  const email = textValue(value, "Email", 3, 254).toLowerCase();
+  requireValue(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), "Valid email is required");
+  return email;
+}
+function availableEmail(store, email, id) {
+  requireValue(!store.allGlobal("users").some(u => u.id !== id && u.email.toLowerCase() === email),
+    "Email is already used by another account", 409);
+}
 export function passwordHash(password) {
   requireValue(
     typeof password === "string" &&
@@ -67,7 +82,7 @@ export class Service {
     );
   }
   login({ email, password }, ip = "local") {
-    const key = ip + ":" + String(email).toLowerCase();
+    const key = ip + ":" + String(email).trim().toLowerCase();
     let entry = this.loginAttempts.get(key);
     if (entry && Date.now() - entry.at >= 15 * 60_000) {
       this.loginAttempts.delete(key);
@@ -182,6 +197,8 @@ export class Service {
   }
   profile(user, body) {
     const u = this.must("users", user.id);
+    if (body.phone !== undefined)
+      requireValue(typeof body.phone === "string" && /^(?:[0-9]{11})?$/.test(body.phone), "Phone must contain exactly 11 digits, or be left blank");
     if (body.password) {
       requireValue(
         verifyPassword(body.currentPassword, u.passwordHash),
@@ -192,26 +209,24 @@ export class Service {
     }
     if (body.name !== undefined) {
       requireValue(
-        String(body.name).trim().length >= 2,
-        "Full name is required",
+        typeof body.name === "string" && body.name.trim().length >= 2 && body.name.trim().length <= 150,
+        "Full name must contain 2 to 150 characters",
       );
-      u.name = String(body.name).trim().slice(0, 150);
+      u.name = body.name.trim();
     }
     if (body.email !== undefined) {
-      requireValue(
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email),
-        "Valid email is required",
-      );
-      u.email = body.email.trim().toLowerCase();
+      u.email = emailValue(body.email);
+      availableEmail(this.s, u.email, u.id);
     }
     if (body.phone !== undefined) u.phone = String(body.phone).slice(0, 40);
-    if (body.preferences)
-      u.preferences = {
-        billing: body.preferences.billing !== false,
-        reminder: body.preferences.reminder !== false,
-        payment: body.preferences.payment !== false,
-        emailRent: body.preferences.emailRent !== false,
-      };
+    if (body.preferences !== undefined) {
+      const preferences = body.preferences;
+      requireValue(preferences && typeof preferences === "object" && !Array.isArray(preferences), "Notification preferences must be an object");
+      const keys = ["billing", "reminder", "payment", "emailRent"];
+      for (const key of keys)
+        if (preferences[key] !== undefined) requireValue(typeof preferences[key] === "boolean", "Notification preferences must be true or false");
+      u.preferences = Object.fromEntries(keys.map(key => [key, preferences[key] ?? u.preferences?.[key] ?? true]));
+    }
     return this.s.transaction(() => {
       this.s.save("users", u);
       if (body.password)
@@ -241,11 +256,7 @@ export class Service {
     this.role(user, "admin");
     return this.s.withGlobal(() => {
       const old = id ? this.must("workspaces", id) : null;
-      const name = String(body.name ?? old?.name ?? "").trim();
-      requireValue(
-        name.length >= 2 && name.length <= 100,
-        "Workspace name must contain 2 to 100 characters",
-      );
+      const name = textValue(body.name !== undefined ? body.name : old?.name ?? "", "Workspace name", 2, 100);
       const workspace = this.s.save("workspaces", {
         ...old,
         id: old?.id ?? newId("ws"),
@@ -270,18 +281,13 @@ export class Service {
     const next = {
       ...old,
       id: old?.id ?? newId("usr"),
-      name: String(body.name ?? old?.name ?? "").trim(),
-      email: String(body.email ?? old?.email ?? "")
-        .trim()
-        .toLowerCase(),
+      name: textValue(body.name !== undefined ? body.name : old?.name ?? "", "Full name", 2, 150),
+      email: emailValue(body.email !== undefined ? body.email : old?.email ?? ""),
       role: body.role ?? old?.role,
       status: body.status ?? old?.status ?? "active",
       tenantId: body.tenantId ?? old?.tenantId ?? null,
     };
-    requireValue(
-      next.name.length >= 2 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.email),
-      "Name and valid email are required",
-    );
+    availableEmail(this.s, next.email, next.id);
     requireValue(
       ["active", "suspended"].includes(next.status),
       "Invalid account status",
@@ -493,8 +499,12 @@ export class Service {
       mappings: ["provider", "account", "unitId", "category"],
     }[kind];
     for (const k of fields)
-      if (body[k] !== undefined)
+      if (body[k] !== undefined) {
+        const numeric = kind === "units" && ["floor", "floorNumber", "monthlyRent"].includes(k);
+        requireValue(typeof body[k] === "string" || (numeric && typeof body[k] === "number") ||
+          (body[k] === null && ["leaseEnd", "assignmentEnd"].includes(k)), "Invalid field type");
         p[k] = typeof body[k] === "string" ? body[k].trim() : body[k];
+      }
     for (const key of fields)
       if (p[key] !== undefined && p[key] !== null)
         requireValue(
@@ -505,6 +515,8 @@ export class Service {
       if (typeof p[key] === "string")
         requireValue(p[key].length <= 500, "Field exceeds 500 characters");
     if (kind === "properties") {
+      p.name = textValue(p.name, "Property name", 2, 150);
+      p.address = textValue(p.address, "Property address", 1, 500);
       requireValue(
         p.name && p.address,
         "Property name and address are required",
@@ -521,6 +533,22 @@ export class Service {
     if (kind === "units") {
       const prop = this.must("properties", p.propertyId);
       p.letter = prop.letter;
+      if (body.floorNumber !== undefined)
+        requireValue(/^[0-9]+$/.test(String(body.floorNumber)) && Number.isSafeInteger(Number(body.floorNumber)), "Floor must be a non-negative whole number");
+      if (body.floorNumber !== undefined && body.floor !== undefined && /^[0-9]+$/.test(String(body.floor)))
+        requireValue(Number(body.floorNumber) === Number(body.floor), "Floor and floor number must match");
+      // Preserve historical display labels on unrelated edits; all new floor
+      // entries use one non-negative whole number for display and grouping.
+      if (!id || (body.floor !== undefined && String(body.floor) !== String(old.floor))) {
+        requireValue(/^[0-9]+$/.test(String(body.floor ?? body.floorNumber ?? "")), "Floor must be a non-negative whole number");
+        const floor = Number(body.floor ?? body.floorNumber);
+        requireValue(Number.isSafeInteger(floor), "Floor must be a safe whole number");
+        p.floor = String(floor);
+        p.floorNumber = floor;
+      } else if (body.floorNumber !== undefined) {
+        p.floorNumber = Number(body.floorNumber);
+        if (p.floorNumber !== old.floorNumber) p.floor = String(p.floorNumber);
+      }
       requireValue(
         p.code &&
           p.floor &&
@@ -552,6 +580,15 @@ export class Service {
         );
     }
     if (kind === "tenants") {
+      p.fullName = textValue(p.fullName, "Full name", 2, 150);
+      p.email = emailValue(p.email);
+      if (user.role === "manager") {
+        const account = this.s.all("users").find(u => u.tenantId === p.id);
+        if (account) availableEmail(this.s, p.email, account.id);
+      }
+      for (const key of ["phone", "emergencyContactPhone"])
+        if (body[key] !== undefined)
+          requireValue(typeof body[key] === "string" && /^(?:[0-9]{11})?$/.test(body[key]), "Phone must contain exactly 11 digits, or be left blank");
       const unit = this.must("units", p.unitId);
       p.propertyId = unit.propertyId;
       requireValue(
@@ -573,6 +610,7 @@ export class Service {
       );
       requireValue(
         p.assignmentStart >= p.leaseStart &&
+          (!p.leaseEnd || p.assignmentStart <= p.leaseEnd) &&
           (!p.leaseEnd || !p.assignmentEnd || p.assignmentEnd <= p.leaseEnd),
         "Assignment must fall inside the lease",
       );
@@ -1801,7 +1839,7 @@ export class Service {
       ["cash", "bank_transfer", "e_wallet"].includes(body.method),
       "Select a valid payment method",
     );
-    const reference = String(body.reference ?? "").trim();
+    const reference = textValue(body.reference === undefined ? "" : body.reference, "Reference", 0, 150);
     requireValue(
       body.method === "cash" || reference.length >= 3,
       "A payment reference is required for electronic payments",

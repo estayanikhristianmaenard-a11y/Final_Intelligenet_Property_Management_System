@@ -4,8 +4,9 @@ Run these commands from `SeCapstone/rentara-portal`:
 
 | Command | Purpose |
 | --- | --- |
+| `node tools/build-soa-demo-variants.mjs` | Reproduce the two fresh synthetic SOA-layout scanned PDFs; verify actual email-attachment OCR, allocation, Tenant visibility and duplicates in a disposable portfolio; no live data changes |
 | `node tools/build-final-test-assets.mjs` | Reproduce fresh numbered synthetic inputs and verify real OCR/text/body parsing, allocation and held cases in a disposable portfolio; no working-data or Gmail changes |
-| `python tools/build-final-review-kit.py` | Rebuild the Docs-ready reviewer Word file and blank 74-case workbook using Python/openpyxl; refuses to overwrite any recorded results or issue/retest data |
+| `python tools/build-final-review-kit.py` | Rebuild the Docs-ready reviewer Word file and blank 77-case workbook using Python/openpyxl; refuses to overwrite any recorded results or issue/retest data |
 | `npm.cmd run setup:operational` | Prepare a separate local configuration and prompt privately for the initial workspace/Admin/Manager; empty portfolio, existing records preserved |
 | `npm.cmd run start:operational` | Run the prepared operational database on port 8081 by default; shares allowlisted connection values only; separate data, label and enable switches |
 | `node tools/prepare-meralco-group-demo.mjs` | Verify the anonymized SOA scan in a cloned Group 3 portfolio, back up and align Unit A's synthetic historical occupancy/mapping; add `--unit-b` to create/test a clearly labelled Unit B derivative. Does not import the presentation bill or send mail |

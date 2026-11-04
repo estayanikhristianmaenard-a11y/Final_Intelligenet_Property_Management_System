@@ -37,7 +37,7 @@ function fixture(filename = ":memory:", shared = false) {
   const unit = v.writeEntity(manager, "units", {
     propertyId: property.id,
     code: "B-203",
-    floor: "Second Floor",
+    floor: "2",
     floorNumber: 2,
     type: "Studio",
     monthlyRent: 100,
@@ -64,6 +64,55 @@ function fixture(filename = ":memory:", shared = false) {
   const tenantUser = v.login({ email: "tenant0@example.test", password }).user;
   return { s, v, admin, manager, property, unit, tenants, tenantUser };
 }
+test("floor and phone validation rejects malformed writes without changing records", () => {
+  const f = fixture();
+  try {
+    for (const floor of ["abc", "2nd", "-1", "1.5", "1e2"]) {
+      assert.throws(() => f.v.writeEntity(f.manager, "units", {floor}, f.unit.id), /Floor/);
+      assert.throws(() => f.v.writeEntity(f.manager, "units", {floorNumber:floor}, f.unit.id), /Floor/);
+    }
+    assert.equal(f.s.get("units", f.unit.id).floorNumber, 2);
+    for (const phone of ["abc", "0912345678", "091234567890", "+639123456789", "09123 45678"]) {
+      assert.throws(() => f.v.profile(f.tenantUser, {phone}), /11 digits/);
+      assert.throws(() => f.v.writeEntity(f.manager, "tenants", {phone}, f.tenants[0].id), /11 digits/);
+      assert.throws(() => f.v.writeEntity(f.manager, "tenants", {emergencyContactPhone:phone}, f.tenants[0].id), /11 digits/);
+    }
+    f.v.profile(f.tenantUser, {phone:"09123456789"});
+    assert.equal(f.s.get("tenants",f.tenants[0].id).phone,"09123456789");
+    f.v.writeEntity(f.manager,"units",{floor:"0",floorNumber:0},f.unit.id);
+    assert.equal(f.s.get("units",f.unit.id).floorNumber,0);
+    assert.throws(()=>f.v.writeEntity(f.manager,"units",{floor:"0",floorNumber:3},f.unit.id),/Floor/);
+    assert.throws(()=>f.v.writeEntity(f.manager,"units",{floor:"2",floorNumber:3},f.unit.id),/Floor/);
+    f.v.profile(f.tenantUser,{phone:""});
+  } finally { f.s.close(); }
+});
+test("QA: assignment start cannot fall after a lease end when termination is omitted", () => {
+  const f=fixture();
+  try {
+    const original=f.s.get("tenants",f.tenants[0].id);
+    assert.throws(()=>f.v.writeEntity(f.manager,"tenants",{
+      leaseEnd:"2026-02-28",assignmentStart:"2026-03-01",assignmentEnd:"",
+    },original.id),/Assignment must fall inside the lease/);
+    assert.deepEqual(f.s.get("tenants",original.id),original);
+  } finally {f.s.close();}
+});
+test("QA: padded login emails share the same failed-attempt limit", () => {
+  const f=fixture();
+  try {
+    for(let i=0;i<8;i++) assert.throws(()=>f.v.login({email:" ".repeat(i)+"manager@propertypro.ph",password:"incorrect"},"qa-login"),e=>e.status===401);
+    assert.throws(()=>f.v.login({email:"MANAGER@propertypro.ph ",password},"qa-login"),e=>e.status===429);
+  } finally {f.s.close();}
+});
+test("QA: malformed profile fields return validation errors without changing identity", () => {
+  const f=fixture();
+  try {
+    const original=f.s.get("users",f.manager.id);
+    for(const body of [{email:["valid@example.test"]},{name:{value:"Name"}},{name:"x".repeat(151)}]) {
+      assert.throws(()=>f.v.profile(f.manager,body),e=>e.status===422);
+      assert.deepEqual(f.s.get("users",f.manager.id),original);
+    }
+  } finally {f.s.close();}
+});
 function mapping(f) {
   f.v.writeEntity(f.manager, "mappings", {
     provider: "Meralco",
@@ -424,6 +473,11 @@ test("actual HTTP API enforces roles, tenant ownership, files and persisted sett
       200,
     );
     assert.equal((await req("/bills/incoming", manager)).status, 200);
+    const messageCount=f.s.all("messages").length;
+    for(const invalid of [{subject:["Rent"],body:"Details"},{subject:"Rent",body:["Details"]}]) {
+      assert.equal((await req("/messages",manager,"POST",{tenantId:f.tenants[0].id,...invalid})).status,422);
+      assert.equal(f.s.all("messages").length,messageCount);
+    }
     assert.equal((await req("/settings/billing-rules", manager)).status, 200);
     assert.equal(
       (await req("/settings/profile", manager, "PATCH", { pushEnabled: false }))

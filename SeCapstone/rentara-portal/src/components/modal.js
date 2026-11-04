@@ -39,19 +39,23 @@ export function openModal({
 
   const dialog = document.createElement("div");
   dialog.className = "modal";
-  if (className) dialog.classList.add(className);
+  if (className) dialog.classList.add(...className.split(/\s+/).filter(Boolean));
   dialog.setAttribute("role", "dialog");
   dialog.setAttribute("aria-modal", "true");
   dialog.setAttribute("aria-label", title);
   dialog.tabIndex = -1;
+  const art = /bill|utility|source|correction|water/i.test(title) ? "mint-water-garden.svg"
+    : /unit|property/i.test(title) ? "mint-townhouse.svg" : "mint-plant.svg";
 
   render(
     dialog,
     html`<div class="modal__header">
-        <div>
+        <div class="modal__heading">
+          <span class="modal__eyebrow">Rentara workspace</span>
           <h3 class="modal__title">${title}</h3>
           ${subtitle ? html`<p class="modal__subtitle">${subtitle}</p>` : null}
         </div>
+        <img class="modal__art" src="./src/assets/${art}" width="120" height="100" alt="" aria-hidden="true" />
         <button
           class="icon-btn"
           type="button"

@@ -65,6 +65,7 @@ export async function renderTenantSettings(container) {
                     class="input"
                     id="ts-name"
                     type="text"
+                    required minlength="2" maxlength="150"
                     value="${user?.name ?? ""}"
                   />
                 </div>
@@ -74,6 +75,8 @@ export async function renderTenantSettings(container) {
                     class="input"
                     id="ts-email"
                     type="email"
+                    maxlength="254"
+                    required
                     value="${user?.email ?? ""}"
                   />
                 </div>
@@ -213,7 +216,7 @@ export async function renderTenantSettings(container) {
       let saved=false;
       try {
         const email = container.querySelector("#ts-email");
-        if (!email.reportValidity()) return;
+        if (!container.querySelector("#ts-name").reportValidity() || !email.reportValidity() || !container.querySelector("#ts-phone").reportValidity()) return;
         profile.inert=true;
         const updated = await api.patch("/auth/profile", {
           name: container.querySelector("#ts-name").value,

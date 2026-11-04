@@ -23,3 +23,21 @@ The full test mappings above and the absence of December/January source periods 
 manifest.json records verification in a disposable portfolio using the real extraction and billing functions: scanned-PDF OCR, digital PDF text, two email-body cases, two held cases and repeated A01 input. No Gmail connection, real sending or working database mutation occurred. These fixture checks do not fill any manual Passed cells and are not representative OCR accuracy results.
 
 Run `node tools/build-final-test-assets.mjs` from rentara-portal only to reproduce these files and their isolated verification. Reproduction does not make a consumed bill fresh: it retains the same account/period and duplicate protections. Actual provider-format and encrypted-PDF tests require separately consented private samples; they are not fabricated in this folder. Rent reporting uses existing unpaid demo rent; advance/changed-context cases require the workbook's dedicated prerequisites.
+
+
+## Additional SOA-layout demonstration
+
+Use these when you want the familiar anonymized first-page Meralco SOA layout, rather than the simpler A01/A02 forms. They are synthetic derivatives of that one layout, not two independently collected real provider bills. The original private SOA, original anonymized samples and older demo copies were not changed.
+
+| ID | PDF attachment | Account / unit | Period | Due | Amount and allocation |
+| --- | --- | --- | --- | --- | --- |
+| S01 | [s01-unit-a-soa-layout-scan.pdf](s01-unit-a-soa-layout-scan.pdf) | 9990000001 / G3-A | 1-28 February 2027 | 8 March 2027 | PHP 2,400.50 total; PHP 1,200.25 each |
+| S02 | [s02-unit-b-soa-layout-scan.pdf](s02-unit-b-soa-layout-scan.pdf) | 9990000002 / G3-B | 1-31 March 2027 | 8 April 2027 | PHP 1,875.75 for Unit B only |
+
+The existing full demo mappings were inspected read-only, no future S01/S02 sources were present, and current Group 3 occupancy had no recorded end dates at preparation. Recheck these conditions before another session. Different amounts alone do not make a new bill; distinct valid account/period identities matter. Do not change dates or mappings to bypass a duplicate.
+
+Use [S01 email instructions](s01-email-instructions.txt) or [S02 email instructions](s02-email-instructions.txt). Send to rentara2026@gmail.com with the provided Group 3 Demo subject and only that PDF attached. Do not combine A03/A04 summary values with these unrelated PDF cases. The normal configured Gmail filter, running receiving process and verified mapping are still required; supported attachments take priority. These are image-only PDFs and must go through actual OCR.
+
+SOA summary amounts, billing/meter dates and account displays were updated, and illustrative charge lines reconcile to the new total in whole centavos. Historical consumption graphics are explicitly illustrative; these documents do not validate a provider tariff. Page 2 is not included, and the page is labelled Demo 1 of 1 and Not for payment.
+
+soa-variants-verification.json records real email-attachment OCR, all required-field comparisons, charge allocation, Tenant visibility and repeated-input protection in a disposable portfolio. Both passed after the final visual adjustment. No working bill was imported and no email was sent. The simple checklist has two added SOA rows; the detailed workbook has TC-075 and TC-076. Manual results remain blank. Reproduce with `node tools/build-soa-demo-variants.mjs`; reproduction does not reset consumed cases.

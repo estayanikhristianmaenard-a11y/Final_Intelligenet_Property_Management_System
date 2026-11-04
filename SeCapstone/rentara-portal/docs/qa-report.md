@@ -1,5 +1,113 @@
 # Current QA status
 
+## Sidebar motion follow-up - 4 November 2026
+
+Restored both requested navigation effects in Fresh Mint: a desktop collapse button with hover/keyboard rail reveal, and a moving active-link highlight. Expanded labels remain the initial state; mobile drawer behavior remains. Shell disposal cancels its observers/listeners, and reduced-motion preferences suppress animation. Role filtering, links, data and financial rules are unchanged.
+
+Focused browser regression: **3 passed, 0 failed/skipped/cancelled**, 164,090.297 ms (`data/sidebar-motion-verified-2026-11-04.log`). Covers routing/logout across roles, desktop collapse/hover/keyboard expansion, marker movement and alignment, reduced motion, mobile interaction and all-role layouts. Changed JavaScript passed syntax checks and the working diff passed whitespace checks. Regenerated 51 UI screenshots, three email previews and icon comparison; visually inspected collapsed and selected states. No live delivery or working-data changes occurred. The earlier 155-test run is retained below and was not represented as a fresh full run for this follow-up.
+
+## Integrated Fresh Mint and staging verification - 4 November 2026
+
+Combined main `1e04069` with staging `6cc9a61` locally, preserving the newer Admin inspection, public-user allowlist, profile restrictions, two-workspace setup and manuscript/testing kit. Both branches' dated QA histories were retained. The Bayan setup now supplies numeric floor 0. No commit or push was performed.
+
+Reproduced five common-input gaps in isolated tests, then added strict text types/lengths, normalized email checks with useful duplicate-account conflicts, scalar decimal amounts, typed payment references and boolean preference patches that preserve unchanged opt-outs. The inherited numeric-floor/11-digit-phone/date checks remain. The harmful-text browser fixture now separately verifies rejection of invalid phone writes and rendering of contaminated historical values; its defense-in-depth coverage remains intact.
+
+Fresh complete regression: **155 passed, 0 failed, 0 cancelled, 0 skipped; 354,942.2249 ms** (`data/integrated-final-test-2026-11-04.log`). Syntax: **151 JS/MJS files, 0 failures**. Nine focused validation/Admin/form checks also passed. Refreshed **51 UI screenshots**, three email previews and the icon comparison using disposable data; inspected the new desktop/phone Admin read-only views. Added the Admin workspace route to the responsive audit. This is not actual-phone or live-delivery acceptance.
+
+Testing kit: 19 simplified checks and 77 detailed cases, including a common-invalid-input exercise, with prior result fields preserved. Fresh synthetic SOA assets remain available. The working database and external accounts were not changed. Use the current integration review for remaining device, provider and formal evaluation limits.
+
+## Final frontend/backend verification - 2 November 2026
+
+Fresh full `npm.cmd test` against the current layout and validation changes: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 263 seconds (`data/final-frontend-backend-test.log`). Covers all four roles, responsive UI/spacing, forms and motion, authenticated APIs, protected originals, OCR/duplicate intake, allocation, rent reporting/confirmation/advance/receipts, personal utility tracking, notifications/calendar, persistence, workspace isolation and recovery. Syntax checks passed for **133 JavaScript files** across source, server, tests and tools. Local HTTP returned 200; `git diff --check` passed.
+
+Completed a focused differential review against `202d644`, with baseline blame and direct-call checks on authentication, profile and entity writes. No new blocking vulnerability or functional regression was confirmed, and no runtime fix was needed in this final pass. The [final review](final-frontend-backend-review-2026-11-02.md) records scope, caller counts, attack scenarios, evidence and limits. Actual phones, provider formats, physical printing and authorized live email/Push delivery remain manual acceptance work. Tests used disposable data; no working-data reset or Git push was performed.
+
+## Whitespace and alignment correction - 2 November 2026
+
+Reproduced the Incoming Bills gap: an older two-column rule placed actions below the details, while flex-sized extracted fields used only the left side of the register. Added a scoped incoming-register surface with fixed proportional fact columns and a desktop action column. At tablet/phone widths, fields switch to two columns and actions wrap below. Long filenames wrap; existing result-filter hiding, status labels and review handlers remain.
+
+The broader screenshot review also found report cards stretched to their tallest neighbor and the report period selector occupying the full toolbar width. Cards now align at their natural height, and header selects share a compact action row with their buttons. Intake result count aligns to the toolbar's right edge on wider screens. No filler data or additional artwork was added to disguise gaps.
+
+Expanded the all-role page audit with two explicit incoming-source fixtures (including a long filename), non-vacuous row-count checks, desktop action/detail alignment and cross-row field-column checks. Added a report-card stretch check. Both defects failed before repair (`data/spacing-before.log`, `data/report-spacing-before.log`). Final page/form/motion audit: **3 passed, 0 failed** (`data/spacing-audit-final.log`). The page audit covers Manager, Staff, Tenant and Admin at 1440, 820, 390 and 320 px, including overflow, named controls, phone target sizes and preserved Tenant header sizing.
+
+Refreshed 49 UI screenshots plus the standard synthetic email/icon previews (`data/spacing-previews-final.log`), with no capture overflow/runtime errors. Visually inspected the current incoming register at desktop/tablet widths (`data/incoming-spacing-desktop.png`, `data/incoming-spacing-tablet.png`), phone Staff intake, Reports, Settings and the source-review dialog. Source-review, phone utility journey and presentation checks: **6 passed, 0 failed** (`data/spacing-workflows.log`), making **9 passing targeted test cases** across both runs. `git diff --check` passed. This targeted layout pass did not rerun the entire backend suite; the prior full 105-test result is dated below. No backend, billing rules, permissions, dependencies or financial records were changed. No Git push was performed.
+
+## Botanical editorial visual pass - 2 November 2026
+
+Expanded the approved Fresh Mint theme across dashboard and inner-page covers, card/queue/section treatments, property cards, tables/filters, settings, panels, dialogs, login and short-page sign-offs. Added a detailed local neighborhood SVG and matching decorative icon tokens. Tenant Home shares the new artwork while Staff/Admin retain their existing role-specific scenes. This pass changes presentation only; previous validation fixes, role boundaries, financial workflows and motion preferences remain.
+
+Visual review found a CSS cascade collision that produced a duplicate full-size Tenant Home header. Added an audit assertion limiting the introduction height, reproduced the failure (`data/living-header-before.log`), and corrected the selector. The expanded all-role responsive audit, enabled/reduced-motion interaction checks and form-validation browser journey all pass (`data/living-design-audit-final.log`, three test cases).
+
+Refreshed 49 application screenshots, three synthetic email PNGs and the icon comparison (`data/living-design-previews-final.log`); capture checks found no page overflow or runtime errors. Visually inspected Manager, Staff and Admin dashboards, property cards, corrected Tenant Home, phone bills/Staff Account and login. The refreshed [gallery](../../reports/mockups/README.md) contains current implemented screenshots. Final full `npm.cmd test`: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 269 seconds (`data/living-design-full-test.log`). `git diff --check` passed.
+
+No backend, dependencies, schema, permissions, working records or live configuration were changed by this presentation pass. Tests and captures use disposable synthetic data; no messages were sent. Physical-device motion/visual acceptance remains manual. No Git push was performed.
+
+## Follow-up QA audit - 2 November 2026
+
+Targeted audit reproduced four backend failures: assignment start after lease end when termination is omitted; whitespace variants bypassing the per-email login attempt counter; malformed profile input causing an exception/coercion; and malformed message fields causing a server error. Fixed all four and added regression checks. Added browser validation for new-password length, required Tenant profile fields and Admin's permanent Tenant ID when the Tenant role is selected. These preserve existing role/financial rules.
+
+Before-fix evidence: `data/qa-validation-before.log`; focused repaired checks: `data/qa-validation-fixed.log`. Focused backend/form-browser run: **40 passed, 0 failed** (`data/qa-audit-targeted.log`). Final full `npm.cmd test`: **105 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 269 seconds (`data/qa-audit-full-test.log`). `git diff --check` passed. See the [concise findings and dashboard coverage](qa-update-2026-11-02.md) for the individual changes and remaining actual-device/live-service acceptance work. Test writes use disposable data; no Git push was performed.
+
+## Numeric inputs and illustrated forms - 2 November 2026
+
+Reproduced missing floor validation with a failing service regression (`data/form-validation-before.log`). Add/Edit Unit now uses a single whole-number Floor input, with 0 for ground, rather than independent free-text and decimal floor fields. API writes validate non-negative safe integers and reject conflicting floor values. Existing historical display labels are retained on unrelated API edits; no working records were migrated. Development setup fixtures now use numeric floors.
+
+All phone and emergency-phone inputs share numeric keyboard, eleven-digit pattern/length, letter-entry and invalid-paste handling. Optional fields may remain blank. Manager/Staff tenant edits and all account profile API writes reject nonblank phones that do not contain exactly eleven ASCII digits. Tenant Settings now checks phone validity before dispatch as Manager Settings already does. No SMS workflow was added.
+
+Shared dialogs have illustrated Fresh Mint headers, clearer hierarchy, tinted surfaces and revised field spacing. Entity forms use two columns on desktop and one on phones. Local plant, townhouse and water-garden illustrations decorate relevant headers/empty states without intercepting controls. Existing motion, unsaved guards, focus handling and financial permissions remain. Corrected shared modal class handling to accept multiple styling classes.
+
+Focused service and desktop/phone browser checks pass (`data/form-garden-targeted.log` for service checks; `data/form-garden-browser-final.log` for the corrected browser run). The initial full run passed 101 checks and failed the new test because its invalid-value fill was blocked by the new typing guard. The corrected test explicitly injects invalid values to exercise submit validation separately; it passes. That earlier result is retained in `data/form-garden-full-test.log`; final regression evidence is `data/form-garden-full-test-final.log`.
+
+Final full `npm.cmd test`: **102 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 262 seconds. `git diff --check` passed. Includes all-role responsive UI audit, protected source review, Staff permissions, rent payments/receipts, utility OCR, workspace isolation and recovery.
+
+Captured and inspected `data/unit-form-desktop.png` and `data/unit-form-phone.png`; the desktop form is compact, and the phone form scrolls with Save/Cancel accessible. Automated writes use disposable databases. Actual-device keyboard/paste and visual acceptance remain manual. No dependencies, schema, live credentials, working financial records or Git pushes were changed by this task.
+
+## Jelly motion finalization - 1 November 2026
+
+Added `jelly-motion.css` after the Fresh Mint layer: short damped spring transitions for clickable cards and icons, soft press/rounding feedback without shrinking buttons, route entrances, dropdown/content fades, modal pops and drawer entrances/exits. Form fields and financial values are not scaled. No animation package, external resource, decorative idle loop or scroll hijacking was introduced. Reduced-motion preferences disable the new entrances and decorative movement.
+
+Motion belongs to the route host so utility-mark/API repaints do not replay a whole-page entrance. Phone-menu-only toggles retain the same DOM/listeners, update inert/expanded state, and restore opener focus when closing from inside; breakpoint/role/route changes retain normal shell refresh behavior. A test reproduced the former menu replacement and now verifies actual native transform-transition creation. Panel exits follow their CSS duration, and replacement panels immediately clean up pending old exits/timers/listeners. The initial broad run exposed two overlapping closing/opening panels; the existing journey passes after this lifecycle fix.
+
+Focused enabled/reduced-motion and broad four-role browser journeys passed (`data/jelly-motion-interaction-final.log`). Coverage includes unchanged pressed-button dimensions, unsaved text/discard guards, modal focus restoration, panel/tab behavior, phone menu open/close, actual transition creation, reduced-motion modal behavior and existing portfolio/payment/receipt workflows. Final full evidence is in `data/jelly-motion-full-test-final.log`; the earlier failed run is retained in `data/jelly-motion-full-test.log`.
+
+Fresh full `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 257 seconds. `git diff --check` passed.
+
+Static Fresh Mint screenshots remain applicable; this pass changes interaction timing rather than their settled appearance. Backend source, dependencies, database schema, billing rules, permissions and live configuration were not edited. Automated writes use disposable test data. Actual-device motion/performance acceptance remains separate from browser checks.
+
+## Expressive Fresh Mint compositions - 1 November 2026
+
+Implemented a stronger visual revision after the user requested more design: dark forest illustrated dashboard banners; larger heading hierarchy; individual summary/queue cards; role-specific Staff bill-review and Admin house/key illustrations; varied property artwork; framed Tenant greeting; paper-style rent/billing cards; category accents; receipt archive and empty-state treatments. The plant remains shared across all roles. Added local SVG illustrations without new packages or font/network dependencies.
+
+Preview review found that an older pale-header selector initially overrode the new dark background while the heading had already changed to light text. Added a rendered heading-contrast assertion, reproduced its failure, corrected the selector precedence, and passed the expanded four-role audit (`data/fresh-mint-expressive-audit.log`). The check requires at least 4.5:1 for dashboard headings at the existing desktop/tablet/phone audit widths. This does not establish full accessibility conformance.
+
+Refreshed 49 application screenshots, three synthetic email previews and the icon comparison after the correction (`data/fresh-mint-expressive-previews-final.log`), with no capture overflow/runtime errors. Visually inspected the corrected Manager and Staff dashboards, Admin/property illustrations, Tenant Home and phone billing cards. Final regression evidence is in `data/fresh-mint-expressive-full-test.log`.
+
+Fresh full `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 227 seconds. `git diff --check` passed. Actual phone/provider acceptance remains separate from these automated checks.
+
+No backend source, dependencies, database schema, billing rules, permissions or live integration settings were changed. Automated writes and screenshot captures use disposable synthetic data; physical devices and actual provider formats remain separate acceptance work.
+
+## Fresh Mint consistency and decorative detail - 1 November 2026
+
+Removed the Tenant-only sidebar background. A shared decorative plant is now rendered for every role/account, in its own flexible sidebar area above the footer. It cannot cover menu items as a background image could; the menu keeps its independent scroll region. Short displays use a smaller plant rather than removing it.
+
+Manager, Staff and Admin now share the same illustrated workspace-header component. Other pages have coordinated framed headings and botanical outlines; navigation icon tiles, avatar rings, card accents, queue surfaces, filters and panels extend the approved Fresh Mint identity. The Tenant greeting and actual bill/status/action bindings are preserved. No new financial or communication action was introduced.
+
+Expanded the existing layout audit to include Staff pages, shared-plant image loading, navigation/footer separation on a 600 px tall desktop and open/close phone-drawer checks at 390 × 600 for all roles. The initial expanded four-role page audit passed (`data/fresh-mint-detail-audit.log`); full regression evidence is in `data/fresh-mint-detail-full-test.log`.
+
+Final fresh `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 292 seconds. This includes the final all-role short-phone menu/logout checks. `git diff --check` passed.
+
+Refreshed 49 UI screenshots, three synthetic email previews and the icon comparison with isolated synthetic data (`data/fresh-mint-detail-previews.log`). Capture checks found no page overflow or runtime errors. Visually inspected Manager, Admin, Staff and Properties previews; all show the shared sidebar illustration and coordinated styling. Actual phones remain separate acceptance work. Backend code, permissions, billing rules, live configuration and working financial records were not edited.
+
+## Approved Fresh Mint implementation - 1 November 2026
+
+Implemented the user-approved cream/mint/deep-green design across Tenant, Manager, Staff, Admin and login. A final vanilla-CSS theme layer provides the palette, bold headings, rounded cards, readable controls, light topbars and consistent forms/panels. Desktop navigation now keeps its labels visible; mobile retains its menu drawer and Tenant bottom navigation. Tenant Home follows the approved greeting, apartment artwork, rent card, grouped utility cards and calendar composition, with existing live data and actions. Local decorative SVGs and the existing brand mark require no new library or network font. See [theme notes and reference](fresh-mint-theme.md).
+
+Fresh full `npm.cmd test`: **100 passed, 0 failed, 0 cancelled, 0 skipped**, approximately 240 seconds (`data/fresh-mint-full-test.log`). Targeted routing/session and page-audit tests also passed (`data/fresh-mint-targeted.log`). The appearance assertions now expect the approved cream topbar and visible desktop navigation; keyboard, logout, role, overflow and control-size checks remain. Browser coverage includes 1440, 820, 390 and 320 px. Billing, exact allocation, reports, rent confirmation/receipts, utility marks, correction proposals, reminder/channel rules, persistence and workspace isolation passed their existing checks.
+
+Refreshed 49 application screenshots, three synthetic email previews and the icon comparison with disposable data (`data/fresh-mint-previews-final.log`). Capture checks detected no page overflow or runtime errors. Visually inspected Tenant desktop/phone, Manager dashboard and login; the final phone rent card was also checked after spacing refinements. [Current gallery](../../reports/mockups/README.md).
+
+Backend source, database schema, billing calculations, permissions, integration settings and credentials were not edited. No portfolio reset, manual financial-record mutation, external mail send/receive, manuscript edit or Git push was performed. The configured local showcase was started for review; it retains its normal scheduler and external-channel safeguards. Actual-device usability and live provider/Push acceptance remain separate checks; these results do not establish representative OCR accuracy or participant evaluation.
+
 ## Reviewer/testing kit verification - 2 November 2026
 
 Prepared a Docs-ready reviewer guide and a 74-case blank manual workbook with evidence, feedback, blocker and retest fields. Six fresh synthetic asset cases passed actual local extraction/body parsing/validation/allocation checks in a disposable portfolio, including real scanned-PDF OCR, two held sources and duplicate prevention. Three isolated generator-guard checks refused overwriting recorded results, feedback or issue history. These are tooling/fixture checks, not a new full application regression run, phone acceptance, real sending, representative OCR accuracy or participant evaluation. The working Group 3 mappings and source-period readiness were inspected read-only; no live data changed. The existing 144-test result remains its own dated checkpoint. See [the kit](../../reports/testing/README.md) for procedure and cleanup details.

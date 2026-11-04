@@ -115,6 +115,7 @@ export async function renderSettings(container) {
               >Full name<input
                 class="input"
                 name="name"
+                minlength="2" maxlength="150"
                 value="${session.user.name}"
                 required
             /></label>
@@ -125,6 +126,7 @@ export async function renderSettings(container) {
                 class="input"
                 type="email"
                 name="email"
+                maxlength="254"
                 value="${session.user.email}"
                 required
             /></label>

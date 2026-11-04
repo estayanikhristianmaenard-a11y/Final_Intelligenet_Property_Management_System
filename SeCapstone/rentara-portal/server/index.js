@@ -563,7 +563,7 @@ export function createApp({
           service.role(user, "manager");
           service.must("tenants", body.tenantId);
           requireValue(
-            String(body.subject ?? "").trim() && String(body.body ?? "").trim(),
+            typeof body.subject === "string" && typeof body.body === "string" && body.subject.trim() && body.body.trim(),
             "Subject and message are required",
           );
           requireValue(

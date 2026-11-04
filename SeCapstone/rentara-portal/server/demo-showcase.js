@@ -58,7 +58,7 @@ async function ensureIndependentWorkspace(service, dataDir) {
     const unit = service.writeEntity(manager, "units", {
       propertyId: property.id,
       code: "R-101",
-      floor: "Ground Floor",
+      floor: "0",
       monthlyRent: 6000,
       arrangement: "individual",
     });

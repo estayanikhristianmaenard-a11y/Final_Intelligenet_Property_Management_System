@@ -52,7 +52,7 @@ export async function prepareWorkspaceDemo(dataDir=join(root,'data/group-demo'))
         const manager=service.userWrite(admin,{name:'Bayan Demo Manager',email:workspaceDemoAccounts.manager,role:'manager',workspaceId:workspace.id,password:workspaceDemoPassword});
         const staff=service.userWrite(admin,{name:'Bayan Demo Staff',email:workspaceDemoAccounts.staff,role:'staff',workspaceId:workspace.id,password:workspaceDemoPassword});
         const property=service.writeEntity(manager,'properties',{name:'Bayan Test Apartments',address:'Fictional address for workspace isolation testing',city:'Pasig City',type:'apartment'});
-        const units=['B-101','B-102'].map((code,index)=>service.writeEntity(manager,'units',{propertyId:property.id,code,floor:'Ground Floor',monthlyRent:index?4500:7000,arrangement:index?'individual':'shared_occupancy'}));
+        const units=['B-101','B-102'].map((code,index)=>service.writeEntity(manager,'units',{propertyId:property.id,code,floor:'0',monthlyRent:index?4500:7000,arrangement:index?'individual':'shared_occupancy'}));
         const tenants=workspaceDemoAccounts.tenants.map((email,index)=>{
           const tenant=service.writeEntity(manager,'tenants',{unitId:units[index<2?0:1].id,fullName:['Bayan Demo Tenant One','Bayan Demo Tenant Two','Bayan Demo Tenant Three'][index],email,leaseStart:'2026-10-01',assignmentStart:'2026-10-01'});
           const user=service.userWrite(admin,{name:tenant.fullName,email,role:'tenant',tenantId:tenant.id,workspaceId:workspace.id,password:workspaceDemoPassword});

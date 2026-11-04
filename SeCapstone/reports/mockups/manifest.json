@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-27T14:15:14.227Z",
+  "capturedAt": "2026-11-04T13:03:46.892Z",
   "source": "Current local code; isolated synthetic showcase; no external delivery",
   "records": [
     {
@@ -277,6 +277,18 @@
       "width": 1440,
       "height": 1000,
       "label": "admin /admin/settings"
+    },
+    {
+      "file": "50-admin-workspace-inspection.png",
+      "width": 1440,
+      "height": 1000,
+      "label": "admin /admin/workspace?workspaceId=ws-default"
+    },
+    {
+      "file": "51-admin-workspace-inspection-mobile.png",
+      "width": 390,
+      "height": 844,
+      "label": "admin /admin/workspace?workspaceId=ws-default"
     },
     {
       "file": "40-admin-audit-older-records.png",

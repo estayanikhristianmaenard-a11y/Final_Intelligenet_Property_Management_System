@@ -242,55 +242,31 @@
     },
     {
       "type": "p",
-      "text": "The study will develop and evaluate a web-based property-management workflow for selected boarding houses and residential apartments in Pasig City during Academic Year 2026-2027. It will centralize property, unit, tenant, utility-mapping, rent, billing, payment, exception, correction, receipt, and notification records. “Intelligent” refers to OCR text extraction combined with explicit, deterministic, and traceable processing rules. An existing OCR engine may use machine-learning-based recognition, but the researchers will not train or customize a model. Validation, classification, computation, allocation and payment decisions will follow predefined rules and Manager-controlled actions rather than autonomous AI decisions.",
+      "text": "Our study will develop and evaluate a web-based property-management workflow for selected boarding houses and residential apartments in Pasig City during Academic Year 2026-2027. It will cover rent, electricity and water billing, with access assigned to Admin, Manager, Staff and Tenant accounts. Admin will handle account and system maintenance and permitted read-only inspection. Staff will perform authorized daily tasks and prepare corrections, while the Manager will control financial settings, correction decisions and rent confirmation. Tenants will access their own records and permitted functions.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Billing will cover rent, electricity, and water only. Rent will be fixed and non-prorated, generated once per monthly anniversary cycle with the same due date. Short months will use their final day while preserving the original anniversary day for later months. After an outage, missed eligible cycles will be generated once with their original due dates and actual creation dates retained. The first bill will show current rent and one-month advance separately. Confirmed advance will be reserved for the final applicable rent cycle and applied only with Manager confirmation, using the original payment and receipt without another cash transaction or duplicate receipt. Applied credit cannot be reused, and no replacement advance will be charged automatically. Individual charges will follow the configured lease or utility account. Shared charges will be split equally among eligible tenants in the Manager-configured group, with two-decimal shares totaling the source charge. Tenants will choose the payer of a shared provider bill outside the system; allocation will not represent contribution collection or verified provider settlement.",
+      "text": "Our system will receive supported utility-email summaries and attachments, together with optional uploads of clear printed-bill photographs or scans. It will use direct text extraction or OCR to obtain billing details, validate them, identify the billing arrangement and calculate individual or equal shared charges. Processing will depend on readable supported documents and verified account mappings. Missing, masked, conflicting or otherwise invalid information will require review rather than guessed values or automatic finalization. Unsupported password-protected attachments will require review and an available supported copy. Routine valid bills will proceed automatically.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "The system will support month-to-month rentals that continue until the Tenant leaves. The Manager will record the rental start date and leave the end date blank while occupancy continues. The end date will be recorded when the Tenant leaves. Rent will follow the monthly anniversary rule, with no new cycles generated after the recorded end date. The existing Tenant account will retain access to its own bills, utility tracking history, confirmed payments, and receipts, and unpaid balances will not be removed merely because occupancy has ended. Departed tenants may report outstanding rent payments for Manager confirmation. Advance rent will equal one month of the Tenant's configured rent or, for shared rent, the Tenant's calculated rent share at the time the advance is charged. Its amount will not be entered as an arbitrary credit allowance. A later change in rent or shared allocation that causes a credit mismatch will require Manager review. Automatic unit transfers and lease-renewal processing will not be included in the study.",
+      "text": "Rent functions will include fixed, non-prorated monthly anniversary billing, approved one-month advance handling for the final applicable rent cycle, payment reporting, Manager confirmation and confirmed rent receipts. Utility payment marks will remain personal Tenant tracking and will not establish provider settlement or produce utility receipts. Billing history, actual bill dates, labelled rent estimates, portal alerts, rent and utility Web Push, and supplementary rent-only email will support Tenant access. Rent estimates will not create charges or predict utility dates. Workspaces, basic reports, access controls, system-status checks and backups will support the included workflow rather than serve as separate research objectives. Detailed processing and permission rules are presented in Chapter II.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Utility bills will enter the system through supported email-body summaries and attachments received by the designated property-management email account, or through optional Staff or Manager uploads of clear photographs or scans of printed provider bills. The Manager may hand a printed bill directly to tenants without uploading it. Until a supported email or uploaded copy is received and validated, that bill will not be available in the portal for automatic allocation, personal tracking, history, or reminders. Readable email summaries and digitally generated PDFs will use direct text extraction, while clear bill images will use OCR. The five target fields will remain the amount due, due date, billing period, provider, and account or reference identifier. Processing will be limited to selected provider formats; the availability of a provider email, PDF attachment, or complete identifier will not be assumed. Required-field, mapping, period, and duplicate checks will precede classification and computation across all supported intake methods. Masked or incomplete identifiers will require Manager review against verified account information; the system will not infer hidden characters or assign a bill by guessing. Incomplete, uncertain, duplicated, unmappable, or otherwise invalid records will enter the Exception Queue for Staff investigation or Manager correction. Staff correction proposals will require Manager authorization, and accepted corrections will undergo system revalidation and reprocessing. Finalized corrections will preserve prior values and tracking history. Utility due dates will come from validated received billing information; the system will not predict the next billing period's due date.",
+      "text": "Our evaluation will use controlled conditions and selected properties. In the local setup, users will need a connection to the server's network; remote access will require a separately configured, reachable HTTPS address. The server must remain running for portal access and scheduled processing. Gmail retrieval and external notifications will require internet connectivity. The study will not establish readiness for large-scale deployment or guarantee continuous public availability, notification delivery or readership.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
     {
       "type": "p",
-      "text": "Rent payment statuses will remain Unpaid, Tenant Reported Paid, and Paid. Tenants may report rent payments for Manager review. The Manager may also record and confirm an actual rent payment without a prior Tenant report, after checking it outside the system. Only the Manager may authorize confirmed rent receipts; rejected reports will return to Unpaid with a recorded reason. Utilities will use a separate Tenant-controlled tracker with Not Marked Paid and Self-Reported Paid, accompanied by “Provider payment not verified.” A mark will refer only to the Tenant's own utility bill or allocated share and will neither require Manager confirmation nor generate a system-issued utility receipt. For shared bills, one Tenant's mark will not mark other shares or the whole provider account as paid. The system will not independently verify payments. Tenants will access their billing history, rent statuses, utility tracking records, and confirmed rent receipts through the authenticated portal.",
-      "style": "NORMAL_TEXT",
-      "newPage": false
-    },
-    {
-      "type": "p",
-      "text": "Portal notifications will retain billing alerts that tenants can view after login. Web Push will provide rent and utility billing updates and eligible reminders. Supplementary email notifications will be limited to rent billing updates, eligible rent reminders, and Manager-confirmed rent payment notices sent to the Tenant's registered email address. Both channels will direct tenants to the authenticated portal; emails will not create another payment or receipt. Reminders will be scheduled at 9 AM Philippine time, three calendar days before the actual due date, for eligible Unpaid rent and utility records Not Marked Paid. Pending rent reports and utilities marked Self-Reported Paid will be excluded; utility reminders will use Web Push only. Bills unavailable before the scheduled reminder time, including rent generated on its due date, will receive billing updates rather than backdated reminders. A missed reminder will not be sent retrospectively. Email sending will require internet connectivity, configured sending credentials, and a running backend. Sending attempts and available channel acceptance or failure results will be recorded, with limited retries and duplicate prevention. Push permission, device support, unavailable email configuration, or delivery failure will not prevent portal access. An alert will not prove payment, inbox delivery, or readership. Tenant SMS and utility email notifications are excluded.",
-      "style": "NORMAL_TEXT",
-      "newPage": false
-    },
-    {
-      "type": "p",
-      "text": "Admin will manage accounts and system maintenance, including authorized role and workspace assignments. Admin may also inspect permitted profile, contact, unit, bill, allocation, rent-status and system-generated rent receipt records across workspaces through a read-only view. This view will exclude private uploaded files, original utility sources, raw extraction, full utility account references and authentication details. Admin will not edit operational or financial records, confirm rent, decide correction proposals or change Tenant utility marks. Any visible personal utility mark will be labelled Tenant-recorded and not verified. The Manager will establish properties, billing-linked units and occupancy, verified utility mappings, rent settings, and individual or shared arrangements; handle sensitive corrections; confirm or reject rent payments; authorize eligible final-cycle advance application; and access confirmed rent receipts. The Manager may also perform operational tasks. Staff will work only within the assigned business workspace, update permitted descriptive details on existing records, upload utility bills, monitor intake, investigate exceptions, and record notes or escalations. Staff may submit one pending correction proposal per unfinalized incoming utility bill, with proposed values and a reason. The proposal will not alter live billing until the Manager authorizes it and the system confirms that the source and relevant billing context remain current and pass revalidation. Rejection, stale proposals, and failed validation will retain reasons and leave the proposed billing change unapplied. Previous values and the preparing and authorizing actors will be retained. Staff will not create billing-linked occupancy, modify login identity or financial settings, confirm rent, apply advance, or change Tenant utility tracking. Routine valid bills will continue automatically without Staff or Manager approval. Tenants will view their permitted records, report rent payments, maintain their own utility tracking marks, and receive permitted alerts. Authentication and role restrictions will protect centralized records. Evaluation will cover Functional Suitability, Performance Efficiency, Interaction Capability, Reliability, and Security under the selected ISO/IEC 25010:2023 characteristics. It will not establish long-term changes in revenue, profitability, payment compliance, or Tenant behavior.",
-      "style": "NORMAL_TEXT",
-      "newPage": false
-    },
-    {
-      "type": "p",
-      "text": "Independent business workspaces will separate each management group's operational records. Managers and Staff will access only their authorized workspace, while Tenants will access their own records. Admin access will support authorized account and workspace maintenance and read-only inspection across workspaces, without operational editing or rent-confirmation authority. The Tenant calendar will display actual validated bill dates and clearly labelled estimates of upcoming configured rent dates. Estimates will not create charges, establish payment obligations, or predict utility dates. Workspace separation and calendar presentation support the included billing workflow rather than introduce new research objectives.",
-      "style": "NORMAL_TEXT",
-      "newPage": false
-    },
-    {
-      "type": "p",
-      "text": "The study excludes mobile applications; installation or physical reading of smart meters or submeters; Internet or Wi-Fi billing; predictive profit analytics or billing; Generative AI and autonomous AI billing decisions; blockchain; automatic utility disconnection; payment gateways or bank integration; independent external payment verification; automatic access to provider apps or phone notifications; maintenance tickets; legal contract generation; and automated eviction. OCR will not cover handwritten, heavily damaged, severely distorted, or low-resolution documents. The study does not guarantee Web Push or email delivery or readership, establish a universally fair utility-allocation formula, or provide complete legal certification under the Philippine Data Privacy Act.",
+      "text": "The study will exclude native mobile applications, smart-meter installation or reading, internet-service billing, payment gateways, automatic bank or provider-payment verification, provider-app access, SMS, predictive billing, model training, autonomous AI decisions, blockchain, maintenance tickets, automatic unit transfers or renewals, legal-contract generation and automated eviction. OCR will not cover handwritten, heavily damaged, severely distorted or low-resolution documents. Evaluation will address the five selected ISO/IEC 25010:2023 characteristics under the stated test conditions; it will not establish universal extraction accuracy, long-term business improvements or complete legal certification.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -333,6 +309,12 @@
     {
       "type": "p",
       "text": "In this study, intelligent refers to OCR-enabled document text extraction combined with predefined, explicit, deterministic, and traceable rules. The OCR component may use machine-learning-based text recognition to extract available document information, but it does not make autonomous billing, validation, allocation, payment, or property-management decisions. Readable email and digital-PDF text is also extracted directly before validation. Billing and property-management decisions use defined rules and Manager-controlled actions.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "The local setup will run on a laptop or server using Node.js, SQLite and the HTML, CSS and JavaScript interface. Users on other devices will connect through the same local network and the configured portal address. A trusted HTTPS configuration will support secure browser access and Web Push; the local demonstration may require device certificate setup. Remote access will require a separately configured, reachable HTTPS address and is not established by the local tests. The backend must remain running for portal access and scheduled processing. Gmail retrieval, rent email and Web Push will require internet access, while supported local tasks will depend on the availability of the server and required local files.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -398,7 +380,7 @@
     },
     {
       "type": "p",
-      "text": "The system shall require valid credentials, restrict functions and records according to the Admin, Staff, Manager and Tenant roles, and limit property, tenant, utility, billing, payment, exception, correction, receipt, notification and source-document access to authorized users and functions. Authentication, defined permissions and session management shall protect records from unauthorized access or modification. User-provided and extracted information shall be validated before storage or processing; failed field, identification, mapping, duplicate or other required checks shall route records to the Exception Queue. Correction information shall be retained in the centralized database. Outgoing email shall use authorized Tenant recipient records and TLS-protected submission to the configured mail service. Sending credentials shall remain in protected backend configuration and shall not be exposed to browser code, notification content, or exports. Messages shall contain limited alert information and direct tenants to authenticated records; an email link shall not bypass access restrictions. These requirements cover the implemented controls and evaluation criteria and do not constitute legal certification or a complete privacy audit.",
+      "text": "The system shall require valid credentials, restrict functions and records according to the Admin, Staff, Manager and Tenant roles, and limit property, tenant, utility, billing, payment, exception, correction, receipt, notification and source-document access to authorized users and functions. Authentication, defined permissions and session management shall protect records from unauthorized access or modification. User-provided information shall be checked before storage, and invalid form or API submissions shall be rejected without saving the proposed changes. Incoming utility sources that fail required-field, identification, mapping, period, duplicate or other processing checks shall be held for review in the Exception Queue. Correction information shall be retained in the centralized database. Outgoing email shall use authorized Tenant recipient records and TLS-protected submission to the configured mail service. Sending credentials shall remain in protected backend configuration and shall not be exposed to browser code, notification content, or exports. Messages shall contain limited alert information and direct tenants to authenticated records; an email link shall not bypass access restrictions. These requirements cover the implemented controls and evaluation criteria and do not constitute legal certification or a complete privacy audit.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -673,7 +655,7 @@
     },
     {
       "type": "p",
-      "text": "The mockups present the Admin, Staff, Manager and Tenant interfaces through one sign-in form with access determined after authentication. Shared operational pages expose role-permitted actions rather than separate application copies. Staff views emphasize intake and investigation; Manager views emphasize decisions while preserving operational access; Admin views cover account search, business membership, maintenance and read-only workspace inspection with a persistent workspace label. Tenant views retain rent first, the personal utility tracker below rent, bill history, confirmed rent receipts and permitted notifications. Correction views show original and proposed values, evidence, preparer, decision and handling reasons. These designs guide development and do not establish improved usability or completed evaluation results.",
+      "text": "The mockups present the Admin, Staff, Manager and Tenant interfaces through one sign-in form with access determined after authentication. Shared operational pages expose role-permitted actions rather than separate application copies. Staff views emphasize intake and investigation; Manager views emphasize decisions while preserving operational access; Admin views cover account search, business membership, maintenance and read-only workspace inspection with a persistent workspace label. Tenant views retain rent first, the personal utility tracker below rent, bill history, confirmed rent receipts and permitted notifications. Correction views show original and proposed values, evidence, preparer, decision and handling reasons. These designs guide development and do not establish improved usability or completed evaluation results. The current interface uses cream, mint and dark-green colors, local illustrations, clear navigation labels and layouts that adjust to desktop and phone screens. Decorative elements do not replace the actual bill details or role permissions.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -946,7 +928,7 @@
     },
     {
       "type": "p",
-      "text": "Scheduled processing requires a running backend. Live mailbox retrieval and external notifications also require internet access. Supported local processing can continue when its required files and components are available.",
+      "text": "The local setup requires a running backend, and users on other devices need a connection to the server's network and the configured portal address. Local access does not by itself establish access from other networks. Remote access requires a separately configured, reachable HTTPS address. Live mailbox retrieval and external notifications require internet access. Supported local processing can continue when the server, required files and components are available.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -982,7 +964,7 @@
     },
     {
       "type": "p",
-      "text": "Interaction Capability was checked through automated browser tasks and phone-sized layouts. The interface now uses a shared Staff and Manager Case Sheet, clearer next actions, protected original-bill previews, and a rent-first Tenant home. Actual-device tasks and participant feedback remain pending.",
+      "text": "Interaction Capability was checked through automated browser tasks and phone-sized layouts. The interface now uses a shared Staff and Manager Case Sheet, clearer next actions, protected original-bill previews, and a rent-first Tenant home. The updated screens use a consistent cream, mint and dark-green interface with clear navigation labels, illustrated headings and support for reduced motion. Actual-device tasks and participant feedback remain pending.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1084,6 +1066,12 @@
     },
     {
       "type": "p",
+      "text": "On 4 November 2026, we tested the combined interface and system updates. The full automated run passed all 155 tests, with no failures, cancellations or skips, in about 355 seconds. We also checked the syntax of 151 JavaScript files without a failure and refreshed 51 interface screenshots using disposable demonstration records. The run covered the retained Admin read-only view, profile restrictions, both demonstration workspaces, input validation and the existing billing workflow. These are development results for this revision, not actual-phone acceptance, live notification delivery or participant evaluation.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
       "text": "Table 3.1: Summary of Recorded Automated Development Tests",
       "style": "NORMAL_TEXT",
       "newPage": false
@@ -1135,7 +1123,7 @@
     },
     {
       "type": "p",
-      "text": "Table 3.1 groups the scenarios covered by the recorded run. The categories describe test coverage and are not additional tests beyond the reported total of 99.",
+      "text": "Table 3.1 groups the scenarios covered by the 28 October 2026 run of 99 tests. The categories describe coverage rather than additional tests. The later runs of 144 and 155 tests are separate revision checkpoints and are not added to the earlier total.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1196,6 +1184,12 @@
     {
       "type": "p",
       "text": "During the additional account-response check, we found that the older response helper removed the password hash but returned other stored fields without an explicit list. A private synthetic test value appeared in the account listing. We changed the helper to return only the supported public account details and notification preferences, and the relevant checks passed. This finding does not establish that actual credentials were exposed. Account creation, password resets, role permissions, and stored records were preserved. The security checks also clarified a test that previously assumed every list response was an array; it now checks for either a safe denial or records from the correct workspace.",
+      "style": "NORMAL_TEXT",
+      "newPage": false
+    },
+    {
+      "type": "p",
+      "text": "The interface integration also revealed a mismatch between a demonstration setup that used a text floor label and the updated numeric-floor requirement. We corrected the setup without changing existing records. We added checks for text types and lengths, email format and duplicate account emails, payment references, decimal amounts and notification preferences. A partial preference update now preserves an existing opt-out for settings that were not changed. These checks prevent invalid writes; they do not verify a bank payment or a utility provider settlement.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1279,7 +1273,7 @@
     },
     {
       "type": "p",
-      "text": "Our development checks provided evidence related to Functional Suitability, Performance Efficiency, Interaction Capability, Reliability and Security through function tests, local response measurements, browser tasks, recovery checks and access-control tests. The full run recorded on 1 November 2026 passed all 144 tests, while the earlier extraction comparisons and response measurements remained limited to their stated fixtures and local environment. These findings support a controlled demonstration, but they do not establish representative OCR accuracy, actual-phone notification delivery, participant acceptance or an overall ISO quality rating.",
+      "text": "Our development checks provided evidence related to Functional Suitability, Performance Efficiency, Interaction Capability, Reliability and Security through function tests, local response measurements, browser tasks, recovery checks and access-control tests. The combined interface and system run on 4 November 2026 passed all 155 tests, while the earlier extraction comparisons and response measurements remained limited to their stated fixtures and local environment. These findings support a controlled demonstration, but they do not establish representative OCR accuracy, actual-phone notification delivery, participant acceptance or an overall ISO quality rating.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },
@@ -1321,7 +1315,7 @@
     },
     {
       "type": "p",
-      "text": "Our Admins and property Managers should follow the documented account, workspace and backup procedures when preparing the system for actual use. They should check role assignments and utility mappings, keep demonstration records separate from operational records, and verify a restore in a separate directory before relying on a backup. The operating guide should also make clear that scheduled processing requires a running backend and that Gmail and external notifications require internet access.",
+      "text": "Our Admins and property Managers should follow the documented account, workspace and backup procedures when preparing the system for actual use. They should check role assignments and utility mappings, keep demonstration records separate from operational records, and verify a restore in a separate directory before relying on a backup. The operating guide should explain the running-backend requirement, same-network access in the local setup, trusted HTTPS configuration, and internet access for Gmail and external notifications; access from other networks must be configured and tested separately.",
       "style": "NORMAL_TEXT",
       "newPage": false
     },

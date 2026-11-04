@@ -19,7 +19,8 @@ export function validDate(value) {
 }
 export function cents(value) {
   requireValue(
-    value !== "" &&
+    (typeof value === "string" || typeof value === "number") &&
+      value !== "" &&
       value != null &&
       Number.isFinite(Number(value)) &&
       Number(value) >= 0 &&

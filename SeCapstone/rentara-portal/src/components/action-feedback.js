@@ -36,6 +36,12 @@ export function mountDisclosureMotion() {
   document.addEventListener("toggle",event=>{
     const details=event.target;
     if (!(details instanceof HTMLDetailsElement) || !details.open || !details.matches(".disclosure-card,.tenant-filter-disclosure,.tenant-calendar__info,.push-device-disclosure") || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    for (const child of details.children) if (child.tagName !== "SUMMARY") child.animate?.([{opacity:0},{opacity:1}],{duration:320,easing:"cubic-bezier(0.4, 0, 0.2, 1)"});
+    const style=getComputedStyle(details);
+    const duration=parseFloat(style.getPropertyValue("--jelly-base")) || 320;
+    const easing=style.getPropertyValue("--jelly-settle").trim() || "cubic-bezier(0.4, 0, 0.2, 1)";
+    for (const child of details.children) if (child.tagName !== "SUMMARY") child.animate?.(
+      [{opacity:.4,transform:"translateY(4px)"},{opacity:1,transform:"none"}],
+      {duration:Math.min(duration,420),easing},
+    );
   },true);
 }

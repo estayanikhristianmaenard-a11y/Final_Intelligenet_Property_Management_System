@@ -7,6 +7,7 @@ import { api } from "../../api/client.js";
 import { endpoints } from "../../api/endpoints.js";
 import { peso, count, dateTime, relative } from "../../utils/format.js";
 import { toastDanger } from "../../components/toast.js";
+import { workspaceArt } from "../../components/workspace-art.js";
 
 /**
  * Manager Dashboard — the primary Phase 1 landing view.
@@ -49,8 +50,8 @@ export async function renderDashboard(container) {
 }
 
 function pageFrame(content) {
-  return html`<section class="page" aria-labelledby="page-title">
-    <div class="page-header">
+  return html`<section class="page manager-dashboard-page" aria-labelledby="page-title">
+    <div class="page-header mint-workspace-hero">
       <div class="page-header__title">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <span>Rentara</span>${icon("chevron-right", { size: 12 })}
@@ -58,6 +59,7 @@ function pageFrame(content) {
           <span>Dashboard</span>
         </nav>
         <h1 id="page-title">Dashboard</h1>
+        <p>Your properties, bills and next decisions.</p>
       </div>
       <div class="page-header__actions">
         <span class="chip"
@@ -67,6 +69,7 @@ function pageFrame(content) {
           >${icon("inbox", { size: 15 })} Open bill intake</a
         >
       </div>
+      ${workspaceArt()}
     </div>
     ${content}
   </section>`;
@@ -102,9 +105,9 @@ function body({ stats, properties, units, activity, payments, proposals, excepti
     ${decisions.length > 6 ? html`<p class="decision-list__more">Showing the oldest 6 of ${count(decisions.length)}. Use the queues above to see all waiting work.</p>` : null}
   </section>`;
   const overviewMetrics = html`<div class="manager-overview" aria-label="Portfolio summary">
-    <a class="manager-overview__item" href="#/units"><span>Units</span><strong>${count(stats.totalUnits.value)}</strong></a>
-    <a class="manager-overview__item" href="#/tenants"><span>Active tenants</span><strong>${count(stats.totalTenants.value)}</strong></a>
-    <a class="manager-overview__item" href="#/bills?tab=payments"><span>Outstanding rent and advance</span><strong>${peso(stats.outstanding)}</strong></a>
+    <a class="manager-overview__item" href="#/units"><span class="mint-metric-icon" aria-hidden="true">${icon("door",{size:22})}</span><span>Units</span><strong>${count(stats.totalUnits.value)}</strong></a>
+    <a class="manager-overview__item" href="#/tenants"><span class="mint-metric-icon" aria-hidden="true">${icon("users",{size:22})}</span><span>Active tenants</span><strong>${count(stats.totalTenants.value)}</strong></a>
+    <a class="manager-overview__item" href="#/bills?tab=payments"><span class="mint-metric-icon" aria-hidden="true">${icon("receipt",{size:22})}</span><span>Outstanding rent and advance</span><strong>${peso(stats.outstanding)}</strong></a>
   </div>`;
 
   const overview = html`

@@ -35,6 +35,7 @@ export function sidebar({ role, activePath, badges = {} }) {
     </div>
 
     <div class="sidebar__scroll">
+      <span class="sidebar__highlight" aria-hidden="true" hidden></span>
       ${groups.map(
         (group) => html`
           <section class="sidebar__section">
@@ -70,6 +71,11 @@ export function sidebar({ role, activePath, badges = {} }) {
           </section>
         `,
       )}
+    </div>
+
+    <div class="sidebar__garden" aria-hidden="true">
+      <img src="./src/assets/mint-plant.svg" width="140" height="180" alt="" />
+      <span class="sidebar__garden-orbit"></span>
     </div>
 
     <div class="sidebar__footer">

@@ -68,7 +68,7 @@ test(
             properties:getComputedStyle(sidebar).transitionProperty.split(",").map(value => value.trim()),
             durations:getComputedStyle(sidebar).transitionDuration.split(",").map(value => value.trim()),
           }));
-          assert.equal(animation.durations[animation.properties.indexOf("width")], "0.8s", `${role} sidebar timing`);
+          assert.equal(animation.durations[animation.properties.indexOf("width")], "0.36s", `${role} sidebar timing`);
         }
       };
       const logout = async () => {
@@ -91,21 +91,53 @@ test(
       await expect(page.locator("#login-password")).toHaveAttribute("type","password");
       await login("manager", "Dashboard", "/dashboard");
       await page.mouse.move(900, 80);
-      await expect(page.locator('.topbar [data-action="toggle-nav"]')).toBeHidden();
+      await expect(page.locator('.topbar [data-action="toggle-nav"]')).toBeVisible();
       await expect(page.locator(".user-menu")).toHaveCount(0);
-      await expect.poll(async () => Math.round((await page.locator(".sidebar").boundingBox()).width)).toBe(76);
+      await expect.poll(async () => Math.round((await page.locator(".sidebar").boundingBox()).width)).toBe(264);
       const contentX = (await page.locator(".app-main").boundingBox()).x;
-      assert.equal(contentX, 76);
+      assert.equal(contentX, 264);
+      await expect(page.locator('.sidebar .nav-item__label').first()).toHaveCSS("opacity", "1");
       assert.ok((await page.locator(".app-main").boundingBox()).width > 1000);
       await page.locator(".sidebar").hover();
       await expect.poll(async () => Math.round((await page.locator(".sidebar").boundingBox()).width)).toBe(264);
       assert.equal((await page.locator(".app-main").boundingBox()).x, contentX);
       await page.mouse.move(900, 80);
-      await expect.poll(async () => Math.round((await page.locator(".sidebar").boundingBox()).width)).toBe(76);
+      await expect.poll(async () => Math.round((await page.locator(".sidebar").boundingBox()).width)).toBe(264);
+      await page.locator('.topbar [data-action="toggle-nav"]').click();
+      await expect(page.locator('.app-shell')).toHaveClass(/is-sidebar-collapsed/);
+      await page.mouse.move(900,80);
+      await expect.poll(async () => Math.round((await page.locator('.sidebar').boundingBox()).width)).toBe(76);
+      assert.equal((await page.locator('.app-main').boundingBox()).x,76);
+      await expect(page.locator('.sidebar .nav-item__label').first()).toHaveCSS('opacity','0');
+      await expect(page.locator('.topbar [data-action="toggle-nav"]')).toHaveAttribute('aria-expanded','false');
+      await page.screenshot({path:'data/sidebar-collapsed.png'});
+      await page.locator('.sidebar').hover();
+      await expect.poll(async () => Math.round((await page.locator('.sidebar').boundingBox()).width)).toBe(264);
+      assert.equal((await page.locator('.app-main').boundingBox()).x,76,'hover expansion must not shift the page');
+      await expect(page.locator('.topbar [data-action="toggle-nav"]')).toHaveAttribute('aria-expanded','true');
+      await page.mouse.move(900,80);
+      await expect.poll(async () => Math.round((await page.locator('.sidebar').boundingBox()).width)).toBe(76);
       const railLink = page.locator('.sidebar').getByRole("link", {name:"Properties", exact:true});
       await railLink.focus();
+      await expect.poll(async () => Math.round((await page.locator('.sidebar').boundingBox()).width)).toBe(264);
+      const moving=page.waitForFunction(()=>document.querySelector('.sidebar__highlight')?.getAnimations().some(a=>a.playState==='running'));
       await page.keyboard.press("Enter");
+      await moving;
       await expect(page.locator("h1")).toHaveText("Properties");
+      await expect.poll(()=>page.evaluate(()=>{
+        const marker=document.querySelector('.sidebar__highlight').getBoundingClientRect();
+        const selected=document.querySelector('.sidebar .nav-item.is-active').getBoundingClientRect();
+        return Math.abs(marker.top-selected.top)<1 && Math.abs(marker.height-selected.height)<1;
+      })).toBe(true);
+      // Page changes keep the chosen rail setting; reduced motion moves directly.
+      await expect(page.locator('.app-shell')).toHaveClass(/is-sidebar-collapsed/);
+      await page.emulateMedia({reducedMotion:'reduce'});
+      await go('/units');await expect(page.locator('h1')).toHaveText('Units');
+      assert.equal(await page.locator('.sidebar__highlight').evaluate(e=>e.getAnimations().length),0);
+      await page.screenshot({path:'data/sidebar-selected.png'});
+      await page.emulateMedia({reducedMotion:'no-preference'});
+      await page.locator('.topbar [data-action="toggle-nav"]').click();
+      await expect(page.locator('.app-shell')).not.toHaveClass(/is-sidebar-collapsed/);
       await logout();
       await login("tenant", "My home", "/tenant");
       await go("/tenant/bills");

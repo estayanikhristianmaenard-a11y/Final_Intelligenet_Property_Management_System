@@ -8,6 +8,8 @@
  * of the study's Data Privacy Act security considerations.
  */
 
+import { configurePhoneInputs } from "./phone-input.js";
+
 const TRUSTED = Symbol.for("propertypro.trusted");
 
 export class TrustedString {
@@ -66,6 +68,7 @@ export function raw(value) {
 /** Render a TrustedString (or plain string) into a container's innerHTML. */
 export function render(container, markup) {
   container.innerHTML = String(markup);
+  configurePhoneInputs(container);
   return container;
 }
 

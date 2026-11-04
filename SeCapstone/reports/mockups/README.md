@@ -52,6 +52,8 @@ Regenerate from the portal directory with `npm.cmd run previews:refresh`. This a
 | [42-admin-status-evidence.png](42-admin-status-evidence.png) | admin /admin | 1440 × 1000 |
 | [34-admin-audit.png](34-admin-audit.png) | admin /admin/audit | 1440 × 1000 |
 | [35-admin-workspaces-accounts.png](35-admin-workspaces-accounts.png) | admin /admin/settings | 1440 × 1000 |
+| [50-admin-workspace-inspection.png](50-admin-workspace-inspection.png) | admin /admin/workspace?workspaceId=ws-default | 1440 × 1000 |
+| [51-admin-workspace-inspection-mobile.png](51-admin-workspace-inspection-mobile.png) | admin /admin/workspace?workspaceId=ws-default | 390 × 844 |
 | [40-admin-audit-older-records.png](40-admin-audit-older-records.png) | admin /admin/audit?page=2 | 1440 × 1000 |
 | [18-rent-receipt-desktop.png](18-rent-receipt-desktop.png) | Original confirmed-payment receipt / full document | 1100 × 1050 |
 | [19-rent-receipt-mobile.png](19-rent-receipt-mobile.png) | Original confirmed-payment receipt / full document | 390 × 844 |

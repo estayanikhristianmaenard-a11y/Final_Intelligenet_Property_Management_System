@@ -2,9 +2,11 @@
 
 The current Chapters I-IV manuscript is in [Google Docs](https://docs.google.com/document/d/11tHstktR1Z7ES9N4QRY6-w-HZd9fXzOxjbDBV2ZELs8/edit), with a checked [PDF export](MANUSCRIPT_I_IV_REVISED.pdf). The 28 October review adds measured development evidence and corrects citation metadata. The 1 November update aligns Admin read-only oversight, adds the recorded 144-test security checkpoint and replaces the architecture and DFD in Google Docs and the local PDF. Chapter IV follows the supplied Conclusions and Recommendations guide and remains limited to recorded development findings until formal evaluation is collected. The manuscript uses paragraph-based discussion, retains numbered research questions and existing tables, and includes the three current diagrams. See [the alignment record](MANUSCRIPT_ALIGNMENT_2026-10-27.md) for dated changes and remaining evidence gaps. Earlier paper reviews describe their own supplied exports; they are not reviews of this new copy.
 
+The 4 November integration adds the Fresh Mint description and verified 155-test checkpoint while retaining the earlier evidence and formal-evaluation limits. The subsequent paper alignment shortens Section 1.5, explains local-network and remote-access conditions consistently across Chapters I-IV, and distinguishes invalid form submissions from utility-source exceptions. The native Google Doc and local source match across 307 nonempty text blocks. The current checked export is 60 pages; actual-device, live-delivery and formal participant evaluation remain pending.
+
 | File | Purpose |
 | --- | --- |
-| [MANUSCRIPT_I_IV_REVISED.pdf](MANUSCRIPT_I_IV_REVISED.pdf) | Current 62-page manuscript, including the development-based Chapter IV draft; formal participant evaluation remains pending |
+| [MANUSCRIPT_I_IV_REVISED.pdf](MANUSCRIPT_I_IV_REVISED.pdf) | Current 60-page manuscript, including the development-based Chapter IV draft; formal participant evaluation remains pending |
 | [MANUSCRIPT_I_III_REVISED.pdf](MANUSCRIPT_I_III_REVISED.pdf) | Preserved 59-page checkpoint before Chapter IV was added |
 | [export-manuscript.mjs](export-manuscript.mjs) | Local offline PDF reproduction after running `python SeCapstone/review/build-manuscript-payload.py`; uses the existing portal Playwright installation |
 | [CHAPTER_IV_WORKING.md](CHAPTER_IV_WORKING.md) | Four SOP-ordered conclusions and five recommendations based on verified development findings; revise after formal evaluation |

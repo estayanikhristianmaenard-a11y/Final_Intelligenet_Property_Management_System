@@ -11,6 +11,7 @@ import { icon } from "./icon.js";
  */
 
 let activePanel = null;
+const closingPanels = new Set();
 
 /**
  * @param {Object} config
@@ -101,16 +102,25 @@ export function openPanel({
     paint();
   };
 
-  const close = () => {
-    if (!panel.isConnected) return;
+  let closeTimer;
+  let closing = false;
+  const close = (immediate = false) => {
+    if (closing || !panel.isConnected) return;
+    closing = true;
     panel.classList.add("is-closing");
+    scrim.classList.add("is-closing");
     binder.destroy();
     document.removeEventListener("keydown", onKey);
     document.body.style.removeProperty("overflow");
-    setTimeout(() => {
+    const remove = () => {
+      clearTimeout(closeTimer);
       scrim.remove();
       panel.remove();
-    }, 200);
+      closingPanels.delete(remove);
+    };
+    closingPanels.add(remove);
+    if (immediate === true || window.matchMedia("(prefers-reduced-motion: reduce)").matches) remove();
+    else closeTimer = setTimeout(remove, (parseFloat(getComputedStyle(panel).animationDuration) || .2) * 1000 + 20);
     activePanel = null;
     if (restoreFocus instanceof HTMLElement) restoreFocus.focus();
   };
@@ -130,14 +140,14 @@ export function openPanel({
     const tab = target.closest("[data-tab]");
     if (tab) setTab(tab.getAttribute("data-tab"));
   });
-  binder.add(scrim, "click", close);
+  binder.add(scrim, "click", () => close());
   document.addEventListener("keydown", onKey);
 
   panelRoot.appendChild(scrim);
   panelRoot.appendChild(panel);
   document.body.style.overflow = "hidden";
 
-  const api = { close, setTab, update, get tab() { return activeTab; } };
+  const api = { close: () => close(), destroy: () => close(true), setTab, update, get tab() { return activeTab; } };
   activePanel = api;
   onMount?.(api);
 
@@ -146,15 +156,14 @@ export function openPanel({
 }
 
 export function closePanel(immediate = false) {
-  if (!activePanel) return;
   if (immediate) {
-    document.querySelector(".panel-drawer")?.remove();
-    document.querySelector(".scrim--panel")?.remove();
+    activePanel?.destroy();
+    for (const remove of [...closingPanels]) remove();
     document.body.style.removeProperty("overflow");
     activePanel = null;
     return;
   }
-  activePanel.close();
+  activePanel?.close();
 }
 
 export function isPanelOpen() {

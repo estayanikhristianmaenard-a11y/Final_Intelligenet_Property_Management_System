@@ -2,6 +2,12 @@
 
 Version 2.0 · 11 October 2026 · Pasig City scope
 
+## Current interface and input checks - 4 November 2026
+
+The Fresh Mint interface uses the same sign-in and role permissions. Admin workspace inspection remains read-only; Manager financial actions, Staff proposals and Tenant personal tracking remain separate. Names use 2 to 150 characters, account emails allow up to 254 characters, and an optional phone number must contain exactly 11 digits. New floors use whole numbers, with 0 for ground floor. Dates must follow the lease and assignment rules; amounts use no more than two decimal places. A duplicate account email is rejected with a clear message. These checks do not send SMS or verify external payments.
+
+For the current demonstration, account roles, phone setup and test assets, start with the [reviewer/testing kit](../../reports/testing/README.md). Preserve an already prepared database instead of running setup to refresh the appearance.
+
 ## Start the website
 
 Opening `index.html` as a `file://` URL blocks the application's ES modules. This application also requires its database/API server. Use the HTTP address below.
@@ -36,7 +42,7 @@ If port 8080 is already occupied, set `PORT` in `.env` and use that port's HTTP 
 
 Independent owner support is documented in [Workspaces](workspaces.md). Existing records remain in the Default workspace. Admin creates another workspace and assigns its Manager under Users & Roles. The showcase also includes Riverside Rentals, with Manager `manager2@example.test` and Tenant `luis.garcia@example.test`, both using `LocalDemo!2026`. Each sees only that portfolio; the original Manager, Maria and Alice retain their existing records and credentials. Workspace names appear in the sidebar/mobile header.
 
-On a desktop with a mouse, the sidebar begins as an icon rail. Move the pointer into it to expand the labels; move out to collapse it. Keyboard focus on a sidebar control also expands it. The desktop topbar has no sidebar menu button or user dropdown. **Log out** is directly above the user details at the bottom of the sidebar for every role. On phones/tablets, use the topbar menu button to open the drawer and its Close button to dismiss it. Settings remain available in the sidebar; the Tenant phone navigation also includes Settings.
+The Fresh Mint theme keeps desktop navigation labels visible beside their icons. The desktop topbar shows the signed-in name/avatar, search and notifications; account editing remains under the existing Settings/Account pages. **Log out** is directly above the user details at the bottom of the sidebar for every role. On phones/tablets, use the topbar menu button to open the drawer and its Close button to dismiss it. Settings remain available in the sidebar; the Tenant phone navigation also includes Settings. Cream surfaces, green navigation, mint cards and decorative apartment artwork follow the approved design. See [theme notes](fresh-mint-theme.md).
 
 Run `npm.cmd run demo:showcase` from the portal directory to create or reuse the separate `data/showcase` database and activate it by changing only `DATA_DIR` in the local `.env`. The command never replaces an existing initialized database. Restart the running Node server afterward. Accounts are `admin@propertypro.ph`, `manager@propertypro.ph`, and `maria.santos@gmail.com`; all use `LocalDemo!2026`.
 

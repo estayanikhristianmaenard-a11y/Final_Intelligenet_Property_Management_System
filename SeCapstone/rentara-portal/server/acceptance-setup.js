@@ -33,7 +33,7 @@ export async function setupAcceptance({
       city: "Pasig City", type: "apartment",
     });
     const unit = service.writeEntity(manager, "units", {
-      propertyId: property.id, code: "T-101", floor: "Ground Floor",
+      propertyId: property.id, code: "T-101", floor: "0",
       monthlyRent: 6000, arrangement: "individual",
     });
     const tenant = service.writeEntity(manager, "tenants", {
