@@ -14,6 +14,7 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
   const service = new Service(store);
   bootstrap(service, {adminPassword:password, managerPassword:password, tenantPassword:password, demo:true});
   service.userWrite(store.get("users","usr-admin"), {name:"Layout Staff", email:"staff.audit@example.test", role:"staff", workspaceId:store.get("users","usr-manager").workspaceId, password});
+  store.activity("Utility Bill Received", "unit-a-meralco-scan-with-a-long-unbroken-reference-12345678901234567890.pdf");
   for (const [index,category] of ["electricity","water"].entries()) store.save("incoming", {
     id:`spacing-source-${index}`,provider:category==="water" ? "Manila Water" : "Meralco",category,
     accountRef:`SPACING-00${index}`,amountDue:660+index,dueDate:"2026-11-08",billingPeriod:"2026-10-01/2026-10-28",
@@ -76,6 +77,15 @@ test("all-role page audit: responsive layouts, named controls, typography and ru
               overflowElements:[...document.querySelectorAll("main *")].filter(visible).filter(e=>e.getBoundingClientRect().right>innerWidth+1 && !e.closest(".table-wrap")).slice(0,8).map(e=>`${e.tagName}.${e.className}`)};
           });
           records.push({role,path,width,...result});
+          if (role === "manager" && path === "/dashboard" && width <= 720) {
+            const activityRows = await page.locator('[aria-label="Recent activity"] tbody tr').evaluateAll(rows => rows.map(row => [...row.querySelectorAll('td')].map(cell => {
+              const box=cell.getBoundingClientRect();
+              const text=[...cell.querySelectorAll('.activity-event__label,.activity-event__ref,.cell-stack,.time-cell')];
+              return {column:cell.dataset.column,contained:text.every(element => {const rect=element.getBoundingClientRect();return rect.left>=box.left-1 && rect.right<=box.right+1 && element.scrollWidth<=element.clientWidth+1;})};
+            })));
+            assert.ok(activityRows.length>0, 'Activity wrapping check requires rendered events');
+            for(const row of activityRows) for(const cell of row) assert.ok(cell.contained, `${width}px: activity ${cell.column} text must fit its own field without overlapping adjacent columns`);
+          }
           assert.ok(result.gutters.left >= 15 && result.gutters.right >= 15, `${role} ${path} ${width}px: retain readable edge spacing`);
           assert.ok(result.gutters.left <= 37 && result.gutters.right <= 37, `${role} ${path} ${width}px: use the workspace width without oversized side gutters`);
           assert.ok(Math.abs(result.gutters.left-result.gutters.right)<=1, `${role} ${path} ${width}px: align both page edges consistently`);

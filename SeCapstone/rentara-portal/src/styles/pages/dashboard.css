@@ -253,6 +253,25 @@
   color: var(--text-muted);
 }
 
+/* Mobile activity cards: long event names must not collide with the actor. */
+@media (max-width: 720px) {
+  .app-shell .data-table[aria-label="Recent activity"] td:is([data-column="type"], [data-column="timestamp"]) {
+    grid-column: 1 / -1;
+  }
+  .data-table[aria-label="Recent activity"] .activity-event { align-items: flex-start; }
+  .data-table[aria-label="Recent activity"] .activity-event > span:last-child { flex: 1; min-width: 0; }
+  .data-table[aria-label="Recent activity"] :is(.activity-event__label, .activity-event__ref, .cell-stack, .time-cell) {
+    display: block;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .data-table[aria-label="Recent activity"] .activity-event__ref {
+    overflow: visible;
+    text-overflow: clip;
+    margin-top: 4px;
+  }
+}
+
 .time-cell {
   font-size: var(--text-xs);
   color: var(--text-muted);

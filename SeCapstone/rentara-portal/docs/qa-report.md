@@ -1,5 +1,11 @@
 # Current QA status
 
+## Mobile recent-activity alignment - 5 November 2026
+
+Reproduced the reported overlap at 390px with an actual Utility Bill Received event and a long filename in the isolated all-role browser audit. The event label's nowrap rule exceeded its half-width mobile field. Recent activity now gives Event and Timestamp full-width rows, places Triggered by and Status side by side, and wraps titles, references and dates within their fields. The CSS is scoped to the activity table at 720px and below; data and click behavior are unchanged.
+
+The new field-containment assertion failed before the fix and passed afterward at 390px and 320px. The complete 182 role/route/width audit passed in about 45 seconds with no runtime/overflow/control issues. Visually inspected the current Group 3 Manager activity list at 390px (`data/mobile-activity-alignment-390.png`). Git whitespace checks passed. No working billing data changed and no push performed.
+
 ## Latest staging merged with local responsive UI - 5 November 2026
 
 Fetched and fast-forwarded local main from `18c4510` to staging `79f79c0`, then restored all saved local changes. Retained backup stash `552f999806ebbec4a71b45ae09b25aa80babe14b` and ignored patch `data/pre-staging-local-2026-11-05.patch`. Only this report conflicted; both histories were retained. Responsive width, all-role bottom navigation and their audit are identical to the saved versions. Both old start:phone and new automatic demo:group scripts are present. Changes remain local/unstaged; no push performed.
